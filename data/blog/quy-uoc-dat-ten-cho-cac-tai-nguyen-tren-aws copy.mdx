@@ -1,0 +1,119 @@
+---
+title: Quy ước đặt tên cho các tài nguyên trên AWS
+date: '2021-01-14'
+tags: ['devtips', 'cloud computing', 'aws', 'devops']
+draft: false
+authors: ['mau']
+images: ['/static/images/ogps/aws-naming-convension.png']
+summary: 'Quy ước đặt tên, gắn tag tài nguyên trên AWS theo các best practices để thuận tiện cho việc quản lý, vận hành hệ thống xây dựng trên AWS'
+---
+
+<TOCInline toc={props.toc} asDisclosure />
+
+## TL,DR
+
+- Trình bày về quy ước đặt tên, gắn tag tài nguyên trên AWS theo các best practices để thuận tiện cho việc quản lý, vận hành.
+- Cung cấp bảng quy ước đặt tên để tham khảo.
+
+## Tại sao cần quy chuẩn đặt tên, gắn tag?
+
+![Bạn đã bao giờ gặp phải tình trạng này? - ©︎ dev.classmethod.com](/static/images/assets/name-bef.png)
+
+> The sad reality is that we humans are forgetful creatures.
+>
+> **- Essentialism: The Disciplined Pursuit of Less**
+
+Những lý do cần có một quy chuẩn đặt tên:
+
+- Tên các resourse khó phân biệt
+  - Con người nhanh quên, bạn không muốn một dự án đang triển khai có 10 EC2 instances cùng 1 tên là **webserver** hoặc tệ hơn là không có tên
+  - Tăng khả năng mắc lỗi khi vận hành. Do dễ nhầm lẫn các tài nguyên với nhau (VD: xoá nhầm máy chủ ở môi trường production thay vì các môi trường khác,...)
+- Áp dụng quy chuẩn đặt tên giúp các tài nguyên được tổ chức và quản lý tốt hơn, giúp việc vận hành, truy vết trở nên dễ dàng hơn
+- Tên và tag có thể sử dụng trong AWS Cost and Usage Report để quản lý về chi phí hoặc thống kê các tài nguyên<br/><br/>
+
+Chính vì vậy, không chỉ các doanh nghiệp lớn với hệ thống phức tạp trên AWS mà các cá nhân, dự án nhỏ cũng nên áp dụng những quy chuẩn đặt tên (naming convention) cho các tài nguyên dịch vụ trên AWS. Kể các khi các tài nguyên được quản lý bằng các tài khoản AWS riêng biệt, bạn cũng nên đặt tên và tag đầy đủ cho tài nguyên. Điều này nhằm hạn chế tối đa những sai sót trong quá trình vận hành hệ thống.
+
+Nó là một thói quen tốt, mất ít thời gian để thực hiện nhưng giúp tăng hiệu quả làm việc.
+
+## Các quy ước đặt tên, gắn tag
+
+Thông thường sẽ có 3 quy chuẩn đặt tên: camelCase, snake_case và kebab-case. Trong trường hợp này, chúng ta nên dùng kebab-case.
+
+Lý do rất đơn giản, tên của S3 bucket không được chứa chữ hoa (UPPERCASE) và dầu gạch dưới a.k.a shift trừ (\_)
+
+→ Để tăng tính nhất quán giữa các tài nguyên, **kebab-case là lựa chọn tốt nhất**
+
+### Quy ước gắn tag
+
+- AWS tags có phân biệt chữ hoa với chữ thường (case sensitive) → hãy đảm bảo tính thống nhất của việc đặt tên (VD: **CostCenter** và **costcenter** sẽ khác nhau)
+- Tag **Name** được sử dụng để thể hiện tên gọi của nhiều tài nguyên (VD: EC2), tag **name** thì không
+- Các tag được AWS tạo tự động theo các quy ước sau:
+
+  1. Chỉ sử dụng chữ thường (lowercase)
+  2. Sử dụng dấu gạch ngang ("-") để thay cho khoảng trắng, phân tách các từ (kebab-case)
+  3. Các tiền tố (prefixes) được sử dụng để thể hiện tài nguyên gốc của các tag
+
+- Ví dụ:
+  - **aws:cloudformation:stack-name** định danh CloudFormation stack đã tạo tài nguyên
+  - **lambda-console:blueprint** định danh blueprint được dùng cho Lambda funtion
+  - **elasticbeanstalk:environment-name** định danh ứng dụng (application) đã tạo ra tài nguyên
+
+Chúng ta có thể áp dụng 3 quy ước mặc định của AWS vào việc gắn tag và đặt tên các tài nguyên.
+
+- Ví dụ:
+  - **anycompany:cost-center** để định danh mã cost center nội bộ cho việc quản lý tài chính
+  - **anycompany:environment-type** để định danh môi trường (development, test hoặc production) của tài nguyên
+  - **anycompany:application-id** để định danh ứng dụng (application) đã tạo tài nguyên
+
+### Quy ước đặt tên
+
+#### Thông tin cần thiết
+
+Ta cần biết những thông tin sau qua tên của tài nguyên:
+
+- **Tên hệ thống, ứng dụng** (sysname)
+  - Định danh thống nhất của hệ thống, ứng dụng đã tạo tài nguyên (VD: xxxsystem)
+- **Môi trường** (env)
+  - Production, test, development (prod/stg/dev)
+- **Layer mạng** (nlayer)
+  - Public, protected, private (public/protected/private)
+- **Loại** (type)
+  - Application, Bastion, Mail (app/bastion/mail)
+- **Mục đích** (use)
+  - Dùng để lưu trữ, quản lý log, phân phối nội dung (log/contents)
+
+Để phân tách các phần thông tin trong tên ta có thể chọn giải pháp dùng dấu gạch ngang (-)
+
+Áp dụng thêm 3 quy ước của việc đặt tag ta có bảng sau
+
+#### Bảng quy ước đặt tên
+
+| Tài nguyên      | Quy ước đặt tên                           | Ghi chú                                                                       |
+| --------------- | ----------------------------------------- | ----------------------------------------------------------------------------- |
+| VPC             | \{sysname\}-\{env\}-vpc                   |                                                                               |
+| Subnet          | \{sysname\}-\{env\}-\{nlayer\}.subnetXX   | XX có thể là code của AZ                                                      |
+| RouteTable      | \{sysname\}-\{env\}-\{nlayer\}.rtb        |                                                                               |
+| InternetGateway | \{sysname\}-\{env\}-igw                   |                                                                               |
+| ELB             | \{sysname\}-\{env\}-alb/clb/nlb           | Với ELB nội bộ (internal load balancer), hãy bổ sung mục đích \{use\} vào tên |
+| TargetGroup     | \{sysname\}-\{env\}-tg                    | tương tự như ở trên                                                           |
+| EC2             | \{sysname\}-\{env\}-\{type\}XX            | XX có thể là số thứ tự                                                        |
+| IAMRole         | \{sysname\}-\{env\}-\{type\}-role         |                                                                               |
+| SecurityGroup   | \{sysname\}-\{env\}-\{type\}-sg           |                                                                               |
+| RDS             | \{sysname\}-\{env\}-rds                   |                                                                               |
+| S3              | \{sysname\}-\{env\}-\{use\}-\{AccountID\} | Vì S3 giống tên miền nên cần thêm account id                                  |
+
+## Kết luận
+
+Hệ thống vẫn sẽ hoạt động tốt nếu bạn không áp dụng quy ước đặt tên hoặc gắn tags. Nhưng khi có sự cố phát sinh hoặc yêu cầu mới xuất hiện, bạn sẽ mất nhiều thời gian để có thể tìm kiếm và khắc phục.
+
+Để tránh rơi vào hoàn cảnh đó hoặc đơn giản là tạo ra một môi trường làm việc đỡ độc hại hơn (cho bản thân và đồng nghiệp), hãy tạo thói quen ngăn nắp, sạch sẽ trên khi sử dụng các tài nguyên. Có thể sẽ mất thời gian để làm quen, nhưng nó đáng và không cần quá nhiều nỗ lực.
+
+Hãy dùng bảng quy ước ở trên và share hoặc để lại comment tại bài viết nếu bạn thấy có ích!
+
+Nếu có bất kỳ khó khăn, thắc mắc về AWS, [hãy liên hệ với VNTechies để được trợ giúp](https://m.me/vntechies)
+
+## Reference
+
+- [Tagging Best Practices - AWS - Amazon.com](https://d1.awsstatic.com/whitepapers/aws-tagging-best-practices.pdf)
+- [弊社で使っている AWS リソースの命名規則を紹介します - dev.classmethod.com](https://dev.classmethod.jp/articles/aws-name-rule/)
+- Ảnh bìa: <span>Photo by <a href="https://unsplash.com/@mero_dnt?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText">Chinh Le Duc</a> on <a href="https://unsplash.com/s/photos/vietnam-board?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText">Unsplash</a></span>

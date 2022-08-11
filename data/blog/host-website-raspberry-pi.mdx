@@ -1,0 +1,81 @@
+---
+title: Host a Website on Raspberry Pi
+date: '2022-07-01'
+tags: ['dev tips', 'cloud computing', 'aws']
+draft: true
+authors: ['mau']
+summary: 'Trình bày về quy ước đặt tên, gắn tag tài nguyên trên AWS theo các best practices để thuận tiện cho việc quản lý, vận hành.'
+---
+
+<TOCInline toc={props.toc} asDisclosure />
+
+Gần đây, [hàng loạt các cloud provider đã gặp phải downtage do đợt nắng nóng ở Châu ÂU](https://www.pcgamer.com/google-oracle-datacenters-melt-down-in-extreme-european-heatwave/).
+
+Bài viết này sẽ hướng dẫn các bạn host 1 website sử dụng [Raspberry Pi 4](https://www.raspberrypi.org/). Sau đó public website được serve bằng nginx lên Internet.
+
+Dù website của bạn sẽ khó có khả năng scale như khi được host trên Cloud, nhưng ít nhất bạn cũng không lo việc website của bạn bị down khi trời quá nóng 🐧
+
+## Getting Started
+
+### Raspberry Pi Setup
+
+In order to follow along, you'll need a Raspberry Pi. I am using the RPi 4, with 8Gb of RAM. I recommend purchasing it as a [kit](https://www.canakit.com/raspberry-pi-4-starter-kit.html) with all the necessary accessories.
+
+Setup your hardware and use the NOOBS to install the Raspberry Pi OS flavor of Linux.
+
+## Web App
+
+### NGINX Install
+
+We'll be using [nginx](https://www.raspberrypi.org/documentation/remote-access/web-server/nginx.md) to serve the app.
+
+```bash
+sudo apt update
+sudo apt install nginx
+sudo /etc/init.d/nginx start
+```
+
+Navigate to _http://localhost_.
+
+### Get your Internal IP Address
+
+You can also navigate to the site using your internal IP.
+
+```bash
+hostname -I
+
+# 192.168.0.26
+```
+
+## Connect to the Internet
+
+We can view the app using our _internal IP_ on the private network, but that's not useful for people who want to access the website from the outside world or Internet. For that, we need to expose the app the Raspberry Pi's _external IP_ address.
+
+### Static IP
+
+First, determine your [external IP](https://whatismyipaddress.com/). In all likelihood, your Internet Service Provider (ISP) has given you a dynamic IP, which means it will change on a regular basis. This is not good for websites because it means the DNS will need to be updated whenever the IP changes. What we really need is a static IP - here are a few potential options:
+
+**Option 1** Call you ISP and request a static IP address. Some allow static IPs to be purchased online for business uses, but others may not allow it at all for residential locations.
+
+**Option 2** Use a service like [NoIP](https://noip.com). They take run a background program that checks your dynamic IP every 5 minutes, then updates the DNS when it changes.
+
+**Option 3** Use [Ngrok](https://ngrok.com/) to forward localhost to a URL, but keep in mind they can only support a small number of simultaneous connections.
+
+### Port Forwarding
+
+In order to make the website available with the external IP, the router must be configured to allow outside traffic on port 80. The setup is entirely dependent on your router, so find [instructions](https://portforward.com/router.htm) for your exact hardware.
+
+The basic process will have you connect to the router via it's IP (usually 192.168.0.1), then setup a forwarding rule for port 80.
+
+## Advanced Tips
+
+This tutorial is just for fun, but if you're considering this approach in production here are a few additional RPi web hosting tips.
+
+### YouTube User Anunay:
+
+1. Don't use No-IP, They are annoying. I recommend getting a cheap domain, add it to cloudflare and using cloudflare-ddns.
+2. Use nginx-proxy-manager, Its way easier to work with when handling lots of projects + It will handle Lets encrypt SSL for you. (Easy cheap HTTPS), get a SSL wildcard for your domain and easily test stuff on subdomains.
+   3.Use docker + portainer to host your production builds, Only keep port 80 exposed (and forwarded) to web, keep the rest inside docker virtual network.
+3. Setup wireguard VPN on your RPI for remote working. Do not expose port 22 to internet, (you can if you used key based auth, but this is better and gives you access to internal ports easier)
+4. Take regular RPI backups (trust me, those SD card can give up on you very easily).
+   And also before that make sure your ISP isn't behind a CGNAT or blocks incoming traffic on certain ports (port 80,443,25 are commonly blocked)

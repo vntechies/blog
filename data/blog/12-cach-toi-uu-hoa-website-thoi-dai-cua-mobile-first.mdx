@@ -1,0 +1,279 @@
+---
+title: 12 cách tối ưu hoá website - thời đại của mobile-first
+date: '2020-12-21'
+tags: ['web development', 'web optimize']
+draft: false
+authors: ['default', 'mau']
+summary: 'Bạn nghĩ rằng cải thiện và tối ưu hoá tốc độ website là không quan trọng? Bây giờ là 2020, hãy nghĩ lại!'
+---
+
+<TOCInline toc={props.toc} asDisclosure />
+
+## TL;DR
+
+- Load-time của website ảnh hưởng rất lớn đến trải nghiệm người dùng, từ đó cũng ảnh hưởng đến lợi nhuận, vị trí trên google và tỉ lệ quay lại trang.
+- Quá trình tối ưu hoá load-time của website có rất nhiều bước, đòi hỏi nhiều công sức nhưng đáng để được quan tâm.
+- Keep everything simple at first, hãy cố gắng phát triển ứng dụng web có tâm, không sử dụng những gì không cần, tư duy mobile-first và trong sáng nhất có thể.
+
+## Tại sao phải tối ưu hoá website?
+
+_Theo [số liệu cung cấp bởi google](https://www.thinkwithgoogle.com/marketing-resources/data-measurement/mobile-page-speed-new-industry-benchmarks/)_
+
+![](./ltfWITVaamwum4CC.jpg)
+
+- User facts:
+  - **47%** người dùng muốn trang web load **dưới 2 giây** và **40%** sẽ bỏ cuộc nếu trang web mất **trên 3 giây** để load.
+  - **79%** người dùng sẽ không ghé thăm lại một website có performance tồi.
+  - **52%** người dùng cho rằng website load nhanh ảnh hưởng trực tiếp đến độ trung thành của họ.
+  - **44%** người dùng than phiền về tốc độ web với bạn của họ.
+  - **1 giây** tăng lên trong load-time giảm **16%** độ hài lòng của người dùng.
+
+![](./pxvo1NJb9KnMlUCu.png)
+
+- Website facts:
+  - **79%** có kích thước trên 1MB, **53%** trên 2MB và **23%** trên 4MB.
+  - Mobile load-time đã **giảm 7 giây** nhưng vẫn tốn khoảng **15 giây**, **53%** websites tốn hơn **3 giây** để hiển thị.
+  - Mobile traffic chiếm hơn một nửa web traffic trên toàn thế giới, nhưng tỷ lệ chuyển đổi thành lợi nhuận lại thấp hơn trên các thiết bị máy tính.
+    → **speed equals revenue**
+  - **70%** landing page mất **hơn 5 giây** để hiển thị.
+  - Google sử dụng một deep neural network với độ chính xác 90% để cho ra kết quả sau:
+    - **giảm load-time được 10 giây**, tỷ lệ người dùng tiếp tục sử dụng website **tăng 123%**
+    - ngược lại, số lượng elements trên trang web **tăng từ 400 lên 6000**, tỷ lệ chuyển đổi thành lợi nhuận **giảm 95%**
+      → **faster is better and less is more**
+  - Thử nghiệm thực tế:
+    - Walmart:
+      - Mỗi **1 giây** load-time giảm, số lượng đặt hàng **tăng 2%**
+      - Mỗi **100ms** load-time giảm, lợi nhuận tăng **1%**
+      - Tỉ lệ đặt hàng có thể **giảm 25%** với mỗi **1 giây** tăng trong load-time.
+    - Amazon A/B Test:
+      - Chỉ **100ms load-time** có thể khiến lợi nhuận **giảm đáng kể**.
+    - Google:
+      - Traffic **giảm 20%** nếu load-time tăng thêm **0.5 giây**
+      - Google đã rank các website theo [mobile-first index](https://searchengineland.com/finally-going-mobile-friendly-collision-course-googles-mobile-first-index-case-study-265227), tốc độ load trang trên di động sẽ ảnh hưởng trực tiếp đến kết quả index trên Google search engine.
+
+## SPEED DOES MATTER
+
+![](./xM14N65sTTJpIBaq.jpg)
+
+Load-time tăng 1 giây:
+
+- **Giảm 11%** lượng pageviews
+- **Giảm 16%** sự hài lòng của khách hàng
+- **Giảm 7%** lợi nhuận
+
+Ở Việt Nam, website của [Thế giới di động](https://www.thegioididong.com/) được giao KPI hiển thị dưới 3000ms, còn [tiki và đặc biệt là sendo có vẻ không quan tâm đến](https://toidicodedao.com/2018/04/03/tiki-sendo-tai-trang-cham-sen-bo/) việc này lắm. Các bạn có thể dễ dàng thấy trải nghiệm người dùng ở đâu tốt hơn, ở đâu mọi người mua đồ nhiều hơn.
+
+Dù sao thì trong tương lai, các website chắc chắn sẽ phải để ý đến việc optimize webservice. Đây vừa là cơ hội và cũng là thách thức với các lập trình viên. Liệu tất cả những lý do trên đã khiến các bạn phải ngồi vào bàn và bỏ thời gian ra làm một website chạy nhanh hơn 1-2 giây?
+
+Long story short:
+
+> **Hãy làm trang của bạn chạy thật nhanh trên các thiết bị di động và bắt đầu tư duy theo hướng mobile-first.**
+
+Cùng nhìn lại một chút quá trình vào một trang web của người dùng theo một flow đơn giản:
+
+![](./jQyWIfh6TnBtl1wi.jpg)
+
+1. người dùng nhập địa chỉ web → chuyển đến mạng Internet
+2. DNS server (Domain Name Service server) chuyển từ URL thành địa chỉ IP → 　 trỏ đến server có IP yêu cầu
+3. server nhận request, xử lý request
+4. chuyển lại response cho người dùng → browser hiển thị kết quả.
+
+Tin tốt là chúng ta có thể optimize trang web ở tất cả các bước còn tin xấu là ở mỗi bước, thời gian cải thiện có thể chỉ được tính bằng ms (1/100 giây 😅). Có nên thực sự quan tâm?
+
+- Nếu trang web của bạn là một blog cá nhân, không có giá trị kiếm tiền, có &lt; 50 người truy cập cùng lúc (như blog này) thì việc optimize không mang lại nhiều giá trị.
+- Bạn kiếm tiền từ trang web của bạn và có trung bình vài nghìn hoặc vài trăm nghìn lượt truy cập cùng lúc. Ngoài lý do về lợi nhuận, nếu không optimize web service, server có thể bị quá tải do requests của khách hàng → bottle neck → load-time kéo dài, thậm chí out of service. Thay vì bỏ tiền mua server khủng hơn, hãy bỏ chút thời gian để sắp xếp và thiết kế lại service để đem lại performance ổn định với chi phí rẻ hơn.
+
+## Làm thế nào?
+
+- Đầu tiên hãy xem website của bạn đang có vấn đề gì bằng [công cụ của Pagespeed của google](https://developers.google.com/speed/pagespeed/insights/)
+- Tham khảo các rules của google cho việc tăng tốc độ load trang:
+  - [Hạn chế việc redirect tại landing page](https://developers.google.com/speed/docs/insights/AvoidRedirects)
+  - [Enable compression](https://developers.google.com/speed/docs/insights/EnableCompression)
+  - [Cải thiện tốc độ phản hồi của server](https://developers.google.com/speed/docs/insights/Server)
+  - [Tận dụng bộ nhớ cache của browser](https://developers.google.com/speed/docs/insights/LeverageBrowserCaching)
+  - [Tối giản hoá các tài nguyên](https://developers.google.com/speed/docs/insights/MinifyResources)
+  - [Tối ưu hiển thị ảnh](https://developers.google.com/speed/docs/insights/OptimizeImages)
+  - [Tối ưu hoá việc load CSS](https://developers.google.com/speed/docs/insights/OptimizeCSSDelivery)
+  - [Ưu tiên các nội dung cần được hiển thị trước](https://developers.google.com/speed/docs/insights/PrioritizeVisibleContent)
+  - [Xoá bỏ các Javascript gây ra render-blocking](https://developers.google.com/speed/docs/insights/BlockingJS)
+
+[Sau tất cả](https://www.youtube.com/watch?v=wHF3Jv6Gk2o), google là công cụ tìm kiếm lớn nhất thế giới, làm mọi thứ theo chuẩn của họ chắc chắn không phải một lựa chọn tồi.
+
+Để đầy đủ hơn, mình sẽ thêm một số phương pháp và chia thành 4 loại tương ứng với từng giai đoạn khi người dùng truy cập website.
+
+## Loại 1: User → Internet
+
+Hoàn toàn nằm ngoài khả năng của chúng ta, tuy nhiên vẫn có thể đảm bảo việc khác hàng có được trải nghiệm đủ tốt với tốc độ mạng cực chậm bằng việc [xây dựng progressive web app và sử dụng service-worker](https://qmau.me/blog/post/progressive-web-apps-qmau-me-cho-ios) cho trang web của bạn.
+
+## Loại 2: Internet → Server
+
+### 1. Sử dụng DNS server
+
+![Phân tích tốc độ của các DNS provider](./jAOAsuDFTd9l0zPK.jpg)
+
+Việc chuyển từ URL sang địa chỉ IP server do DNS server đảm nhận, và nó cũng chỉ là một máy tính, nhanh chậm khác nhau. Các dịch vụ cung cấp host thường cũng sẽ có kèm theo dịch vụ cung cấp DNS, tuy nhiên tốc độ có thể khác nhau → tốc độ load trang cũng bị phụ thuộc.
+
+**Cách khắc phục**
+
+- Để tiết kiệm được khoảng **20-30ms** load-time, bạn nên cân nhắc chuyển qua dùng DNS server của một số nhà cung cấp khác.
+- Một số nhà cung cấp dịch vụ DNS (như cloudflare) cho phép bạn sử dụng DNS service miễn phí, tuy nhiên hãy tìm hiểu xem ở khu vực địa lý mà website của bạn hay được sử dụng [DNS nào có tốc độ nhanh nhất](https://www.dnsperf.com/).
+
+### 2. Sử dụng CDN
+
+![Phân tích tốc độ của các CDN provider](./luVNJqudPakH-jpc.jpg)
+
+Content Delivery Network (CDN) là hệ thống các edge servers được đặt tại các vị trí địa lý khác nhau để có thể truyền tải nội dung từ một origin ở khoảng cách xa nhanh chóng hơn nhờ cơ chế cache.
+
+Thay vì đến tận server (origin, ở xa) để lấy các tài nguyên thì người dùng có thể lấy ngay tại CDN (distribution, ở gần), chính vì thế load-time sẽ được giảm đáng kể.
+
+Để hiểu rõ hơn những lợi ích của việc sử dụng CDN bạn có thể đọc [bài viết vô cùng có tâm của sempai Đinh Hoàng Long về CDN](https://viblo.asia/p/su-dung-cdn-de-giam-tai-cho-server-ymwGXOxoM4p1).
+
+Theo [cdnperf.com](https://www.cdnperf.com/), tính đến thời điểm này JSDELIVR đang dẫn đầu trong việc cung cấp dịch vụ CDN trên toàn cầu. Ở châu Á, vị trí quán quân thuộc về CDNetworks. Cloudflare CDN, Azure và CloudFront của AWS cũng lọp top 10.
+
+## Loại 3: Server
+
+### 3. Hosting
+
+![](./yvVGAtFtpTp2qnbr.png)
+
+Thời đại của cloud computing, các service hầu hết được đưa lên mây. Việc chọn một hosting service phù hợp với nhu cầu của trang web cũng là một yếu tố quan trọng ảnh hưởng đến tốc độ của trang web.
+
+- Nhu cầu nhỏ → 　 shared hosting.
+- Nhu cầu vừa phải → VPS hosting.
+- Nhu cầu lớn → Dedicated server.
+
+Nếu có thể, hãy tham khảo ý kiến từ một lập trình viên, nhân viên quản trị hệ thống hoặc sử dụng dịch vụ của một số nhà cung cấp lớn như [Amazon web service](https://aws.amazon.com/websites/), [Microsoft Azure](https://www.microsoft.com/en-us/CloudandHosting/Azure_Hosting.aspx), [Google cloud](https://cloud.google.com/),...
+
+_[dev.vntechies.com](https://dev.vntechies.com/)_ được host trên Amplify, sử dụng CloudFront CDN 😅
+
+### 4. Cải thiện tốc độ phản hồi của server
+
+Google rất khó tính, họ cho rằng phản hồi của server nên **dưới 200ms**. Việc server phản hồi chậm có thể do một trong những lý do sau:
+
+- Sử dụng framework, ngôn ngữ không tối ưu
+- Logic quá phức tạp → việc xử lý chậm
+- Các components của server tốn nhiều thời gian để liên kết (VD: sử dụng web server và database ở hai máy chủ xa về mặt địa lý → mất thêm độ trễ của network vào thời gian phản hồi của webserver).
+- Mạng chậm (lý do khách quan, bỏ tay trả về).
+
+**Cách khắc phục**
+
+- Low level:
+  - Sử dụng các ngôn ngữ, framework có tốc độ xử lý tốt (không dùng fortran để code web).
+  - Đơn giản hoá code, sử dụng kiến thức về cấu trúc dữ liệu, giải thuật 😅
+  - Với website có thể dùng cache (redis, memcached), cache trong database để tăng tốc độ phản hồi (tối ưu cache memory lại là một câu chuyện khác)
+- High level:
+  - Xây dựng hệ thống với độ trễ giữa các clusters thấp → việc của quản trị viên hệ thống.
+
+### 5. Tối giản hoá các tài nguyên
+
+Khi load trang web, các file `html, css, js, script` sẽ được load để hiển thị trên browser. Tuy không quá nặng nhưng việc đơn giản hoá, không sử dụng thừa code trong các tài nguyên được load cũng sẽ cải thiện tốc độ load cho trang web.
+
+**Cách khắc phục**
+
+- [Minify HTML](https://github.com/kangax/html-minifier)
+- [Minify CSS](https://github.com/ben-eb/cssnano)
+- [Minify Javascript](https://github.com/mishoo/UglifyJS2)
+- Có thể cài [PageSpeed Module](https://developers.google.com/speed/pagespeed/module/) của google cho webserver (apache, nginx) và mọi thứ cứ để module lo.
+- Học sử dụng [gulp](https://gulpjs.com/) và viết gulp task cho việc minify tài nguyên (worth it).
+
+### 6. Tối ưu hiển thị ảnh
+
+Ảnh có thể coi là tài nguyên chiếm nhiều load-time nhất của một trang web, việc tối ưu được hiển thị ảnh đóng vai trò quan trọng trong việc cải thiện load-time của một trang web.
+
+Ngày nay người dùng sử dụng rất nhiều các thiết bị khác nhau để có thể truy cập vào trang web của bạn. Với layout bạn có thể giải quyết bằng responsive design, còn với ảnh câu chuyện sẽ rắc rối hơn một chút.
+
+**Cách khắc phục**
+
+- Sử dụng ảnh phù hợp với kích cỡ màn hình người dùng. Tham khảo [các best practices](https://developers.google.com/web/fundamentals/design-and-ux/responsive/images) cho việc hiển thị ảnh responsive để tiết kiệm tài nguyên.
+- Sử dụng các phương thức nén ảnh phù hợp:
+  - GIF, PNG là phương thức nén lossless, ảnh sau khi nén sẽ có chất lượng gần như ảnh gốc, tỉ lệ nén thấp.
+  - JPEG là phương thức nén lossy, ảnh sau khi nén có chất lượng giảm so với ảnh gốc tuy nhiên tỉ lệ nén có thể **gấp 10 lần** GIF và PNG.
+  - Sử dụng các phương thức nén hiện đại hơn như JPEG 2000, JPEG XR hoặc WebP để tăng tốc độ load.
+
+### 7. Tối ưu hoá việc load CSS
+
+Một trang web sẽ được hiển thị khi load đầy đủ html, css, js. Nếu file css, js có kích thước quá lớn sẽ khiến trang web bị render-blocking, khiến tốc độ load trang tăng đáng kể.
+
+**Cách khắc phục**
+
+- [Inline các file css hoặc js nhỏ](https://developers.google.com/speed/docs/insights/OptimizeCSSDelivery#example) bằng thẻ `<style>` trong phần `<head>`. Các code này sẽ được load cùng html thay vì phải load từng file nhỏ. ps: khai báo ở đầu trang chứ không phải khai báo trong html tag (`<p style=...>`) nhé 😅
+- Nên nhớ rằng việc chia css, javascript thành các file nhỏ sẽ giúp project có cấu trúc code tốt hơn, tuy nhiên với mỗi file, browser sẽ tốn thêm 1 request đến server của bạn, đôi khi thấy đọc code thấy css hay script inline thì đừng vội chửi dev ngu nhé 😅
+
+### 8. Tổ chức thứ tự load
+
+Trong Lighthouse audits của Chrome, tốc độ hiển thị first page của trang web là một trong nhưng tiêu chí được đánh giá rất cao trong mục Performance. Để người dùng có trải nghiệm tốt nhất thì việc ưu tiên hiển thị những nội dung cơ bản (above-the-fold - ATF) của trang web là rất quan trọng.
+
+**Cách khắc phục**
+
+- Hãy tổ chức html thật tốt, quyết định đâu là thành phần quan trọng cần load trước (html load theo thứ tự từ trên xuống dưới)
+  - Chia css thành 2 phần, 1 phần inline dành cho các nội dung ưu tiên hiển thị để tăng tốc độ load, 1 phần dành cho các nội dung còn lại
+  - Nếu sidebar và nội dung cùng đặt song song, ưu tiên hiển thị nội dung trước khi hiển thị sidebar
+- Giảm lượng tài nguyên cần load xuống bằng cách:
+  - Minify tài nguyên
+  - Sử dụng css thay cho ảnh khi có thể
+  - Sử dụng nén
+- [Sử dụng lazy load](https://github.com/verlok/lazyload) cho các tài nguyên chưa cần được hiển thị (vd: các ảnh chưa có trong khung hình)
+
+### 9. Xoá bỏ các Javascript gây ra render-blocking
+
+Trong khi browser tạo ra các DOM tree, nếu gặp một script, nó sẽ dừng lại và thực hiện xong script đó rồi mới tiếp tục tạo ra các DOM. Chính vì thế javascript có thể coi là một nguyên nhân khiến tốc độ tải trang bị chậm đi rất nhiều.
+
+**Cách khắc phục**
+
+- Inline script giống như đã làm với css, tuy nhiên hãy chắc chắn được các script được inline có tốc độ thực hiện nhanh và không gây ra render-blocking.
+- Sử dụng asynchronous (không đồng bộ) cho javascript, khi gặp script, browser sẽ không dừng lại thực hiện mà sẽ tiếp tục parse HTML đồng thời thực hiện script → tránh bị render-blocking.
+- Mạnh hơn nữa chúng ta có thể [defer javascript](https://www.w3schools.com/tags/att_script_defer.asp), các script sẽ được thực hiện khi trang được load xong
+- Cơ chế load javascript:
+  - Nếu có async: script sẽ được thực hiện song song với parse html.
+  - Nếu có defer: script sẽ được thực hiện sau khi parse html.
+  - Nếu không có: script sẽ được thực hiện ngay, sau đó mới tiếp tục parse html.
+
+### 10. Hạn chế redirect tại landing page
+
+Việc redirect người dùng tại landing page sẽ đem lại trải nghiệm xấu và tăng thời gian load time của trang/
+Ví dụ:
+
+- example.com sử dụng thiết kế responsive không đòi hỏi redirect, nhanh và tối ưu.
+- example.com → m.example.com/home - sẽ tốn thời gian cho multi-roundtrip.
+- example.com → www.example.com → m.example.com - người dùng mobile sẽ có trải nghiệm rất tệ do load time quá lâu.
+
+**Các khắc phục**
+
+- Học cách thiết kế một giao diện responsive và hạn chế việc redirect.
+- Nếu buộc phải redirect, tham khảo [hướng dẫn của google](https://developers.google.com/search/mobile-sites/mobile-seo/separate-urls#automatic-redirection).
+
+## Loại 4: Server → User
+
+### 11. Sử dụng nén dữ liệu
+
+Hầu hết các browser hiệnt tại đều hỗ trợ và sử dụng gzip cho việc nén dữ liệu, nhờ lượng dữ liệu truyền tải qua network ít đi → tăng tốc độ tải trang.
+
+**Cách khắc phục**
+
+- Config server cho phép dữ liệu được ném nhằm giảm, một số config mẫu cho các web server:
+
+  - Apache: Use [mod_deflate](http://httpd.apache.org/docs/current/mod/mod_deflate.html)
+  - Nginx: Use [ngx_http_gzip_module](http://nginx.org/en/docs/http/ngx_http_gzip_module.html)
+
+- Dữ liệu được nén
+
+![](./GQvLVDg6nXC9Bri9.png)
+
+### 12. Tận dụng bộ nhớ cache của browser
+
+Mỗi lần người dùng truy cập một trang nào đó, toàn bộ tài nguyên của trang sẽ được load. Điều đó có nghĩa là nếu trang web của bạn không sử dụng cache, mỗi lần load trang sẽ load lại toàn bộ các file css, script dù nó có thể giống y hệt trang trước đó → tăng load-time.
+
+Các browser đều có bộ nhớ cache nên hãy tận dụng nó để tăng tốc độ load trang của bạn, nhưng tuyệt đối không [dùng máy của khách để đào bitcoin](https://coinhive.com/).
+
+**Cách khắc phục**
+
+- [Sử dụng Cache-Control và ETags để thiết lập cache-policy](https://developers.google.com/web/fundamentals/performance/optimizing-content-efficiency/http-caching#cache-control) cho trang web của bạn.
+- Sử dụng [service-worker trong progressive web app](https://qmau.me/blog/post/progressive-web-apps-qmau-me-cho-ios) để precache tài nguyên trong lần load đầu tiên.
+
+## Refs
+
+- [Google pagespeed](https://developers.google.com/speed/docs/insights/v4/reference/)
+- [Speed up your website](https://www.crazyegg.com/blog/speed-up-your-website/)
+- [Google webspeed](https://developers.google.com/speed/)
+- [Sử dụng CDN để giảm tải cho Server](https://viblo.asia/p/su-dung-cdn-de-giam-tai-cho-server-ymwGXOxoM4p1)
+- [Find out how you stack up to new industry benchmarks for mobile page speed](https://www.thinkwithgoogle.com/marketing-resources/data-measurement/mobile-page-speed-new-industry-benchmarks/)

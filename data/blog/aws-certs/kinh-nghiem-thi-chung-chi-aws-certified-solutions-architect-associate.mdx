@@ -1,0 +1,157 @@
+---
+title: 'Kinh nghiệm thi chứng chỉ AWS Certified Solutions Architect – Associate'
+date: '2021-01-04'
+tags: ['cloud computing', 'aws', 'aws certs series']
+draft: false
+layout: PostSimple
+summary: 'Bài viết chia sẻ quá trình ôn tập cho kỳ thi AWSSA-A (Amazon AWS Certified Solutions Architect - Associate) - 1 trong 3 kỳ thi AWS Certification cấp độ Associate.'
+---
+
+<TOCInline toc={props.toc} asDisclosure />
+
+Bài viết chia sẻ quá trình ôn tập cho kỳ thi AWSSA-A (Amazon AWS Certified Solutions Architect - Associate) - 1 trong 3 kỳ thi AWS Certification cấp độ Associate.
+
+Hi vọng việc chia sẻ lộ trình học tập sẽ giúp ích cho các bạn tiết kiệm được thời gian và đạt được kết quả tốt nhất.
+
+## AWSSA-A là gì?
+
+![AWS Certification roadmap](/static/images/assets/aws-certification-roadmap.png)
+
+**Amazon AWS Certified Solutions Architect - Associate** là một trong 3 kỳ thi tương ứng với 3 career path của AWS cho các nhân sự làm việc với hệ thống của mình.
+2 chứng chỉ còn lại dành cho **lập trình viên (Developer)** và **vận hành hệ thống (SysOps)**. Mỗi kỳ thi có 2 level: **Associate và Professional**.
+
+Trong quá trình thiết kế và triển khai dự án trên AWS, kiến thức học được từ AWSSA-A sẽ đem lại cho các kỹ sư những cái nhìn tổng quan về các dịch vụ, những điều nên làm (và không nên làm) để xây dựng một hệ thống tốt trên cloud.
+
+Lượng kiến thức mà kỳ thi cover khá rộng (gần như toàn bộ các services), nếu bạn chưa có kinh nghiệm sử dụng các dịch vụ của AWS sẽ là một bất lợi (mất nhiều thời gian để học). Bù lại, do khối lượng kiến thức rộng nhưng lại không quá tập trung đi sâu vào phần core của từng service nên đây cũng là một chứng chỉ **khá dễ học cho những người mới bắt đầu**.
+
+Nếu thiếu tự tin hoặc có background non-tech, bạn hoàn toàn có thể bắt đầu bằng [chứng chỉ AWS Certified Cloud Practitioner](https://aws.amazon.com/vi/certification/certified-cloud-practitioner/). Còn trong trường hợp ngược lại, bạn nên bỏ qua kỳ thi Cloud Practitioner để nhảy thẳng lên Solutions Architect Associate level.
+
+## Tại sao nên có chứng chỉ AWSSA-A?
+
+![](/static/images/assets/dev-ops.jpeg)
+
+- Kiến thức tổng quát về AWS, các best practices (worst practices) trong thiết kế hệ thống (không chỉ cho AWS)
+- Giúp bạn có một CV hấp dẫn hơn trong mắt nhà tuyển dụng
+- Giúp công ty của bạn join APN (Amazon Partners Network)
+
+Cụ thể, bạn sẽ thấy nó có ích lúc:
+
+- Đặt máy chủ NAT rồi mà EC2 vẫn không kết nối được internet
+- Đặt load balancer mà connect đến EC2 lúc được lúc không
+- Sử dụng life cycle configuration để giảm chi phí sử dụng S3
+- Đề xuất các công nghệ, giải pháp mới để giải quyết (một cách tốt hơn) bài toán được đặt ra (Lambda để giảm chi phí, DynamoDB để có thể scale tốt hơn,...)
+- Biết được lúc nào không đề xuất các giải pháp công nghệ mới, biết được những mặt tốt và không tốt của các giải pháp mới.
+
+Chung quy lại là **chỉ có được, không có mất** (đương nhiên là sẽ mất thời gian), nếu bạn thấy nó có ích thì nên bắt đầu lên kế hoạch ngay từ hôm nay.
+
+## Cấu trúc kỳ thi
+
+Các kỳ thi của AWS sẽ renew liên tục để có thể phù hợp với các thay đổi và bổ sung diễn ra hằng ngày, chính vì thế các thông tin về kỳ thi trên mạng có thể sẽ khác nhau.
+
+VNTechies sẽ cung cấp thông tin của kỳ thi - **AWSSA-A Released February 2018 (English version)**
+
+- Đề thi sẽ gồm **65 câu hỏi trắc nghiệm** (bao gồm cả cả multiple answers)
+- Thời gian: **130 phút**
+  → trung bình **2 phút/câu**
+
+Cấu trúc đề thi có rất nhiều câu hỏi multiple answers nên việc ôn tủ hay đánh bừa cũng không giúp ích được quá nhiều.
+
+Ở phiên bản mới hiện tại, điểm pass cố định ở mức **720/1000 (72%)** → để đủ điểm đỗ bạn nên target tầm **75% trở lên**.
+
+## Chuẩn bị cho kì thi
+
+![](/static/images/assets/study.png)
+
+Nếu có thể, bạn hãy chủ động nhận nhiều task liên quan đến phần infra với mục đích tiếp xúc với AWS hằng ngày, nếu đã quen với các core services của AWS thì chỉ cần **khoảng 1 tháng** để ôn thi (~30-40 tiếng)
+
+### ① AWS fundementals by AWS trên coursera
+
+- Link: https://www.coursera.org/learn/aws-fundamentals-going-cloud-native
+- Note:
+  - Khoá học free
+  - Cung cấp kiến thức, khái niệm cơ bản của các core services cho người mới bắt đầu
+
+### ② AWS Certified Solutions Architect - Associate 2019 by Ryan Kroonenburg trên Udemy
+
+- Link: https://www.udemy.com/aws-certified-solutions-architect-associate/
+- Note:
+  - Khoá học mất phí (12$ nếu bạn chịu khó tìm code giảm giá)
+  - Cover toàn bộ kiến thức trong kỳ thi AWSCSA-A
+  - Cung cấp khá nhiều tips, tricks, kinh nghiệm với dự án thực tế nên sẽ dễ hiểu hơn việc đọc sách
+  - Một số chương khá nặng lý thuyết, có thể khiến học viên chán và buồn ngủ.
+  - **Highly recommend** đọc sách ↓ song song với việc học khoá này
+
+### ③ Giáo trình AWS Certified Solutions Architect – Associate by AWS Associate Team
+
+- Link [sách](https://www.amazon.com/Certified-Solutions-Architect-Official-Study/dp/1119138558)
+- Note:
+  - Sách khá dày (**500+ trang**) nhưng trình bày dễ hiểu, dễ đọc, đừng quá lo lắng nếu tiếng Anh của bạn chưa được tốt
+  - Nên vừa đọc vừa highlight để có thể nhớ được luôn những ý quan trọng, tránh lan man
+  - Đọc hết sách, làm hết test (**>75%**) trong này thì có thể khá yên tâm
+  - Cần chú ý vì **sách có một số thông tin bị outdated.**
+  - Nếu bạn thấy không phù hợp với việc học chay bằng sách thì có thể chuyển qua học online ↑ để được giảng viên tổng hợp nội dung.
+
+### ④ FAQs của các service chính: VPC, RDS, EC2, S3 and IAM
+
+- Note:
+  - Miễn phí
+  - AWS có hệ thống document rất tử tế, tử tế đến mức nếu bạn đọc cẩn thận sẽ mất nhiều thời gian vì quá dài.
+  - Đâu đó khoảng **10% câu hỏi** trong kỳ thi sẽ xuất hiện trong phần này.
+
+### ⑤ Khoá AWS Certified Solutions Architect - Associate Practice Tests cũng của acloud guru trên udemy
+
+- Link: https://www.udemy.com/aws-certified-solutions-architect-associate-practice-tests
+- Note:
+  - Có phí (12$)
+  - Có thể biết được cấu trúc đề thi, dạng câu hỏi trong bài thi
+
+### ⑥ [Optional] Thay cho khoá học số ②
+
+- Khoá học AWS Certified Solutions Architect - Associate trên [pluralsight](https://www.pluralsight.com/courses/aws-certified-solutions-architect-associate) miễn phí bằng cách đăng ký tại [đây](https://visualstudio.microsoft.com/dev-essentials/)
+
+### ⑦ [Optional] AWS Fundamentals: Building Serverless Applications trên courera
+
+- Link: https://www.coursera.org/learn/aws-fundamentals-building-serverless-applications
+- Note:
+  - Khoá học miễn phí
+  - Lambda, serverless đang là một keyword rất hot, việc tìm hiểu về nó cũng giúp ích cho kỳ thi (khoảng **5 câu hỏi liên quan tới Lambda**)
+
+### ⑧ Pre-exam
+
+- Review lại bằng [study note](http://mistwire.com/2016/05/aws-certified-solutions-architect-associate-study-notes/)
+- Review bằng [mind-map](https://github.com/gitvani/aws-mindmap)
+
+### ⑨ Đăng ký thi
+
+- Đăng ký tại [certmetrics](https://www.certmetrics.com/amazon/)
+- Mang theo 2 loại giấy tờ tuỳ thân (Chứng minh thư, passport hoặc chứng minh thư + thẻ ngân hàng)
+- Đến lúc nào là có thể thi ngay lúc đó, làm bài **100% trên máy tính**
+- Vì sự ảnh hưởng của Covid-19, AWS cho phép thi online tại một số quốc gia. Thông tin chi tiết có tại [đây](https://aws.amazon.com/blogs/training-and-certification/aws-certification-exams-now-available-virtually-for-added-convenience-and-flexibility/)
+
+## Tips
+
+- Nên đăng ký một tài khoản free-tier để làm bài tập thực hành(trong sách) và labs (trong khoá học). Có thể bỏ qua nếu bạn có kinh nghiệm làm việc với AWS
+- Nếu chưa yên tâm, đăng ký thêm tài khoản tại [qwiklabs.com](https://www.qwiklabs.com/) để làm nhiều bài thực hành hơn
+- Nên học khoảng **20-30% khoá học ① và ② rồi bắt đầu đọc sách** để dễ hiểu hơn
+
+![](/static/images/assets/instance_type.jpg)
+
+- Nên chú ý phần sử dụng [EC2 Instance Types](https://aws.amazon.com/ec2/instance-types/), [](), [Instance Store vs EBS](https://aws.amazon.com/premiumsupport/knowledge-center/instance-store-vs-ebs/), [OLAP vs OLTP solutions](https://docs.aws.amazon.com/en_us/redshift/latest/dg/c_redshift-and-postgres-sql.html)
+- Hiểu kỹ các encryption scenario của [S3](https://docs.aws.amazon.com/AmazonS3/latest/dev/UsingEncryption.html), [RDS](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Overview.Encryption.html), [EBS](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EBSEncryption.html) và các snapshots
+- Dành thời gian học phần AWS Well-Architecture Framework, vừa có ích trong kỳ thi, vừa có ích cho việc thiết kế hệ thống thực tế
+- Thời gian thi là 130 phút tuy nhiên nên check lại đáp án thật kỹ, **đừng ngại đặt flag với những câu mình chưa chắc chắn**
+
+## Kết quả
+
+- Kết quả **PASS/FAIL** sẽ được báo **ngay sau khi hoàn thành bài thi và survey**, điểm số cụ thể sẽ được gửi sau tối đa 5 ngày làm việc qua mail.
+- **Nếu có thể hãy share kết quả và quá trình chuẩn bị của bản thân, nó có thể giúp ích cho những người cũng có ý định đăng ký kỳ thi này**
+
+Nếu có bất kỳ khó khăn nào trong việc ôn thi cũng như thắc mắc về AWS, [hãy liên hệ với VNTechies để được trợ giúp](https://m.me/vntechies)
+
+## References
+
+- https://notcuder.com/toi-da-lay-chung-chi-aws-solutions-architect-associate-nhu-the-nao/
+- http://mistwire.com/2016/05/aws-certified-solutions-architect-associate-study-notes/
+- https://www.awslagi.com/
+- https://quizlet.com/194513754/aws-certified-solutions-architect-associate-practice-questions-flash-cards/
+- https://medium.com/@franktran/how-to-succeed-in-aws-certified-solutions-architect-associate-exam-8a30344347f
