@@ -1,4 +1,5 @@
 import Document, { Html, Head, Main, NextScript } from 'next/document'
+
 class MyDocument extends Document {
   render() {
     return (
@@ -21,7 +22,10 @@ class MyDocument extends Document {
             sizes="16x16"
             href="/static/favicons/favicon-16x16.png"
           />
-          <link rel="manifest" href="/static/favicons/site.webmanifest" />
+          <meta name="apple-mobile-web-app-capable" content="yes" />
+          <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+          <meta name="apple-mobile-web-app-title" content="qmau.me" />
+          <link rel="manifest" href="/manifest.json" />
           <link rel="mask-icon" href="/static/favicons/safari-pinned-tab.svg" color="#fa8148" />
           <link rel="shortcut icon" href="/static/favicons/favicon.ico" />
           <meta name="msapplication-TileColor" content="#000000" />
