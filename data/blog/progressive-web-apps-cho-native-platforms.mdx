@@ -1,0 +1,255 @@
+---
+title: Progressive Web Apps - VNTechies cho native platforms
+tags: ['javascript', 'pwa']
+date: '2022-08-13'
+cover: /static/images/assets/XAf4YIj5fzjFXASz.jpg
+images: ['/static/images/ogps/pwa.png']
+summary: 'Giới thiệu về Progressive Web App và áp dụng với VNTechies Dev Blog. Cách để đạt 💯 điểm performance trên Lighthouse audit ❤️‍🔥'
+---
+
+<TOCInline toc={props.toc} asDisclosure />
+
+## Progressive web apps là gì?
+
+[Theo google](https://developers.google.com/web/progressive-web-apps/), progressive web apps là những ứng dụng web giúp người dùng có những trải nghiệm sau:
+
+- [Tin cậy](https://developers.google.com/web/progressive-web-apps/checklist): Ứng dụng chạy ngay sau khi khởi động bất kể trạng thái kết nối mạng của thiết bị. Một service nhỏ hoạt động như một proxy phía client và bộ nhớ cache sẽ giúp ứng dụng trở nên tin cậy, người dùng có thể sử dụng bất cứ lúc nào, không phụ thuộc vào Internet.
+- [Nhanh](https://developers.google.com/web/fundamentals/performance/why-performance-matters/) **53%** người dùng sẽ không truy cập site nếu thời gian load quá **3s** và khi trang được load, người dùng muốn có một ứng dụng có thể tương tác được ngay.
+- [Gắn kết](https://developers.google.com/web/fundamentals/web-app-manifest/) Người dùng có thể cài đặt app trên home screen và sử dụng ở chế độ fullscreen, thông qua việc sử dụng web manifest. Có hỗ trợ [push notification](https://developers.google.com/web/fundamentals/push-notifications/) với các thiết bị di động (chưa được hỗ trợ trên iOS 🤔)
+
+Mình vẫn chưa bao giờ hết bất ngờ với khả năng sáng tạo của Steve Jobs.
+Tại WWDC2007 cách đây **15 năm**, ông đã giới thiệu về một ý tưởng (có thể coi là đầu tiên) về PWA, web developers có thể lập trình ứng dụng iOS trên nền safari.
+Có điều các developers của Apple có vẻ chậm chạp hơn những người đồng nghiệp tại Google, [Safari tụt hậu hơn so với Chrome ](https://m.phillydevshop.com/apples-refusal-to-support-progressive-web-apps-is-a-serious-detriment-to-future-of-the-web-e81b2be29676)
+và Google với công nghệ PWA đã buộc Apple phải chấp nhận trong 2 bản cập nhật cho macOS và iOS của mình.
+
+## PWA hoạt động như thế nào?
+
+![How it work?](/static/images/assets/pwa.png)
+
+PWA sẽ vẫn là một web app bình thường bổ sung thêm file manifest và service worker.
+
+- Manifest: JSON file chứa config của PWA, đầy đủ thông tin để có thể cài đặt trên các native platforms:
+  - short_name
+  - icons
+  - view mode
+  - url của PWA,...
+- Service worker: Làm việc như một proxy, khi user dùng web app thì service worker sẽ đóng vai trò đứng ở giữa người dùng và web apps, chịu trách nhiệm cho việc quản lý cache, lấy tài nguyên từ network → web app có thể hoạt động offline được.
+
+## Tại sao nên biến web app thành PWA?
+
+**User engage facts**
+
+- Websites:
+  - **53%** người dùng sẽ từ bỏ việc truy cập một website load quá 3s
+  - **1/2** người muốn trang web load dưới **2s**
+  - **3/4** ứng dụng web mất hơn **10s** để load
+- Native app:
+  - Engage tốt hơn nhờ push notification và home screen icon
+  - Performance trên native platform nhanh hơn và sử dụng ngay được mỗi khi khởi động.
+- PWA solutions:
+  - Cải thiện performance của web app
+  - Có thể cài đặt như native app
+  - Push notification
+
+**User reach facts**
+
+![Với mỗi công đoạn cài đặt ứng dụng, bạn mất đi 20% số lượng người dùng](/static/images/assets/7lJM86DwyjzofGPF.png)
+
+- Websites: Web browser làm được nhiều thứ hơn một native app, nhanh, gọn hơn.
+- Native app: Bạn cần bao nhiêu công đoạn từ lúc biết đến app, cài, cấp permission...?
+
+→ Kết luận
+
+- Ordinary web apps 　**high** user reach, _low_ user engage
+- Native Apps → 　*low* user reach, **high** user engage
+- PWA → **high** user reach, **high** user engage
+
+![Capabilities vs. reach of platform-specific apps, web apps, and progressive web apps.](https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/1DKtUFjXLJbiiruKA9P1.svg)
+
+## Tình hình thế giới
+
+![Các ứng dụng PWA](/static/images/assets/oWnCYcQ2cM04mjmF.jpg)
+
+- Chrome, Opera, Firefox, và Microsoft Edge đã hỗ trợ PWA, Samsung internet browser cũng trong danh sách → với các thiết bị android, PWA hoạt động tốt và có đầy đủ các chức năng. Safari đã hỗ trợ service workers và một vài tính năng chính của PWA trong bản cập nhật mới nhất của Apple. Vậy là gần như tất cả các platform và browser đều đã hỗ trợ service worker.
+- PWA giúp tăng trải nghiệm người dùng → tạo lợi nhuận cho nhà phát triển ứng dụng. Pinterest tăng **40%** thời gian được sử dụng, doanh thu quảng cáo tăng **40%** và sự gắn kết của người dùng tăng **60%** khi chuyển sang sử dụng PWA viết bằng React, Redux và Webpack. Twitter, instagram, tinder đều cho ra mắt bản lite áp dụng PWA có dung lượng dưới 10mb hoạt động ổn định.
+
+![PWA đã giúp Pinterest tăng doanh thu như thế nào](/static/images/assets/bmZW6vLuF-wmnBqS.png)
+
+- PWA có thể được cài đặt không thông qua store → tiết kiện được chi phí cho app store, tuy nhiên việc không kiếm được lợi nhuận từ PWA cũng có thể là lý do chính khiến Apple không mấy mặn mà.
+
+![Perform của website khi sử dụng service worker được cải thiện đáng kể](/static/images/assets/HZIQXJzyKo4tH8EH.png)
+
+- [HTTPS trở thành tiêu chuẩn chung cho các websites](https://security.googleblog.com/2016/09/moving-towards-more-secure-web.html) và service worker chỉ làm việc với HTTPS, thêm nữa PWA hỗ trợ đầy đủ các tính năng SEO. **58%** các trang web ecomerce có điểm đánh giá PWA từ 40-60/100 m 41% dưới 40 và chỉ khoảng 1% trên 60 theo kết quả của [Lighthouse](https://developers.google.com/web/tools/lighthouse/) (công cụ đánh giá website của google chrome).
+
+Hãy thử tưởng tượng đến việc các lập trình viên của **vnexpress**, **dân trí** hay một số ứng dụng đọc báo khác phải vất vả thế nào để có thể maintain được các ứng dụng của mình trên nhiều platforms khác nhau, trong khi đó, một lập trình viên có kiến thức về responsive design và PWA sử dụng **dưới 1 month man** có thể tạo ra 1 ứng dụng đa nền tảng hoạt động ổn định có đầy đủ các chức năng của native apps.
+
+Tuy [PWA trên iOS vẫn còn bị giới hạn nhiều](https://medium.com/@firt/pwas-are-coming-to-ios-11-3-cupertino-we-have-a-problem-2ff49fd7d6ea) nhưng trong tương lai không xa, có thể hi vọng rằng PWA sẽ được hỗ trợ đầy đủ trên các platforms và browsers.
+
+# Làm sao để biến wep app thành PWA?
+
+## Manifest file
+
+Tạo manifest file theo hướng dẫn tại trang [Add a web app manifest](https://web.dev/add-manifest/)
+
+```json:manifest.json
+{
+    "name": "VNTechies Dev Blog",
+    "short_name": "VNTechies",
+    "start_url": ".",
+    "theme_color": "#ffffff",
+    "background_color": "#ffffff",
+    "display": "standalone",
+    "description": "Tech blog dành cho người Việt yêu công nghệ",
+    "scope": "/",
+    "icons": [
+        {
+            "src": "/static/favicons/android-chrome-192x192.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "/static/favicons/android-chrome-384x384.png",
+            "sizes": "384x384",
+            "type": "image/png"
+        }
+    ]
+}
+```
+
+Manifest sẽ config các thông số cần thiết với một PWA:
+
+- name → tên của ứng dụng
+- short_name → tên hiển thị
+- start_url → url của website
+- icons → icon của PWA trên homescreen của người dùng
+
+Khai bảo file `manifest.json` bằng thẻ tag meta, tiện thể khai báo thêm một số thẻ tag để web browser có thể nhận diện được PWA
+
+```html:index.html
+<link
+  rel="apple-touch-icon"
+  sizes="180x180"
+  href="/static/favicons/apple-touch-icon.png"
+/>
+<link
+  rel="icon"
+  type="image/png"
+  sizes="32x32"
+  href="/static/favicons/favicon-32x32.png"
+/>
+<link
+  rel="icon"
+  type="image/png"
+  sizes="16x16"
+  href="/static/favicons/favicon-16x16.png"
+/>
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="default" />
+<meta name="apple-mobile-web-app-title" content="qmau.me" />
+<link rel="manifest" href="/manifest.json" />
+<link rel="mask-icon" href="/static/favicons/safari-pinned-tab.svg" color="#fa8148" />
+<link rel="shortcut icon" href="/static/favicons/favicon.ico" />
+<meta name="msapplication-TileColor" content="#000000" />
+<meta name="msapplication-config" content="/static/favicons/browserconfig.xml" />
+<meta name="theme-color" content="#ffffff" />
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#fff" />
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000" />
+```
+
+### Service worker
+
+Để có thể sử dụng service worker PWA cần phải đăng ký sw file khi load trang, add script cài đặt sw vào trong `index.html`.
+
+```javascript:index.html
+window.addEventListener('load', () => {
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker
+      .register('/sw.js')
+      .then(() => {
+        console.log('Service worker registered!')
+      })
+      .catch((error) => {
+        console.warn('Error registering service worker:')
+        console.warn(error)
+      })
+  }
+})
+```
+
+Như đã trình bày ở phần trên, service worker đóng vai trò như một proxy điều hướng cho PWA. Với VNTechies Dev Blog, service worker có nhiệm vụ precache tài nguyên để người dùng vẫn có trải nghiệm tốt trong điều kiện mạng yếu (hoặc thậm chí là không có mạng).
+Một số scenario cache được trình bày cụ thể tại [offline cookbook](https://web.dev/offline-cookbook/) và [serviceworke.rs](https://serviceworke.rs/).
+
+VNTechies Dev Blog:
+
+- Sử dụng strategy [Network first](https://developer.chrome.com/docs/workbox/modules/workbox-strategies/#network-first-network-falling-back-to-cache) với những file js,css
+- Sử dụng strategy [Cache first](https://developer.chrome.com/docs/workbox/modules/workbox-strategies/#cache-first-cache-falling-back-to-network) với những file ảnh (png,jpg,jpeg,svg,gif,webp)
+
+```javascript:sw.js
+importScripts('https://storage.googleapis.com/workbox-cdn/releases/3.6.1/workbox-sw.js')
+
+if (workbox) {
+  workbox.setConfig({ debug: false })
+
+  var defaultStrategy = workbox.strategies.networkFirst({
+    cacheName: 'fallback',
+    plugins: [
+      new workbox.expiration.Plugin({
+        maxEntries: 128,
+        maxAgeSeconds: 7 * 24 * 60 * 60, // 1 week
+        purgeOnQuotaError: true, // Opt-in to automatic cleanup
+      }),
+      new workbox.cacheableResponse.Plugin({
+        statuses: [0, 200], // for opague requests
+      }),
+    ],
+  })
+  workbox.routing.setDefaultHandler((args) => {
+    if (args.event.request.method === 'GET') {
+      return defaultStrategy.handle(args) // use default strategy
+    } else {
+      return null
+    }
+  })
+
+  workbox.routing.registerRoute(new RegExp(/.*\.(?:js|css)/g), workbox.strategies.networkFirst())
+
+  workbox.routing.registerRoute(
+    new RegExp(/.*\.(?:png|jpg|jpeg|svg|gif|webp)/g),
+    workbox.strategies.cacheFirst()
+  )
+} else {
+  console.log(`No workbox on this browser 😬`)
+}
+```
+
+## Deploy, test
+
+![MacOS](/static/images/assets/macos.png)
+
+![iOS](/static/images/assets/ios.png)
+
+![android](/static/images/assets/android.png)
+
+![windows](/static/images/assets/windows.png)
+
+![Lighthouse score](/static/images/assets/light-house-score.png)
+
+VNTechies Dev Blog đạt 100 điểm performance trên Lighthouse audit ❤️‍🔥
+
+Các bạn có thể tham khảo thêm bài viết [7 tính năng ít được biết tới của PWA](/blog/7-tinh-nang-cua-pwa) để cải thiện tính năng của web app.
+
+# References
+
+- [Add a web app manifest](https://web.dev/add-manifest/)
+- [https://web.dev/what-are-pwas/](https://web.dev/what-are-pwas/)
+- [A service worker's life](https://developer.chrome.com/docs/workbox/service-worker-lifecycle/)
+- [Lighthouse](https://developers.google.com/web/tools/lighthouse/)
+- [Google-PWA](https://developers.google.com/web/progressive-web-apps/)
+- [Google-service worker](https://developers.google.com/web/fundamentals/primers/service-workers/)
+- [PWA-kipalog](https://kipalog.com/posts/Progressive-Web-Apps-la-gi)
+- [Pinterest PWA](https://medium.com/dev-channel/a-pinterest-progressive-web-app-performance-case-study-3bd6ed2e6154)
+- [Twitter lite performance](https://medium.com/@paularmstrong/twitter-lite-and-high-performance-react-progressive-web-apps-at-scale-d28a00e780a3)
+- [PWA on iOS](https://medium.com/@firt/progressive-web-apps-on-ios-are-here-d00430dee3a7)
+- [PWA libraries](https://medium.com/dev-channel/progressive-web-app-libraries-in-production-b52cad37d34)
+- [PWA on all platforms](https://medium.com/@kennethrohde/progressive-web-apps-coming-to-all-chrome-platforms-80e31272e2a8)
+- [Next big thing](https://medium.com/progressive-web-apps/who-still-havent-experienced-the-2-years-old-next-big-thing-for-mobile-web-978cc55f821a)
