@@ -19,7 +19,7 @@ export default function Footer() {
           <div>{` • `}</div>
           <div>{`© ${new Date().getFullYear()}`}</div>
           <div>{` • `}</div>
-          <Link href="/">{siteMetadata.title} by 🇻🇳</Link>
+          <Link href="/">made in 🇻🇳</Link>
         </div>
         <div className="mb-8 text-sm text-gray-500 dark:text-gray-400">
           <Link href="https://github.com/vntechies/blog">Tailwind Nextjs Theme</Link>
