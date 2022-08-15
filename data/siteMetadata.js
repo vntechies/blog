@@ -9,7 +9,7 @@ const siteMetadata = {
   siteRepo: 'https://github.com/vntechies/blog',
   siteLogo: '/static/images/logo.png',
   image: '/static/images/avatar.png',
-  socialBanner: '/static/images/twitter-card.png',
+  socialBanner: '/static/images/default-ogp.png',
   email: 'info@vntechies.com',
   github: 'https://github.com/vntechies',
   twitter: 'https://twitter.com/vntechies',
