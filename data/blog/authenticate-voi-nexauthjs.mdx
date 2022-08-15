@@ -1,0 +1,170 @@
+---
+title: Authenticate với NextAuth.js
+date: '2022-08-15'
+tags: ['facebook', 'nextjs']
+draft: false
+authors: ['mau']
+images: ['/static/images/ogps/nextauth.png']
+summary: 'Authenticate cho ứng dụng Next.js với NextAuth.js sử dụng Facebook & Github làm OAuth provider'
+---
+
+<TOCInline toc={props.toc} asDisclosure />
+
+Repository của hướng dẫn này [có tại đây](https://github.com/vntechies/003-authenticate-with-nextauthjs)
+
+## Tạo github app
+
+- Tạo Github App [tại đây](https://github.com/settings/apps)
+
+![Create github app](/static/images/assets/github-create.png)
+
+- Generate client secret cho app
+
+![get github credentials](/static/images/assets/github-app.png)
+
+## Tạo facebook app
+
+- Tạo Facebook App [tại đây](https://developers.facebook.com/apps/create/)
+- Enable tính năng Facebook Login
+- Config callback URL và các cài đặt cơ bản cho facebook app
+
+![get facebook credentials](/static/images/assets/facebook-app.png)
+
+## NextApp và NextAuth.js
+
+```shell:shell
+# Tạo Next.js app mới
+yarn create next-app 003-authenticate-with-nextauthjs --typescript
+
+#Cài đặt next-auth
+yarn add next-auth
+
+# Tạo file [...nextauth].ts
+mkdir pages/api/auth
+vi pages/api/auth/\[...nextauth\].js
+```
+
+- Config file
+
+```js:[...nextauth].ts
+import NextAuth from 'next-auth'
+import GitHubProvider from 'next-auth/providers/github'
+import FacebookProvider from 'next-auth/providers/facebook'
+
+export default NextAuth({
+  providers: [
+    GitHubProvider({
+      clientId: process.env.GITHUB_ID,
+      clientSecret: process.env.GITHUB_SECRET,
+    }),
+    FacebookProvider({
+      clientId: process.env.FACEBOOK_CLIENT_ID,
+      clientSecret: process.env.FACEBOOK_CLIENT_SECRET,
+    }),
+  ],
+})
+```
+
+- Config các biến môi trường
+
+```env:.env.local
+NEXTAUTH_URL=http://localhost:3000
+NEXTAUTH_SECRET=secret-string
+GITHUB_ID=***
+GITHUB_SECRET=***
+FACEBOOK_CLIENT_ID=***
+FACEBOOK_CLIENT_SECRET=***
+```
+
+**Nếu không khai báo NEXTAUTH_URL thì sẽ gặp lỗi [CLIENT_FETCH_ERROR](https://next-auth.js.org/errors#client_fetch_error) khi deploy lên production hoặc staging**
+
+- Allow domain của facebook và github để hiển thị avatar của người dùng
+
+```js:next.config.js
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  reactStrictMode: true,
+  swcMinify: true,
+  images: {
+    domains: ['platform-lookaside.fbsbx.com', 'avatars.githubusercontent.com'],
+  },
+}
+
+module.exports = nextConfig
+```
+
+```js:pages/_app.js
+import '../styles/globals.css';
+import { SessionProvider } from 'next-auth/react';
+
+import type { AppProps } from 'next/app';
+
+const MyApp = ({ Component, pageProps: { session, ...pageProps } }: AppProps) => {
+  return (
+    <SessionProvider session={pageProps.session} refetchInterval={5 * 60}>
+      <Component {...pageProps} />
+    </SessionProvider>
+  );
+};
+
+export default MyApp;
+```
+
+- Sửa lại trang index.js
+
+```js:pages/index.js
+import { NextPage } from "next";
+import { useSession, signIn, signOut } from "next-auth/react";
+import Image from "next/image";
+
+import type React from 'react';
+
+const Home: NextPage = () => {
+  const { data: session, status } = useSession();
+
+  if (status === 'loading') {
+    return null;
+  }
+
+  if (session) {
+    return (
+      <>
+        <Image
+          src={session?.user?.image}
+          alt="avatar"
+          width="25px"
+          height="25px"
+          className="h-48 w-48 rounded-full"
+        /><br />
+        Signed in as {session?.user?.email} <br />
+        <button onClick={() => signOut()}>Sign Out</button>
+      </>
+    );
+  }
+
+  return (
+    <>
+      Not signed in <br />
+      <button onClick={() => signIn()}>Sign in</button>
+    </>
+  )
+}
+
+export default Home;
+```
+
+## Demo
+
+![NextAuthDemo](/static/images/assets/next-auth-demo.png)
+
+## Nhật xét
+
+- NextAuth hoạt động tốt với basic user info scope của Facebook, Github và hiện tại support kha khá providers[^1]
+- Implement nhanh tuy document có hơi không đầy đủ.
+- Các trang đăng nhập, đăng xuất,... có thể được tuỳ biến tại routes `pages/auth/signin.js`, tham khảo thêm tại document này[^2]
+- NextAuth chưa hỗ trợ việc xử lý refresh token cho các OAuth provider nên người dùng sẽ sẽ phải đăng nhập lại sau khi token hết hạn.
+  Tuy nhiên, có thể sử dụng NextAuth callback dể implement logic xử lý cho phần này, tham khảo document này[^3]
+
+[^1]: [Providers Overview](https://next-auth.js.org/providers/)
+[^2]: [Configuration Pages](https://next-auth.js.org/configuration/pages)
+[^3]: [Refresh Token Rotation](https://next-auth.js.org/tutorials/refresh-token-rotation)

@@ -11,7 +11,7 @@ const ContentSecurityPolicy = `
   media-src 'none';
   connect-src * https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com;
   font-src 'self';
-  frame-src giscus.app;
+  frame-src giscus.app giphy.com;
 `
 
 const securityHeaders = [
@@ -53,6 +53,9 @@ const securityHeaders = [
 ]
 
 module.exports = withBundleAnalyzer({
+  images: {
+    domains: ['platform-lookaside.fbsbx.com', 'avatars.githubusercontent.com'],
+  },
   reactStrictMode: true,
   pageExtensions: ['js', 'jsx', 'md', 'mdx'],
   eslint: {
