@@ -1,0 +1,197 @@
+---
+title: Jamstack 101 - Nền tảng của công nghệ phát triển web hiện đại
+date: '2022-01-20'
+tags: ['jamstack', 'solution', 'web development']
+draft: false
+images: ['/static/images/ogps/jamstack.png']
+layout: PostSimple
+summary: 'Jamstack, kiến trúc web dev dựa trên JavaScript, API và Markup, là câu trả lời hoàn hảo cho các vấn đề phát triển web thời hiện đại.'
+---
+
+<TOCInline toc={props.toc} asDisclosure />
+
+Trong thời gian gần đây, công nghệ phát triển web phát triển một cách nhanh chóng. Tới thời điểm hiện tại, các lập trình viên đã có thấy được những nhược điểm nhất định khi sử dụng các CMS truyền thống như Wordpress hay Drupal. Với việc Google cải thiện khả năng thu thập dữ liệu với các trang sử dụng Javascript cũng như ưu tiên xếp hạng theo hướng mobile-first thì yếu tố tốc độ trở thành ưu tiên hàng đầu trong việc phát triển website. Chính vì lý do đó, web tĩnh đã và đang trở thành một giải pháp hoàn hảo cho các doanh nghiệp trong thời gian gần đây.
+
+Web tĩnh không chỉ là lựa chọn thay thế đáng tin cậy cho WordPress mà nó còn là giải pháp vượt trội hơn rất nhiều trong một số trường hợp. Trong bài viết này, VNTechies muốn giải thích ý tưởng chính của Jamstack, nó khác với các giải pháp truyền thống như thế nào và tại sao nó là giải pháp tốt cho các lập trình viên và khách hàng.
+
+## Jamstack là gì?
+
+Jamstack là tên rút gọn được Mathias Biilmann, CEO của Netify dùng cho **stack sử dụng công nghệ JavaScript, APIs và Markup**. Xuất hiện như một kiến trúc web hiện đại, vừa có lợi thế về hiệu suất, bảo mật của một trang web tĩnh nhưng vẫn giữ được các thuộc tính động sử dụng các Headless CMS mà không cần tới một cơ sở dữ liệu (database).
+
+Các quy tắc của Jamstack khá đơn giản:
+
+- JavaScript (ở phía client) thực hiện các quá trình động trong các vòng lặp request/response
+- Các API có thể tái sử dụng được truy cập qua HTTPS bằng JavaScript
+- Các bản mẫu - template (của sản phẩm, bài viết,...) được xây dựng trước khi build sử dụng các trình tạo web tĩnh
+
+![Flow vận hành của Jamstack. Nguồn: partech.nl](/static/images/assets/workflow.png)
+
+Để có thể dễ hình dung hơn, chúng ta sẽ so sánh stack phổ biến nhất của web truyền thống - LAMP stack với JAM stack.
+
+## Phát triển web tĩnh và web động
+
+Kiến trúc LAMP stack dựa vào 4 công cụ mã nguồn mở (open-source) bao gồm: hệ điều hành **L**inux, **A**pache web server, cơ sở dữ liệu **M**ySQL và ngôn ngữ lập trình **P**HP.
+
+![Kiến trúc của hệ thống cũ (web động) và mới (web tĩnh)](/static/images/assets/compare.png)
+
+Với LAMP stack, khi người dùng truy cập tới một trang web thì một máy chủ (server) sẽ truy cập vào cơ sở dữ liệu (database) sau đó sẽ kết hợp với thiết kế trang (markup) viết bằng PHP, cùng với các plugins sẽ tạo ra một văn bản HTML và trả về trình duyệt, hiển thị cho người dùng.
+
+Với Jamstack thì câu chuyện sẽ đơn giản hơn, một văn bản HTML đã được tạo sẵn và khi người dùng truy cập vào trang thì file đó sẽ được hiện thị ngay cho người dùng.
+
+Nói một cách ngắn gọn, có thể so sánh giống như nhà hàng truyền thống và các của hàng fastfood vậy. LAMP stack - nhà hàng truyền thống sẽ chế biến thức ăn sau khi nhận được order của khách hàng. Trái lại, Jamstack như một của hàng fastfood, các món ăn đã được chuẩn bị từ trước, chỉ cần khách hàng yêu cầu sẽ được đem ra. Chính vì vậy, Jamstack có thể cải thiện đáng kể hiệu suất cũng như các trở ngại trong quá trình phát triển và bảo trì của một trang web.
+
+![Mô hình đơn giản so sánh web động, web tĩnh](/static/images/assets/compare.jpg)
+
+## Điều gì khiến Jamstack trở nên cần thiết?
+
+Trong thời đại bùng nổ của các thiết bị di động và smart-phone là chủ yếu thì bài toán kinh doanh cần phải giải là "làm sao để trang web load thật nhanh trên các thiết bị di động". Như đã đề cập trong [bài viết về tối ưu hoá website](/12-cach-toi-uu-hoa-website-thoi-djai-cua-mobile-first) **tỉ lệ đặt hàng giảm 25% với mỗi 1 giây thêm vào trong quá trình tải trang web**. Thời gian mỗi nội dung có để lôi kéo sự chú ý của người dùng giảm xuống nhanh chóng, tỷ lệ nghịch với sự bận rộn của con người. Ngày nay, người dùng mong muốn nhìn thấy/xem một trang web, một video ngay tức thì. Các công ty công nghệ đã và đang đưa ra rất nhiều giải pháp để giải bài toàn lớn của các doanh nghiệp.
+
+Có thể kể đến như:
+
+- Google cho ra mắt AMP Project nhằm cải thiện hệ sinh thái nội dung được xây dựng với 3 thành phần chính: AMP HTML, AMP JS và AMP Cache. Mục tiêu của dự án là làm cho các trang nhanh hơn trên các thiết bị di động và nền tảng phân phối.
+- Facebook cũng có Instance Articles để giải quyết những vấn đề mà người dùng facebook gặp phải, đặc biệt chú trọng tới viết tải trang trên điện thoại di động.
+- Ngay cả Apple cũng phát hành News Format như một giải pháp cải thiện tốc độ truyền tải nội dung đa phương tiện.
+
+Ngoài ra gần đây còn có 2 yếu tố chính góp phần vào thúc đẩy sự phát triển mạnh mẽ của Jamstack.
+
+- Các xu hướng công nghiệp hướng phục vụ cho công nghệ di động và những web browser hiện đại có khả năng truy cập nội dung nhanh chóng, chỉ đợi chờ các nhà phát triển web sử dụng các công nghệ mới để rút ngắn thời gian load trang.
+- Hệ sinh thái công nghệ dần có xu hướng chuyên môn hoá vào từng phần nhỏ của một hệ thống lớn. Các giải pháp API, các trình tạo trang tĩnh (Static Site Generators), hàng loạt các Headless CMS và dịch vụ CDNs (Content Delivery Networks) để phân phối nội dung tới nhiều nơi khác nhau ra đời.
+
+Yếu tố 1 là sự xuất hiện của bài toán mới, yếu tố 2 lại là những công cụ giúp giải quyết chúng, phần còn thiếu của bức tranh chính là Jamstack!
+
+## Tại sao Jamstack là giải pháp tốt cho công nghệ phát triển web hiện đại?
+
+Để có thể hiểu được cách Jamstack hoạt động trong thực tế, chúng ta phải phân biệt các loại website sau đây:
+
+### Các website đã được tạo trước (web tĩnh)
+
+- Các trang web là các trang HTML với nội dung đã được tạo sẵn.
+- Khi truy cập tới trang thì máy chủ (server) chỉ cần trả lại trang HTML tĩnh đã được chuẩn bị từ trước.
+- Ưu điểm của hệ thống này là không có quá trình truy cập vào cơ sở dữ liệu hoặc không có nội dung nào cần phải tạo ra kể từ khi người dùng truy cập, tất cả đã được chuẩn bị sẵn từ trước đó. (như đồ ăn nhanh)
+- Mọi trang web không cấn tạo thủ công bằng tay và hoàn toàn có thể có các nội dung động (có thể thay đổi theo yêu cầu người dùng) bằng cách sử dụng các dịch vụ, công nghệ làm web mới. (hệ sinh thái công nghệ được nhắc tới ở trên)
+
+### Trang web động
+
+- Hiệu suất là một yếu tô then chốt của quá trình phát triển web hiện đại và cho dù một web động được tối ưu hoá tốt đến đâu, các trang web động cuối cùng vẫn rất chậm do có quá nhiều bước cần thực hiện để tạo nội dung đưa tới người truy cập.
+- Trang web động có thể đạt được tốc độ như trang web tĩnh nhưng cần phải khắc phục nhiều vấn đề kỹ thuật và sẽ tiêu tốn tài nguyên (tiền bạc + thời gian) của bạn. Ngoài ra, với kiến trúc hệ thống phức tạp hơn thì có khả năng bị tấn công từ nhiều vị trí, vấn đề bảo mật cũng đáng phải lưu tâm.
+- Các trang web được xây dựng trên các giải pháp CMS truyền thống (Wordpress, Drupal,...) dù không phải là một giải pháp tồi, nhưng theo thời gian, các CMS này sẽ có một lượng lớn các dòng lệnh, plugins thừa thãi với yêu cầu của business, chính điều này làm giảm thời gian tải của trang chậm lại và gây ra việc lãng phí tài nguyên.
+
+## Điều gì mang lại cho khách hàng?
+
+Khi trình bày Jamstack với các techies (những người hiểu và thích công nghệ), họ thường sẽ thấy được sự đơn giản và dễ hiểu của chúng. Tuy nhiên hầu hết chúng ta đều không hiểu rõ về IT và cần phải có thời gian tìm hiểu mới có thể hiểu rõ được những ưu điểm của Jamstack. VNTechies sẽ giải thích tại sao nên chọn Jamstack là giải pháp cho business là giải thích về những lợi ích mà nó đem lại so với các công nghệ truyền thống.
+
+### Hiệu năng (Performance)
+
+![So sánh speed index của 1 website đơn giản sử dụng 2 công nghệ](/static/images/assets/speedcompare.jpg)
+
+Như đã nhấn mạnh rất nhiều lần trong bài, **thời gian tải trang đã trở thành yếu tối hàng đầu trong xếp hạng trên Google**. Jamstack nhanh vì nó lược bỏ được quá trình truy vấn cơ sở dữ liệu của các giải pháp web động cũ.
+
+Các trang tĩnh sẽ có thời gian load nhanh hơn = thứ hạng tốt hơn → có khả năng sẽ có lượng truy cập nhiều hơn → tăng khả năng tạo ra lợi nhuận.
+
+Bạn có thể thấy sự khác nhau về hiệu suất của trang web thông qua [ví dụ của Smashing Magazine](https://www.smashingmagazine.com/2020/01/migration-from-wordpress-to-jamstack/)
+
+> “The time to first load is so much faster than before… before we had to wait for the HTML file being served for **800ms and now it’s 80ms**.”
+
+Load time của trang đã giảm 10 lần khi chuyển từ Wordpress truyền thống sang sử dụng web tĩnh, bạn có thểm tham khảo thêm [các case study của chúng tôi](/category/case-studies/)
+
+### Bảo mật
+
+Như [sơ đồ kiến trúc ở trên](#ph%C3%A1t-tri%E1%BB%83n-web-t%C4%A9nh-v%C3%A0-web-%C4%91%E1%BB%99ng), với kiến trúc cũ, ví dụ Wordpress sẽ có front-end và CMS được liên kết với nhau trên server, ngoài ra sẽ có thêm cơ sở dữ liệu. Còn với kiến trúc Jamstack, front-end và CMS được tách rời và các APIs thay thế cho các server, database truyền thống. Điều đó làm giảm các phần có thể bị tấn công.
+
+Chính vì vậy có thể nói rằng web tĩnh đồng nghĩa với an toàn và đáng tin cậy hơn, chính vì vậy chi phí bảo mật cũng được giảm.
+
+### Vận hành
+
+Phần lớn các CMS truyền thống đang trở nên rắc rối và lộn xộn, điều này trở thành một vấn đề khá lớn trong thời gian gần đây. Sớm hay muộn thì độ phức tạp cũng như việc tối ưu hiển thị cũng sẽ trở thành vấn đề với hệ thống sử dụng quá nhiều tuỳ chọn và tính năng không cần thiết theo thực tế. Bạn cũng sẽ gặp một số khó khăn khi add một plugin rất cồng kềnh nhưng chỉ sử dụng một phần nhỏ tính năng.
+
+Loại bỏ cơ sở dữ liệu, plugins và luôn phải bảo trì các server sẽ tiết kiệm tiền bạc cũng như thời gian, từ đó sẽ giảm chi phí vận hành và phát triển.
+
+### Tính mở rộng
+
+Vì các trang HTML được đặt và phân phối bằng hệ thống phân phối CDN nên việc tính mở rộng của các web tĩnh vượt trội hơn nhiều so với giải pháp web động truyền thống.
+
+Hầu hết các CDN đều đảm bảo việc mở rộng nhanh chóng trong thời gian cực kỳ ngắn. Còn với giải pháp truyền thống, việc mở rộng được thực hiện qua 2 phương pháp: mua máy chủ lớn hơn hoặc đặt thêm nhiều máy chủ (khá tốn kém và mất thời gian để thực hiện). Có thể coi đây là tính chất vượt trội nhất của web tĩnh so với web động.
+
+## Giới hạn của Jamstack
+
+Jamstack có thể mang tính cách mạng trong nhiều mặt. Nó có thể tạo một trang web tốt hơn, nhanh hơn và rẻ hơn nhưng giống như các công nghệ khác, nó cũng có vài giới hạn.
+
+- Cụ thể là nếu trang web của bạn được cập nhật rất thường xuyên, yêu cầu update trong thời gian thực (update ngay sau khi sửa nội dung) và có những tính năng động cho phép khách hàng tương tác (dù Jamstack cũng có thể đáp ứng được) thì đây có vẻ không phải là lựa chọn tốt nhất.
+
+- Chỉ có thể thêm các tính năng để người dùng tương tác như nhận xét, biểu mẫu vào trang web Jamstack bằng giải pháp của bên thứ ba. Mặc dù hiệu suất của trang web vẫn được đảm bảo nhưng việc quản lý các add-on được thêm vào có thể trở thành một gánh nặng.
+
+## Bắt đầu với Jamstack
+
+![Các thành phần của Jamstack. Nguồn: inovex.de](/static/images/assets/jamstack.jpg)
+
+Nếu bạn không phải một người am hiểu về kỹ thuật thì sẽ có nhiều thứ cần phải tìm hiểu. Tại đây, VNTechies sẽ giới thiệu các công nghệ hiện đại để phát triển web với Jamstack.
+
+Jamstack tập trung vào phát triển giao diện front-end nên nếu bạn muốn bắt đầu phát triển web với Jamstack, bạn nên trang bị những kiến thức cơ bản về Javascript và API.
+
+> Tham khảo loạt bài viết về API
+>
+> - [REST 101 - REST, RESTful API](/rest-101-rest-restful-api)
+> - [REST 201 - REST vs SOAP](/rest-201-rest-vs-soap)
+
+Để tạo trang web với Jamstack cần có những công cụ sau:
+
+- Framework Javascript mà bạn cần chọn hoặc trình tạo web tĩnh để build
+- Headless CMS để quản lý nội dung
+- Nền tảng lưu trữ, triển khai trang web (hosting and develoyment)
+
+### Framework Javascript
+
+> "Any application that can be written in JavaScript, will eventually be written in JavaScript" - Atwood's Law @ Coding Horror
+
+Vài năm trở lại đây thuộc về Javascript (JS). JS có thể làm mọi thứ từ front-end, back-end, mobile app, thậm chí là cả AI, Machine Learning, nó có mặt ở khắp mọi nơi. Với công nghệ phát triển web, các website đơn trang (single-page) hay Progressive Web App (PWAs) sử dụng sức mạnh của các framework JS xuất hiện ngày càng nhiều.
+
+VNTechies sử dụng một trong những framework JS phổ biến nhất do Facebook tạo ra - ReactJS
+
+### Trình tạo trang tĩnh (Static site generators)
+
+Một trình tạo trang tĩnh là một công cụ tạo các trang HTML từ những file đầu vào. Trình tạo có thể lấy nội dung từ một CMS hoặc bất cứ nguồn nào khác, ghép với template có sẵn tạo ra một trang HTML hoàn chỉnh, sẵn sàng phục vụ người dùng. Có nhiều trình tạo trang tĩnh được viết với nhiều ngôn ngữ lập trình khác nhau, giúp cho các lập trình viên có thể thoải mái lựa chọn theo khả năng của bản thân, có thể kể tới như:
+
+- Gatsby(ReactJS)
+- Hugo(Nodejs)
+- Jekyll(Ruby)
+- ...
+
+### Headless CMS
+
+Có thể bạn đã biết về các CMS truyền thống như Wordpress, Drupal và cách thức chúng hoạt động. Về bản chất, chúng lưu trữ các nội dung và tạo ra các trang HTML theo cách truyền thống mỗi khi có truy cập từ người dùng. Ngược lại với điều đó, các Headless CMS chỉ quản lý nội dung và sẽ không trực tiếp tạo ra các trang HTML, tách biệt hoàn toàn với front-end và back-end. Điều đó cho phép các CMS này có thể phân phối nội dung tới một hoặc nhiều trang web, sử dụng trên nhiều front-end khác nhau.
+
+Hầu hết các Headless CMS có sẵn sẽ phù hợp với bất kỳ công nghệ front-end nào bạn đang sử dụng. Bạn có thể tham khảo danh sách các headless CMS tại [đây](https://jamstack.org/headless-cms/)
+
+### Lưu trữ và triển khai (Hosting & deployment)
+
+Sau khi xây dựng được website hoặc ứng dụng sử dụng Jamstack, chúng ta cần tìm một nơi lưu trữ để đưa chúng tới với người dùng (hosting). Các giải pháp lưu trữ hiện đại và hệ thống phân phối nội dung (CDN) đã trở nên đa dạng hơn và cung cấp mọi thứ bạn cần để có thể đưa ứng dụng của bạn lên Internet.
+
+Có thể kể tới các giải pháp phổ biến cho các lập trình viên như Netlify, Vercel, lớn hơn là Firebase, AWS.
+
+![VNTechies đang sử dụng stack GatsbyJS và hosting với Amplify của AWS](/static/images/assets/gatsby.png)
+
+Việc có thể lựa chọn thoải mái các công cụ từ ngôn ngữ, framework phát triển, quản trị nội dung và hosting theo ý của bạn lại là một điều tuyệt vời nữa của Jamstack. Bạn có thể chọn stack công nghệ mình thoải mái nhất cũng như hợp lý với tài chính, nhu cầu của bản thân.
+
+Việc ngày càng có nhiều công cụ mới ra đời, cạnh tranh với nhau cũng làm giá thành để triển khai một website, ứng dụng Jamstack trở nên ngày càng rẻ hơn.
+
+## Resources
+
+Để có thể theo bắt kịp xu thể web mới sử dụng Jamstack hãy tham khảo các nguồn sau đây:
+
+- [Jamstack.org](https://jamstack.org/)
+- [Jamstack.wtf](https://jamstack.wtf/)
+- [WTF is Jamstack?](https://www.seancdavis.com/blog/wtf-is-jamstack/)
+- [Netlify blog](https://www.netlify.com/blog/)
+- [Gatsby blog](https://www.gatsbyjs.com/blog/)
+- [SSGs list](https://jamstack.org/generators/)
+- [Headless CMSs list](https://jamstack.org/headless-cms/)
+- [Third-party solutions for static sites](https://github.com/agarrharr/awesome-static-website-services/)
+- Cộng đồng:
+  - [Jamstack Linkedin group](https://www.linkedin.com/groups/8722827/)
+  - [Jamstack Reddit group](https://www.reddit.com/r/Jamstack_dev/)
+  - [Jamstack Facebook group](https://www.facebook.com/groups/2628040424090703/)
+  - [TheNewDynamics Slack](https://thenewdynamic.slack.com/)
+
+## References
+
+- [Bejamas.io](https://bejamas.io/blog/jamstack/)
