@@ -6,6 +6,7 @@ import SectionContainer from './SectionContainer'
 import Footer from './Footer'
 import MobileNav from './MobileNav'
 import ThemeSwitch from './ThemeSwitch'
+import LoginButton from './LoginButton'
 
 const LayoutWrapper = ({ children }) => {
   return (
@@ -39,6 +40,7 @@ const LayoutWrapper = ({ children }) => {
                 </Link>
               ))}
             </div>
+            <LoginButton />
             <ThemeSwitch />
             <MobileNav />
           </div>

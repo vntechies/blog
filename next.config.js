@@ -53,6 +53,9 @@ const securityHeaders = [
 ]
 
 module.exports = withBundleAnalyzer({
+  images: {
+    domains: ['platform-lookaside.fbsbx.com', 'avatars.githubusercontent.com'],
+  },
   reactStrictMode: true,
   pageExtensions: ['js', 'jsx', 'md', 'mdx'],
   eslint: {
