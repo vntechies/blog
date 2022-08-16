@@ -12,7 +12,7 @@ const siteMetadata = {
   socialBanner: '/static/images/default-ogp.png',
   email: 'info@vntechies.com',
   github: 'https://github.com/vntechies',
-  twitter: 'https://twitter.com/vntechies',
+  twitter: 'https://twitter.com/vn_techies',
   facebook: 'https://facebook.com/vntechies',
   youtube: 'https://youtube.com/vntechies',
   linkedin: 'https://www.linkedin.com/vntechies',
