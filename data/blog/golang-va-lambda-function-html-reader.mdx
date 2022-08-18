@@ -1,0 +1,211 @@
+---
+title: 'Golang và Lambda function: HTML Reader'
+date: '2022-08-18'
+tags: ['aws', 'lambda', 'go', 'htmlreader', 'tutorial', 'aws sam', 'serverless']
+draft: false
+images: ['/static/images/ogps/go-reader.png']
+summary: 'Authenticate cho ứng dụng Next.js với NextAuth.js sử dụng Facebook & Github làm OAuth provider'
+---
+
+<TOCInline toc={props.toc} asDisclosure />
+
+![Go reader](/static/images/ogps/go-reader.png)
+
+Trong bài viết này, chúng ta sẽ xem xét cách triển khai bất kỳ hàm Golang nào lên AWS Lambda một cách siêu dễ dàng.
+Chúng ta có thể chạy hầu như tất cả các loại ứng dụng, back end service với zero administration (không cần quản lý)
+
+**Vậy thì chúng ta sẽ làm gì?**
+
+![Macos reader](/static/images/assets/macosreader.png)
+
+Chúng ta sẽ phát triển một html reader tương tự với reader mode trên các trình duyệt web hiện tại.
+~~Chọn ảnh hơi cay nhé ông bạn~~ 🥲
+
+## Thiết kế
+
+Hệ thống với yêu cầu đơn giản nên chúng ta cũng sẽ có diagram đơn giản.
+Flow:
+
+1. Người dùng truy cập vào html reader với params url là địa chỉ của trang muốn đọc
+2. Lambda function sẽ get html code, parse và format lại nội dung chính bằng thư viện go-readability[^1]
+3. Trả HTML nội dung chính được xử lý tại Lambda fucntion
+
+![Go reader Diagram](/static/images/assets/goreader-diagram.png)
+
+## Triển khai
+
+### SAM local
+
+- [Cài đặt SAM CLI](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-sam-cli-install.html)
+- Tạo project go-reader
+
+```shell:shell
+sam init --name go-reader --runtime go1.x
+```
+
+- Cài đặt [AWS credentials](https://docs.aws.amazon.com/powershell:shell/latest/userguide/pstools-appendix-sign-up.html)
+
+```shell:shell
+vi ~/.aws/credentials
+```
+
+```yaml:~/.aws/credentials
+[vntechies]
+aws_access_key_id=******
+aws_secret_access_key=******
+```
+
+- Tạo template cho hệ thống sử dụng SAM
+
+```yaml:template.yaml
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  go-reader
+
+  Sample SAM Template for go-reader
+
+# More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
+Globals:
+  Function:
+    Timeout: 5
+
+Resources:
+  GoReaderFunction:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      CodeUri: go-reader/
+      Handler: handler
+      Runtime: go1.x
+      Architectures:
+        - x86_64
+      Events:
+        CatchAll:
+          Type: HttpApi # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+          Properties:
+            Path: /
+            Method: GET
+            ApiId: !Ref GoReaderHTTPApi
+
+  GoReaderHTTPApi:
+    Type: AWS::Serverless::HttpApi
+    Properties:
+      CorsConfiguration:
+        AllowOrigins:
+          - "*"
+        AllowHeaders:
+          - "Content-Type"
+          - "Access-Control-Allow-Origin"
+          - "Access-Control-Allow-Headers"
+        AllowMethods:
+          - GET
+          - OPTIONS
+
+Outputs:
+  # https://github.com/awslabs/serverless-application-model/blob/master/docs/internals/generated_resources.rst#api
+  GoReaderAPI:
+    Description: "API Gateway endpoint URL for Prod environment for First Function"
+    Value: !Sub "https://${GoReaderHTTPApi}.execute-api.${AWS::Region}.amazonaws.com/"
+  GoReaderFunction:
+    Description: "First Lambda Function ARN"
+    Value: !GetAtt GoReaderFunction.Arn
+  GoReaderFunctionIamRole:
+    Description: "Implicit IAM Role created for Hello World function"
+    Value: !GetAtt GoReaderFunction.Arn
+```
+
+- Một số lưu ý
+
+  - Lambda function connect được với public Internet by default
+  - `AWS::Serverless::HttpApi` sử dụng HTTP API thay vì REST API vì chỉ cần Regional access và không cần những tính năng của REST API -> giảm chi phí
+  - AllowHeaders
+    - `Content-Type` lambda function sẽ serve html code và trả về cho người dùng thông qua API gateway, API Gateway cần phải truyền headers này tới user,
+      nếu không browser sẽ hiển thị response dưới dạng text thay vì html code.
+
+### Hàm Lambda cho GoReader
+
+- Sau khi lấy được nội dung chính của trang web qua url người dùng cung cấp, chúng ta sẽ format lại sử dụng thư viện bamboo css[^2]
+
+```go:go-reader/main.go
+package main
+
+import (
+	"errors"
+	"time"
+
+	readability "github.com/go-shiori/go-readability"
+
+	"github.com/aws/aws-lambda-go/events"
+	"github.com/aws/aws-lambda-go/lambda"
+)
+
+var (
+	ErrNoURL = errors.New("No URL provided")
+)
+
+func handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
+	url := request.QueryStringParameters["url"]
+
+	if len(url) <= 0 {
+		return events.APIGatewayProxyResponse{}, ErrNoURL
+	}
+
+	article, err := readability.FromURL(url, 30*time.Second)
+
+	if err != nil {
+		return events.APIGatewayProxyResponse{}, err
+	}
+
+	html := "<!DOCTYPE html><html><head><meta charset='utf-8'/><title>GO READER</title><meta name='viewport' content='width=device-width, initial-scale=1'/><link rel='stylesheet' href='https://unpkg.com/bamboo.css'/></head><body><h2 id='title'>" + article.Title + "</h2><p id='output'>" + article.Content + "</p></body></html>"
+	return events.APIGatewayProxyResponse{
+		StatusCode: 200,
+		Headers: map[string]string{
+			"Access-Control-Allow-Origin":  "*",
+			"Access-Control-Allow-Headers": "origin,Accept,Authorization,Content-Type",
+			"Content-Type":                 "text/html; charset=utf-8",
+		},
+		Body:            html,
+		IsBase64Encoded: false,
+	}, nil
+}
+
+func main() {
+	lambda.Start(handler)
+}
+```
+
+- Cài đặt cách thư viện cần thiết trước khi đóng build và đóng gói hàm
+
+```shell:shell
+cd go-reader
+go get github.com/go-shiori/go-readability
+```
+
+### Test & Validate & Build & Deploy
+
+```shell:shell
+# test function bằng event mẫu từ APIGW
+sam local invoke "GoReaderFunction" -e events/error_event.json
+sam local invoke "GoReaderFunction" -e events/event.json
+
+# validate SAM template
+sam validate --profile vntechies --region ap-southeast-1
+
+# build package
+sam build
+
+# deploy
+sam deploy --guided --profile vntechies
+```
+
+## Sản phẩm
+
+![Reader compare](/static/images/assets/readerscompare.png)
+
+**Kết luận:** Như 2 giọt nước 🤣
+
+Với việc support nhiều ngôn ngữ và có thể nhanh chóng, dễ dàng triển khai một dịch vụ mới,
+Lambda xứng đáng là một chọn lựa tiềm năng cho các stack công nghệ phát triển với Golang.
+
+[^1]: https://github.com/go-shiori/go-readability
+[^2]: https://github.com/rilwis/bamboo
