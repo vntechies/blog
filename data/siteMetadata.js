@@ -2,7 +2,8 @@ const siteMetadata = {
   title: 'VNTechies Dev Blog',
   author: 'VNTechies',
   headerTitle: 'VNTechies',
-  description: 'Tech blog dành cho người Việt yêu công nghệ',
+  description:
+    'Tech blog dành cho người Việt yêu công nghệ | Tài liệu, hướng dẫn học tập - Giải pháp công nghệ - Cloud computing - web services - ứng dụng di động',
   language: 'vi-VN',
   theme: 'dark', // system, dark or light
   siteUrl: 'https://dev.vntechies.com',
