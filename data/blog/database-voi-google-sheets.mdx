@@ -1,0 +1,256 @@
+---
+title: Database với Google sheets
+date: '2022-08-22'
+tags: ['aws', 'crawler', 's3', 'lambda', 'automation', 'google docs', 'database', 'tutorial']
+draft: false
+authors: ['mau']
+images: ['/static/images/ogps/currency-crawler-2.png']
+summary: 'Cách sử dụng Google Sheets làm cơ sở dữ liệu chính cho ứng dụng của bạn'
+---
+
+![Currency Crawler](/static/images/ogps/currency-crawler-2.png)
+
+<TOCInline toc={props.toc} asDisclosure />
+
+## TL;DR
+
+- Dùng Google spreadsheet làm cơ sở dữ liệu thay cho DynamoDB trong bài viết [Crawl dữ liệu tỷ giá hối đoái với AWS Lambda và DynamoDB (Over engineer version)](/blog/crawl-du-lieu-ty-gia-hoi-doai)
+- Bạn có thể truy cập "production database" của ứng dụng này tại [google sheet này](https://docs.google.com/spreadsheets/d/1nzKN3NSTh_AVQlSOm5Zv4CQZlejkPpHw3FkOm6T1zio/edit?usp=sharing)
+
+## Yêu cầu
+
+Vẫn là yêu cầu lấy dữ liệu tỷ giá hối đoái của 3 ngân hàng Việt Nam như đã trình bày ở [bài viết trước](/blog/crawl-du-lieu-ty-gia-hoi-doai).
+Dù không được trả tiền nhưng khi nghĩ đến việc mẹ của cháu tôi lọ mọ download file csv từ API gateway tôi vẫn thấy hơi cắn rứt.
+Giúp người thì giúp cho chót, thêm nữa tháng sau cháu mới đi mẫu giáo nên tôi đành làm phần giao diện friendly với người dùng hơn.
+
+💡 Và đây là diagram của hệ thống mới
+
+![Currency crawler diagram v2](/static/images/assets/currency-crawler.drawio.png)
+
+Google sheets là giải pháp rất tốt vì nó đáp ứng được 2 yêu cầu:
+
+- Thân thiện với người dùng (chị tôi)
+- Có thể làm database 🤥
+
+<div
+  class="bg-orange-100 border-t-4 border-orange-500 rounded-b text-orange-900 px-4 py-3 shadow-md"
+  role="alert"
+>
+  <div class="flex">
+    <div>
+      <ul>
+        <li class="text-sm">Google sheets không có tính mở rộng (scalability)</li>
+        <li class="text-sm">
+          Chỉ có thể lưu trữ 5 triệu ô tính, không có truy vấn hoặc truy vấn join và có giới hạn số
+          lần gọi API.
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+## Triển khai
+
+### Google sheets
+
+- Tạo google sheets mới. Lưu lại sheet id của bảng tính.
+
+![002-1](/static/images/assets/002-1.png)
+
+- Tạo một [project mới trên GCP](https://console.cloud.google.com/projectcreate?)
+
+![002-2](/static/images/assets/002-2.png)
+
+- Enable [google sheet api](https://console.cloud.google.com/apis/library/sheets.googleapis.com) cho project
+
+![002-3](/static/images/assets/002-3.png)
+
+- Crawler cần sử dụng api spreadsheet append nên không thể sử dụng kiểu xác thực với API key, lựa chọn đơn giản nhất là sử
+  dụng service account.
+
+- Tạo service account và tạo key cho service
+
+![002-4](/static/images/assets/002-4.png)
+
+- Save key dưới tên file credentials.json ở trong thư mục lambda function
+
+![002-5-1](/static/images/assets/002-5-1.png)
+
+- Chia sẻ quyền sửa với email của service account
+
+![002-5](/static/images/assets/002-5.png)
+
+### Sam template & Lambda function
+
+- Sửa lại file template, xoá bỏ những resource không cần dùng tới như
+  - Get CSV function
+  - HTTP API
+  - DynamoDB
+  - Thêm các biến môi trường cho hàm Crawler
+
+```yaml:template.yaml
+AWSTemplateFormatVersion: "2010-09-09"
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  currency-crawler
+
+  Sample SAM Template for currency-crawler
+
+# More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
+Globals:
+  Function:
+    Timeout: 300
+    Environment:
+      Variables:
+        SPREADSHEET_ID: '1nzKN3NSTh_AVQlSOm5Zv4CQZlejkPpHw3FkOm6T1zio'
+        RANGE_NAME: 'A1:H1'
+        VALUE_INPUT_OPTION: 'USER_ENTERED'
+
+
+Resources:
+  CurrencyCrawlFunction:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      CodeUri: currency/
+      Handler: app.crawl
+      Runtime: python3.9
+      Architectures:
+        - x86_64
+      Events:
+        InvocationLevel:
+          Type: Schedule
+          Properties:
+            Schedule: cron(0 11 ? * MON-FRI *) # All scheduled events use UTC+0 time zone
+
+Outputs:
+  CurrencyCrawlFunction:
+    Description: "Currency Crawler Lambda Function ARN"
+    Value: !GetAtt CurrencyCrawlFunction.Arn
+  CurrencyCrawlFunctionIamRole:
+    Description: "Implicit IAM Role created for Currency Crawler function"
+    Value: !GetAtt CurrencyCrawlFunctionRole.Arn
+```
+
+- Sửa lại hàm crawler của các banks, chuyển từ kiểu decimal -> float cho các tỷ giá (DynamoDB chỉ nhận kiểu Decimal còn google sheet thì không)
+
+```python:app.py
+from datetime import date
+from mbb import get_record as get_mbb_record
+from scb import get_record as get_scb_record
+from bidv import get_record as get_bidv_record
+import json
+from config import logger
+from utils import append_to_db, format_record
+
+def crawl(event, context):
+    try:
+        requested_date_str = date.today().strftime("%d/%m/%Y")
+        mbb_record = get_mbb_record(requested_date_str)
+        append_to_db(format_record(mbb_record))
+
+        bidv_record = get_bidv_record(requested_date_str)
+        append_to_db(format_record(bidv_record))
+
+        scb_record = get_scb_record(requested_date_str)
+        append_to_db(format_record(scb_record))
+
+        logger.info("Inserted to Google sheet")
+    except Exception as e:
+        logger.error(e)
+        raise e
+
+    return {
+        "statusCode": 200,
+        "body": json.dumps({
+            "message": "Done! Currencies data imported",
+        }),
+    }
+```
+
+```python:banks.py
+record[currency] = Decimal(ck) -> record[currency] = float(ck)
+```
+
+- Xoá các hàm tương tác với DynamoDB, thay vào đó là các hàm append dữ liệu vào google sheet
+
+```txt:requirements.txt
+requests
+bs4
+google-api-python-client
+google-auth-httplib2
+google-auth-oauthlib
+```
+
+```python:utils.py
+import os
+import google.auth
+from googleapiclient.discovery import build
+from googleapiclient.errors import HttpError
+
+os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = './credentials.json'
+SPREADSHEET_ID = os.environ.get('SPREADSHEET_ID')
+RANGE_NAME = os.environ.get('RANGE_NAME')
+VALUE_INPUT_OPTION = os.environ.get('VALUE_INPUT_OPTION')
+
+def append_to_db(values):
+    creds, _ = google.auth.default()
+    try:
+        service = build('sheets', 'v4', credentials=creds)
+        # ["2022/03/17", "MBB", "23020", "25876", "198.31", "16962", "2996", "17169"]
+        body = {
+            'values': [values]
+        }
+        result = service.spreadsheets().values().append(
+            spreadsheetId=SPREADSHEET_ID, range=RANGE_NAME,
+            valueInputOption=VALUE_INPUT_OPTION, body=body).execute()
+        print(f"{(result.get('updates').get('updatedCells'))} cells appended.")
+        return result
+
+    except HttpError as error:
+        print(f"An error occurred: {error}")
+        return error
+
+# date bank USD	EUR	JPY	AUD	HKD	SGD
+def format_record(record):
+    print(record)
+    arr = []
+    arr.append(record['date'])
+    arr.append(record['bank'])
+    arr.append(record['USD'])
+    arr.append(record['EUR'])
+    arr.append(record['JPY'])
+    arr.append(record['AUD'])
+    arr.append(record['HKD'])
+    arr.append(record['SGD'])
+    return arr
+```
+
+### Test & Validate & Build & Deploy
+
+```shell:shell
+# test function
+sam local invoke "CurrencyCrawlFunction" -e events/event.json
+
+# validate SAM template
+sam validate --profile vntechies --region ap-southeast-1
+
+# build package
+sam build
+
+# deploy
+sam deploy --guided --profile vntechies
+```
+
+Demo ở local bằng sam local invoke
+
+![Demo](/static/images/assets/ezgif-3-b7dc4061a9.webp)
+
+Vậy là cháu tôi có thêm thời gian chơi với mẹ, giải pháp cồng kềnh đã được thu gọn bớt, thân thiện hơn với người dùng cuối 🤟
+
+Hãy để lại đánh giá, comment nếu bạn cảm thấy tutorial này hữu ích (hoặc vui) nhé 😬
+
+## Reference
+
+- [Python Quickstart](https://developers.google.com/sheets/api/quickstart/python)
+- [Service account credentials](https://developers.google.com/workspace/guides/create-credentials#service-account)
+- [Method: spreadsheets.values.append](https://developers.google.com/sheets/api/reference/rest/v4/spreadsheets.values/append)
