@@ -55,30 +55,30 @@ Google sheets là giải pháp rất tốt vì nó đáp ứng được 2 yêu c
 
 - Tạo google sheets mới. Lưu lại sheet id của bảng tính.
 
-![002-1](/static/images/assets/002-1.png)
+![tạo google sheet](/static/images/assets/002-1.png)
 
 - Tạo một [project mới trên GCP](https://console.cloud.google.com/projectcreate?)
 
-![002-2](/static/images/assets/002-2.png)
+![tạo project mới trên gcp](/static/images/assets/002-2.png)
 
 - Enable [google sheet api](https://console.cloud.google.com/apis/library/sheets.googleapis.com) cho project
 
-![002-3](/static/images/assets/002-3.png)
+![Kích hoạt Google sheet API](/static/images/assets/002-3.png)
 
 - Crawler cần sử dụng api spreadsheet append nên không thể sử dụng kiểu xác thực với API key, lựa chọn đơn giản nhất là sử
   dụng service account.
 
-- Tạo service account và tạo key cho service
+- Tạo service account và tạo key cho service account
 
-![002-4](/static/images/assets/002-4.png)
+![tạo service account và key cho service account](/static/images/assets/002-4.png)
 
 - Save key dưới tên file credentials.json ở trong thư mục lambda function
 
-![002-5-1](/static/images/assets/002-5-1.png)
+![lưu lại dưới tên credential.json](/static/images/assets/002-5-1.png)
 
-- Chia sẻ quyền sửa với email của service account
+- Chia sẻ quyền sửa trang tính với email của service account
 
-![002-5](/static/images/assets/002-5.png)
+![chia sẻ quyền sửa trang tính với email của service account](/static/images/assets/002-5.png)
 
 ### Sam template & Lambda function
 
