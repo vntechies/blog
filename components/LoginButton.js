@@ -28,7 +28,12 @@ export default function LoginButton() {
   }
   return (
     <>
-      <button onClick={() => signIn()}>Log in</button>
+      <button
+        onClick={() => signIn()}
+        className="rounded py-1 px-2 font-medium text-gray-900 hover:bg-gray-200 dark:text-gray-100 dark:hover:bg-gray-700 sm:py-2 sm:px-3"
+      >
+        Log in
+      </button>
     </>
   )
 }
