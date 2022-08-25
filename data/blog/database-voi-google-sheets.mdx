@@ -244,6 +244,17 @@ Demo ở local bằng sam local invoke
 
 ![Demo](/static/images/assets/ezgif-3-b7dc4061a9.webp)
 
+Bằng việc loại bỏ DynamoDB, API gateway khỏi hệ thống, những việc cần hoàn thiện cũng được lược bỏ
+
+<small>Thứ mà tôi vẫn sẽ không làm vì tôi không được trả tiền cho việc này 😂</small>
+
+1. Xử lý lỗi cho các HTTP requests tới các site của banks đề phòng trường hợp bank nào đó bật maintainance mode, thay đổi giao diện, handle dead letter queue
+2. ~~Đánh index cho bảng Currency, sử dụng query thay vì scan để giảm chi phí (nếu phát sinh), sử dụng DynamoDB update expressions xử lý việc ghi đè dữ liệu nếu có~~
+3. ~~Sử dụng Authentication cho các APIs~~
+4. Headless browser trên Lambda
+5. Unit tests và integration tests, tạo các môi trường phát triển khác (dev, staging,...)
+6. ~~Handle file size limit từ Lambda (6MB). Cũng là lời nhắn nhủ với chị gái, **đừng download dữ liệu > 12 tháng.** 🙄~~
+
 Vậy là cháu tôi có thêm thời gian chơi với mẹ, giải pháp cồng kềnh đã được thu gọn bớt, thân thiện hơn với người dùng cuối 🤟
 
 Hãy để lại đánh giá, comment nếu bạn cảm thấy tutorial này hữu ích (hoặc vui) nhé! 😬
