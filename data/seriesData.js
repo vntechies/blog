@@ -6,6 +6,12 @@ const seriesData = [
     href: '/tags/aws-certs-series',
   },
   {
+    title: 'AWS CDK',
+    description: `Các hướng dẫn khi bắt đầu sử dụng AWS CDK`,
+    imgSrc: '/static/images/awscdk.png',
+    href: '/tags/aws-cdk-series',
+  },
+  {
     title: 'APIs',
     description: `Tổng hợp về giao diện lập trình ứng dụng (API)`,
     imgSrc: '/static/images/api.png',
