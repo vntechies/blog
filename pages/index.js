@@ -25,7 +25,7 @@ export default function Home({ posts }) {
           </h1>
         </div>
         <ul className="divide-y divide-gray-200 dark:divide-gray-700">
-          {!posts.length && 'No posts found.'}
+          {!posts.length && 'Không có bài viết nào.'}
           {posts.slice(0, MAX_DISPLAY).map((frontMatter) => {
             return (
               <li key={frontMatter.slug} className="py-12">

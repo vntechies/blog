@@ -47,9 +47,9 @@ Ngoài ra có thêm 1 yêu cầu nho nhỏ tôi tự thêm vào
 
 Sau một hồi bối rối trước cấu trúc HTML và cách truyền params của ngân hàng S, tôi quyết định chọn cách làm đơn giản:
 
--> Dữ liệu 5 tháng đầu sẽ được crawl trên máy cá nhân sử dụng selenium, dữ liệu các ngày tiếp theo sẽ được crawl bằng lambda function vì không yêu cầu tương tác trên trang web để lấy tỷ giá ngày hiện tại.
+-> Dữ liệu 5 tháng đầu sẽ được crawl trên máy cá nhân sử dụng selenium để thao tác với forms, dữ liệu các ngày tiếp theo sẽ được crawl bằng lambda function vì không yêu cầu tương tác trên trang web.
 
-Việc phát triển 1 crawler sử dụng headless browser trên lambda sẽ tốn thời gian <small>~~mà tôi thì không được trả tiền =))~~</small>
+Việc phát triển 1 crawler sử dụng headless browser trên lambda sẽ tốn thời gian <small>~~mà tôi thì không được trả tiền 🤡~~</small>
 
 Đây sẽ là giải pháp cho yêu cầu phía trên:
 
@@ -62,7 +62,7 @@ Việc phát triển 1 crawler sử dụng headless browser trên lambda sẽ t�
 
 Lý do sử dụng DynamoDB lưu dữ liệu chứ không phải S3 để lưu CSV file:
 
-- S3 không hỗ trợ việc append vào file. Nếu sử dụng muốn append s3 với Lambda function, ta phải download file -> append vào file -> xoá file và reupload. Giải pháp đơn giản nhưng tốn tiền là dùng Kinesis Firehose.
+- S3 không hỗ trợ việc append vào file. Nếu sử dụng muốn append s3 với Lambda function = phải download file -> append vào file -> xoá file và reupload. Giải pháp đơn giản nhưng tốn tiền là dùng Kinesis Firehose.
 - Nếu sử dụng s3, việc filter dữ liệu theo ngày sẽ không đơn giản bằng dùng DynamoDB
 - Vì nó miễn phí (< 25GB storage)
 
