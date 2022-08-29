@@ -4,13 +4,13 @@ date: '2022-08-27'
 tags: ['aws', 'aws cdk', 's3', 'tutorial', 'aws-cdk-series']
 draft: false
 images: ['/static/images/ogps/s3-cdk.png']
-summary: 'Crawler đơn giản phục vụ cho việc lấy dữ liệu tỷ giá hối đoái của các ngân hàng Việt Nam'
+summary: 'Hướng dẫn này sẽ giải thích những gì cần thiết để tạo một Amazon S3 bucket sử dụng AWS CDK Python'
 ---
 
 ![s3-cdk](/static/images/ogps/s3-cdk.png)
 
 Hướng dẫn này sẽ giải thích những gì cần thiết để tạo một Amazon S3 bucket sử dụng AWS CDK Python.
-[Mã nguồn được cung cấp tại đây]() đi kèm với tất cả các bước cần thiết để chạy và triển khai mã AWS CDK trên AWS Cloud.
+[Mã nguồn được cung cấp tại đây](https://github.com/vntechies/008-aws-cdk-python-s3) đi kèm với tất cả các bước cần thiết để chạy và triển khai mã AWS CDK trên AWS Cloud.
 
 Đầu tiên, bạn cần [cài đặt AWS CDK] và IAM profile cho để có thể triển khai hệ thống bằng AWS CLI.
 Sau khi học cách tổng hợp code từ AWS CDK để tạo ra Amazon S3 bucket construct, bạn có thể triển khai trên AWS Cloud và dọn dẹp tài nguyên sử dụng câu lệnh AWS CDK destroy.
@@ -132,7 +132,7 @@ Sau khi init project, các các file sẽ được tạo ra dưới dạng sau
         └── test_aws_cdk_python_s3_stack.py
 ```
 
-```python:aws_cdk_python_s3/aws_cdk_python_s3_stack.py {16,17,18,20} showLineNumbers
+```python:aws_cdk_python_s3_stack.py {16,17,18,20} showLineNumbers
 from constructs import Construct
 from aws_cdk import (
     Stack,
@@ -161,7 +161,7 @@ class AwsCdkPythonS3Stack(Stack):
   Điều này giúp đơn giản hoá cách bản quản lý và truy cập vào các objects được lưu trữ trong bucket của bạn.
 - `block_public_access` các object mới sẽ mặc định ở chế độ private và sẽ không cho phép truy cập công khai (public access)
 - `encryption_key` cho phép sử dụng một [Customer managed keys](https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#customer-cmk) để mã hoá các objects được lưu trên s3 bucket.
-- `bucket.grant_read(iam.AccountRootPrincipal())` cho phép người dùng có quền root của AWS account truy cập vào bucket được tạo
+- `bucket.grant_read()` cho phép người dùng có quền root của AWS account truy cập vào bucket được tạo
 
 ## 5. Tổng hợp lại Amazon S3 Bucket với AWS CDK
 
@@ -400,7 +400,6 @@ việc này giúp tạo các tài nguyên cần thiết để CDK toolkit có th
 
 ```shell:shell
 cdk bootstrap
-cdk deploy
 ```
 
 Để triển khai S3 bucket trên AWS, chúng ta chạy câu lệnh sau
