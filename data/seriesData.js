@@ -7,7 +7,7 @@ const seriesData = [
   },
   {
     title: 'AWS CDK',
-    description: `Các hướng dẫn khi bắt đầu sử dụng AWS CDK`,
+    description: `Hướng dẫn sử dụng AWS CDK 💪`,
     imgSrc: '/static/images/awscdk.png',
     href: '/tags/aws-cdk-series',
   },

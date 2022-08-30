@@ -14,9 +14,11 @@ const siteMetadata = {
   email: 'info@vntechies.com',
   github: 'https://github.com/vntechies',
   twitter: 'https://twitter.com/vn_techies',
+  instagram: 'https://www.instagram.com/vn_techies/',
   facebook: 'https://facebook.com/vntechies',
   youtube: 'https://youtube.com/vntechies',
-  linkedin: 'https://www.linkedin.com/vntechies',
+  linkedin: 'https://linkedin.com/company/vntechies',
+  messenger: 'https://m.me/vntechies',
   locale: 'vi-VN',
   analytics: {
     // If you want to use an analytics provider you have to add it to the

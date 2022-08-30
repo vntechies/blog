@@ -6,7 +6,7 @@ import formatDate from '@/lib/utils/formatDate'
 
 const ArticleList = ({ slug, date, title, summary, tags, image }) => {
   return (
-    <article className="space-x-8 space-y-2 xl:grid xl:grid-cols-4 xl:items-baseline xl:space-y-0">
+    <article className="space-y-5 sm:space-x-0 sm:space-y-5 xl:grid xl:grid-cols-4 xl:items-baseline xl:space-x-8 xl:space-y-2">
       <div className="xl:row-span-2">
         <ArticleThumbnail slug={slug} title={title} image={image} />
       </div>
