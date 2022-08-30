@@ -80,6 +80,7 @@ module.exports = withBundleAnalyzer({
     domains: ['platform-lookaside.fbsbx.com', 'avatars.githubusercontent.com'],
   },
   reactStrictMode: true,
+  swcMinify: true,
   pageExtensions: ['js', 'jsx', 'md', 'mdx'],
   eslint: {
     dirs: ['pages', 'components', 'lib', 'layouts', 'scripts'],
