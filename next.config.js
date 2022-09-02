@@ -77,7 +77,11 @@ module.exports = withBundleAnalyzer({
     ],
   ],
   images: {
-    domains: ['platform-lookaside.fbsbx.com', 'avatars.githubusercontent.com'],
+    domains: [
+      'platform-lookaside.fbsbx.com',
+      'avatars.githubusercontent.com',
+      'raw.githubusercontent.com',
+    ],
   },
   reactStrictMode: true,
   swcMinify: true,

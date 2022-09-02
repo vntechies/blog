@@ -9,7 +9,7 @@ const footerNavLinks = [
 ]
 export default function Footer() {
   return (
-    <footer className="bg-white dark:bg-gray-900 md:px-6 md:py-8">
+    <footer className="bg-white pb-20 dark:bg-gray-900 md:px-6 md:py-8">
       <div className="sm:flex sm:items-center sm:justify-between">
         <Link href="/" className="mb-4 flex items-center sm:mb-0">
           <Image
@@ -33,11 +33,14 @@ export default function Footer() {
       <hr className="my-6 border-gray-200 dark:border-gray-700 sm:mx-auto lg:my-8" />
       <div className="sm:flex sm:items-center sm:justify-between">
         <span className="text-sm text-gray-500 dark:text-gray-400 sm:text-center">
-          © 2022{' '}
-          <Link href="/" className="hover:underline">
-            VNTechies
+          <Link href="/" className="">
+            <Image
+              alt="made in Vietnam"
+              width="129px"
+              height="20px"
+              src="https://raw.githubusercontent.com/webuild-community/badge/master/svg/made.svg"
+            />
           </Link>{' '}
-          | made in 🇻🇳
         </span>
         <div className="mt-4 flex space-x-6 sm:mt-0 sm:justify-center">
           <a
