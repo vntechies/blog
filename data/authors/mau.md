@@ -1,6 +1,6 @@
 ---
 name: Mầu
-avatar: /static/images/mau.jpeg
+avatar: /static/images/authors/mau.jpeg
 occupation: Senior Application Engineer
 company: Dominos Japan
 email: mau@qmau.me

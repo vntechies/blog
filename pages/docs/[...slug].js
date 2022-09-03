@@ -4,7 +4,6 @@ import { formatSlug, getFileBySlug, getFiles } from '@/lib/mdx'
 const DEFAULT_LAYOUT = 'DocumentLayout'
 
 export async function getStaticProps({ params }) {
-  console.log(params)
   const documentDetails = await getFileBySlug('docs', params.slug.join('/'))
   return { props: { documentDetails } }
 }

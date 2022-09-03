@@ -1,13 +1,11 @@
 import Link from './Link'
-import siteMetadata, { title } from '@/data/siteMetadata'
+import siteMetadata from '@/data/siteMetadata'
 import Image from 'next/image'
+import { footerNavLinks } from '@/data/Links'
 
-const footerNavLinks = [
-  { href: '/docs/privacy', title: 'Chính sách bảo mật' },
-  { href: '/docs/tos', title: 'Điều khoản sử dụng' },
-  { href: siteMetadata.messenger, title: 'Liên hệ' },
-]
 export default function Footer() {
+  const made_in_vn_svg = '/static/images/madeinvn.svg'
+
   return (
     <footer className="bg-white pb-20 dark:bg-gray-900 md:px-6 md:py-8">
       <div className="sm:flex sm:items-center sm:justify-between">
@@ -34,12 +32,7 @@ export default function Footer() {
       <div className="sm:flex sm:items-center sm:justify-between">
         <span className="text-sm text-gray-500 dark:text-gray-400 sm:text-center">
           <Link href="/" className="">
-            <Image
-              alt="made in Vietnam"
-              width="129px"
-              height="20px"
-              src="https://raw.githubusercontent.com/webuild-community/badge/master/svg/made.svg"
-            />
+            <Image alt="made in Vietnam" width="129px" height="20px" src={made_in_vn_svg} />
           </Link>{' '}
         </span>
         <div className="mt-4 flex space-x-6 sm:mt-0 sm:justify-center">
