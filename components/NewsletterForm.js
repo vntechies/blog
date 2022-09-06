@@ -59,7 +59,7 @@ const NewsletterForm = ({ title = 'Nhận tin từ VNTechies 📮' }) => {
         </div>
         <div className="mt-2 rounded-md shadow-sm">
           <button
-            className={`w-72 rounded-md bg-primary-500 py-2 px-4 font-medium text-white ${
+            className={`w-72 rounded-md bg-primary-700 py-2 px-4 font-medium text-white ${
               subscribed ? 'cursor-default' : 'hover:bg-primary-700 dark:hover:bg-primary-400'
             } focus:outline-none focus:ring-2 focus:ring-primary-600 focus:ring-offset-2 dark:ring-offset-black`}
             type="submit"

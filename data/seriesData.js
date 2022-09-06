@@ -6,6 +6,12 @@ const seriesData = [
     href: '/tags/aws-certs-series',
   },
   {
+    title: '90 Ngày DevOps',
+    description: `Hành trình học tập các kiến thức nền tảng về "DevOps"`,
+    imgSrc: '/static/images/90daysdevop.png',
+    href: '/tags/90daysofdevops',
+  },
+  {
     title: 'AWS CDK',
     description: `Hướng dẫn sử dụng AWS CDK 💪`,
     imgSrc: '/static/images/awscdk.png',
