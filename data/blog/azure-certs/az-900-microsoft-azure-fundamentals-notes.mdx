@@ -1,0 +1,456 @@
+---
+title: 'AZ-900 Microsoft Azure Fundamentals notes'
+date: '2022-09-18'
+tags: ['cloud computing', 'azure', 'azure certs series']
+draft: false
+layout: PostSimple
+images: ['/static/images/ogps/az900notes.png']
+summary: 'Notes for AZ-900 Azure Fundamentals exam based on AcloudGuru course - English version'
+---
+
+<TOCInline toc={props.toc} asDisclosure />
+
+## AZURE ARCHITECT
+
+### Region & Availibility Zones
+
+**Region**
+
+- A set of data centers deployed within a latency-defined perimeter and connected through a dedicated regional low-latency network
+
+**How to choose**
+
+- Location -> closest to the users to minimize latency
+- Features -> some features are not available in all regions
+- Price -> vary from region to region
+
+**Paired regions**
+
+1. Each region is paired
+2. Outage failover
+3. Planned updates
+4. Replication
+
+**Availability Zones (AZ)**
+
+- Physical location within a region
+- Independent
+- 3 zones minimum
+
+### Resource Groups & Azure Resource Manager
+
+**Resource Group**
+
+- Everything is inside a resource group
+- Facts:
+  - One resource -> 1 RG
+  - Add / remove at anytime
+  - Move resources from one to another
+  - Multiple region resources can be in 1 RG
+  - Access control can be on RG level
+  - Interacts with other resources from other RG
+  - RG has a location or region to store metadata in it
+
+**Azure Resource Manager (ARM)**
+
+- Manage all resources and all interactions through the ARM
+- Benefits
+  - Group Resource Handling -> Can deploy, manage, and monitor resources as a group
+  - Consistency -> Deploying resources from various tools will always result in the same consistent state
+  - Dependencies -> Define dependencies between resources to make sure they do not conflict with each other over resources
+  - Access Control -> Built-in features in the ARM make it easy to assign access rights to users
+  - Tagging -> Tag resources to identify them for future scenarios quickly; tagging is a way to label individual resources
+  - Billing -> Leverage tags to stay on top of billing for groups of resources
+
+## COMPUTE
+
+### Virtual machine
+
+- A part of Infrastructure as a Service (IaaS)
+- Manage everything except the hardware, including the networking components
+- Tools -> Azure Portal to manage VMs (even hybrid clouds)
+- Compliance -> Azure blueprints to make your VMs comply with guidelines
+- Recommendations -> Azure will recommend improvements to ensure better security, higher availability, and greater performance
+- Choices:
+  - RAM
+  - CPUs
+  - OS
+- Pricing -> Calculated Hourly. More resources, higher cost per hour
+- Use Cases
+
+|                     Cons                      |                                                  Pros                                                  |
+| :-------------------------------------------: | :----------------------------------------------------------------------------------------------------: |
+|              Not for everything               |                                                Control                                                 |
+| It is often worth using another Azure service |                      Application -> install specific on Windows or Linux machines                      |
+|         Maintenance -> a lot with VM          | Existing infrastructure -> can move existing resources and VM to Azure from on-premise or other Clouds |
+| OS system updates, patches, security concerns |                                                                                                        |
+
+**-> Core of Azure compute & are widely used**
+
+### Scale sets
+
+- A group of identical, load-balanced VMs
+- Benefits
+  - Multiple VMs -> easy to manage VMs using an LB
+  - High Availability -> If one fails or stops, the others in the scale set will keep working
+  - Auto Scaling -> Automatically match demand by adding or removing VMs from the scale sets
+  - Large Scale -> Run up to 1000 VMs in 1 scale set
+  - No extra cost -> No added cost, just the cost of resources
+- Use cases: for better elasticity
+
+**EXAM TIPS**
+
+- Set of identical VMs. They can be activated & deactivated as needed
+- A baseline VM for scale set ensures application stability
+- No more cost, just cost for the resource you use
+
+### App Service
+
+| Azure fully managed |   Your focus   |
+| :-----------------: | :------------: |
+|       Servers       | Business value |
+|      Networks       |     Logic      |
+|       Storage       |                |
+|                     |                |
+
+**1. Web App**
+
+- Both windows & Linux
+- Support a lot of languages
+- Azure integrates for easier deployment
+- Auto Scaling
+
+**2. Web App for containers**
+
+- Deploy and run containerized applications in Azure
+- A container is entirely self-contained
+- All dependencies are shipped inside the container
+- Deploy anywhere with a consistent experience
+- Reliable between environments
+
+**3. API App**
+
+- Expose and connect your data backend
+- Application Programming Interface
+- No graphical component or user interface
+- Connect other applications programmatically
+- Use a range of programming languages
+
+**EXAM TIPS**
+
+- An easy way to host & manage your web application
+- Paas offering in Azure
+
+### Azure Container Instances
+
+- Primary Azure service for running container workloads
+- On-demand -> save money
+- Use containerized applications to process data on demand by only creating the container image when one needs it
+- Works with tools of choice
+- Use the Azure Portal, Azure CLI, or Powershell
+
+**Features**
+
+- Manage Application Dependencies
+  - All the dependencies for an application are included in the container image
+  - Can manage the application and its dependencies with confidence
+- Less overhead
+  - VM requires a lot more maintenance and updates
+  - Containers don't have any components relating to the operating system
+- Increase portability -> Applications running in containers can be deployed quickly to multiple different operating systems and hardware platforms
+- Efficiency
+  - Development, deployment, and maintenance are all more efficient when using containers
+  - Scaling and patching are much simpler
+- Consistency -> Operations team can rely on containers being the same every time, no matter which target they are being deployed to
+
+**Workflow**
+
+- Software Development Cycle → Application placed in a container → Azure Container Instances
+
+### Azure Kubernetes Service (AKS)
+
+**Kubernetes** is an open-source container orchestration system for automating application deployment, scaling, and management
+
+- Open Source -> public code base and community involvement in the product
+- Orchestration -> keeps track of lots of parts of a system and makes sure containers are configured correctly to work together
+- Automatic Application Deployment -> k8s will deploy more images of containers as needed
+- Automatic Scaling -> automatic monitoring of application load to determine when to scale the numbers of containers used
+
+**AKS**
+
+- Replicate Container Architectures:
+  - Reuse your container architecture by managing it in Kubernetes.
+  - This makes setup quicker and increases confidence in the stability of the system
+- Standard Azure Services Included
+  - User does not have to worry about infrastructure and hardware.
+  - IAM, elastic provisioning, and much more included
+
+**Azure Container Registry (ACR)**
+
+- file and artifacts for container images
+
+### Azure Virtual Desktop
+
+- Completely virtualized version of Windows -> 100% runs on cloud
+- Reuse windows 10 license
+- Concurrency -> Multiple users can use the same VM instance
+- Access from everywhere -> Use Windows 10 from anywhere on any device with an internet browser
+- Secured data -> Use Azure Storage to secure the data
+
+### Functions
+
+**IaaS/PaaS vs Function**
+
+|                             IaaS/PaaS                             |                       Function                       |
+| :---------------------------------------------------------------: | :--------------------------------------------------: |
+|                    Install user's applications                    |          Smallest compute service on Azure           |
+|                  Access to the operating system                   |              Single function of compute              |
+|                        Resource visibility                        | Called, or invoked, via a standard web address (URL) |
+| An app service has no OS access, but it does have resource access |                                                      |
+
+**Runs once and stops**
+
+**Architect**
+
+- No maintenance
+- No process
+- No VM related
+- A function = 1 job to do
+
+**Benefits**
+
+- Only run when needed
+- Save money
+- Resilience
+
+## NETWORKING
+
+### Virtual Network
+
+|        Term        | Definition                                                            |
+| :----------------: | --------------------------------------------------------------------- |
+|   Address Space    | Range of IP addresses available                                       |
+|      Subnets       | Subnet network into portions to manage                                |
+| Resource Grouping  | Group resources onto the same subnet to make it easier to monitor     |
+| Address Allocation | More efficient to allocate addresses to resources on a smaller subnet |
+|  Subnet Security   | Use network security groups to secure individual subnets              |
+
+**Subnet Regions and Subscriptions**
+
+|                                Regions                                |                   Subscriptions                    |
+| :-------------------------------------------------------------------: | :------------------------------------------------: |
+|             A virtual network belongs to a single region              | A virtual network belongs to just one subscription |
+| Every resource on the virtual network must be in the same region, too | A subscription can have multiple virtual networks  |
+
+- Cloud Advantages
+  - Scaling -> Adding virtual networks or more addresses to a network is simple
+  - High Availability -> Peering virtual networks, using a load balancer, or using a VPN gateway will all increase the availability
+  - Isolation -> Manage and organize resources with subnets and network security groups
+
+**VNet Peering**
+
+- Benefits
+  - Low latency with high bandwidth
+  - Link separated networks
+  - Data transfer easily within the network
+
+**EXAM TIPS**
+
+- VNet = fundamental part of your Azure infrastructure
+- An address space is a range of IP addresses you can use for your resources
+- A subnet is a smaller network, a part of your VNet
+- VNet = single region + single subscription
+- VNet can scale and have HA & isolation
+
+### Load balancer
+
+- Distributes new inbound flows that arrive on the Load Balancer's frontend to backend pool instances, according to rules and health probes
+
+- Scenarios:
+  1. Internet traffic
+  2. Internal networks
+  3. Port forwarding
+  4. Outbound traffic
+
+### VPN Gateway
+
+**Components**
+
+- Azure VNet & VPN Gateway
+- Tunnel with protocols
+- On-premises gateway
+
+-> site-to-site connections
+
+**EXAM TIPS**
+
+- VPN GWs are instrumental in a hybrid cloud architecture
+- A VPN GW is a specific VNet GW. It consists of 2 or more dedicated VNets
+- VNet GW + VPN = VPN Gateway
+- Send encrypted data between Azure and on-premise network
+- Azure GW subnet, secured tunnel & on-premise GW make up VPN GW scenarios
+
+### Application Gateway
+
+**Benefits**
+
+- Scale up/down -> Scale the application gateway up or down based on the amount of traffic received
+- Encryption -> Comply with any security policies, disable or enable traffic encryption to the backend
+- Zone redundancy -> Span multiple availability zones and improve fault resiliency
+- Multi-site hosting -> Use the same application gateway for up to 100 websites
+
+**EXAM TIPS**
+
+- Application GW is a high level of load balancer
+- Works on HTTP request of the traffic instead of the IP address and port
+- Traffic on specific web address go to a specific machine
+- Fit for most Azure services
+
+### Content delivery network (CDK)
+
+- Distributed network of servers that can deliver web content via the edge node which is closest to the user.
+
+**Benefits**
+
+1. Better performance
+2. Scaling
+3. Distribution -> Edge servers will serve requests closest to the user, less traffic is then sent to the server hosting the application
+
+**Terms**
+
+- Cache on edge -> Collection of temporary copies of original files
+- Origin server -> Original location of the files, such as a web application
+
+### Express Route
+
+<small>Equivelant AWS Direct Connect</small>- Super fast connection which don't go over the Internet
+- if you need a private, secure, high-bandwidth, low-latency connection, directly from your data
+center or infrastructure to Azure -> ExpessRoute
+
+## STORAGE
+
+- Storage account must be unique accross global (same to AWS S3) as every object has its own web address
+
+### Blob
+
+- Binary Large Object -> pretty much anything
+- Storage Levels: Storage Account → Container → Blob
+
+**Scenarios**
+
+- Images
+- All types
+- Streaming audio/video
+- Log files
+- Data store (archiving, backup, restore, DR)
+
+**Types**
+
+1. Block:
+   - up to 4.7TB
+   - Made up of individual managed blocks of data
+2. Append:
+   - Block blobs optimized for append operations
+   - Works well for logging
+3. Page:
+   - Store files up to 8TB
+   - Any part of the file could be accessed at any time (ex: virtual hard drive)
+
+**Pricing tiers**
+
+- Hot
+  - Frequently accessed files
+  - Lower access times and higher access costs
+- Cold
+  - Lower storage costs and higher access times
+  - Data remains here for at least 30 days
+- Archive
+  - Lowest cost and highest access times
+
+### Disk
+
+- Managed Disk
+  - Attach to VMs
+  - Azure Manages
+  - User does not have to owrry about backup and uptime
+- Size and Performance
+  - Microsoft and Azure guarantees size and performance as per the agreement of use
+- Upgrade
+  - Easy to upgrade disk size and type
+
+**Disk Types**
+
+- HDD
+  - Spinning hard drive
+  - Low cost and suitable for dev env, backups
+- Standard SSD
+  - Standard for production
+  - Higher reliability, scalability, and lower latency than the HDD
+- Premium SSD
+  - Super fast and high performance
+  - very low latency
+  - used for critical workloads
+- Ultra Disk
+  - For the most demanding, data-intensive workloads
+  - Disk size up to 64TB
+
+### File
+
+**Issues**
+
+- Constraints -> Contains limited amount of storage
+- Backups -> time and resources spent on maintaining backups
+- Security -> difficult to keep all data secure at all times, Specialist assistance is often needed
+- File Sharing -> can be difficult to share files across teams and orgs
+
+**Benefits**
+
+- Sharing -> Share access to the Azure file storage across machines and provide access to the on-prem infrastructure as well
+- Managed -> user does not have to worry about hardware or operating system
+- Resilient -> Network and power outages will not affect the user's storage
+
+**Scenarios**
+
+- Hybrid -> Supplement or replace your existing on-premises file storage solution
+- Lift and Shift -> Move your existing file storages and related services to Azure
+
+### Archive
+
+**Requirement**
+
+- Policies, legislation, and recovery can be requirements for archiving data
+- These can be very large amounts of data
+
+**Lowest Price**
+
+- Archive tier is the lowest price for storage on Azure
+- Few dollars a month can get TBs of space
+
+**Features**
+
+- Durable, encrypted, and stable -> Perfectly suited for data that is accessed infrequently
+- Free up Premium Storage -> Cheap archive storage allows for freeing up more premium storage on-prem
+- Secure -> Fully secure to allow for any personal data such as financial records, medical data, and more
+- Archive storage is blob storage, so the same tools will work for both
+
+## DATABASES
+
+### CosmosDB
+
+**Features**
+
+- Global from the start
+- Easy synchronization -> Traditional databases that aren't cloud enabled could be very difficult to set up across multiple regions
+- One Click to Add Regions
+- Continued Synchronization -> stays on top of all reads and writes to the data and makes sure the data is moved between regions to stay in Sync
+- Latency: 0-9ms
+- Scalability:
+  1. Automated -> Automatically scales to meet resource demand
+  2. Infinity resource -> Any number of users of your application can be supported
+  3. Lowest price -> Even through the scaling is automatic, only pay for the resources that are used
+- Deverloper: various SDKs, APIs and supported languages: C#, Java, Python, Nodejs,...
+- Paltforms: Choose from numerous data platforms such as SQL, MongoDB, and Cassandra
+
+\*_HOWEVER, COST CAN RUN UP FAST_
+
+TOBE UPDATED
