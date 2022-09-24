@@ -301,20 +301,20 @@ summary: 'Notes for AZ-900 Azure Fundamentals exam based on AcloudGuru course - 
 
 **EXAM TIPS**
 
-- Application GW is a high level of load balancer
+- Application GW is a high-level load balancer
 - Works on HTTP request of the traffic instead of the IP address and port
-- Traffic on specific web address go to a specific machine
+- Traffic on a specific web address goes to a specific machine
 - Fit for most Azure services
 
 ### Content delivery network (CDK)
 
-- Distributed network of servers that can deliver web content via the edge node which is closest to the user.
+- A distributed network of servers that can deliver web content via the edge node closest to the user.
 
 **Benefits**
 
 1. Better performance
 2. Scaling
-3. Distribution -> Edge servers will serve requests closest to the user, less traffic is then sent to the server hosting the application
+3. Distribution -> Edge servers will serve requests closest to the user. Less traffic is then sent to the server hosting the application
 
 **Terms**
 
@@ -324,12 +324,12 @@ summary: 'Notes for AZ-900 Azure Fundamentals exam based on AcloudGuru course - 
 ### Express Route
 
 <small>Equivelant AWS Direct Connect</small>- Super fast connection which don't go over the Internet
-- if you need a private, secure, high-bandwidth, low-latency connection, directly from your data
+- if you need a private, secure, high-bandwidth, low-latency connection directly from your data
 center or infrastructure to Azure -> ExpessRoute
 
 ## STORAGE
 
-- Storage account must be unique accross global (same to AWS S3) as every object has its own web address
+- Storage account must be unique across global (identical to AWS S3) as every object has its web address
 
 ### Blob
 
@@ -354,7 +354,7 @@ center or infrastructure to Azure -> ExpessRoute
    - Works well for logging
 3. Page:
    - Store files up to 8TB
-   - Any part of the file could be accessed at any time (ex: virtual hard drive)
+   - We could access any part of the file at any time (ex: virtual hard drive)
 
 **Pricing tiers**
 
@@ -372,9 +372,9 @@ center or infrastructure to Azure -> ExpessRoute
 - Managed Disk
   - Attach to VMs
   - Azure Manages
-  - User does not have to owrry about backup and uptime
+  - User does not have to worry about backup and uptime
 - Size and Performance
-  - Microsoft and Azure guarantees size and performance as per the agreement of use
+  - Microsoft and Azure guarantee size and performance as per the agreement of use
 - Upgrade
   - Easy to upgrade disk size and type
 
@@ -398,9 +398,9 @@ center or infrastructure to Azure -> ExpessRoute
 
 **Issues**
 
-- Constraints -> Contains limited amount of storage
+- Constraints -> Contains a limited amount of storage
 - Backups -> time and resources spent on maintaining backups
-- Security -> difficult to keep all data secure at all times, Specialist assistance is often needed
+- Security -> challenging to keep all data secure at all times. Specialist assistance is often needed
 - File Sharing -> can be difficult to share files across teams and orgs
 
 **Benefits**
@@ -412,18 +412,18 @@ center or infrastructure to Azure -> ExpessRoute
 **Scenarios**
 
 - Hybrid -> Supplement or replace your existing on-premises file storage solution
-- Lift and Shift -> Move your existing file storages and related services to Azure
+- Lift and Shift -> Move your existing file storage and related services to Azure
 
 ### Archive
 
 **Requirement**
 
 - Policies, legislation, and recovery can be requirements for archiving data
-- These can be very large amounts of data
+- These can be vast amounts of data
 
 **Lowest Price**
 
-- Archive tier is the lowest price for storage on Azure
+- The archive tier is the lowest price for storage on Azure
 - Few dollars a month can get TBs of space
 
 **Features**
@@ -431,7 +431,7 @@ center or infrastructure to Azure -> ExpessRoute
 - Durable, encrypted, and stable -> Perfectly suited for data that is accessed infrequently
 - Free up Premium Storage -> Cheap archive storage allows for freeing up more premium storage on-prem
 - Secure -> Fully secure to allow for any personal data such as financial records, medical data, and more
-- Archive storage is blob storage, so the same tools will work for both
+- Archive storage is blob storage so that the same tools will work for both
 
 ## DATABASES
 
@@ -440,17 +440,31 @@ center or infrastructure to Azure -> ExpessRoute
 **Features**
 
 - Global from the start
-- Easy synchronization -> Traditional databases that aren't cloud enabled could be very difficult to set up across multiple regions
+- Easy synchronization -> Traditional databases that aren't cloud-enabled could be complicated to set up across multiple regions
 - One Click to Add Regions
 - Continued Synchronization -> stays on top of all reads and writes to the data and makes sure the data is moved between regions to stay in Sync
 - Latency: 0-9ms
 - Scalability:
   1. Automated -> Automatically scales to meet resource demand
-  2. Infinity resource -> Any number of users of your application can be supported
-  3. Lowest price -> Even through the scaling is automatic, only pay for the resources that are used
-- Deverloper: various SDKs, APIs and supported languages: C#, Java, Python, Nodejs,...
-- Paltforms: Choose from numerous data platforms such as SQL, MongoDB, and Cassandra
+  2. It can support Infinity resource -> Any number of users of your application
+  3. Lowest price -> Even though the scaling is automatic, only pay for the resources that are used
+- Developer: various SDKs, APIs, and supported languages: C#, Java, Python, Nodejs,...
+- Platforms: Choose from numerous data platforms such as SQL, MongoDB, and Cassandra
 
-\*_HOWEVER, COST CAN RUN UP FAST_
+**HOWEVER, COSTS CAN RUN UP FAST**
 
-TOBE UPDATED
+### Azure SQL
+
+- Managed Service - Database as a service
+- Can migrate to Azure SQL to save the cost and lower the Total Cost of Ownership (TCO)
+- Built-in ML for:
+  1. Optimization
+  2. Warning of performance
+
+**Benefits**
+
+- Scalability -> Scale the Azure SQL instances and get HA as well
+- Space -> up to 100TB
+- Security -> built-in security features of the Azure cloud platform
+
+**TO BE UPDATED**

@@ -1,0 +1,117 @@
+---
+title: 'AWS Certified SysOps – Associate Notes'
+date: '2022-09-25'
+tags: ['cloud computing', 'aws', 'aws certs series', 'certificate', 'devops']
+draft: false
+layout: PostSimple
+images: ['/static/images/ogps/awssysopsnotes.png']
+summary: 'Notes for AWS Certified SysOps – Associate exam based on AcloudGuru course - English version'
+---
+
+![AWS Certified SysOps – Associate Notes](/static/images/ogps/awssysopsnotes.png)
+
+<TOCInline toc={props.toc} asDisclosure />
+
+# 1. Security on AWS
+
+## Shared Responsibility Model
+
+| Customer<br/>Responsible for security **IN** the cloud | AWS<br/>Responsible for security **OF** the cloud                                                                    |
+| ------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------- |
+| Customer data                                          | Regions, availability zones & edge locations                                                                         |
+| Platform, application & IAM                            | Physical level and below                                                                                             |
+| OS patching on EC2                                     | Fire, power, climate management                                                                                      |
+| Antivirus                                              | Storage device decommissioning according to industry standards                                                       |
+| Network and firewall configuration                     | Personnel security                                                                                                   |
+| Multi-factor authentication                            | Network device security & ACLs                                                                                       |
+| Password and key rotation                              | API access points use SSL for secured communication                                                                  |
+| Security groups                                        | DDos protection                                                                                                      |
+| Resource-based policy                                  | EC2 instances and spoofing protection                                                                                |
+| Access control list                                    | Port scanning even if it's your environment                                                                          |
+| VPC                                                    | EC2 instances hypervisor isolation                                                                                   |
+| OS level patches                                       | Instances on the sane physical devices are separated at the hypervisor level<br/> they are independent of each other |
+| Data in transit & data at rest                         | Underlying OS patching for Lambda, RDS, Dynamo DB, and other managed services<br/> customers focus on security       |
+
+## IAM: users and Groups
+
+### Root user
+
+- The user created when the AWS account is created
+- The credentials are the email & password used when signing up for the AWS account
+- By default, the root user has full administrative rights & access to every part of the account
+
+### Best practices for the root user
+
+- We should not use the root user for daily work & administration
+  - another account that has admin rights should be used
+- The root user account should not access keys. Delete them if they exist
+- The root user should use MFA
+
+### IAM User
+
+- A new user has an implicit deny for all AWS services and requires a policy be added to grant them access
+- Users receive unique credentials (username, password & access keys)
+- Users can have IAM policies applied directly to them, or they can be a member of a group that has policies attached
+- With policies, an explicit deny always overrides an explicit allow from attached policies
+  - for instance, AWS will ignore all policies attached to a user if a single deny-all policy is added
+
+#### Best practices for users
+
+- Never store or "pass" your credentials to EC2 instances - use SSH forwarding
+- MFA can and should be used for users' accounts
+- Access credentials are unique and should never be shared
+
+### IAM Groups
+
+- Allow for policy assignments to multiple users at the same time
+- We may assign permission to a group
+- More organized and efficient way's to manage users and policies
+- Cannot be nested
+- Users may be the members of multiple groups
+
+#### Rest practices for groups
+
+- Organize users by functions
+- Assign IAM policies to groups, not individual users
+
+### IAM policies
+
+- A document that states one or more permissions (JSON formatted)
+- An explicit deny always overrides an explicit allow.
+- This allows for the users of a deny-all policy to quickly restricts all access a user may have
+
+#### Managed policies
+
+- AWS provides pre-built policy templates to assign to users & groups
+- Examples include:
+  - Administrator access: Full access to all AWS resources
+  - Power-user access: Admin access, except it does not allow user/group management
+  - Read-only access: Only view AWS resources (e.g., user can only view what is in S3 buckets)
+
+#### Custom policies
+
+- You can create custom IAM policies using the policy generator or write them from scratch
+- More than one policy can be attached to a user/group at the same time
+- Policies can not be directly attached to AWS resources (such as an EC2 instance)
+
+### IAM Roles
+
+- Temporary security credentials in AWS managed by Security Token Service (STS)
+- Another entity can assume the specific permissions defined by the Roles
+- These entities include:
+  - AWS resources (e.g., EC2 instance)
+  - A user outside of AWS needs temporary access
+
+#### Roles with AWS services
+
+- We must use role because policies cannot be attached directly to AWS resources
+- Services can only have one role attached at a time
+- You should never pass or store credentials to an EC2 instance - instead, use role
+- You may change the role of running EC2 instances through the console or URI
+
+#### Other uses of Roles
+
+- Cross-account access (delegation)
+  - Provide access to another AWS account from another account
+
+**TO BE UPDATED**

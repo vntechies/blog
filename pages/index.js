@@ -25,7 +25,6 @@ export default function Home({ posts }) {
       <Hero />
       <Features />
       <AWSCert />
-      <FAQ />
       {/* TODO */}
       {/* <Team /> */}
       <div className="divide-y divide-gray-200 dark:divide-gray-700">
@@ -56,6 +55,7 @@ export default function Home({ posts }) {
           </Link>
         </div>
       )}
+      <FAQ />
       <Newsletter />
     </>
   )
