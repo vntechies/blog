@@ -1,9 +1,14 @@
 import siteMetadata from '@/data/siteMetadata'
-import seriesData from '@/data/seriesData'
 import Card from '@/components/Card'
 import { PageSEO } from '@/components/SEO'
+import { getAllFilesFrontMatter } from '@/lib/mdx'
 
-export default function Projects() {
+export async function getStaticProps() {
+  const series = await getAllFilesFrontMatter('series')
+  return { props: { series: series } }
+}
+
+export default function Series({ series }) {
   return (
     <>
       <PageSEO title={`Series - ${siteMetadata.author}`} description={siteMetadata.description} />
@@ -18,15 +23,18 @@ export default function Projects() {
         </div>
         <div className="container py-12">
           <div className="-m-4 flex flex-wrap">
-            {seriesData.map((d) => (
-              <Card
-                key={d.title}
-                title={d.title}
-                description={d.description}
-                imgSrc={d.imgSrc}
-                href={d.href}
-              />
-            ))}
+            {series.length === 0 && 'No series found.'}
+            {series.map((d) => {
+              return (
+                <Card
+                  key={d.title}
+                  title={d.title}
+                  description={d.summary}
+                  imgSrc={d.images[0]}
+                  href={`/series/${d.slug}`}
+                />
+              )
+            })}
           </div>
         </div>
       </div>
