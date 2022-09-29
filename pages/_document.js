@@ -5,6 +5,7 @@ class MyDocument extends Document {
     return (
       <Html lang="en" className="scroll-smooth">
         <Head>
+          <meta charSet="UTF-8" />
           <link
             rel="apple-touch-icon"
             sizes="180x180"
@@ -33,7 +34,7 @@ class MyDocument extends Document {
           <meta name="theme-color" content="#ffffff" />
           <meta name="theme-color" media="(prefers-color-scheme: light)" content="#fff" />
           <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000" />
-          <link rel="alternate" type="application/rss+xml" href="/feed.xml" />
+          <link rel="alternate" type="application/rss+xml" href="/public/feed.xml" />
         </Head>
         <body className="bg-white text-black antialiased dark:bg-gray-900 dark:text-white">
           <Main />

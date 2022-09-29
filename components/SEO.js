@@ -104,6 +104,7 @@ export const BlogSEO = ({
       return {
         '@type': 'Person',
         name: author.name,
+        url: author.url,
       }
     })
   } else {

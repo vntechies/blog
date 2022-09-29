@@ -2,16 +2,13 @@
 title: AWS CDK là gì?
 date: '2022-08-23'
 tags: ['aws', 'aws cdk', 'devops']
-series: ['aws-cdk']
 draft: false
 images: ['/static/images/ogps/aws-sdk.png']
 summary: 'AWS CDK, những khái niệm cơ bản, làm sao để bắt đầu, những good practices và tools để làm việc hiệu quả hơn'
+index: 1
 ---
 
-![AWS Cloud Development Kit](/static/images/ogps/aws-sdk.png)
-
-Infrastructure as Code đã trở thành tiêu chuẩn và là một trong những good practices trong vài năm trở lại đây. Các tổ chức, doanh nghiệp đã thấy sự tiện lợi
-và hữu ích của việc quản lý resource thông qua IaC thay vì cách làm truyền thống trên AWS console.
+Infrastructure as Code đã trở thành tiêu chuẩn và là một trong những good practices trong vài năm trở lại đây. Các tổ chức, doanh nghiệp đã thấy sự tiện lợi và hữu ích của việc quản lý resource thông qua IaC thay vì cách làm truyền thống trên AWS console.
 
 Hiện tại, có 2 công cụ phổ biến cho phép bạn định nghĩa và quản lý tài nguyên trên cloud sử dụng phương pháp khai báo (declarative) là AWS CloudFormation và Terraform.
 Có một vấn đề với việc định nghĩa theo phương pháp khai báo là khi hệ thống của bạn lớn hơn đó là việc maintain các template files sử dụng JSON hoặc YAML cũng trở nên nặng nề và khó khăn hơn.
@@ -105,7 +102,7 @@ Ngoài điểm khác biệt này này, AWS CDK còn một số điểm khác bi�
 - Sử dụng ngôn ngữ lập trình thay vì sử dụng "ngôn ngữ" YAML hoặc JSON. Thời gian sử dụng ngôn ngữ lập trình có ích cho sự nghiệp của bạn hơn là viết YAML code cho CloudFormation 😅
 - Một trong những selling point của AWS CDK
 
-<blockquote class="twitter-tweet">
+<blockquote className="twitter-tweet">
   1500 lines of CloudFormation became 14 lines of CDK - It's important to understand that the
   deployed application still has 1500 lines' worth of operations and maintenance ownership, not 14
   &mdash; Ben Kehoe (@ben11kehoe){' '}

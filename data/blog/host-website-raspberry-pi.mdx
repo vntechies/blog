@@ -1,23 +1,22 @@
 ---
-title: Host a Website on Raspberry Pi
+title: Xây dựng cloud của bạn với Raspberry Pi
 date: '2022-07-01'
-tags: ['dev tips', 'cloud computing', 'aws']
+tags: ['dev tips', 'cloud computing', 'aws', 'web']
 draft: true
-authors: ['mau']
-summary: 'Trình bày về quy ước đặt tên, gắn tag tài nguyên trên AWS theo các best practices để thuận tiện cho việc quản lý, vận hành.'
+summary: 'Ứng dụng web được host trên Raspberry Pi. Xây dựng đám mây đầu tiên cho bản thân.'
 ---
 
 <TOCInline toc={props.toc} asDisclosure />
 
 Gần đây, [hàng loạt các cloud provider đã gặp phải downtage do đợt nắng nóng ở Châu ÂU](https://www.pcgamer.com/google-oracle-datacenters-melt-down-in-extreme-european-heatwave/).
 
-Bài viết này sẽ hướng dẫn các bạn host 1 website sử dụng [Raspberry Pi 4](https://www.raspberrypi.org/). Sau đó public website được serve bằng nginx lên Internet.
+Bài viết này sẽ hướng dẫn các bạn host 1 website sử dụng [Raspberry Pi 4](https://www.raspberrypi.org/). Sau đó công khai website được phục vụ bằng nginx và có thể truy cập từ Internet sử dụng dynamic DNS (cloudflare).
 
-Dù website của bạn sẽ khó có khả năng scale như khi được host trên Cloud, nhưng ít nhất bạn cũng không lo việc website của bạn bị down khi trời quá nóng 🐧
+Dù website của bạn sẽ khó có khả năng mở rộng như khi được host trên Cloud, nhưng ít nhất bạn cũng không lo việc website của bạn bị down khi trời quá nóng 🐧
 
-## Getting Started
+## Công nghệ
 
-### Raspberry Pi Setup
+### Chuẩn bị Raspberry Pi
 
 In order to follow along, you'll need a Raspberry Pi. I am using the RPi 4, with 8Gb of RAM. I recommend purchasing it as a [kit](https://www.canakit.com/raspberry-pi-4-starter-kit.html) with all the necessary accessories.
 

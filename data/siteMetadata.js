@@ -4,7 +4,7 @@ const siteMetadata = {
   headerTitle: 'VNTechies',
   description:
     'Tech blog dành cho người Việt yêu công nghệ | Tài liệu, hướng dẫn học tập - Giải pháp công nghệ - Cloud computing - web services - ứng dụng di động',
-  language: 'vi-VN',
+  language: 'vi',
   theme: 'system', // system, dark or light
   siteUrl: 'https://dev.vntechies.com',
   siteRepo: 'https://github.com/vntechies/blog',

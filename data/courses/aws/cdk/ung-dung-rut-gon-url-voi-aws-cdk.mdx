@@ -2,33 +2,10 @@
 title: Ứng dụng rút gọn URL với AWS CDK
 date: '2022-08-29'
 tags: ['aws', 'aws cdk', 'dynamodb', 'lambda', 'apigw', 'tutorial', 'devops']
-series: ['aws-cdk']
-draft: false
 images: ['/static/images/ogps/cuturl.png']
 summary: 'Xây dựng ứng dụng rút gọn URL đơn giản xây dựng với API Gateway, Lambda và DynamoDB thông qua AWS CDK và custom domain với Route53 và AWS Certificate Manager'
+index: 4
 ---
-
-![](/static/images/ogps/cuturl.png)
-
-Trong bài viết dưới đây, chúng ta sẽ xây dựng một ứng dụng rút gọn link (url shortener) sử dụng AWS CDK với Api Gateway, Lambda Function và DynamoDB.
-Nếu các bạn chưa có nhiều kinh nghiệm làm việc với AWS CDK, VNTechies khuyến nghị các bạn tham khảo 2 bài viết dưới đây trong [loạt bài về AWS CDK](http://localhost:3000/tags/aws-cdk-series).
-
-<div className="container py-12">
-  <div className="-m-4 flex flex-wrap">
-    <Card
-      title="AWS CDK là gì?"
-      description="AWS CDK, những khái niệm cơ bản, làm sao để bắt đầu, những good practices và tools để làm việc hiệu quả hơn"
-      imgSrc="/static/images/ogps/aws-sdk.png"
-      href="/blog/aws/cdk/aws-cdk"
-    />
-    <Card
-      title="Hướng dẫn chi tiết cài đặt AWS CDK"
-      description="Trong hướng dẫn này, bạn sẽ tìm hiểu cách cài đặt AWS CDK và thiết lập cấu hình để bắt đầu xây dựng và triển khai ứng dụng CDK đầu tiên của mình"
-      imgSrc="/static/images/ogps/awssdk.png"
-      href="/blog/aws/cdk/huong-dan-chi-tiet-cai-dat-aws-cdk"
-    />
-  </div>
-</div>
 
 <TOCInline toc={props.toc} asDisclosure />
 
