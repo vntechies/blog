@@ -17,11 +17,18 @@ export default function FourZeroFour() {
             Xin lỗi, không tìm thấy trang bạn vừa yêu cầu 😅
           </p>
           <p className="mb-8">Đừng lo, VNTechies còn nhiều bài viết khác 🤩</p>
-          <Link href="/">
-            <button className="focus:shadow-outline-blue inline rounded-lg border border-transparent bg-blue-600 px-4 py-2 text-sm font-medium leading-5 text-white shadow transition-colors duration-150 hover:bg-blue-700 focus:outline-none dark:hover:bg-blue-500">
-              Quay về trang chủ
-            </button>
-          </Link>
+          <p className="text-lg leading-7">
+            Quay về{' '}
+            <Link
+              className="hover-underline-animation inline-flex flex-row items-center gap-2 font-bold"
+              href="/"
+            >
+              trang chủ
+              <svg style={{ width: '24px', height: '24px' }} viewBox="0 0 24 24">
+                <path fill="currentColor" d="M10,20V14H14V20H19V12H22L12,3L2,12H5V20H10Z"></path>
+              </svg>
+            </Link>
+          </p>
         </div>
       </div>
     </>
