@@ -9,6 +9,8 @@ import Link from '@/components/Link'
 import Image from '@/components/Image'
 import kebabCase from '@/lib/utils/kebabCase'
 import formatDate from '@/lib/utils/formatDate'
+import { CourseSEO } from '@/components/SEO'
+import siteMetadata from '@/data/siteMetadata'
 
 const root = process.cwd()
 
@@ -72,10 +74,19 @@ export async function getStaticProps({ params }) {
 export default function Course({ post, authorDetails, posts, otherCourses, prev, next }) {
   const router = useRouter()
   const { mdxSource, toc, frontMatter } = post
-  console.log(next)
+  console.log(frontMatter.index)
 
   return (
     <>
+      {frontMatter.index === 0 && (
+        <CourseSEO
+          courseItems={posts}
+          {...frontMatter}
+          url={`${siteMetadata.siteUrl}/courses/${frontMatter.slug}`}
+          {...frontMatter}
+        />
+      )}
+
       <div className="xl:divide-y xl:divide-gray-200 xl:dark:divide-gray-700">
         <header className="pt-6 xl:pb-6 xl:pt-12">
           <div className="space-y-1 text-center">

@@ -162,3 +162,102 @@ export const BlogSEO = ({
     </>
   )
 }
+
+export const CourseSEO = ({
+  title,
+  courseItems,
+  summary,
+  url,
+  lastmod,
+  date,
+  canonicalUrl,
+  images = [],
+}) => {
+  const router = useRouter()
+  const publishedAt = new Date(date).toISOString()
+  const modifiedAt = new Date(lastmod || date).toISOString()
+  let imagesArr =
+    images.length === 0
+      ? [siteMetadata.socialBanner]
+      : typeof images === 'string'
+      ? [images]
+      : images
+  const featuredImages = imagesArr.map((img) => {
+    return {
+      '@type': 'ImageObject',
+      url: img.includes('http') ? img : siteMetadata.siteUrl + img,
+    }
+  })
+
+  const provider = {
+    '@type': 'Organization',
+    name: `${siteMetadata.author}`,
+    sameAs: `${siteMetadata.siteUrl}`,
+  }
+
+  var structuredData = {}
+  if (courseItems) {
+    const items = []
+    courseItems.map((c) => {
+      const item = {
+        '@type': 'ListItem',
+        position: `${c.index}`,
+        item: {
+          '@type': 'Course',
+          url: `${siteMetadata.siteUrl}${router.asPath}`,
+          name: c.title,
+          description: c.summary,
+          provider: provider,
+        },
+      }
+
+      items.push(item)
+    })
+    structuredData = {
+      '@context': 'https://schema.org',
+      '@type': 'ItemList',
+      mainEntityOfPage: {
+        '@type': 'WebPage',
+        '@id': url,
+      },
+      itemListElement: items,
+    }
+  } else {
+    structuredData = {
+      '@context': 'https://schema.org',
+      '@type': 'Course',
+      mainEntityOfPage: {
+        '@type': 'WebPage',
+        '@id': url,
+      },
+      name: title,
+      description: summary,
+      provider: provider,
+    }
+  }
+
+  const twImageUrl = featuredImages[0].url
+
+  return (
+    <>
+      <CommonSEO
+        title={title}
+        description={summary}
+        ogType="course"
+        ogImage={featuredImages}
+        twImage={twImageUrl}
+        canonicalUrl={canonicalUrl}
+      />
+      <Head>
+        {date && <meta property="course:published_time" content={publishedAt} />}
+        {lastmod && <meta property="course:modified_time" content={modifiedAt} />}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(structuredData, null, 2),
+          }}
+        />
+      </Head>
+    </>
+  )
+}
