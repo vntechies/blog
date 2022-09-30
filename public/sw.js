@@ -4,7 +4,7 @@ importScripts('https://storage.googleapis.com/workbox-cdn/releases/3.6.1/workbox
 if (workbox) {
   workbox.setConfig({ debug: false })
 
-  var defaultStrategy = workbox.strategies.networkFirst({
+  const defaultStrategy = workbox.strategies.networkFirst({
     cacheName: 'fallback',
     plugins: [
       new workbox.expiration.Plugin({

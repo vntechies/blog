@@ -6,9 +6,13 @@ import { getAllFilesFrontMatter, getFileBySlug } from '@/lib/mdx'
 import { getAllSeries } from '@/lib/series'
 import kebabCase from '@/lib/utils/kebabCase'
 import fs from 'fs'
+import Image from 'next/image'
 import path from 'path'
+import { MDXLayoutRenderer } from '@/components/MDXComponents'
 
 const root = process.cwd()
+
+const DEFAULT_LAYOUT = 'PostLayout'
 
 export async function getStaticPaths() {
   const allSeries = await getAllSeries('blog')

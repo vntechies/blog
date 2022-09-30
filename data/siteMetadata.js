@@ -3,7 +3,7 @@ const siteMetadata = {
   author: 'VNTechies',
   headerTitle: 'VNTechies',
   description:
-    'Tech blog dành cho người Việt yêu công nghệ | Tài liệu, hướng dẫn học tập - Giải pháp công nghệ - Cloud computing - web services - ứng dụng di động',
+    '🇻🇳 VNTechies Dev Blog - Kho tài nguyên dành cho người Việt yêu công nghệ 👨‍💻👩‍💻 📝 Tài liệu, khoá học, hướng dẫn 🚀 Giải pháp công nghệ ☁️ Cloud computing, 🌐 web & 📱 mobile apps',
   language: 'vi',
   theme: 'system', // system, dark or light
   siteUrl: 'https://dev.vntechies.com',
@@ -84,7 +84,7 @@ const siteMetadata = {
       shortname: process.env.NEXT_PUBLIC_DISQUS_SHORTNAME,
     },
     facebookConfig: {
-      appId: process.env.NEXT_FACEBOOK_APP_ID,
+      appId: process.env.FACEBOOK_CLIENT_ID,
     },
   },
 }

@@ -8,6 +8,7 @@ twitter: https://twitter.com/vn_techies
 facebook: https://fb.me/vntechies
 linkedin: https://www.linkedin.com/in/vntechies/
 github: https://github.com/vntechies
+url: https://dev.vntechies.com/
 ---
 
-Chào anh chị em, mình là Nam, cây bút chính tại VNTechies - tech blog cho người Việt yêu công nghệ 🇻🇳
+Chào anh chị em, mình là Nam, cây bút chính tại VNTechies - Kho tài nguyên dành cho người Việt yêu công nghệ 🇻🇳

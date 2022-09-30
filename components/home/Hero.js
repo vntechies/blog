@@ -10,12 +10,12 @@ const Hero = () => {
             Xin chào 👋
           </h1>
           <p className="mb-6 max-w-2xl font-light text-gray-500 dark:text-gray-400 md:text-lg lg:mb-8 lg:text-xl">
-            {`Chào mừng tới VNTechies Dev Blog 🇻🇳 Tech blog dành cho người Việt yêu công nghệ 👨‍💻👩‍💻`}
+            {`Chào mừng tới VNTechies Dev-site 🇻🇳 Kho tài nguyên dành cho người Việt yêu công nghệ 👨‍💻👩‍💻`}
           </p>
           <div className="flex flex-col items-start space-y-3 sm:flex-row sm:items-center sm:space-x-4 sm:space-y-0">
             <Link
               href="/blog"
-              class="mr-3 inline-flex items-center justify-center rounded-lg bg-primary-400 px-5 py-3 text-center text-base font-medium hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:bg-primary-700 dark:focus:ring-primary-900"
+              className="mr-3 inline-flex items-center justify-center rounded-lg bg-primary-400 px-5 py-3 text-center text-base font-medium hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:bg-primary-700 dark:focus:ring-primary-900"
             >
               Đọc bài ngay!
               <svg

@@ -8,7 +8,7 @@
 
 📝 Tài liệu, khoá học, hướng dẫn
 🚀 Giải pháp công nghệ
-☁️ Cloud computing, 🌐 web & 📱 mobile apps 
+☁️ Cloud computing, 🌐 web & 📱 mobile apps
 
 ---
 
