@@ -74,7 +74,6 @@ export async function getStaticProps({ params }) {
 export default function Course({ post, authorDetails, posts, otherCourses, prev, next }) {
   const router = useRouter()
   const { mdxSource, toc, frontMatter } = post
-  console.log(frontMatter.index)
 
   return (
     <>

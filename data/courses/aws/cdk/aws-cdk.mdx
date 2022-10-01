@@ -11,6 +11,7 @@ index: 1
 Infrastructure as Code đã trở thành tiêu chuẩn và là một trong những good practices trong vài năm trở lại đây. Các tổ chức, doanh nghiệp đã thấy sự tiện lợi và hữu ích của việc quản lý resource thông qua IaC thay vì cách làm truyền thống trên AWS console.
 
 Hiện tại, có 2 công cụ phổ biến cho phép bạn định nghĩa và quản lý tài nguyên trên cloud sử dụng phương pháp khai báo (declarative) là AWS CloudFormation và Terraform.
+
 Có một vấn đề với việc định nghĩa theo phương pháp khai báo là khi hệ thống của bạn lớn hơn đó là việc maintain các template files sử dụng JSON hoặc YAML cũng trở nên nặng nề và khó khăn hơn.
 
 Đó là lý do AWS CDK xuất hiện để cải thiện quy trình làm việc của các developer và giúp họ tạo các tài nguyên, infrastructure trên Cloud sử dụng phương pháp mệnh lệnh (imperative).
@@ -21,13 +22,13 @@ Trong hướng dẫn này, bạn sẽ tìm hiểu AWS CDK là gì, làm sao đ�
 
 ## AWS Cloud Development Kit (CDK) là gì?
 
-AWS Cloud Development Kit (AWS CDK) là một khung phát triển (framework) phần mềm mã nguồn mở để xác định tài nguyên ứng dụng đám mây bằng các ngôn ngữ lập trình quen thuộc.
-Đây là công cụ tổng hợp ứng dụng AWS CDK thành các CloudFormation template và triển khai hạ tầng trên AWS Cloud.
+AWS Cloud Development Kit (AWS CDK) là một khung phát triển (framework) phần mềm mã nguồn mở để xác định tài nguyên ứng dụng đám mây bằng các ngôn ngữ lập trình quen thuộc. Đây là công cụ tổng hợp ứng dụng AWS CDK thành các CloudFormation template và triển khai hạ tầng trên AWS Cloud.
 
 Phiên bản beta công khai đầu tiên của AWS CDK (v.0.8.0) được công bố vào năm 2018, lúc đó CDK như một cách tiếp cận thay thế cho việc triển khai các AWS resources bằng code sử dụng ngôn ngữ Typescript.
 
-AWS CDK là một [open source project](https://github.com/aws/aws-cdk) và version Generally Available (GA) của AWS CDKsv2 đã được Werner Vogels - CTO của Amazon công bố vào tháng 12 năm 2021 trong sự kiện re:invent.
-V2 của CDK hỗ trợ các ngôn ngữ sau:
+AWS CDK là một [open source project](https://github.com/aws/aws-cdk) và version Generally Available (GA) của AWS CDKs v2 đã được Werner Vogels - CTO của Amazon công bố vào tháng 12 năm 2021 trong sự kiện re:invent.
+
+Version 2 của CDK hỗ trợ các ngôn ngữ sau:
 
 | Ngôn ngữ   | Stability    |
 | ---------- | ------------ |
@@ -50,29 +51,28 @@ Nói đơn giản thì ứng dụng AWS CDK gồm 3 thành phần chính (basic 
 
 ![AWS CDK Diagram](/static/images/assets/aws-cdk-diagram.png)
 
-Có thể hiểu đơn giản theo diagram trên, AWS CDK giúp bạn tạo ra mã nguồn, thông qua AWS CDK CLI đóng vai trò như một "trình dịch" để tổng hợp
-thành một CloudFormation template đóng vai trò như một "mã nguồn hợp ngữ" chứa toàn bộ các thành phần của hệ thống.
+Có thể hiểu đơn giản theo diagram trên, AWS CDK giúp bạn tạo ra mã nguồn, thông qua AWS CDK CLI đóng vai trò như một "trình dịch" để tổng hợp thành một CloudFormation template đóng vai trò như một "mã nguồn hợp ngữ" chứa toàn bộ các thành phần của hệ thống.
+
 Template này sau đó có thể được triển khai lên AWS thông qua CloudFormation đóng vai trò như một bộ xử lý. Dễ hiểu ha 😅
 
-Ngoài AWS CDK Core framework và AWS CDK CLI, AWS còn cung cấp thêm AWS Construct Hub Library - một thư viện tập hợp các cấu trúc của AWS CDK cho các dịch vụ của AWS.
-[Construct Hub](https://constructs.dev/) là tài nguyên giúp bạn khám phá các cấu trúc bổ sung từ AWS, các bên thứ ba và cộng đồng mã nguồn mở.
+Ngoài AWS CDK Core framework và AWS CDK CLI, AWS còn cung cấp thêm AWS Construct Hub Library - một thư viện tập hợp các cấu trúc của AWS CDK cho các dịch vụ của AWS. [Construct Hub](https://constructs.dev/) là tài nguyên giúp bạn khám phá các cấu trúc bổ sung từ AWS, các bên thứ ba và cộng đồng mã nguồn mở.
 
 ## Tổng quan về AWS CDK Construct
 
-Như bạn có thể thấy trong diagram ở trên, bạn có thể thấy nhiều stack được tạo thành từ nhiều construct, mỗi construct sẽ chứa nhiều tài nguyên AWS khác nhau.
-Construct là thứ tiện lợi nhất mà AWS CDK mang lại cho các developer.
+Như bạn có thể thấy trong diagram ở trên, bạn có thể thấy nhiều stack được tạo thành từ nhiều construct, mỗi construct sẽ chứa nhiều tài nguyên AWS khác nhau. Construct có thể coi là thứ tiện lợi nhất mà AWS CDK mang lại cho các developer.
 
 Có 3 cách để xây dựng các construct trong AWS CDK:
 
 ### L1 Construct
 
 Về cơ bản, nó chính là các tài nguyên giống với CloudFormation, các thuộc tính được ánh xạ với các thuộc tính trong CloudFormation.
-Nếu chúng ta chỉ sử dụng L1 Construct, thực sự thì không có lợi ích nào so với việc sử dụng CloudFormation.
-Tuy nghiên, nếu L2 hoặc L3 Construct không cho phép bạn tùy chỉnh một thuộc tính nhất định thì bạn có thể khắc phục bằng cách sử dụng L1 Construct.
+
+Nếu chúng ta chỉ sử dụng L1 Construct, thực sự thì không có lợi ích nào so với việc sử dụng CloudFormation. Tuy nghiên, nếu L2 hoặc L3 Construct không cho phép bạn tùy chỉnh một thuộc tính nhất định thì bạn có thể khắc phục bằng cách sử dụng L1 Construct.
 
 ### L2 Construct
 
 Là tài nguyên AWS được nhóm AWS CDK phát triển, đóng gói cấu trúc L1 bằng cách cài đặt các thuộc tính một cách tốt nhất về mặt bảo mật, tối ưu các giá trị mặc định cho tài nguyên.
+
 Có thể coi đây như là các boilerplate cho các tài nguyên và bạn không cần hiểu quá rõ để tạo chúng trên AWS.
 Lợi ích chính của cấu trúc L2 là bạn có thể tạo tài nguyên AWS một cách an toàn bằng một vài dòng mã.
 
@@ -80,6 +80,7 @@ Lợi ích chính của cấu trúc L2 là bạn có thể tạo tài nguyên AW
 
 Hay còn được gọi là các mẫu (patterns) là một nhóm các cấu trúc L2 được kết hợp để cung cấp một giải pháp đầy đủ.
 Ví dụ: bạn có thể nhóm nhiều tài nguyên lại với nhau để tạo thành 3 tiers web application, EC2 instances cho backend + frontend được liên kết với RDS và cuối cùng là Application Loadbalancer để cân bằng tải.
+
 Bạn có thể khởi tạo nhóm tài nguyên này bằng cách một vài dòng code và nó giúp bạn có thể tái sử dụng các mẫu này trong nhiều dự án hoặc các stacks khác nhau.
 
 ## Những tính năng của AWS CDK
@@ -93,45 +94,25 @@ Bạn có thể khởi tạo nhóm tài nguyên này bằng cách một vài dò
 
 ## AWS CDK với CloudFormation
 
-Trong những ngày đầu tiên tiếp xúc với IaC (cụ thể là CloudFormation)
-kiến thức cũng như kinh nghiệm làm việc rất ít được chia sẻ rộng rãi hoặc được thảo luận (có thể nó vẫn còn phức tạp).
-Hầu hết tài liệu tìm được là ở trên các trang hướng dẫn của AWS, nhưng AWS CDK thì có cộng đồng rất lớn và chúng ta có hẳn một [thư viện Construct](https://constructs.dev/) để sử dụng.
-Ngoài điểm khác biệt này này, AWS CDK còn một số điểm khác biệt so với CloudFormation:
+Trong những ngày đầu tiên tiếp xúc với IaC (cụ thể là CloudFormation) kiến thức cũng như kinh nghiệm làm việc rất ít được chia sẻ rộng rãi hoặc được thảo luận (có thể nó vẫn còn phức tạp). Hầu hết tài liệu tìm được là ở trên các trang hướng dẫn của AWS, nhưng AWS CDK thì có cộng đồng rất lớn và chúng ta có hẳn một [thư viện Construct](https://constructs.dev/) để sử dụng. Ngoài điểm khác biệt này này, AWS CDK còn một số điểm khác biệt so với CloudFormation:
 
 - Sử dụng L2/L3 Construct sử dụng các cài đặt tốt nhất theo các best pracites khiến việc phát triển nhanh chóng và an toàn thay vì phải config setting cho từng tài nguyên như ở CloudFormation.
 - Sử dụng ngôn ngữ lập trình thay vì sử dụng "ngôn ngữ" YAML hoặc JSON. Thời gian sử dụng ngôn ngữ lập trình có ích cho sự nghiệp của bạn hơn là viết YAML code cho CloudFormation 😅
 - Một trong những selling point của AWS CDK
 
-<blockquote className="twitter-tweet">
-  1500 lines of CloudFormation became 14 lines of CDK - It's important to understand that the
-  deployed application still has 1500 lines' worth of operations and maintenance ownership, not 14
-  &mdash; Ben Kehoe (@ben11kehoe){' '}
-  <a href="https://twitter.com/ben11kehoe/status/1466465582501531662?ref_src=twsrc%5Etfw">
-    December 2, 2021
-  </a>
-</blockquote>
+> 1500 lines of CloudFormation became 14 lines of CDK - It's important to understand that the deployed application still has 1500 lines' worth of operations and maintenance ownership, not 14 &mdash; Ben Kehoe [@ben11kehoe](https://twitter.com/ben11kehoe/status/1466465582501531662?ref_src=twsrc%5Etfw)
 
 Dù sao thì, AWS CDK chỉ là một cách tiếp cận khác và cuối cùng chúng ta vẫn cần tổng hợp thành một AWS CloudFormation template.
 Chính vì vậy, bạn vẫn nên sử dụng các tool như [cfn-lint](https://www.google.com/search?q=cfn-lint&oq=cfn-lint&aqs=chrome..69i57.101j0j1&sourceid=chrome&ie=UTF-8)
 hoặc [checkov](https://www.checkov.io/) để ngăn chặn việc cấu hình sai cho hệ thống của bạn.
 
-Việc có một công cụ abstract CloudFormation như AWS CDK sẽ rất tốt nếu bạn thực sự hiểu những gì diễn ra ở phía sau.
-Nếu bạn không hiểu CloudFormation làm như thể nào để triển khai các tài nguyên, bạn có thể mất nhiều thời gian hơn trong việc gỡ lỗi và không thể lý giải tại sao AWS CDK app của mình không hoạt động.
+Với một công cụ abstract CloudFormation như AWS CDK sẽ rất tốt nếu bạn thực sự hiểu những gì thực sự đang diễn ra ở phía sau. Nếu bạn không hiểu CloudFormation làm như thể nào để triển khai các tài nguyên, bạn có thể mất nhiều thời gian hơn trong việc gỡ lỗi và không thể lý giải tại sao AWS CDK app của mình không hoạt động. Chính vì vậy, sẽ rất tốt nếu bạn có kiến thức, khái niệm cơ bản về CloudFormation.
 
 ![Code của mình không chạy](/static/images/assets/codedoesntwork.jpeg)
 
 ## Làm thế nào để bắt đầu với AWS CDK?
 
-Để bắt đầu, bạn cần cài đặt AWS CDK toolkit bằng node package manager (npm), hướng dẫn cụ thể bạn có thể tham khảo ở bài viết dưới đây
-
-<Card
-  title="Hướng dẫn chi tiết cài đặt AWS CDK"
-  description="Trong hướng dẫn này, bạn sẽ tìm hiểu cách cài đặt AWS CDK và thiết lập cấu hình để bắt đầu xây dựng và triển khai ứng dụng CDK đầu tiên của mình"
-  imgSrc="/static/images/ogps/awssdk.png"
-  href="/blog/aws/cdk/huong-dan-chi-tiet-cai-dat-aws-cdk"
-/>
-
-Ngắn gọn thì bạn cần chạy câu lệnh sau
+Để bắt đầu, bạn cần cài đặt AWS CDK toolkit bằng node package manager (npm). Các bạn sẽ được hướng dẫn chi tiết rong [bài tiếp theo của khoá học](/courses/aws/cdk/huong-dan-chi-tiet-cai-dat-aws-cdk) về việc cài đặt CDK. Còn để nói ngắn gọn thì bạn cần chạy câu lệnh sau
 
 ```shell:shell
 npm install -g aws-cdk
@@ -185,24 +166,9 @@ Trong bài viết này, bạn đã nắm được những khái niệm cơ bản
 
 Các good practices và công cụ để bạn có thể vừa xây dựng hệ thống với những tiêu chuẩn tốt nhất mà không cần mất quá nhiều thời gian.
 
-Nếu bạn muốn tìm hiểu sâu hơn, hãy tham khảo các [ví dụ của AWS CDK](https://github.com/aws-samples/aws-cdk-examples) và bắt đầu xây dựng các ứng dụng thực tế sử dụng AWS CDK qua các bài viết dưới đây của VNTechies 😉
+Nếu bạn muốn tìm hiểu sâu hơn, hãy tham khảo các [ví dụ của AWS CDK](https://github.com/aws-samples/aws-cdk-examples) và bắt đầu xây dựng các ứng dụng thực tế sử dụng AWS CDK trong các bài tiếp theo.
 
-<div className="container py-12">
-  <div className="-m-4 flex flex-wrap">
-    <Card
-      title="Hướng dẫn chi tiết cài đặt AWS CDK"
-      description="Trong hướng dẫn này, bạn sẽ tìm hiểu cách cài đặt AWS CDK và thiết lập cấu hình để bắt đầu xây dựng và triển khai ứng dụng CDK đầu tiên của mình"
-      imgSrc="/static/images/ogps/awssdk.png"
-      href="/blog/aws/cdk/huong-dan-chi-tiet-cai-dat-aws-cdk"
-    />
-    <Card
-      title="Tạo Amazon S3 bucket sử dụng AWS CDK"
-      description="Hướng dẫn này sẽ giải thích những gì cần thiết để tạo một Amazon S3 bucket sử dụng AWS CDK Python"
-      imgSrc="/static/images/ogps/s3-cdk.png"
-      href="/blog/aws/cdk/tao-s3-bucket-voi-aws-cdk"
-    />
-  </div>
-</div>
+Hẹn gặp lại các bạn trong bài [Hướng dẫn chi tiết cài đặt AWS CDK](/courses/aws/cdk/huong-dan-chi-tiet-cai-dat-aws-cdk)
 
 ## References
 

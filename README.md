@@ -4,6 +4,8 @@
 	<img src="https://raw.githubusercontent.com/webuild-community/badge/master/svg/made.svg" />
 </a>
 
+---
+
 🇻🇳 VNTechies Dev Blog - Kho tài nguyên dành cho người Việt yêu công nghệ 👨‍💻👩‍💻
 
 📝 Tài liệu, khoá học, hướng dẫn
