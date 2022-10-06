@@ -18,7 +18,7 @@ export default function Series({ series }) {
             📦 Series
           </h1>
           <p className="text-lg leading-7 text-gray-500 dark:text-gray-400">
-            Tổng hợp các bài việt theo chủ đề
+            Tổng hợp các bài viết theo chủ đề
           </p>
         </div>
         <div className="container py-12">

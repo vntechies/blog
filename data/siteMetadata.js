@@ -1,9 +1,17 @@
 const siteMetadata = {
-  title: 'VNTechies Dev Blog',
+  title:
+    'VNTechies Dev Blog 🇻🇳 - Kho tài nguyên về Cloud, DevOps dành cho người Việt yêu công nghệ 👨‍💻👩‍💻',
   author: 'VNTechies',
   headerTitle: 'VNTechies',
   description:
-    '🇻🇳 VNTechies Dev Blog - Kho tài nguyên dành cho người Việt yêu công nghệ 👨‍💻👩‍💻 📝 Tài liệu, khoá học, hướng dẫn 🚀 Giải pháp công nghệ ☁️ Cloud computing, 🌐 web & 📱 mobile apps',
+    '🇻🇳 VNTechies Dev Blog - Kho tài nguyên dành cho người Việt yêu công nghệ 👨‍💻👩‍💻 📝 Tài liệu, khoá học, hướng dẫn DevOps, ☁️ Cloud computing, 🌐 web & 📱 mobile apps, Infrastructure Automation, CI/CD 🚀',
+  descriptions: {
+    blog: 'Các bài viết kỹ thuật tập trung vào các 🚀 giải pháp công nghệ ☁️ Cloud computing, DevOps, phát triển 🌐 web & 📱 mobile apps, CI/CD',
+    series:
+      '📦 Tổng hợp các bài viết theo chủ đề hướng dẫn thi chứng chỉ AWS, Azure, Kubernetes, DevOps, phát triển 🌐 web & 📱 mobile apps, CI/CD',
+    courses:
+      '📝 Tài liệu, khoá học, hướng dẫn tự học các cộng nghệ liên quan tới ☁️ cloud computing, DevOps, AWS, Azure, Docker, Kubernetes, CDK, CI/CD ',
+  },
   language: 'vi',
   theme: 'system', // system, dark or light
   siteUrl: 'https://dev.vntechies.com',
@@ -16,7 +24,7 @@ const siteMetadata = {
   twitter: 'https://twitter.com/vn_techies',
   instagram: 'https://www.instagram.com/vn_techies/',
   facebook: 'https://facebook.com/vntechies',
-  youtube: 'https://youtube.com/vntechies',
+  youtube: 'https://www.youtube.com/channel/UCl_qarJJ3dES5X_CRGQjNLw',
   linkedin: 'https://linkedin.com/company/vntechies',
   messenger: 'https://m.me/vntechies',
   discord: 'https://discord.gg/zWXsQb26',

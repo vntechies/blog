@@ -14,7 +14,7 @@ export default function Courses({ courses }) {
     <>
       <PageSEO
         title={`Khoá học - ${siteMetadata.author}`}
-        description={siteMetadata.description}
+        description={siteMetadata.descriptions.courses}
         showCanonical={false}
       />
       <div className="divide-y divide-gray-200 dark:divide-gray-700">
