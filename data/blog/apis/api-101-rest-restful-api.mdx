@@ -14,13 +14,13 @@ Khi phát triển các dịch vụ web (web services), các lập trình viên c
 
 ## Vậy REST hay RESTful là gì?
 
-![](./X-2B0IDJUYF9epae.png)
+![](/static/images/assets/X-2B0IDJUYF9epae.png)
 
 `REST`(**RE**presentational **S**tate **T**ransfer) lần đầu tiên được giới thiệu vào năm 2000 trong luận văn tiến sĩ của Roy Thomas Fielding (đồng sáng lập giao thức `HTTP`). Trong luận văn ông giới thiệu khá chi tiết về các ràng buộc, quy ước cũng như cách thức thực hiện với hệ thống để có được một hệ thống `REST` (`RESTful` system). Hiểu một cách đơn giản thì **`REST` chỉ là một hệ thống các ràng buộc (constraints), chỉ cần đảm bảo những điều đó hệ thống của bạn có thể được coi là `RESTful`**. Vậy những constraints đó là gì và làm thế nào để thực hiện được chúng?
 
 ## REST constraints
 
-![](./sX8-xtMzxz5sAQHH.png)
+![](/static/images/assets/sX8-xtMzxz5sAQHH.png)
 
 Để được coi là một hế thống `REST`, hệ thống cần đảm bảo được 5 ràng buộc sau:
 
@@ -32,7 +32,7 @@ Khi phát triển các dịch vụ web (web services), các lập trình viên c
 
 **4. Layered system (phân lớp hệ thống):** Hệ thống được chia làm nhiều lớp, việc giao tiếp của 1 lớp chỉ được tiến hành với lớp ở trên và lớp ở dưới của nó, khả năng cân bằng tải (load balancing) và cache dữ liệu trong hệ thống cũng sẽ được cải thiện.
 
-![](./Q9uYDeWrBsSY6Sc_.png_3fj7x7kqlj.png)
+![](/static/images/assets/Q9uYDeWrBsSY6Sc_.png_3fj7x7kqlj.png)
 
 **5. Uniform interface (chuẩn hoá các interface):** Đây là ràng buộc **quan trọng nhất** của hệ thống `REST` và mình nghĩ các bạn cũng chỉ để ý đến ràng buộc này (giống mình cách đây 1 năm =))).
 
@@ -48,19 +48,19 @@ Một `HTTP` request sẽ gồm 2 phần:
 
 - Giao thức dùng để xác định hàng động muốn thực hiện
 
-![](./OKF2qu5M5dEpvmwa.png)
+![](/static/images/assets/OKF2qu5M5dEpvmwa.png)
 
 - Endpoint - trong hệ thống `REST` thì chính là URI của resource cần tác động vào
 
-![](./BeQaTiPbsIB0Nj5W.png)
+![](/static/images/assets/BeQaTiPbsIB0Nj5W.png)
 
 - Một `HTTP` request đầy đủ để server có thể hiểu sau đó thực hiện request từ client sẽ gồm 2 phần trên.
 
-![](./W1KN3C9WAbXU_b6I.png)
+![](/static/images/assets/W1KN3C9WAbXU_b6I.png)
 
 ## Ưu điểm của hệ thống REST?
 
-![](./vHczmWDKmIs6sNCw.jpg)
+![](/static/images/assets/vHczmWDKmIs6sNCw.jpg)
 
 1. **Hiệu năng: ** các thành phần đảm bảo được việc giao tiếp theo đúng một quy ước giúp hệ thống có thể vận hành tốt hơn.
 2. **Tính khả biến:** với các hệ thống cần thay đổi các tài nguyên liên tục, sử dụng `REST` với việc tạo request đơn giản sẽ giúp mọi chuyển trở nên đơn giản hơn.
