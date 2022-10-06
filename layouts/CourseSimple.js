@@ -23,11 +23,12 @@ export default function CourseSimple({ frontMatter, authorDetails, next, prev, c
               <div className="flex flex-col text-sm font-medium sm:flex-row sm:justify-between sm:text-base">
                 {prev && (
                   <div className="pt-4 xl:pt-8">
+                    👈{' '}
                     <Link
                       href={`/courses/${prev.slug}`}
                       className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
                     >
-                      👈 {prev.title}
+                      {prev.title}
                     </Link>
                   </div>
                 )}
@@ -37,8 +38,9 @@ export default function CourseSimple({ frontMatter, authorDetails, next, prev, c
                       href={`/courses/${next.slug}`}
                       className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
                     >
-                      {next.title} 👉
-                    </Link>
+                      {next.title}
+                    </Link>{' '}
+                    👉
                   </div>
                 )}
               </div>
