@@ -50,12 +50,12 @@ const faqs = [
         </a>{' '}
         để được phản hồi nhanh nhất hoặc liên hệ qua email{' '}
         <a
-          href="mailto:info@vntechies.com"
+          href="mailto:info@vntechies.dev"
           className="font-medium text-primary-600 underline hover:no-underline dark:text-primary-500"
           target="_blank"
           rel="noreferrer"
         >
-          info@vntechies.com
+          info@vntechies.dev
         </a>{' '}
       </>
     ),

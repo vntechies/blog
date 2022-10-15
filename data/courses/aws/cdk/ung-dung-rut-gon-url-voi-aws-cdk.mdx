@@ -308,7 +308,7 @@ arn:aws:cloudformation:ap-southeast-1:xxx:stack/UrlShortenerStack/xxxx
 - Bạn có thể thử sử dụng ứng dụng này với URL trong phần output
 
 ```shell:shell {3, 8, 11} showLineNumbers
-curl https://xxx.execute-api.ap-southeast-1.amazonaws.com/prod/\?targetUrl\=https://dev.vntechies.com/
+curl https://xxx.execute-api.ap-southeast-1.amazonaws.com/prod/\?targetUrl\=https://vntechies.dev/
 # 👇 output
 Created URL: https://xxx.execute-api.ap-southeast-1.amazonaws.com/prod/7deb07cb
 
@@ -318,7 +318,7 @@ curl https://xxx.execute-api.ap-southeast-1.amazonaws.com/prod/7deb07cb -v
 < HTTP/2 301
 < content-type: application/json
 < content-length: 0
-< location: https://dev.vntechies.com/
+< location: https://vntechies.dev/
 ...
 ```
 
@@ -341,7 +341,7 @@ Nếu bạn muốn tiếp tục sử dụng với custom domain, bạn có thể
 ![Cài đặt các biến môi trường](/static/images/assets/url-shortener-export-vars.png)
 
 ```shell:shell
-export ZONE_NAME='vntechies.com' # thay bằng domain của bạn
+export ZONE_NAME='vntechies.dev' # thay bằng domain của bạn
 export CDK_DEFAULT_ACCOUNT='xxx'
 export CDK_DEFAULT_REGION='ap-southeast-1'
 ```

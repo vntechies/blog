@@ -9,7 +9,7 @@ const Share = ({ title, href }) => {
           aria-label="Tweet via Twitter"
           type="button"
           target="popup"
-          href={`https://twitter.com/intent/tweet?url=https://dev.vntechies.com/${href}&text=${title}&via=vntechies`}
+          href={`https://twitter.com/intent/tweet?url=https://vntechies.dev/${href}&text=${title}&via=vntechies`}
           className="flex items-center rounded-md bg-gray-200 px-2 py-2 text-sm text-blue-400 transition-all hover:bg-gray-300 hover:text-blue-500 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600 dark:hover:text-gray-300 md:px-4"
         >
           <svg
@@ -24,7 +24,7 @@ const Share = ({ title, href }) => {
         <Link
           aria-label="Share on Facebook"
           type="button"
-          href={`https://www.facebook.com/dialog/feed?app_id=${siteMetadata.comment.facebookConfig.appId}&display=popup&link=https%3A//dev.vntechies.com/${href}&redirect_uri=https://developers.facebook.com/tools/explorer`}
+          href={`https://www.facebook.com/dialog/feed?app_id=${siteMetadata.comment.facebookConfig.appId}&display=popup&link=https%3A//vntechies.dev/${href}&redirect_uri=https://developers.facebook.com/tools/explorer`}
           className="flex items-center rounded-md bg-gray-200 py-2 px-2 text-sm text-blue-400 transition-all hover:bg-gray-300 hover:text-blue-500 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600 dark:hover:text-gray-300 md:px-4"
         >
           <svg
