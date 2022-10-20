@@ -27,7 +27,7 @@ const siteMetadata = {
   youtube: 'https://www.youtube.com/channel/UCl_qarJJ3dES5X_CRGQjNLw',
   linkedin: 'https://linkedin.com/company/vntechies',
   messenger: 'https://m.me/vntechies',
-  discord: 'https://discord.gg/zWXsQb26',
+  discord: 'https://discord.gg/YecagKUqpS',
   locale: 'vi-VN',
   analytics: {
     // If you want to use an analytics provider you have to add it to the
