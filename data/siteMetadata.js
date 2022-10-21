@@ -1,6 +1,5 @@
 const siteMetadata = {
-  title:
-    'VNTechies Dev Blog 🇻🇳 - Kho tài nguyên về Cloud, DevOps dành cho người Việt yêu công nghệ 👨‍💻👩‍💻',
+  title: 'VNTechies Dev Blog 🇻🇳 - Kho tài nguyên về Cloud ☁️, DevOps 🚀',
   author: 'VNTechies',
   headerTitle: 'VNTechies',
   description:
@@ -12,7 +11,7 @@ const siteMetadata = {
     courses:
       '📝 Tài liệu, khoá học, hướng dẫn tự học các cộng nghệ liên quan tới ☁️ cloud computing, DevOps, AWS, Azure, Docker, Kubernetes, CDK, CI/CD ',
   },
-  language: 'vi',
+  language: 'vi-VN',
   theme: 'system', // system, dark or light
   siteUrl: 'https://vntechies.dev',
   siteRepo: 'https://github.com/vntechies/blog',

@@ -1,6 +1,6 @@
 ---
-name: Nam
-avatar: /static/images/logo.png
+name: Anh Cloud
+avatar: /static/images/authors/anhcloud.jpeg
 occupation: Cây bút chính
 company: VNTechies Dev blog
 email: info@vntechies.dev
@@ -11,4 +11,4 @@ github: https://github.com/vntechies
 url: https://vntechies.dev/
 ---
 
-Chào anh chị em, mình là Nam, cây bút chính tại VNTechies - Kho tài nguyên dành cho người Việt yêu công nghệ 🇻🇳
+Chào anh chị em, mình là Cloud, cây bút chính tại VNTechies - Kho tài nguyên dành cho người Việt yêu công nghệ 🇻🇳

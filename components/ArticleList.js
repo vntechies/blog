@@ -12,11 +12,11 @@ const ArticleList = ({ slug, date, title, summary, tags, image }) => {
       </div>
       <div className="space-y-3 xl:col-span-3">
         <div>
-          <h3 className="text-2xl font-bold leading-8 tracking-tight">
+          <h2 className="text-2xl font-bold leading-8 tracking-tight">
             <Link href={`/blog/${slug}`} className="text-gray-900 dark:text-gray-100">
               {title}
             </Link>
-          </h3>
+          </h2>
           <div className="flex flex-wrap">
             {tags.map((tag) => (
               <Tag key={tag} text={tag} />

@@ -1,2 +1,4 @@
 User-agent: *
 Allow: /
+Disallow: /user
+Sitemap: https://vntechies.dev/sitemap.xml
