@@ -116,7 +116,7 @@ export default function Course({ post, authorDetails, posts, otherCourses, prev,
           style={{ gridTemplateRows: 'auto 1fr' }}
         >
           <div className="pt-6 pb-10 pr-4 md:pr-0 xl:border-b xl:border-gray-200 xl:pt-11 xl:dark:border-gray-700">
-            <div className="sticky top-8">
+            <div className="sticky top-8 h-[calc(100vh-5.75rem)] overflow-y-scroll">
               <h3 className="dark:text-secondary-400 text-xl font-bold text-primary-600">
                 Nội dung
               </h3>
