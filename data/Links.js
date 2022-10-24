@@ -18,18 +18,18 @@ export const footerNavLinks = [
 
 export const featuredLinks = [
   {
-    title: 'Web Development',
-    summary: 'Hướng dẫn, cập nhật những thông tin mới về phát triển web và các ứng dụng web',
-    url: '/tags/web',
-  },
-  {
-    title: 'Cloud & DevOps',
-    summary: 'Tập trung vào CDK, CI/CD, tự động hoá và vận hành trên Cloud',
-    url: '/tags/devops',
+    title: 'Khoá học',
+    summary: 'Tập trung vào DevOps, CI/CD, tự động hoá, CDK và vận hành trên Cloud',
+    url: '/courses',
   },
   {
     title: 'Chứng chỉ',
     summary: 'Tham khảo các hướng dẫn học và thi các chứng chỉ liên quan tới Cloud & DevOps',
     url: '/tags/certificate',
+  },
+  {
+    title: 'Web Development',
+    summary: 'Hướng dẫn, cập nhật những thông tin mới về phát triển web và các ứng dụng web',
+    url: '/tags/web',
   },
 ]

@@ -79,7 +79,6 @@ export default function Course({ post, authorDetails, posts, otherCourses, prev,
       {frontMatter.index === 0 && (
         <CourseSEO
           courseItems={posts}
-          {...frontMatter}
           url={`${siteMetadata.siteUrl}/courses/${frontMatter.slug}`}
           {...frontMatter}
         />
