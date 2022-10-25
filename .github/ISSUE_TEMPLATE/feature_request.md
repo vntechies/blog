@@ -1,20 +1,19 @@
 ---
-name: Feature request
-about: Suggest an idea for this project
+name: Đề xuất ý tưởng
+about: Đề xuất ý tưởng cho dự án này
 title: ''
-labels: ''
+labels: enhancement
 assignees: ''
-
 ---
 
-**Is your feature request related to a problem? Please describe.**
-A clear and concise description of what the problem is. Ex. I'm always frustrated when [...]
+**Yêu cầu tính năng của bạn có liên quan đến sự cố không? Xin hãy trình bày cụ thể**
+Mô tả rõ ràng và ngắn gọn về vấn đề là gì. Ví dụ: Tôi gặp khó khăn khi […]
 
-**Describe the solution you'd like**
-A clear and concise description of what you want to happen.
+**Mô tả giải pháp bạn muốn**
+Mô tả rõ ràng và ngắn gọn về những gì bạn muốn xảy ra.
 
-**Describe alternatives you've considered**
-A clear and concise description of any alternative solutions or features you've considered.
+**Mô tả các cách khác có thể thay thế mà bạn đã xem xét**
+Mô tả rõ ràng và ngắn gọn về bất kỳ giải pháp hoặc tính năng thay thế nào mà bạn đã xem xét.
 
-**Additional context**
-Add any other context or screenshots about the feature request here.
+**Bổ sung context**
+Thêm bất kỳ context, hoặc ảnh chụp màn hình,... về yêu cầu tính năng tại đây.
