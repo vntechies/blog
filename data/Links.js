@@ -4,7 +4,7 @@ export const headerNavLinks = [
   { href: '/blog', title: 'Blog' },
   { href: '/courses', title: 'Khoá học' },
   { href: '/series', title: 'Series' },
-  // { href: '/toolbox', title: 'Toolbox' },
+  { href: 'https://github.com/vntechies/toolbox', title: 'Toolbox' },
   { href: '/about', title: 'About' },
 ]
 
