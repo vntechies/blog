@@ -1,0 +1,605 @@
+---
+title: 'Làm sao để trở thành một DevOps Engineer? Hướng dẫn đầy đủ'
+date: '2022-10-20'
+tags:
+  [
+    'devops',
+    'cloudcomputing',
+    'golang',
+    'aws',
+    'kubernetes',
+    'docker',
+    'linux',
+    'infrastructure',
+    'container',
+  ]
+draft: false
+layout: PostSimple
+images: ['/static/images/ogps/devops_2022.jpeg']
+summary: 'Trong hướng dẫn đầy đủ này, tôi sẽ chia sẻ những kinh nghiệm với vai trò Kỹ sư DevOps trong các tổ chức khác nhau và những kiến thức nền tảng cần học, chuẩn bị để trở thành một kỹ sư DevOps.'
+---
+
+Trong hướng dẫn đầy đủ này, tôi sẽ chia sẻ những kinh nghiệm với vai trò Kỹ sư DevOps của mình trong các tổ chức khác nhau và những kiến thức nền tảng cần học, chuẩn bị để trở thành một kỹ sư DevOps. Đây là một lộ trình chi tiết để bắt đầu hành trình trở thành một kỹ sư DevOps của bạn.
+
+Đối với thị trường CNTT hiện tại, domain DevOps là một trong những lựa chọn tốt nhất cho mức lương và sự phát triển nghề nghiệp của dân CNTT. Một câu hỏi phổ biến mà tôi nhận được khá thường xuyên là "Làm thế nào để trở thành một kỹ sư DevOps?"
+
+Nhiều người (bao gồm cả tôi) cho rằng không có gì title nào là "Kỹ sư DevOps” hoặc "Nhóm DevOps” bởi vì nó không có thật. Tuy nhiên, mọi người trong ngành hiện đã quen với thuật ngữ "Kỹ sư DevOps” và miễn là bạn hiểu triết lý, văn hoá DevOps, thì những danh xưng này không quan trọng lắm.
+
+Ở phần cuối của bài viết, tôi đã thêm các team khác nhau mà một kỹ sư DevOps có thể tham gia.
+
+Có nhiều quan niệm sai lầm về ý nghĩa thực sự của DevOps. Một quan niệm sai lầm như "Tự động hóa là DevOps". Việc phát triển các kỹ năng liên quan đến tự động hóa cơ sở hạ tầng không đủ để giúp bạn trở thành một kỹ sư DevOps.
+
+Theo Wikipedia [^1],
+
+> DevOps (kết hợp của cụm từ tiếng Anh "software DEVelopment" và "information technology OPerationS") là một thuật ngữ để chỉ một tập hợp các hành động trong đó nhấn mạnh sự hợp tác và trao đổi thông tin của các lập trình viên và chuyên viên tin học khi cùng làm việc để tự động hóa quá trình chuyển giao sản phẩm phần mềm và thay đổi kiến trúc hệ thống. Điều này nhằm thiết lập một nền văn hóa và môi trường nơi mà việc build (biên dịch phần mềm), kiểm tra, và phát hành phần mềm có thể xảy ra nhanh chóng, thường xuyên, và đáng tin cậy hơn.
+
+Từ định nghĩa trên, rõ ràng DevOps không phải là về bất kỳ công cụ hay công nghệ nào. Đó là một triết lý để làm cho các nhóm CNTT khác nhau (Nhà phát triển, Nhóm nền tảng, QA, v.v.) làm việc cùng nhau để mang lại kết quả tốt hơn và nhanh chóng thông qua phản hồi liên tục.
+
+Dưới đây là một biểu đồ xu hướng cho thấy mức độ phổ biến của DevOps trong năm năm qua.
+
+Mức độ phổ biến của DevOps trong năm năm qua
+
+![Mức độ phổ biến của DevOps trong năm năm qua](/static/images/assets/become_devops_5_years_trend.jpg)
+
+<TOCInline toc={props.toc} asDisclosure />
+
+## Kỹ sư DevOps là ai?
+
+Các tổ chức đang cố gắng thực hành DevOps yêu cầu những người có kỹ năng hợp tác, sẵn sàng thay đổi và áp dụng các công nghệ & phương pháp mới. Họ là Kỹ sư DevOps.
+
+Từ góc độ công cụ, DevOps Engineer là người có hiểu biết tốt về hệ thống, các công cụ tự động hóa, công cụ CI, hệ thống kiểm soát phiên bản, công cụ quan sát,giám sát hệ thống, network và kinh nghiệm sử dụng phần mềm quản lý dự án.
+
+Tôi đã thấy các team thậm chí tuyển dụng nhân sự cho việc tạo ra các pipeline cho việc xây dựng, triển khai cơ sở hạ tầng hoặc phát hành các phiên bản ứng dụng. Trong thế giới của kỹ sư DevOps, CI/CD pipeline do nhóm thiết kế/phát triển sẽ cung cấp các bản cập nhật hoặc bản phát hành nhỏ mà không cần can thiệp thủ công quá nhiều. Nó chỉ xảy ra nếu có sự thay đổi văn hóa trong cách làm việc của các nhóm khác nhau.
+
+Ví dụ: Từ kinh nghiệm của tôi khi làm việc với tư cách là kỹ sư DevOps, ngồi với các nhóm khác nhau và thảo luận về những điểm khó khăn sẽ giải quyết được nhiều vấn đề hơn là chỉ đơn thuần làm theo các quy tắc được cho là tốt nhất (và tin tôi đi, nó không dễ dàng một chút nào 🙂)
+
+Một mục tiêu khác của các kỹ sư DevOps là tự động hóa các tác vụ lặp đi lặp lại và dành nhiều thời gian hơn cho việc thiết kế và sáng tạo, đổi mới.
+
+## Làm thế nào để trở thành một kỹ sư DevOps?
+
+Bạn phải hiểu thực tế là DevOps không dành riêng cho các kỹ sư phát triển phần mềm hoặc kỹ sư hệ thống. Nó dành cho bất kỳ ai đam mê các phương pháp và công nghệ phát triển và sẵn sàng làm việc trong một môi trường cộng tác, nơi mọi thứ đều được tự động hóa để giúp cuộc sống của mọi người trở nên dễ dàng hơn.
+
+Không quan trọng bạn có phải là SysAdmin, nhà phát triển, kỹ sư QA, kỹ sư hỗ trợ, v.v. Bạn có thể là kỹ sư DevOps vì bạn đã là một phần của hệ sinh thái CNTT chịu trách nhiệm triển khai và quản lý các ứng dụng trên môi trường production.
+
+Bài viết này giải thích cách bạn nên chuẩn bị cho mình các công cụ và công nghệ để trở thành một kỹ sư DevOps thực hành triết lý DevOps.
+
+Lưu ý: Trong bài viết này, tôi đã đề cập đến nhiều lĩnh vực. Khi mới bắt đầu, chúng ta không thể là người thành thạo mọi thứ. Tuy nhiên, có một lượng kiến thức tương đối trong các lĩnh vực này sẽ giúp bạn trở thành một kỹ sư DevOps.
+
+## Hiểu về văn hoá DevOps
+
+Để trở thành một kỹ sư DevOps, điều đầu tiên và quan trọng nhất là phải hiểu văn hóa DevOps. Đó là tất cả các nhóm khác nhau làm việc cùng nhau hướng tới một mục tiêu chung. Nói cách khác, không nên có bất kỳ văn hóa đổ lỗi nào giữa các nhóm CNTT khác nhau.
+
+Hình ảnh sau đây sẽ nói lên tất cả.
+
+![Văn hoá DevOps](/static/images/assets/become_devops_devops_culture.webp)
+
+<p align="center">
+  <small>Nguồn: https://www.ein-bild.com/ (Bởi Sandra Martin)</small>
+</p>
+
+Ví dụ: Nếu bạn là một kỹ sư DevOps, đừng bao giờ nói "Đó không phải là công việc của tôi". Hãy nói "Hãy để tôi xem tôi có thể làm gì để giúp đỡ bạn". Cách bạn trả lời có tác động đáng kể đến việc cộng tác (nó không có nghĩa là bạn phải làm tất cả công việc của người khác).
+
+> **Lưu ý**: Nếu bạn là một fresher, việc hiểu các khía cạnh văn hóa là một thách thức vì nó đi kèm với kinh nghiệm thực tế trong ngành. Vì vậy, lời khuyên của tôi là tập trung vào các nguyên tắc cơ bản cốt lõi về CNTT (Hệ điều hành, Mạng và lập trình)
+
+Các nhà lãnh đạo CNTT và những người ra quyết định nên đảm bảo toàn bộ các nhóm được hướng dẫn về các khía cạnh văn hóa DevOps trước khi tham gia vào bộ công cụ DevOps. Điều này tránh được nhiều sự nhầm lẫn trong các nhóm. Tuy nhiên, điều này thường không xảy ra trong các tổ chức do đó họ sẽ có một "Nhóm DevOps" cho việc vận hành, một lần nữa tạo nên những cản trở giữa các bộ phận.
+
+Mọi người sẽ ngừng che giấu sự thật và ngừng đổ lỗi cho người khác về các vấn đề của dự án khi họ hiểu rằng một vấn đề trong quá trình thực hiện dự án phải được giải quyết theo cách hợp tác hơn là chỉ tay.
+
+Một khi bạn hiểu văn hóa DevOps, bạn sẽ không còn nói rằng "CI/CD và tự động hóa cơ sở hạ tầng là DevOps."
+
+Bạn có thể tham khảo báo cáo [State of DevOps của puppet](https://puppet.com/resources/report/2021-state-of-devops-report/). Một báo cáo về DevOps mà các kỹ sư và nhà lãnh đạo cần phải đọc.
+
+### Tài nguyên
+
+1. [**MIỄN PHÍ** - Coursera] [DevOps Culture and Mindset](https://go.vntechies.com/coursera-devops-culture-and-mindset)
+2. [**CÓ PHÍ** - Sách điện tử] [The Phoenix Project](https://amzn.to/3F0gGm7)
+
+## Tìm hiểu về các Hệ thống \*nix
+
+Chúng ta đang ở trong thời đại mà chúng ta không thể sống mà không có hệ thống Linux/Unix. Bạn sẽ hiểu rõ hơn và có kiến thức làm việc về các bản phân phối Linux khác nhau được các tổ chức sử dụng nhiều (RHEL, Centos, Ubuntu, CoreOS, v.v.).
+
+Theo báo cáo 2017 State of Linux Kernel Development của Linux Foundation [^2], vào thời điểm năm 2017, **90% khối lượng công việc trên dịch vụ điện toán đám mây công cộng chạy trên Linux**, chiếm 62% thị trường máy tính nhúng và 99% của thị trường siêu máy tính.
+
+Đây là một nghiên cứu thú vị khác từ Redhat, cho thấy các bản phân phối Linux khác nhau được sử dụng trong đám mây công cộng.
+
+![Sử dụng bản phân phối Linux trên đám mây công cộng](/static/images/assets/become_devops_linux_distro.webp)
+
+<p align="center">
+  <small>
+    Nguồn: [The state of Linux in the public cloud for
+    enterprises](https://www.redhat.com/en/resources/state-of-linux-in-public-cloud-for-enterprises)
+    (Bởi Redhat)
+  </small>
+</p>
+
+Bây giờ bạn có đủ lý do tại sao bạn nên tập trung vào Linux.
+
+Khi nói đến Linux, tất cả đều là terminal, GUI ít được ưu tiên hơn trong thế giới \*nix. Hãy bắt đầu bằng việc thực hành với terminal của các hệ thống này.
+
+Bạn có thể sử dụng Virtualbox với Vagrant hoặc AWS/GCP/Azure để tạo các máy chủ Linux và có thể bắt đầu với những mục sau đây.
+
+1. Hiểu quy trình khởi động Linux
+2. Hiểu systemd
+3. Cài đặt và cấu hình máy chủ web (Apache, Nginx, Tomcat, v.v.) và tìm hiểu cách máy chủ web hoạt động.
+4. Tìm hiểu về processes của Linux.
+5. Tìm hiểu cách hoạt động của SSH.
+6. Tìm hiểu về các hệ thống files khác nhau.
+7. Tìm hiểu cách volumes hoạt động trong Linux.
+8. Tìm hiểu về ghi system logging, giám sát và khắc phục sự cố.
+9. Tìm hiểu về các giao thức quan trọng (SSL, TLS, TCP, UDP, FTP, SFTP, SCP, SSH)
+10. Tìm hiểu cách quản lý các dịch vụ và cố gắng tạo một dịch vụ của riêng bạn (Initd, Systemd)
+11. Host các trang web tĩnh / động trên máy chủ web và thử với các cấu hình khác nhau.
+12. Thiết lập Bộ cân bằng tải & Reverse Proxy (Nginx, proxy HA, v.v.). Hiểu từng cấu hình và thuật toán đằng sau cân bằng tải.
+13. Tìm hiểu cách tối ưu hóa hiệu suất Linux.
+14. Thiết lập một Cơ sở dữ liệu và hiểu các cấu hình và quản lý của nó. (Ví dụ: Thiết lập PostgreSQL)
+15. Thử thay đổi cấu hình và học cách khắc phục sự cố.
+
+### Tài nguyên
+
+1. [Giới thiệu về Linux](https://www.edx.org/course/introduction-to-linux) [edX]
+2. [Học shell scripting cho DevOps](https://devopscube.com/linux-shell-scripting-for-devops/) [devopscube]
+3. [Hướng dẫn hoàn chỉnh để lập trình Bash](https://www.educative.io/courses/guide-to-bash-programming?aff=KNLz) [educave]
+4. [Học Linux trong 5 ngày](https://www.udemy.com/course/learn-linux-in-5-days/) [Udemy]
+5. [Hướng dẫn Vagrant cho người mới bắt đầu](https://devopscube.com/vagrant-tutorial-beginners/) [devopscube]
+
+### Chứng chỉ liên quan
+
+1. [Linux Foundation Certified System Administrator (LFCS)](https://training.linuxfoundation.org/certification/linux-foundation-certified-sysadmin-lfcs/)
+
+## Tìm hiểu cách cơ sở hạ tầng hoạt động
+
+Khối xây dựng cơ bản của bất kỳ tổ chức nào là Cơ sở hạ tầng của nó. Nó có thể là hệ thống sử dụng cloud hoặc on-premise data-center.
+
+Sự hiểu biết tổng thể về các thành phần Cơ sở hạ tầng là điều bắt buộc đối với một người muốn thực hành hoặc làm việc trong môi trường DevOps. Ví dụ: khi bạn tham gia các cuộc họp với các nhóm mạng/bảo mật, với một lượng kiến thức cơ sở hạ tầng tương đối, bạn có thể đặt những câu hỏi phù hợp, hiểu những gì họ đang nói và cộng tác tốt hơn.
+
+Có một sự khác biệt lớn khi bạn nói "Nó không hoạt động, bạn có thể xem xét điều này được không?" và "Tôi đã thực hiện xong việc điều tra sự cố ban đầu và đây là phát hiện của tôi. Bạn có thể tìm hiểu kỹ hơn và giúp chúng tôi hiểu điều gì đang gây ra sự cố được không?"
+
+Bạn nên dành một chút thời gian và có hiểu biết cơ bản về những điều sau đây.
+
+| **Networking**                                                                                                                                                                                                                                                                                  | **Storage**                                                                                       |
+| ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
+| 1. OSI Model/TCP-IP Model<br />2. Network Topologies<br />3. CIDR Notations<br />4. Subnetting<br />5. Public network<br />6. Private network<br />7. Static/Dynamic IP’s<br />8. Firewall<br />9. Proxy<br />10. NAT<br />11. Public & Private DNS<br />12. VPN<br />13. IPv4 & IPv6 Protocols | 1. SAN<br />2. Backups<br />3. NFS<br />5. Object storage<br />6. Disk IOPS/ throughput / latency |
+
+| **High Availability**                                                                                                  | **Single Sign-On**                    |
+| ---------------------------------------------------------------------------------------------------------------------- | ------------------------------------- |
+| 1. Clusters<br />2. Fail Over Mechanisms<br />3. Disaster Recovery<br />4. Vertical scaling<br />5. Horizontal scaling | 1. Active Directory/LDAP<br />2. Okta |
+
+| **Security**                                                                                                                                                                                | **Load Balancers**                                                                                     |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------ |
+| 1. SSL certificates<br />2. PKI Infrastructure<br />3. Zero trust security<br />4. Password/secret rotation<br />5. Security Compliance<br />6. Site-to-site VPN<br />7. Client-to-site VPN | 1. L4 Load Balancers<br />2. L7 Load Balancers<br />3. Load balancing algorithms<br />4. Reverse Proxy |
+
+Còn nhiều thứ nữa, nhưng phía trên đã tổng hợp các thành phần quan trọng trong một hệ thống cơ sở hạ tầng CNTT mà bạn có thể gặp phải trong công việc hàng ngày của mình.
+
+## Các chứng chỉ về Cloud
+
+Khi tôi nói "lấy các chứng chỉ", xin hãy không sử dụng các bộ đề dump chỉ để vượt qua kỳ thi và lấy chứng chỉ. Nó thực sự không tăng giá trị nào đáng kể cho bạn. Điều này có thể hữu ích cho tổ chức để trở thành partner hoặc cho khách hàng biết rằng doanh nghiệp của bạn có kỹ sư được chứng nhận.
+
+Hầu hết thị phần điện toán đám mây công cộng hiện do AWS sở hữu theo báo cáo mới nhất từ Statista [^3].
+
+![Báo cáo thị phần đám mây công cộng mới nhất](/static/images/assets/become_devops_aws_leads.jpeg)
+
+Chọn bất kỳ một nhà cung cấp Cloud nào, tốt nhất là AWS và tìm hiểu về tất cả các dịch vụ cơ bản và cốt lõi của nhà cung cấp đó. Thực hành với tất cả các dịch vụ chính và hiểu cách hoạt động của chúng.
+
+Xem các video AWS:re-invent và hiểu cách các tổ chức khác đang sử dụng các dịch vụ AWS để host các ứng dụng của họ.
+
+Tin tôi đi, bạn sẽ học được nhiều điều từ những video này và không có khóa đào tạo trực tuyến nào cung cấp nhiều thông tin về cách chạy, vận hành hệ thống trên môi trường production với AWS.
+
+Nếu bạn dự định lấy các chứng chỉ GCP, hãy xem các video Google Next của họ.
+
+Sử dụng chứng chỉ để đánh giá bản thân trên nền tảng tương ứng.
+
+### Tài nguyên
+
+1. [Udemy AWS Certification Courses](https://www.udemy.com/topic/aws-certification/)
+2. [Google Certified Associate Cloud Engineer Certification](https://cloud.google.com/certification/cloud-engineer)
+3. [Microsoft Azure - Beginner's Guide + AZ-900 preparation](https://www.udemy.com/course/microsoft-azure-beginners-guide/)
+
+### Chứng chỉ liên quan
+
+1. [Kinh nghiệm thi chứng chỉ AWS Certified Solutions Architect - Professional SAP-C01 (2022)](/blog/aws-certs/kinh-nghiem-thi-chung-chi-aws-certified-solutions-architect-professional-sap-c01)
+2. [Kinh nghiệm thi chứng chỉ AWS Certified Solutions Architect - Associate SAA-C03 (2022)](/blog/aws-certs/kinh-nghiem-thi-chung-chi-aws-certified-solutions-architect-associate-saa-c03)
+3. [Kinh nghiệm thi chứng chỉ AWS Certified SysOps - Associate](/blog/aws-certs/kinh-nghiem-thi-chung-chi-aws-certified-sysops-associate)
+4. [Kinh nghiệm thi chứng chỉ AWS Certified Developer - Associate](https://vntechies.dev/blog/aws-certs/kinh-nghiem-thi-chung-chi-aws-certified-developer-associate)
+
+## Tìm hiểu về Tự động hóa cơ sở hạ tầng (Infrastructure as Code - IaC)
+
+Chúng ta không tạo máy chủ theo cách thủ công nữa. Tự động hóa cơ sở hạ tầng đã trở thành một thành phần thiết yếu của mọi tổ chức.
+
+Theo báo cáo từ Redhat [^4], nhiều tổ chức đang đầu tư vào các sáng kiến tự động hóa của họ. Hãy nhìn dữ liệu dưới đây.
+
+![Ngân sách tự động hóa trong các tổ chức Devops](/static/images/assets/become_devops_iac_funding.png)
+
+Từ việc tạo, triển khai các máy chủ, cấu hình ứng dụng, triển khai, mọi thứ nên được tự động hóa. Bạn có thể tìm hiểu về bất kỳ bộ công cụ DevOps nào sau đây phù hợp với nhu cầu của bạn.
+
+Đối với môi trường dành cho nhà phát triển Đối với việc cung cấp cơ sở hạ tầng
+
+| **For Dev Environment**                                                                             | **For infrastructure provisioning**                                                                                                         |
+| --------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1. Vagrant<br />2. Docker Desktop<br />3. Minikube (k8s)<br />4. Minishift (k8s)<br />5. Kind (k8s) | 1. Terraform, Terraform CDK (preferable)<br />2. Cloudformation for AWS, AWS CDK<br />3. CLIs (of respective cloud provider)<br />4. Pulumi |
+
+| **For Configuration Management**                                      | **VM image management** |
+| --------------------------------------------------------------------- | ----------------------- |
+| 1. Ansible (preferable)<br />2. Chef<br />3. Puppet<br />4. Saltstack | 1. Hashicorp Packer     |
+
+Sau đây là một vài tips của tôi về việc tìm hiểu các công cụ tự động học:
+
+- Tìm hiểu những điều cơ bản từ tài liệu chính thức hoặc thông qua một khóa học.
+- Nếu bạn muốn viết một playbook Ansible cho Nginx, trước tiên hãy định cấu hình Nginx theo cách thủ công và xem các thành phần và cấu hình hoạt động như thế nào sau đó mới bắt đầu viết playbook.
+- Đảm bảo bạn học cách phát triển cơ sở hạ tầng theo phương pháp test-driven. Có các công cụ kiểm tra cho mọi công cụ tự động hóa. ([Ansible-test](https://www.ansible.com/blog/introduction-to-ansible-test), [terratest](https://terratest.gruntwork.io/), v.v.)
+- Các open-source modules là một tài liệu tham khảo tuyệt vời để học hỏi. Bạn có thể học logic phức tạp từ các modules đó.
+- Khi sử dụng open-source modules, hãy đảm bảo rằng bạn hiểu rõ từng khối mã hoạt động như thế nào.
+
+### Tài nguyên
+
+1. [Learn DevOps: Infrastructure Automation With Terraform](https://www.udemy.com/course/learn-devops-infrastructure-automation-with-terraform)
+2. [Ansible for the Absolute Beginner - Hands-On - DevOps](https://www.udemy.com/course/learn-ansible/)
+3. [**MIỄN PHÍ**] [Khoá học AWS CDK - VNTechies](/courses/aws/cdk/gioi-thieu)
+
+### Chứng chỉ liên quan
+
+- [HashiCorp Certified: Terraform Associate](https://www.hashicorp.com/certification/terraform-associate)
+
+## Container, Hệ thống phân tán & Service Mesh
+
+Việc sử dụng container đang tăng lên từng ngày. Tổ chức bạn làm việc có thể hiện không sử dụng container. Tuy nhiên, tốt nhất là bạn nên có kiến thức thực hành về công nghệ container như Docker hoặc podman. Nó sẽ giúp bạn có được một số lợi thế cạnh tranh với các đồng nghiệp của mình.
+
+Khi bạn hiểu về docker, bạn có thể bắt đầu tìm hiểu về các công cụ quản lý như Kubernetes, Docker Swarm, v.v.
+
+Những nền tảng này phù hợp nhất với kiến trúc microservices.
+
+Dưới đây là một xu hướng sử dụng Kubernetes thú vị của Datadog [^5].
+
+![Xu hướng sử dụng kubernetes](/static/images/assets/become_devops_container_report.webp)
+
+Hình ảnh sau đây cho thấy xu hướng tìm kiếm ngày càng tăng trong 5 năm đối với Kubernetes.
+
+![Xu hướng tìm kiếm Kubernetes](/static/images/assets/become_devops_k8s_search.jpg)
+
+Ngoài ra, nhiều kỹ sư và thậm chí cả những sinh viên mới tốt nghiệp đại học đang quan tâm đến việc học Kubernetes. Năm 2022 sẽ chứng kiến nhiều kỹ sư được cấp chứng chỉ Kubernetes. Bạn có thể xem hướng dẫn về kỳ thi CKA, CKAD và CKS của chúng tôi. Bạn có thể chọn chứng nhận Kubernetes tốt nhất dựa trên domain bạn muốn làm việc.
+
+Service Mesh là một chủ đề nâng cao về container. Nếu bạn là người mới bắt đầu sử dụng bộ công cụ container, bạn có thể học điều này sau khi có được một lượng kiến thức tốt về điều phối container và kiến trúc dựa trên microservices. Có nhiều công cụ service mesh từ nền tảng CNCF. Bạn có thể xem qua [các công cụ service mesh tốt nhất](https://devopscube.com/service-mesh-tools/) cho microservices.
+
+### Tài nguyên
+
+1. [Docker for the Absolute Beginner - Hands On - DevOps](https://www.udemy.com/course/learn-docker/)
+2. [Podman tutorial for beginners]()
+3. [Kubernetes Tutorials For Beginners: 29 Getting Started Guide]()
+4. [Best kubernetes courses]()
+5. [Kubernetes the Hard way]()
+
+### Chứng chỉ liên quan
+
+- [Certified Kubernetes Administrator (CKA)](https://training.linuxfoundation.org/certification/certified-kubernetes-administrator-cka/)
+- [Certified Kubernetes Application Developer (CKAD)](https://training.linuxfoundation.org/certification/certified-kubernetes-application-developer-ckad/)
+- [Certified Kubernetes Security Specialist (CKS)](https://training.linuxfoundation.org/certification/certified-kubernetes-security-specialist/)
+- [Kubernetes and Cloud Native Associate (KCNA)](https://training.linuxfoundation.org/certification/kubernetes-cloud-native-associate/)
+
+## Logging & Giám sát
+
+Log và giám sát là những khía cạnh cơ bản của cơ sở hạ tầng.
+
+Tất cả các ứng dụng được triển khai trong cơ sở hạ tầng sẽ tạo ra log và các chỉ số (metrics). Log được đẩy và lưu trữ trong cơ sở hạ tầng ghi log dựa trên kiến trúc và thiết kế.
+
+Mọi công ty sẽ có một cơ sở hạ tầng ghi log và giám sát. Các stack để ghi log thường được sử dụng là **Splunk và ELK**. Ngoài ra, có một số công ty SaaS như Loggly, cung cấp cơ sở hạ tầng ghi log.
+
+Để giám sát, có các công cụ mã nguồn mở như Prometheus, Nagios và các công cụ doanh nghiệp như AppDynamics, Datadog, SignalFx, v.v. Bạn có thể xem blog của chúng tôi về các công cụ giám sát mã nguồn mở tốt nhất.
+
+Các nhà phát triển, nhóm vận hành và nhóm bảo mật sử dụng hệ thống ghi log để theo dõi, khắc phục sự cố và kiểm tra các ứng dụng và cơ sở hạ tầng. Ngoài ra, đối với AIOPS, dữ liệu log đóng một vai trò quan trọng.
+
+Trong mọi tổ chức, các ứng dụng quan trọng được giám sát 24/7 bằng cách sử dụng bảng điều khiển giám sát. Nói chung, trang tổng quan sử dụng dữ liệu từ các nguồn ghi log hoặc số liệu do ứng dụng tạo ra.
+
+Ngoài ra, sẽ có các hệ thống cảnh báo sử dụng các quy tắc được cấu hình trong hệ thống giám sát để cảnh báo.
+
+Ví dụ: một cảnh báo có thể được kích hoạt dưới dạng thông báo trên Slack, tạo Jira ticket, cảnh báo qua email, [tạo ticket về sự cố trên ServiceNow](https://docs.servicenow.com/bundle/orlando-it-service-management/page/product/incident-management/concept/c_IncidentManagement.html) hoặc gọi điện thoại với PagerDuty. Quy trình cảnh báo sẽ khác nhau giữa các tổ chức.
+
+Là một kỹ sư DevOps, bạn sẽ có thể truy vấn log và khắc phục sự cố trong môi trường non-prod và prod. Hiểu được biểu thức chính quy là rất quan trọng để truy vấn log trong bất kỳ công cụ ghi log nào.
+
+### Tài nguyên
+
+1. [Elasticsearch 8 and the Elastic Stack: In Depth and Hands On](https://www.udemy.com/course/elasticsearch-7-and-elastic-stack)
+2. [Monitoring and Alerting with Prometheus](https://www.udemy.com/course/monitoring-and-alerting-with-prometheus)
+3. [Art of Monitoring](https://amzn.to/3UbNBJ1) [eBook]
+4. [Regular Expressions (Regex) Tutorial: How to Match Any Pattern of Text](https://www.youtube.com/watch?v=sa-TUpSx1JA)
+5. [DevOps measurement: Monitoring and observability](https://cloud.google.com/architecture/devops/devops-measurement-monitoring-and-observability)
+
+### Chứng chỉ liên quan
+
+- [Prometheus Certified Associate (PCA)](https://training.linuxfoundation.org/certification/prometheus-certified-associate/)
+
+## Hiểu các phương pháp tốt nhất về bảo mật (DevSecOps)
+
+[DevSecOps](https://www.redhat.com/en/topics/devops/what-is-devsecops) là một lĩnh vực khác liên quan đến việc tích hợp các phương pháp bảo mật trong từng giai đoạn của DevOps.
+
+Theo Redhat [^6],
+
+> DevSecOps là viết tắt của phát triển (DEVelopment), bảo mật (SECurity) và vận hành (OPerationS). Đó là một cách tiếp cận đối với văn hóa, tự động hóa và thiết kế nền tảng tích hợp bảo mật trong toàn bộ vòng đời CNTT.
+
+Một trong những chủ đề được thảo luận trong DevSecOps là **cách tiếp cận bảo mật Shift-left**. Shift Left Security là việc áp dụng các phương pháp bảo mật trong chính các giai đoạn thiết kế/phát triển.
+
+Cloud security alliance có viết [^7]
+
+> Chỉ có thể đạt được bảo mật khi nó đã được thiết kế sẵn. Việc áp dụng các biện pháp bảo mật như một phương pháp bổ sung sau cùng là một công thức dẫn đến thảm họa.
+
+Bạn có thể tham khảo [The Six Pillars of DevSecOps](https://cloudsecurityalliance.org/artifacts/devsecops-automation/) của Cloud security alliance.
+
+Dưới đây là một cuộc khảo sát bảo mật thú vị của Checkpoint năm 2022 [^8] cho thấy các cuộc tấn công mạng khác nhau theo khu vực.
+
+![Các cuộc tấn công mạng khác nhau theo khu vực](/static/images/assets/become_devops_security_report.png)
+
+Trong môi trường điện toán đám mây, đào tiền điện tử là một trong những tấn công phổ biến. Điều này chủ yếu xảy ra khi các chìa khoá truy cập vào hệ thống cloud của tổ chức được duy trì kém để tin tặc có thể chiếm quyền quản lý.
+
+Khi nói đến DevOps, secret management cho các ứng dụng và các thành phần cơ sở hạ tầng phải tuân theo các thông lệ bảo mật tiêu chuẩn. Bạn cũng có thể đọc về **các phương pháp bảo mật Zero Trust**.
+
+Hình ảnh sau đây cho thấy các phương pháp tiêu chuẩn DevSecOps chính do [Redhat khuyến nghị](https://www.redhat.com/en/topics/devops/what-is-devsecops).
+
+![Tiêu chuẩn devsecops tối thiểu](/static/images/assets/become_devops_devsecops-standards-min-768x1516.png.webp)
+
+<p align="center">
+  <small>Nguồn: Redhat.com</small>
+</p>
+
+Hashicorp Vault là một công cụ secret management rất tốt mà bạn có thể xem qua. Có nhiều quy trình công việc có sẵn để quản lý các secret của các môi trường.
+
+Báo cáo về [tình trạng bảo mật API](https://salt.security/api-security-trends?) của Salt Security cho thấy các cuộc tấn công API đã tăng 681% trong những năm gần đây.
+
+### Tài nguyên
+
+1. [HashiCorp Vault: The Advanced Course](https://www.udemy.com/course/vaultadvanced)
+2. [Vault Tutorial](https://devopscube.com/setup-hashicorp-vault-beginners-guide/)
+3. [What is container security?](https://www.redhat.com/en/topics/security/container-security)
+4. [Kubernetes vault setup guide](https://devopscube.com/vault-in-kubernetes/)
+5. [Vault Injector tutorial](https://devopscube.com/vault-agent-injector-tutorial/)
+
+### Chứng chỉ liên quan
+
+- [HashiCorp Certified: Vault Associate (002)](https://www.hashicorp.com/certification/vault-associate)
+
+## Tìm hiểu về Coding & Scripting
+
+Scripting là một kỹ năng thiết yếu đối với Kỹ sư DevOps. Ngày nay, khi phỏng vấn cho vị trí DevOps, mọi công ty ổn đều có một vòng viết code sơ bộ.
+
+Bằng cách này hay cách khác, bạn sẽ sử dụng nhiều loại scripts trong quy trình làm việc CI/CD. Bạn có thể học các ngôn ngữ script thường được sử dụng sau đây.
+
+1. Bash/Shell
+2. Python
+3. Golang
+
+Ngoài ra, để trở thành một kỹ sư DevOps thực thụ, bạn cần **hiểu rõ hơn về thế giới của các lập trình viên/kỹ sư phát triển**. Để làm được điều đó, bạn cần biết cách thức hoạt động của một quy trình phát triển.
+
+Vì vậy, điều cần thiết là phải **hiểu rõ về lập trình, API**, v.v. Nó sẽ giúp bạn khi khắc phục sự cố và cộng tác với các teams khác tốt hơn.
+
+Đề xuất của tôi là **chọn một ngôn ngữ lập trình và xây dựng một ứng dụng từ đầu**. Khi tôi bắt đầu sự nghiệp của mình, tôi đã xây dựng một ứng dụng web từ đầu bằng Ruby on Rails mặc dù phát triển ứng dụng không phải là công việc chính của tôi. Cho đến hôm nay, nó đã giúp tôi hiểu nhiều khái niệm của các kỹ sư phát triển.
+
+Khi bạn phát triển một ứng dụng, bạn sẽ hiểu quy trình và các thành phần liên quan đến việc phát triển ứng dụng. Khi bạn biết điều này, bạn có thể tương tác hiệu quả với các kỹ sư phát triển và có thể có những trao đổi có ý nghĩa hơn.
+
+Ngoài ra, trong thế giới ngày nay, mọi thứ đề được coi như mã nguồn. Dù có đủ các công cụ để tự động hóa mọi thứ, bạn vẫn có thể cần tuỳ chỉnh một chức năng mà công cụ không cung cấp. Trong những trường hợp như vậy, việc có kỹ năng code/scripting là rất hữu ích.
+
+Ví dụ,
+
+1. Jenkins Pipeline dưới dạng mã yêu cầu hiểu biết về Groovy
+2. Tuỳ chỉnh module Ansible yêu cầu hiểu biết về python
+3. Viết các tools vận hành Kubernetes yêu cầu kinh nghiệm Golang.
+
+Ngoài ra, nếu bạn xem xét tới các công cụ như [AWS CDK](https://aws.amazon.com/vi/cdk/) hoặc IaaC như [Pulumi](https://www.pulumi.com/), bạn có thể sử dụng ngôn ngữ lập trình để xây dựng cơ sở hạ tầng và thực hiện phát triển cơ sở hạ tầng theo hướng thử nghiệm (test-driven) giống như khi phát triển ứng dụng.
+
+Golang đang thực sự trở nên phổ biến khi nhắc tới DevOps. Ngày nay, rất nhiều công cụ DevOps sử dụng Golang. Trên thực tế, các công cụ như Kubernetes và terraform được viết bằng go.
+
+JFrog đã khảo sát việc áp dụng Golang trong GopherCon và **18% người được hỏi** cho biết họ sử dụng Golang cho công việc liên quan đến DevOps.
+
+![Khảo sát về việc sử dụng Golang](/static/images/assets/become_devops_Areas-of-Go-Development-min-768x513.png.webp)
+
+### Tài nguyên
+
+1. [30+ websites to learn coding online](https://devopscube.com/top-websites-to-learn-programming-online/)
+2. [2022 Complete Python Bootcamp From Zero to Hero in Python](https://www.udemy.com/course/complete-python-bootcamp)
+3. [Learn How To Code: Google's Go (golang) Programming Language](https://www.udemy.com/course/learn-how-to-code)
+4. [Linux Shell Scripting: A Project-Based Approach to Learning](https://www.udemy.com/course/linux-shell-scripting-projects)
+
+## Tìm hiểu Git, GitOps & Học cách viết tài liệu
+
+Điều cần thiết là kiểm soát phiên bản mọi thứ bạn làm (ngoại trừ passwords và secrets 😛), và Git là công cụ kiểm soát phiên bản tốt nhất. Có rất nhiều hướng dẫn về git, và bạn sẽ không mất quá nhiều thời gian để học các thao tác quan trọng của git.
+
+Bạn có thể bắt đầu với Github hoặc Bitbucket làm kho lưu trữ mã của mình.
+
+> Lưu ý: Chiến lược Git Branching là một phần quan trọng của bất kỳ quy trình phát hành ứng dụng nào.
+
+Khi bạn đã hiểu về Git, hãy tìm hiểu về GitOps. Đây là **một thực hành kỹ thuật đang trên đà phát triển** nhưng không được các công ty sử dụng phổ biến. Tuy nhiên, có thể nó sẽ trở thành một thực hành được sử dụng rộng rãi trong tương lai.
+
+Vậy GitOps là gì? Đây là những gì gitops.tech giải thích về GitOps [^9]
+
+GitOps là một cách triển khai Triển khai liên tục cho các ứng dụng cloud-native. Nó tập trung vào trải nghiệm và lấy kỹ sư phát triển làm trung tâm khi vận hành cơ sở hạ tầng, bằng cách sử dụng các công cụ mà các nhà phát triển đã quen thuộc, bao gồm các công cụ Git và Triển khai liên tục (CD)
+
+Bạn có thể đọc lời giải thích đơn giản của tôi trên Gitops.
+
+Hình ảnh sau đây cho thấy toàn bộ [lịch sử của GitOps](https://www.weave.works/blog/the-history-of-gitops) được tạo bởi weave works.
+
+![Lịch sử GitOps](/static/images/assets/become_devops_gitops-history-1024x525.png)
+
+Điều quan trọng tiếp theo là **viết tài liệu cho mọi việc bạn làm**. Mọi kho lưu trữ (repository) phải có tệp README, tệp này sẽ giải thích mã của bạn tốt hơn. Tài liệu tốt sẽ giúp không chỉ bạn mà còn giúp ích những người cố gắng sử dụng mã của bạn.
+
+### Tài nguyên
+
+1. How to Learn Git for DevOps
+2. Git Complete: The definitive, step-by-step guide to Git
+3. Git Basics Every Developer and Administrator Should Know
+
+## Hiểu về vòng đời phát triển ứng dụng
+
+Khi nói đến vòng đời phát triển ứng dụng, có ba khái niệm quan trọng bạn cần phải biết.
+
+- Tích hợp liên tục - Continuous Integration
+- Phân phối liên tục - Continuous Delivery
+- Triển khai liên tục - Continuous Deployment
+
+Hãy đọc bài viết [quản lý quy trình phát hành](https://devopscube.com/release-management-explained/) để hiểu cách quy trình phát triển của một ứng dụng điển hình.
+
+Tìm hiểu cách sử dụng các công cụ CI/CD nào sau đây.
+
+| **CI Tools**   | **CD Tools** |
+| -------------- | ------------ |
+| Jenkins        | ArgoCD       |
+| GitHub Actions | FluxCD       |
+| Drone CI       | Jenkins X    |
+| Travis CI      | GoCD         |
+
+Đây là một hình ảnh thể hiện toàn bộ quy trình CI/CD do bmc thực hiện
+
+![CI/CD trong Devops](/static/images/assets/become_devops_cicd-process-min-768x289.webp)
+
+<p align="center">
+  <small>
+    Nguồn:
+    [bmc](https://www.bmc.com/blogs/continuous-delivery-continuous-deployment-continuous-integration-whats-difference/)
+  </small>
+</p>
+
+Ngoài ra, đây là danh sách các chủ đề liên quan đến vòng đời phát triển và phát hành ứng dụng. Bạn có thể kết nối với những người trong cộng đồng và hiểu cách nó được thực hiện trong mỗi tổ chức của khác nhau.
+
+1. Quy trình lập kế hoạch
+2. Quy trình phê duyệt kiến trúc và ký duyệt của Enterprise architects
+3. Enterprise Security phê duyệt cơ sở hạ tầng và thiết kế ứng dụng/công cụ
+4. Data compliance
+5. Quản lý cấu hình / secrets
+6. QA / Kiểm thử hiệu năng & Phê duyệt
+7. Giám sát tài liệu và thiết lập KPIs
+8. Quy trình quản lý thay đổi (Change management process)
+9. Quy trình phát hành lên môi trường production
+10. Hoạt động xác nhận sau môi trường production
+11. Các kịch bản và chiến lược rollback
+
+### Chứng chỉ liên quan
+
+- [Certified CloudBees Jenkins Engineer (CCJE)](https://devopscube.com/best-devops-certifications/)
+
+## DevOps vs SRE
+
+SRE là một chủ đề đang rất được quan tâm khác trong cộng đồng DevOps.
+
+SRE là một tập hợp các phương pháp và triết lý được bắt đầu từ Google.
+
+Đây là những gì google nói về DevOps và SRE
+
+> DevOps và SRE không phải là hai phương pháp cạnh tranh để phát triển và vận hành phần mềm, mà là những một cặp thân thiết được thiết kế để phá vỡ các rào cản của tổ chức để cung cấp phần mềm tốt hơn và nhanh hơn. "Class SRE Implements DevOps"
+
+Dưới đây là các tài liệu chính thức của Google giúp bạn hiểu thêm về SRE.
+
+### Tài nguyên
+
+1. [What is SRE?](https://sre.google/)
+2. [How SRE relates to DevOps](https://www.oreilly.com/library/view/how-sre-relates/9781492030645/ch01.html#idm140514956622544)
+3. [SRE vs. DevOps: competing standards or close friends?](https://cloud.google.com/blog/products/devops-sre)
+
+## Các loại "Team DevOps"
+
+Ngày nay, mọi tổ chức đều gọi những người làm việc với Cơ sở hạ tầng / CI-CD là "Kỹ sư DevOps". và đưa họ trở thành một phần của "team DevOps". Tuy nhiên, nhiệm vụ của họ khác nhau tùy thuộc vào team mà họ làm việc cùng.
+
+Có một quan niệm sai lầm về "Kỹ sư DevOps" cho rằng họ chịu trách nhiệm về mọi thứ. Điều đó không đúng. Nó có thể đúng với các team nhỏ.
+
+Trên thực tế, nếu bạn được tuyển dụng với tư cách là "Kỹ sư DevOps", bạn có thể thuộc bất kỳ team nào sau đây trong một tổ chức.
+
+1. **Team Nền tảng Trung tâm (Central Platform Team - Platform engineering)**: Chịu trách nhiệm cung cấp cơ sở hạ tầng theo yêu cầu. Team này chịu trách nhiệm cung cấp một nền tảng có thể mở rộng khi được yêu cầu. Họ sẽ không chăm sóc các ứng dụng mà là các nền tảng cơ bản. Họ sẽ đảm bảo hệ thống trên môi trường sản xuất **luôn sẵn sàng 24x7** thông qua việc hỗ trợ và giám sát nền tảng liên tục. Ngoài ra, họ sẽ làm việc trên công cụ mới và tự động hóa để đáp ứng các nhu cầu trong tương lai. Người dùng cuối cùng của team này sẽ là team phát triển hoặc team vận hành ứng dụng. Vì vậy, đây là trách nhiệm được chia sẻ giữa các team với nhau.
+2. **Team DevOps**: Mặc dù "team DevOps" không có ý nghĩa gì, nhưng các tổ chức sử dụng nó để gắn thẻ tean hoạt động với tên này. Tean này thường làm việc chặt chẽ với các kỹ sư phát triển và phục vụ nhiều team phát triển. Họ chịu trách nhiệm về phân phối, triển khai ứng dụng end-to-end.
+3. **Team vận hành ứng dụng**: Team này là một phần của các team kỹ thuật làm việc trên một chương trình cụ thể trong một tổ chức và có kiến thức tốt về domain cụ thể đó. Ví dụ: team thanh toán - chịu trách nhiệm triển khai và quản lý các ứng dụng thanh toán. Việc quản lý nền tảng sẽ do team nền tảng trung tâm hoặc team DevOps đảm nhận.
+4. **Team SRE**: Team này giải quyết vấn đề tự động hóa, tính sẵn sàng, độ trễ, hiệu suất, hiệu quả, quản lý thay đổi, giám sát, ứng phó khẩn cấp và lập kế hoạch năng lực. Họ làm việc chặt chẽ với các nhà phát triển để giải quyết các vấn đề hoạt động. Team này bao gồm các kỹ sư làm việc trên cơ sở hạ tầng với nền tảng phát triển.
+5. **Team support**: Team hỗ trợ có nhiệm vụ khắc phục sự cố / xử lý các ticket hỗ trợ và phân loại mức độ ưu tiên của các vấn đề dựa trên mức độ nghiêm trọng. Nhóm này có thể có thêm được phân thành L1, L2 và L3, các level support khác nhau.
+
+Đối với các ứng viên có kinh nghiệm, việc hiểu bản chất của các công việc hàng ngày trước khi gia nhập một tổ chức là rất quan trọng.
+
+## Vai trò & Trách nhiệm của Kỹ sư DevOps
+
+Với những bạn đang tìm việc liên quan tới DevOps, tốt nhất là nên hiểu vai trò và trách nhiệm của kỹ sư DevOps trước khi bạn gia nhập một tổ chức vì mỗi công ty có sẽ những vai trò và trách nhiệm khác nhau.
+
+Bạn có thể hỏi những câu hỏi sau để có một bức tranh rõ ràng về những gì bạn sẽ làm với tư cách là một kỹ sư DevOps.
+
+1. Nội dung công việc hàng ngày của các dự án là gì?
+2. Có bất kỳ công việc nào liên quan tới tự động hóa không, hay là bảo trì dự án?
+3. Những công cụ DevOps nào hiện đang được sử dụng trong dự án?
+4. Có bất kỳ sự thay đổi nào trong các pipeline hiện tại không?
+5. Lộ trình tương lai của dự án là gì?
+6. Có lịch trực on-call không và tần suất của việc đó? Có được hỗ trợ khi on-call không? (nghỉ bù, tiền lương,...)
+7. Sẽ có lịch trực theo ca đêm luân phiên nào không?
+8. Thời gian làm việc cố định hay sẽ thay đổi nếu dự án thay đổi?
+9. Có văn hóa làm việc vào cuối tuần không?
+10. Hỏi về quy mô đội. Chắc chắn là bạn không muốn bị kiệt sức!
+
+Bạn có thể hỏi thêm những câu hỏi mà bạn nghĩ để phù hợp với mục tiêu học tập và nghề nghiệp của mình. Chỉ vì tên thương hiệu tốt, không có nghĩa là bạn sẽ có tác phẩm chất lượng.
+
+Nhìn chung, đây là những gì bạn nên biết về công việc hàng ngày của các kỹ sư Devops.
+
+- Các kỹ sư Devops không tạo ra pipeline và làm các task liên quan tới tự động hóa mỗi ngày. Thay vào đó, hầu hết task tự động hóa là hoạt động một lần.
+- Các kỹ sư DevOps sẽ phải tham gia vào trực on-call theo yêu cầu để hỗ trợ dự án. Tuy nhiên, vẫn có những ngoại lệ trong một số dự án.
+- Bạn có thể là một phần của nhóm nền tảng, nhóm ứng dụng, nhóm hỗ trợ
+- Nếu bạn là một phần của nhóm kỹ thuật nền tảng, sự phát triển và đổi mới liên tục là một phần của việc xây dựng các công cụ nền tảng. Đó sẽ là một trải nghiệm tuyệt vời mà bạn có thể học được nhiều thứ.
+- Nếu bạn trở thành một phần của nhóm vận hành ứng dụng, bạn sẽ phải sử dụng các công cụ được phát triển bởi các nhóm nền tảng và có thể có các tùy chọn để mở rộng nó theo yêu cầu. Nhưng bạn có thể tham gia các cuộc họp hàng ngày để hiểu những gì đang diễn ra trong dự án.
+- Nếu bạn là thành viên của nhóm hỗ trợ, bạn sẽ nhận được một cuốn sách hướng dẫn (runbook/playbook) giải quyết các vấn đề, nhưng bạn sẽ có ít cơ hội tham gia vào các cuộc thảo luận về thiết kế hơn.
+
+Cố gắng tránh ca đêm và ca luân phiên. `Sức khỏe quan trọng hơn bất cứ thứ gì.`
+
+## Kỹ sư DevOps - Các câu hỏi thường gặp
+
+#### Làm cách nào để bắt đầu với DevOps?
+
+Không có lộ trình cụ thể nào cho DevOps. Nếu bạn đã từng là một kỹ sư phát triển, QA, hoặc hỗ trợ vận hành, bạn cần tìm hiểu về tự động hóa cơ sở hạ tầng và CI/CD. Nếu bạn là một người mới bắt đầu, bạn cần tập trung vào lập trình, các khái niệm về hệ điều hành, Cloud và container để bắt đầu với DevOps. Quan trọng nhất, bạn cần chọn một vấn đề thực tế và giải quyết chúng trước khi đến các cuộc phỏng vấn. Đây là danh sách ví dụ về các vấn đề thực tế của DevOps
+
+#### DevOps có cần code không?
+
+Nó phụ thuộc vào dự án bạn đang làm việc. Ví dụ: có những kỹ sư DevOps tập trung vào phát triển nền tảng. Trong trường hợp đó, viết mã là điều bắt buộc. Bạn cần biết code để phát triển các yêu cầu tùy chỉnh trong tự động hóa cơ sở hạ tầng và CI/CD. Ngoài ra, đối với hầu hết các cuộc phỏng vấn DevOps, bạn cần phải hoàn thành vòng coding/scripting.
+
+#### Chính xác thì kỹ sư DevOps làm những gì?
+
+Công việc của các kỹ sư Devops là cộng tác với các kỹ sư phát triển và các team khác nhau để làm cho quá trình CI/CD trở nên dễ dàng. Quan trọng nhất là dành nhiều thời gian hơn cho việc tự động hóa các tác vụ lặp đi lặp lại. Cùng với tự động hóa cơ sở hạ tầng, các kỹ sư DevOps cần xem xét xử lý sự cố và giám sát các nền tảng và ứng dụng sản xuất và phi sản xuất.
+
+#### Những kỹ năng nào cần thiết cho DevOps?
+
+Các kỹ năng chung cần thiết cho DevOps là lập trình, khái niệm hệ điều hành, hệ thống phân tán, mạng, giám sát, khắc phục sự cố, container, tự động hóa cơ sở hạ tầng, quản lý cấu hình, kiểm soát phiên bản và các công cụ CI/CD như Jenkins, GitlabCI, GitHub action, v.v.
+
+## DevOps Blogs
+
+Nếu bạn muốn trở thành một **kỹ sư DevOps giỏi**, hãy chịu khó học hỏi và đọc thêm. Đọc ít nhất một blog công nghệ DevOps liên quan đến kỹ thuật. Đọc các chủ đề không phải là một phần công việc hàng ngày của bạn để **mở rộng tư duy và tầm nhìn của bạn**.
+
+Theo dõi tất cả các **blog kỹ thuật như Netflix, Twitter, Google, v.v.** Tìm hiểu cách họ đang sử dụng các bộ công cụ, chiến lược triển khai phù hợp và các dự án nguồn mở mới nhất của họ.
+
+Theo dõi những người có cùng career path với bạn trên LinkedIn, Reddit, Medium, Quora, v.v.
+
+### Tài nguyên
+
+1. [Best DevOps Blogs & Resources](https://devopscube.com/list-of-devops-blogs-and-resources/)
+2. [How they DevOps](https://github.com/bregman-arie/howtheydevops)
+3. [How they SRE](https://github.com/upgundecha/howtheysre)
+
+## Tài liệu hoá kiến thức
+
+Sẽ là điều rất tốt nếu bạn chia sẻ với những người khác kinh nghiệm và sự học hỏi của bạn. Bạn có thể viết các hướng dẫn, kiến thức và kinh nghiệm trên blog của mình.
+
+Nó sẽ giúp ích cho người khác, và nó sẽ tạo nên thương hiệu cá nhân cho chính bạn. Chỉ mất chưa đến 30 phút để thiết lập một blog bằng WordPress hoặc Medium.
+
+Bất cứ khi nào bạn tìm hiểu thứ gì đó mới về DevOps, bạn có thể viết về nó. Nó sẽ là tài liệu tham khảo cho bạn cũng như những người khác. Bạn có thể chia sẻ nó trong nhóm LinkedIn, Dzone, v.v.
+
+## Kết luận
+
+Các công cụ và quy trình liên quan đến DevOps không giới hạn những gì được đề cập trong bài viết này. Tuy nhiên, đây là những công cụ và công nghệ mã nguồn mở thường được sử dụng mà bạn có thể bắt đầu để trở thành một kỹ sư DevOps.
+
+Bây giờ tôi muốn nghe những suy nghĩ của bạn:
+
+- Điều quan trọng của bạn rút ra từ bài viết này là gì?
+
+Hoặc có thể bạn có câu hỏi về những điều ở phía trên.
+
+Dù bằng cách nào, hãy để lại bình luận ở dưới.
+
+Xin cảm ơn!
+
+## Tham khảo
+
+- [DevOpsCube - Become A DevOps Engineer in 2022: A Comprehensive Guide](https://devopscube.com/become-devops-engineer/)
+  > Bài viết là bản dịch tiếng Việt của blog trên đã được sửa đổi, bổ sung
+
+[^1]: [DevOps](https://vi.wikipedia.org/wiki/DevOps)
+[^2]: [2017 State of Linux Kernel Development của Linux Foundation](https://www.linuxfoundation.jp/publications/2017/10/2017-state-of-linux-kernel-development/)
+[^3]: [Amazon Leads $200-Billion Cloud Market](https://www.statista.com/chart/18819/worldwide-market-share-of-leading-cloud-infrastructure-service-providers/)
+[^4]: [Red Hat Global Customer Tech Outlook 2019: Automation, cloud, & security lead funding priorities](https://www.redhat.com/en/blog/red-hat-global-customer-tech-outlook-2019-automation-cloud-security-lead-funding-priorities)
+[^5]: [10 trends in real world container use | Datadog](https://www.datadoghq.com/container-report/)
+[^6]: [What is DevSecOps?](https://www.redhat.com/en/topics/devops/what-is-devsecops)
+[^7]: [The Six Pillars of DevSecOps: Automation](https://cloudsecurityalliance.org/artifacts/devsecops-automation/)
+[^8]: [CHECK POINT 2022 SECURITY REPORT](https://go.checkpoint.com/security-report/page-introduction.php)
+[^9]: [GitOps](https://www.gitops.tech/)
