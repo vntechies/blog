@@ -10,7 +10,7 @@ export default function CourseSimple({ frontMatter, authorDetails, next, prev, c
     <SectionContainer>
       <CourseSEO url={`${siteMetadata.siteUrl}/courses/${frontMatter.slug}`} {...frontMatter} />
       <ScrollTopAndComment />
-      <article>
+      <article className="post">
         <div>
           <div
             className="divide-y divide-gray-200 pb-8 dark:divide-gray-700 xl:divide-y-0 "

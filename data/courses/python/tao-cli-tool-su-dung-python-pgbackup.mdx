@@ -1,0 +1,463 @@
+---
+title: 'Tạo CLI tool sử dụng Python: pgbackup'
+draft: false
+images: ['/static/images/ogps/python_cli.jpeg']
+summary: 'Tạo CLI tool back up Postgre database về local hoặc S3 sử dụng Python'
+tags: ['devops', 'python']
+date: '2022-10-26'
+index: 1
+---
+
+<TOCInline toc={props.toc} asDisclosure />
+
+Sau bài hướng dẫn này, chúng ta sẽ tạo một CLI có chức năng có thể backup dữ liệu của postgreDB bằng pgdump lưu vào bộ nhớ local hoặc upload lên S3 bucket
+
+```shell
+# Lưu file backup vào /path/to/file ở local storage
+pgbackup postgres://vntechies@example.com:5432/test --driver local /var/local/db_one/backups
+
+# Upload file backup tới bucket bucket_name trên S3
+pgbackup postgres://vntechies@example.com:5432/test --driver s3 backups
+```
+
+## Chuẩn bị
+
+Trước khi bắt đầu các bạn cần chuẩn bị:
+
+### Python3.10
+
+- Cài đặt [Python 3.10](https://www.python.org/downloads/)
+
+### Postgres
+
+- Một postgre DB đang chạy, cách đơn giản nhất là sử dụng docker container
+
+```shell
+docker run -d \
+	--name vntechies_pg \
+	-e POSTGRES_PASSWORD=password_kho_doan \
+    -e POSTGRES_USER=vntechies \
+    -e POSTGRES_DB=test \
+    -p 5432:5432 \
+	postgres:9.6
+```
+
+- Tạo dữ liệu mẫu cho Postgres DB sử dụng file [insert_db.sh](https://raw.githubusercontent.com/vntechies/010-python-cli-pgbackup/main/prep/insert_db.sh)
+
+- Kiểm tra kết nối
+
+```shell
+psql postgres://vntechies:password_kho_doan@localhost:5432/test -c "SELECT count(id) FROM employees;"
+
+ count
+-------
+  1000
+(1 row)
+```
+
+### AWS S3 Bucket
+
+- [Đăng ký một tài khoản AWS](https://aws.amazon.com/vi/resources/create-account/)
+- Tạo một [S3 bucket](https://docs.aws.amazon.com/AmazonS3/latest/userguide/create-bucket-overview.html)
+- Bạn cũng có thể tạo S3 bằng AWS CDK theo hướng dẫn ở [đây](/courses/aws/cdk/tao-s3-bucket-voi-aws-cdk)
+- Cài đặt AWS Profile để sử dụng cho việc upload file đến S3, tham khảo hướng dẫn tại [đây](/courses/aws/cdk/tao-s3-bucket-voi-aws-cdk#2-cài-đặt-aws-cli-và-cài-đặt-aws-profile)
+
+## Code pgbackup package
+
+### Khởi tạo project
+
+- [Tài liệu "Distributing Python Modules"](https://docs.python.org/3/distributing/index.html) sẽ hướng dẫn cách để tạo một python package (CLI tool)
+
+- Đối với các Python project mà chúng ta muốn phân phối dưới dạng một package, chúng tathực sự chỉ cần có một thứ: file `setup.py`. File này sẽ được sử dụng bởi pip (cụ thể là setuptools) để biết phải làm gì khi cài đặt package.
+
+```shell
+mkdir -p 010-python-cli-pgbackup/src
+cd 010-python-cli-pgbackup
+touch README.md setup.py src/.gitkeep
+vi setup.py
+```
+
+- Chúng ta muốn phần lớn tài liệu về tool của mình nằm trong file README.md. File này sẽ cung cấp cho người dùng khi sử dụng GitHub hoặc GitLab.
+- Cần lưu ý là chúng ta cần sử dụng setup fucntion từ setuptools và find_packages để đảm bảo rằng bất kỳ package nào chúng ta tạo ra sẽ trở thành một phần của dự án mà không cần sửa đổi file này.
+
+```python:setup.py
+from setuptools import find_packages, setup
+
+with open('README.md', 'r') as f:
+    long_description = f.read()
+
+setup(
+    name='pgbackup',
+    version='0.1.0',
+    author='VNTechies',
+    author_email='info@vntechies.dev',
+    description='A utility for backing up PostGreSQL databases',
+    long_description=long_description,
+    long_description_content_type = 'text/markdown',
+    url = 'https://github.com/vntechies/010-python-cli-pgbackup'
+    packages=find_packages('src')
+)
+```
+
+- Khi làm việc với mã Python, chúng ta nên khởi tạo dự án của mình bằng virtualenv
+
+```shell
+pipenv --python python3.10
+pipenv shell
+vi README.md
+```
+
+- Chuẩn bị file `README.md` gồm các thông tin
+  - Các sử dụng
+  - Cách cài đặt và chạy khi phát triển.
+  - Cách cài đặt và sử dụng từ mã nguồn.
+
+```markdown:README.md
+pgbackup
+========
+
+CLI for backing up remote PostgreSQL databases locally or to AWS S3
+
+Preparing for development
+-------------------------
+
+1. Ensure ``pip`` and ``pipenv`` are installed
+2. Clone repository: ``git clone git@github.com/ahsec/pgbackup``
+3. ``cd`` into repository
+4. Fetch development dependencies ``make install``
+5. Activate virtualenv: ``pipenv shell``
+
+Usage
+-----
+
+Pass in a full database URL, the storage driver, and destination.
+
+S3 Example with bucket name:
+
+::
+
+    $ pgbackup postgres://bob@example.com/5432/db_one --driver s3 backups
+
+Local example with local path
+
+::
+
+    $ pgbackup postgres://bob@example.com/5432/db_one --driver local /var/local/db_one/backups
+
+Running tests
+-------------
+
+Run tests locally using ``make`` if virtualenv is active:
+
+::
+
+    $make
+
+If virtualenv isn't active then use:
+
+::
+
+    $pipenv run make
+```
+
+- Trước khi chúng ta khởi tạo git project, chúng ta sẽ lấy [file .gitignore cho Python mặc định từ Github](https://github.com/github/gitignore/blob/master/Python.gitignore) để không theo dõi các file không cần thiết
+
+```shell
+curl -o .gitignore https://raw.githubusercontent.com/github/gitignore/master/Python.gitignore
+```
+
+- Tạo git project
+
+```shell
+git init
+git add --all
+git commit -m 'Initial commit'
+```
+
+### Xử lý đối số (argument handle)
+
+- Cho đến thời điểm này, pgbackup tồn tại dưới dạng một project chứ không phải là một package. Chúng ta sẽ tạo khá nhiều module khác nhau và muốn tất cả chúng có trong package pgbackup. Để tạo một package, chúng tôi cần có một thư mục với tên package của chúng ta và bao gồm một file `__init__.py`.
+
+```shell
+mkdir src/pgbackup
+touch src/pgbackup/__init__.py
+vi src/pgbackup/cli.py
+```
+
+- Bây giờ chúng ta có thể tạo phần còn lại của các module trong thư mục `src/pgbackup`
+- Khi nhắc tới việc tạo CLI tool bằng Python, thư viện tiêu chuẩn có một package tuyệt vời cho việc đó: argparse[^1]. Hãy tạo một file Python mới chứa logic liên quan đến CLI của chúng ta tại `src/pgbackup/cli.py`. Trong file này, chúng tôi sẽ viết một function để phân tích cú pháp các đối số mà người dùng truyền vào khi chạy.
+- Chúng ta cần:
+  - Một đối số cho chuỗi kết nối (connection string) của database chúng ta kết nối đến.
+  - Một đối số sử dụng flag (`--driver`) chứa 2 phần cho chúng ta biết driver name (local hay S3) và địa điểm mà chúng ta lưu file back up (với S3 là bucket name và với local là path)
+- Đối số đầu tiên được gọi là đối số vị trí (positional argument), và có thể dễ dàng định nghĩa, xử lý. Với đối số thứ 2 gồm 2 phần, việc xử lý sẽ phức tạp hơn, nhưng chúng ta có class `argparse.Action` để tạo ra một class giúp xử lý đối số này.
+
+```python:src/pgbackup/cli.py {3}
+from argparse import Action, ArgumentParser
+import time
+
+
+class DriverAction(Action):
+    def __call__(self, parser, namespace, values, option_string=None):
+        driver, destination = values
+        namespace.driver = driver.lower()
+        namespace.destination = destination
+
+
+def create_parser():
+    parser = ArgumentParser(
+        description="""
+        CLI tool back up Postgre database về local hoặc S3 sử dụng Python
+        """
+    )
+
+    parser.add_argument("url", help="Connection string của Postgres DB")
+    parser.add_argument(
+        "--driver",
+        "-d",
+        help="Chọn phương thức và vị trí lưu file backup",
+        nargs=2,
+        metavar=("DRIVER", "DESTINATION"),
+        action=DriverAction,
+        required=True,
+    )
+    return parser
+
+```
+
+- Thử chạy kiểm tra phần xử lý đối số của package pgbackup
+
+```shell
+python -i src/pgbackup/cli.py
+>>> parser = create_parser()
+>>> args = parser.parse_args(['url','--driver','s3','backup'])
+>>> args.url
+'url'
+>>> args.driver
+'s3'
+>>> args.destination
+'backup'
+>>> type(args)
+<class 'argparse.Namespace'>
+```
+
+### Backup dữ liệu từ postgres
+
+- Nếu bạn đã cài đặt postgres client trên máy của bạn, bạn có thể sử dụng pg_dump để backup dữ liệu từ postgres database. Chúng ta sẽ sử dụng Python subprocess [^2] để tương tác và sử dụng pg_dump nhằm tạo ra các bản backup dữ liệu.
+- Chúng ta sẽ tương tác với công cụ pg_dump từ bên trong mã của chúng ta bằng cách sử dụng package subprocess, nói các khác là tạo ra một wrapper cho pg_dump, do đó logic sẽ được đặt vào file pgdump.py
+
+```python:src/pgbackup/pgdump.py {6}
+import subprocess
+import sys
+
+
+def dump(url):
+    try:
+        return subprocess.Popen(["pg_dump", url], stdout=subprocess.PIPE)
+    except OSError as err:
+        print(f"Error: {err}")
+        sys.exit(1)
+
+
+def dump_file_name(url, timestamp=None):
+    db_name = url.split("/")[-1]
+    db_name = db_name.split("?")[0]
+    if timestamp:
+        return f"{db_name}-{timestamp}.sql"
+    else:
+        return f"{db_name}.sql"
+```
+
+- Chúng ta sử dụng `subprocess.PIPE` nhằm lấy output của stout thành một định dạng giống file và ngăn nó ghi ra terminal khi chạy mã.
+- Hàm `dump_file_name` có nhiệm vụ tạo tên file khi upload lên s3 bucket
+- Thử backup dữ liệu
+
+```shell
+PYTHONPATH=./src python
+from pgbackup import pgdump
+dump = pgdump.dump('postgres://vntechies:password_kho_doan@localhost:5432/test')
+f = open('dump.sql', 'w+b')
+f.write(dump.stdout.read())
+f.close()
+```
+
+- Nếu thành công, các bạn sẽ thấy file như dưới đây
+
+![Nếu thành công, các bạn sẽ thấy file như dưới đây](/static/images/assets/python_cli_pgbackup_test1.png)
+
+### Lưu dữ liệu tại local storage
+
+- Sau khi có bản backup, chúng ta sẽ viết logic lưu dữ liệu vào local storage
+
+```python:src/pgbackup/storage.py
+def local(infile, outfile):
+    outfile.write(infile.read())
+    outfile.close()
+    infile.close()
+```
+
+- Hàm local có nhiệm vụ đọc dữ liệu từ `dump.stdout` và ghi vào file mới theo path được truyền vào.
+
+### Upload dữ liệu lên S3
+
+- Để tương tác với AWS S3, chúng ta sẽ sử dụng một dependency đó là `boto3` [^3] - thư viện chính
+  thức của AWS. Cài đặt boto3 vào virtualenv chúng ta đang sử dụng
+
+```shell
+pipenv install boto3
+```
+
+- Chúng ta có thể đặt mã xử lý việc upload lên S3 vào file `src/pgbackup/storage.py ` vì xét cho cùng, nó chỉ là một dạng lưu trữ khác. Chúng ta sẽ tạo một hàm khác cho S3 sẽ thực hiện một số điều sau:
+
+  - client: Một AWS client object có method `upload_fileobj`
+  - infile: Một file object với dữ liệu từ bản backup PostgreSQL
+  - bucket: Tên của bucket mà chúng ta sẽ upload bản sao lưu
+  - name: Tên của tệp chúng tôi muốn tạo trong S3 bucket
+
+- Lý do mà chúng ta inject client object là vì không muốn module storage phải phụ trách việc cấu hình cho client, chúng ta sẽ làm điều đó khi kết nối tất cả các phần lại với nhau.
+
+```python:src/pbgackup/storage.py
+...
+def s3(client, infile, bucket, name):
+    client.upload_fileobj(infile, bucket, name)
+```
+
+- Kiểm tra thủ công việc upload lên S3
+
+```shell
+PYTHONPATH=./src python
+>>> import boto3
+>>> from pgbackup import storage
+>>> client = boto3.client('s3')
+>>> infile = open('dump.sql', 'rb')
+>>> storage.s3(client, infile, 'vntechies-pg-backup', infile.name)
+```
+
+- Check S3 console, nếu thành công bạn sẽ thấy như bên dưới
+
+![Check S3 console, nếu thành công bạn sẽ thấy như bên dưới](/static/images/assets/python_cli_pgbackup_test2.png)
+
+### Lắp ghép các phần lại với nhau
+
+- Chúng ta có thể tạo console scripts cho dự án, điều này giống như cách chúng ta tạo các file thực thi trước đó nhưng không phải thực hiện các bước thủ công khác
+
+```python:setup.py {16-20}
+from setuptools import find_packages, setup
+
+with open("README.md", "r") as f:
+    long_description = f.read()
+
+setup(
+    name="pgbackup",
+    version="0.1.0",
+    author="VNTechies",
+    author_email="info@vntechies.dev",
+    description="A utility for backing up PostGreSQL databases",
+    long_description=long_description,
+    long_description_content_type="text/markdown",
+    url="https://github.com/vntechies/010-python-cli-pgbackup",
+    packages=find_packages("src"),
+    package_dir={"": "src"},
+    install_requires=["boto3"],
+    entry_points={
+        "console_scripts": ["pgbackup=pgbackup.cli:main"],
+    },
+)
+```
+
+- Chúng ta trỏ CLI module tới một hàm main và đó cũng là hàm mà chúng ta sẽ tạo sau đây, hàm main cần:
+  - import package boto
+
+    3
+  - import module pgdump, storag
+
+    e
+  - tạo ra một parser và xử lý các đối số truyền vào
+  - tạo ra database dump
+  - tuỳ vào loại driver sẽ
+    - lưu file ở local storage
+    - tạo s3 client và upload file lên s3 bucket
+
+```python:src/pgbackup/cli.py
+...
+def main():
+    import boto3
+    from pgbackup import pgdump, storage
+
+    args = create_parser().parse_args()
+    dump = pgdump.dump(args.url)
+    timestamp = time.strftime("%Y-%m-%dT%H-%M", time.localtime())
+    file_name = pgdump.dump_file_name(args.url, timestamp)
+    if args.driver == "s3":
+        client = boto3.client("s3")
+        print(f"Upload file backup lên S3 với tên file {file_name}")
+        storage.s3(client, dump.stdout, args.destination, file_name)
+    else:
+        outfile = open(args.destination, "wb")
+        print(f"Lưu file backup tại local với tên file {outfile.name}")
+        storage.local(dump.stdout, outfile)
+```
+
+- Kiểm tra kết quả
+
+```shell
+pipenv shell
+pip install -e .
+pgbackup --driver local ./local-dump.sql postgres://demo:password@54.245.63.9:80/sample
+pgbackup --driver s3 pyscripting-db-backups postgres://demo:password@54.245.63.9:80/sample
+```
+
+- Kết quả sẽ giống như bên dưới
+
+![Kết quả sẽ giống như bên dưới ](/static/images/assets/python_cli_pgbackup_test3.png)
+
+### Phân phối/chia sẻ CLI tool
+
+- CLI tool của của chúng ta có thể sẽ chỉ được phân phối nội bộ. Để làm điều đó dễ dàng, chúng tôi sẽ muốn xây dựng một file `whell` dùng để cài đặt cho nó.
+  > Lưu ý: Việc này phù hợp cho cả các project mã nguồn mở
+- Trước khi tạo file `wheel`, chúng ta sẽ cấu hình setuptools để yêu cầu Python 3.6 hoặc mới hơn vì chúng tôi đã sử dụng cú pháp "f-string". Chúng ta sẽ sử dụng python_requires và phương thức setuptools.setup bên trong setup.py của để làm điều này
+
+```python:src/setup.py
+...
+    python_requires='>=3.6',
+...
+```
+
+- Chạy lệnh sau để build file `wheel`
+
+```shell
+python setup.py bdist_wheel
+```
+
+- Tiếp theo hãy uninstall pgbackup package và cài đặt lại sử dụng file wheel
+
+```shell
+pip uninstall pgbackup
+pip install dist/pgbackup-0.1.0-py3-none-any.whl
+```
+
+- Tạo release trên github
+
+![Tạo release trên github](/static/images/assets/python_cli_pgbackup_github.png)
+
+- Chúng ta có thể dùng pip để cài đặt wheels từ một đường dẫn thông qua HTTP. Hãy upload file sử dụng github release và cài đặt package ngoài môi trường virtualenv.
+
+```shell
+exit
+pip install --user https://github.com/vntechies/010-python-cli-pgbackup/releases/download/latest/pgbackup-0.1.0-py3-none-any.whl
+
+pgbackup --help
+pgbackup postgres://vntechies:password_kho_doan@localhost:5432/test --driver local ./local-dump.sql
+pgbackup postgres://vntechies:password_kho_doan@localhost:5432/test --driver s3 vntechies-pg-backup
+```
+
+Vậy là chúng ta đã hoàn thành việc tạo một CLI tool với python và phân phối nó để người khác có thể cài đặt/sử dụng
+
+## Tài liệu tham khảo
+
+- [Distributing Python Modules](https://docs.python.org/3/distributing/index.html)
+- [Packaging Python Projects](https://packaging.python.org/tutorials/packaging-projects/)
+- [Python Gitignore File](https://github.com/github/gitignore/blob/master/Python.gitignore)
+
+[^1]: [argparse](https://docs.python.org/3/library/argparse.html)
+[^2]: [subprocess](https://docs.python.org/3/library/subprocess.html)
+[^3]: [boto3](https://boto3.amazonaws.com/v1/documentation/api/latest/index.html)
