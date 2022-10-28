@@ -245,7 +245,7 @@ python -i src/pgbackup/cli.py
 - Nếu bạn đã cài đặt postgres client trên máy của bạn, bạn có thể sử dụng pg_dump để backup dữ liệu từ postgres database. Chúng ta sẽ sử dụng Python subprocess [^2] để tương tác và sử dụng pg_dump nhằm tạo ra các bản backup dữ liệu.
 - Chúng ta sẽ tương tác với công cụ pg_dump từ bên trong mã của chúng ta bằng cách sử dụng package subprocess, nói các khác là tạo ra một wrapper cho pg_dump, do đó logic sẽ được đặt vào file pgdump.py
 
-```python:src/pgbackup/pgdump.py {6}
+```python:src/pgbackup/pgdump.py
 import subprocess
 import sys
 
@@ -365,12 +365,15 @@ setup(
 ```
 
 - Chúng ta trỏ CLI module tới một hàm main và đó cũng là hàm mà chúng ta sẽ tạo sau đây, hàm main cần:
+
   - import package boto
 
     3
+
   - import module pgdump, storag
 
     e
+
   - tạo ra một parser và xử lý các đối số truyền vào
   - tạo ra database dump
   - tuỳ vào loại driver sẽ
@@ -444,13 +447,42 @@ pip install dist/pgbackup-0.1.0-py3-none-any.whl
 ```shell
 exit
 pip install --user https://github.com/vntechies/010-python-cli-pgbackup/releases/download/latest/pgbackup-0.1.0-py3-none-any.whl
+```
 
+- Nếu sau khi cài đặt bạn không chạy được lệnh `pgbackup`, hãy thêm path của python bin file vào PATH của hệ điều hành (VD: `$HOME/Library/Python/3.10/bin/` với macOS)
+
+```shell:
+vi ~/.zshrc
+```
+
+```shell:~/.zshrc
+# Added python bin files
+export PATH="$HOME/Library/Python/3.10/bin/:$PATH"
+```
+
+```shell
+source ~/.zshrc
 pgbackup --help
 pgbackup postgres://vntechies:password_kho_doan@localhost:5432/test --driver local ./local-dump.sql
 pgbackup postgres://vntechies:password_kho_doan@localhost:5432/test --driver s3 vntechies-pg-backup
 ```
 
 Vậy là chúng ta đã hoàn thành việc tạo một CLI tool với python và phân phối nó để người khác có thể cài đặt/sử dụng
+
+```shell
+pgbackup --help
+usage: pgbackup [-h] --driver DRIVER DESTINATION url
+
+CLI tool back up Postgre database về local hoặc S3 sử dụng Python
+
+positional arguments:
+  url                   Connection string của Postgres DB
+
+options:
+  -h, --help            show this help message and exit
+  --driver DRIVER DESTINATION, -d DRIVER DESTINATION
+                        Chọn phương thức và vị trí lưu file backup
+```
 
 ## Tài liệu tham khảo
 
