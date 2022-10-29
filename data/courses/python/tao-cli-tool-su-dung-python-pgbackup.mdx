@@ -191,7 +191,7 @@ vi src/pgbackup/cli.py
   - Một đối số sử dụng flag (`--driver`) chứa 2 phần cho chúng ta biết driver name (local hay S3) và địa điểm mà chúng ta lưu file back up (với S3 là bucket name và với local là path)
 - Đối số đầu tiên được gọi là đối số vị trí (positional argument), và có thể dễ dàng định nghĩa, xử lý. Với đối số thứ 2 gồm 2 phần, việc xử lý sẽ phức tạp hơn, nhưng chúng ta có class `argparse.Action` để tạo ra một class giúp xử lý đối số này.
 
-```python:src/pgbackup/cli.py {3}
+```python:src/pgbackup/cli.py
 from argparse import Action, ArgumentParser
 import time
 
@@ -369,11 +369,9 @@ setup(
   - import package boto
 
     3
-
   - import module pgdump, storag
 
     e
-
   - tạo ra một parser và xử lý các đối số truyền vào
   - tạo ra database dump
   - tuỳ vào loại driver sẽ

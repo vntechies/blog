@@ -1,0 +1,1006 @@
+---
+title: 'Terraform Associate Notes'
+date: '2022-10-28'
+tags: ['cloud computing', 'terraform', 'certificate', 'devops']
+draft: false
+layout: PostSimple
+images: ['/static/images/ogps/terraform_notes.jpeg']
+summary: 'Notes for AWS Certified SysOps – Associate exam based on AcloudGuru course - English version'
+---
+
+<TOCInline toc={props.toc} asDisclosure />
+
+## What?
+
+### Exam objectives
+
+| No  | Objective                                                                                                         |
+| --- | ----------------------------------------------------------------------------------------------------------------- |
+| 1   | Understand Infrastructure as Code (IaC) concepts                                                                  |
+| 1a  | Explain what IaC is                                                                                               |
+| 1b  | Describe advantages of IaC patterns                                                                               |
+| 2   | Understand Terraform's purpose (vs other IaC)                                                                     |
+| 2a  | Explain multi-cloud and provider-agnostic benefits                                                                |
+| 2b  | Explain the benefits of state                                                                                     |
+| 3   | Understand Terraform basics                                                                                       |
+| 3a  | Handle Terraform and provider installation and versioning                                                         |
+| 3b  | Describe plug-in based architecture                                                                               |
+| 3c  | Demonstrate using multiple providers                                                                              |
+| 3d  | Describe how Terraform finds and fetches providers                                                                |
+| 3e  | Explain when to use and not use provisioners and when to use local-exec or remote-exec                            |
+| 4   | Use the Terraform CLI (outside of core workflow)                                                                  |
+| 4a  | Given a scenario: choose when to use terraform fmt to format code                                                 |
+| 4b  | Given a scenario: choose when to use terraform taint to taint Terraform resources                                 |
+| 4c  | Given a scenario: choose when to use terraform import to import existing infrastructure into your Terraform state |
+| 4d  | Given a scenario: choose when to use terraform workspace to create workspaces                                     |
+| 4e  | Given a scenario: choose when to use terraform state to view Terraform state                                      |
+| 4f  | Given a scenario: choose when to enable verbose logging and what the outcome/value is                             |
+| 5   | Interact with Terraform modules                                                                                   |
+| 5a  | Contrast module source options                                                                                    |
+| 5b  | Interact with module inputs and outputs                                                                           |
+| 5c  | Describe variable scope within modules/child modules                                                              |
+| 5d  | Discover modules from the public Terraform Module Registry                                                        |
+| 5e  | Defining module version                                                                                           |
+| 6   | Navigate Terraform workflow                                                                                       |
+| 6a  | Describe Terraform workflow ( Write -> Plan -> Create )                                                           |
+| 6b  | Initialize a Terraform working directory (terraform init)                                                         |
+| 6c  | Validate a Terraform configuration (terraform validate)                                                           |
+| 6d  | Generate and review an execution plan for Terraform (terraform plan)                                              |
+| 6e  | Execute changes to infrastructure with Terraform (terraform apply)                                                |
+| 6f  | Destroy Terraform managed infrastructure (terraform destroy)                                                      |
+| 7   | Implement and maintain state                                                                                      |
+| 7a  | Describe default local backend                                                                                    |
+| 7b  | Outline state locking                                                                                             |
+| 7c  | Handle backend authentication methods                                                                             |
+| 7d  | Describe remote state storage mechanisms and supported standard backends                                          |
+| 7e  | Describe effect of Terraform refresh on state                                                                     |
+| 7f  | Describe backend block in configuration and best practices for partial configurations                             |
+| 7g  | Understand secret management in state files                                                                       |
+| 8   | Read, generate, and modify configuration                                                                          |
+| 8a  | Demonstrate use of variables and outputs                                                                          |
+| 8b  | Describe secure secret injection best practice                                                                    |
+| 8c  | Understand the use of collection and structural types                                                             |
+| 8d  | Create and differentiate resource and data configuration                                                          |
+| 8e  | Use resource addressing and resource parameters to connect resources together                                     |
+| 8f  | Use Terraform built-in functions to write configuration                                                           |
+| 8g  | Configure resource using a dynamic block                                                                          |
+| 8h  | Describe built-in dependency management (order of execution based)                                                |
+| 9   | Understand Terraform Cloud and Enterprise capabilities                                                            |
+| 9a  | Describe the benefits of Sentinel, registry, and workspaces                                                       |
+| 9b  | Differentiate OSS and Terraform Cloud workspaces                                                                  |
+| 9c  | Summarize features of Terraform Cloud                                                                             |
+
+### Question Types
+
+https://developer.hashicorp.com/terraform/tutorials/certification/associate-questions
+
+- True or False
+- Multiple Choice
+- Multiple Answer
+- Text Match
+
+## Why?
+
+### Benefits
+
+- Verify skills
+- Expand skills
+- Enterprise features
+- Solidify fundamentals
+
+## IAC and its benefits
+
+- No more clicks
+- Enable DevOps (version control, collaboration)
+- Declarative infrastructure
+- Speed, Cost, Reduced Risk
+- Cloud Agnostic
+
+## Workflow
+
+- write -> collaboration
+- plan -> review
+- apply -> deploy
+
+## Terraform commands, concepts
+
+### Commands
+
+```shell
+terraform init
+# download ancillary components and set up the backend (state file,...)
+```
+
+```shell
+terraform plan
+# show a plan of execution/deployment, allowing you to review and authenticate credentials
+
+terraform apply
+# deploy the instructions, and statements in the code, update the state files
+
+terraform destroy
+# destroy all resources in the state file. It would be best if you backed up before you destroyed anything
+```
+
+### Resource addressing
+
+```hcl
+# Provider
+provider "aws" {
+    region = "us-east-1"
+}
+
+provider "google" {
+    credentials = file("credentials.json")
+    project = "my-gcp-project"
+    region = "us-west-1"
+}
+
+# Resource
+# reserved keyword + resource provided by Terraform provider + Use-provided arbitrary resource name
+resource "aws_instance" "web" {
+    ami = "ami-abc12312"
+    instance_type = "t2.micro"
+    # resource config arguments
+}
+
+# Resource Address
+aws_instance.web
+
+# Data source
+# A data source block = fetching and tracking details of an existing resource
+# A resource block = creates a resource from scratch.
+# reserved keyword + resource provided by Terraform provider + Use-provided arbitrary resource name
+data "aws_instance" "my-vm" {
+    instance_id = "i-123123123"
+    # data source arguments
+}
+# Data source address
+data.aws_instance.my-vm
+```
+
+- Tf executes code in files with the .tf extension
+- TF looks for providers in TF provider registry
+
+- Task: Create a VM on AWS using TF
+
+```hcl:main.tf
+provider "aws" {
+    region = "us-east-1"
+}
+
+resource "aws_instance" "vm" {
+    ami = "ami-0c4e4b4eb2e11d1d4"
+    subnet_id = "subnet-08d180d74f2ef9dfc"
+    instance_type = "t3.micro"
+}
+```
+
+## Installing TF and TF providers
+
+### TF
+
+- Download, Unzip, and Use
+- Setup TF repo on Linux (only)
+- Resources
+  - https://developer.hashicorp.com/terraform/tutorials/aws-get-started/install-cli
+  - https://developer.hashicorp.com/terraform/language/providers/configuration
+  - https://registry.terraform.io/
+  - https://developer.hashicorp.com/terraform/language/settings
+
+### TF providers
+
+- Abstracting integration with the API control layer
+- Look at the TF registry
+- Providers are plugins
+- TF can use custom providers
+- `tf init` installs providers
+- Best practice: specific version of provider -> better version control, won't break your code
+
+```hcl
+provider "azurerm" {
+    version = "2.20.0"
+    features {}
+}
+
+provider "aws" {
+    version = "3.7.0"
+    region = "us-east-1"
+}
+```
+
+## TF state
+
+### Concept
+
+- Resource tracking
+  - Keep tabs on what has been deployed
+  - Critical to TF operations
+- `terraform.tfstate` = mapping configuration with deployed resource
+- can be stored remotely
+- **Never lose your tf state file or let it in the wrong hand**
+
+## TF Variables and Outputs
+
+### Variables
+
+```hcl
+# reserved keyword + user-provided variable name
+variable "my-var" {
+    description = "My test variable"
+    type = string
+    value = "Hello"
+    validation {
+        condition = length(var.my_var) > 4
+        error_message = "The string must be more than 4 characters"
+    }
+    # set it to true if you don't want it printed out in the tf execution, false by default
+    sensitive = true
+}
+
+# you can define a var like this
+# however, if not defined in OS env or CLI import otherwise, it will end up in err
+variable "my-var" {}
+
+# referencing a var:
+var.my_var
+
+# Base types: string, number, bool
+# Complex types: list, set, map, object, tuple
+# string
+variable "image_id" {
+    type = string
+    default = "hello"
+}
+# list of string
+variable "az_names" {
+    type = list(string)
+    default = ["us-east-1"]
+}
+# list of object
+variable "docker_ports" {
+    type = list(object({
+        internal = number
+        external = number
+        protocol = string
+    }))
+    default = [
+        {
+            internal = 8300
+            external = 8300
+            protocol = "tcp"
+        }
+    ]
+}
+```
+
+- terraform.tfvars will be picked up by default
+
+### Outputs
+
+```hcl
+# reserved keyword + user-provided var name
+output "instance_ip" {
+    description = "VM's private  IP"
+    values = aws_instance.my-vm.private_ip
+}
+```
+
+- Output vars values are shown on the shell after running tf apply
+- Think as return values to track after a success the tf deployment
+
+## TF Provisioners
+
+- Bootstrapping custom scripts, commands, or actions
+- Can be run locally or remotely
+- Individual resources can have their own "provisioner"
+- 2 types:
+  - creation-time
+  - destroy-time
+- Best practice:
+  > In the case of provisioners,
+  > HashiCorp recommends using them sparingly and only when the underlying vendors, such as AWS, do not already provide a built-in mechanism for bootstrapping via custom commands or scripts. For example, AWS allows passing scripts through user data in EC2 virtual machines. So if there's a better inherently available method for a resource, Hashicorp recommends using that.
+- TF cannot track changes to provisioners in state files
+- Only when you want to invoke actions not covered by TF declarative model.
+- Expected provisioner return non-zero return code; otherwise, the resource will be trained and re-create again on the subsequent execution
+- Sample code
+
+```hcl
+resource  "null_resource" "dummy_resource" {
+    provisioner "local-exec" {
+        command = "echo '0' > status.txt"
+    }
+
+    provisioner "local-exec" {
+        when = destroy
+        command = "echo '1' > status.txt"
+    }
+}
+```
+
+```hcl
+resource "aws_instance" "ec2-vm" {
+    ami = "ami"
+    instance_type = "t3.micro"
+    subnet_id = "subnet_id"
+    provisioner "local-exec" {
+        command = "aws ec2 wait instance-status-ok --region us-east-1 --instance-ids ${self.id}"
+    }
+}
+# And so Hashicorp has provided the self-object can access any attribute available to the resource the provisioner is attached to.
+
+```
+
+- Resources:
+  https://developer.hashicorp.com/terraform/language/resources/provisioners/syntax
+
+## TF State Commands
+
+- maps real-world resource -> tf config
+- by default, it saves in the `terraform.tfstate` file
+- tf refresh state file before any modification
+- resource dependency metadata also included
+
+### State commands
+
+- manipulate and read the tf state file
+- scenario:
+  - advanced state management
+  - manually remove a resource
+  - list out tracked resources and their details
+
+```shell
+# list all resources tracked by state file
+tf state list
+# delete a resource from the state file tracking
+tf state rm
+# show details of a resource
+tf state show
+```
+
+### Local and remote state storage
+
+- Local state storage
+  - save locally on your system by default
+- Remote state storage
+  - S3, Google Storage
+  - Allows sharing of state files between teams
+  - State files can use remote access to limit the access
+- allow locking state so parallel execution doesn't coincide
+- enable sharing output values with other tf config or code
+
+- Demo: Persisting TF state in AWS S3
+
+```shell
+aws --profile vntechies s3api create-bucket --bucket vntechies-tf-samples
+```
+
+```hcl:main.tf
+provider "docker" {}
+
+resource "docker_image" "nginx-image" {
+  name = "nginx"
+}
+
+resource "docker_container" "nginx" {
+  image = docker_image.nginx-image.latest
+  name  = "nginx"
+  ports {
+    internal = 80
+    external = var.external_port
+    protocol = "tcp"
+  }
+}
+
+output "url" {
+  description = "Browser URL for container site"
+  value       = join(":", ["http://localhost", tostring(var.external_port)])
+}
+```
+
+```hcl:backend.tf
+terraform {
+  required_providers {
+    docker = {
+      source = "kreuzwerker/docker"
+    }
+  }
+  required_version = ">=1.0"
+  backend "s3" {
+    profile = "vntechies"
+    region  = "us-east-1"
+    key     = "terraform.tfstate"
+    bucket  = "vntechies-tf-sample"
+  }
+}
+```
+
+```hcl:variable.tf
+variable "external_port" {
+  type    = number
+  default = 8080
+  validation {
+    condition     = can(regex("8080|80", var.external_port))
+    error_message = "Port value can only be 8080 or 80."
+  }
+}
+```
+
+```shell
+aws --profile vntechies s3 ls s3://vntechies-tf-samples/
+```
+
+## TF Modules
+
+- container for multiple resources that are used together
+- tf config has at least one module called root
+- can be downloaded or referenced from:
+  - tf public registry
+  - private registry
+  - local system
+- can take inputs and provide outputs
+
+```hcl
+# reserved keyword + module name
+module "my-vpc-module" {
+    source = "./modules/vpc" # module source (mandatory)
+    version = "0.0.5" # module version
+    region = var.region # input params for module
+}
+# allowed params: count, for_each, providers, depends_on
+```
+
+- Interact with module inputs/outputs
+
+```hcl
+module "my-vpc-module" {
+    source = "./modules/vpc"
+    server-name = var.server-name # refers to vars
+}
+output "ip_address" {
+    value = aws_instance.private_ip
+}
+# refers to module out put
+module.my_vpc-module.subnet_id
+```
+
+- Lab: building and testing basic tf module
+
+```shell
+alias tf=terraform
+mkdir -p terraform/module/vpc
+touch terraform/module/vpc/main.tf terraform/module/vpc/variables.tf terraform/module/vpc/outputs.tf terraform/main.tf
+cd terraform/module/vpc/
+```
+
+```hcl:/module/vpc/variables.tf
+variable "region" {
+  type    = string
+  default = "us-east-1"
+}
+```
+
+```hcl:/module/vpc/main.tf
+provider "aws" {
+  region = var.region
+}
+
+resource "aws_vpc" "this" {
+  cidr_block = "10.0.0.0/16"
+}
+
+resource "aws_subnet" "this" {
+  vpc_id     = aws_vpc.this.id
+  cidr_block = "10.0.1.0/24"
+}
+
+data "aws_ssm_parameter" "this" {
+  name = "/aws/service/ami-amazon-linux-latest/amzn2-ami-hvm-x86_64-gp2"
+}
+```
+
+```hcl:/module/vpc/outputs.tf
+output "subnet_id" {
+  value = aws_subnet.this.id
+}
+
+output "ami_id" {
+  value = data.aws_ssm_parameter.this.value
+}
+```
+
+```main.tf
+variable "main_region" {
+  type    = string
+  default = "us-east-1"
+}
+
+provider "aws" {
+  region = var.main_region
+}
+
+module "vpc" {
+  source = "./module/vpc"
+}
+
+resource "aws_instance" "my-instance" {
+  ami           = module.vpc.ami_id
+  subnet_id     = module.vpc.subnet_id
+  instance_type = "t3.micro"
+}
+```
+
+```outputs.tf
+output "PrivateIP" {
+  description = "Private IP of EC2 instance"
+  value       = aws_instance.my-instance.private_ip
+}
+```
+
+## TF built-in functions
+
+- pre-packaged with functions to transform and combine values
+- user-defined functions are not allowed, only built-in
+- general syntax: function_name(arg1, arg2,...)
+- Built-in functions
+
+```hcl
+join("-", ["terraform", var.project-name])
+# file, max, flatten
+```
+
+- Resources:
+
+  - https://developer.hashicorp.com/terraform/language/functions
+
+- tf console
+
+```shell
+tf console
+
+> max(12,3,4,24,14)
+24
+> timestamp()
+"2022-10-29T00:54:07Z"
+> join("-",["test","11232"])
+"test-11232"
+> contains(["test",1,2,3,3], 2)
+true
+> contains(["test",1,2,3,3], 5)
+false
+```
+
+### TF Type Constraints
+
+- Primitive
+  - number
+  - string
+  - bool
+- Complex
+  - list
+  - tuple
+  - map
+  - object
+- Collections
+  - list(type)
+  - map(type)
+  - set(type)
+- Structural
+  - object(type)
+  - tuple(type)
+  - set(type)
+- Dynamic Type
+  - any
+  - the best effort to decide the type
+
+### TF Dynamic blocks
+
+- construct repeatable nested configuration blocks
+- support block types:
+  - resource
+  - data
+  - provider
+  - provisioner
+
+```hcl
+variable "rules" {
+  default = [
+    {
+      port        = 80
+      protocol    = "tcp"
+      cidr_blocks = ["0.0.0.0/0"]
+    },
+    {
+      port        = 22
+      protocol    = "tcp"
+      cidr_blocks = ["1.2.3.4/32"]
+    }
+  ]
+
+}
+
+resource "aws_security_group" "my-sg" {
+  name   = "my-aws-sg"
+  vpc_id = aws_vpc.my-vpc.id
+  dynamic "ingress" {
+    for_each = var.rules
+    content {
+      from_port  = ingress.values["port"]
+      to_port    = ingress.values["port"]
+      protocol   = ingress.values["protocol"]
+      cidr_block = ingress.values["cirds"]
+    }
+  }
+}
+```
+
+- Lab: Using Terraform Dynamic Blocks and Built-in Functions to Deploy to AWS
+
+```shell
+alias tf=terraform
+touch main.tf variables.tf outputs.tf script.sh
+```
+
+```hcl:variables.tf
+variable "rules" {
+  type = list(object({
+    port        = number
+    protocol    = string
+    cidr_blocks = list(string)
+  }))
+
+  default = [{
+    cidr_blocks = ["0.0.0.0/0"]
+    port        = 80
+    protocol    = "tcp"
+    }, {
+    cidr_blocks = ["0.0.0.0/0"]
+    port        = 22
+    protocol    = "tcp"
+    }, {
+    cidr_blocks = ["6.7.8.9/32"]
+    port        = 3689
+    protocol    = "tcp"
+  }]
+}
+```
+
+```hcl:main.tf
+provider "aws" {
+  region = "us-east-1"
+}
+
+data "aws_ssm_parameter" "ami_id" {
+  name = "/aws/service/ami-amazon-linux-latest/amzn2-ami-hvm-x86_64-gp2"
+}
+
+module "vpc" {
+  source = "terraform-aws-modules/vpc/aws"
+
+  name = "my-vpc"
+  cidr = "10.0.0.0/16"
+
+  azs            = ["us-east-1a"]
+  public_subnets = ["10.0.1.0/24"]
+}
+
+resource "aws_security_group" "my-sg" {
+  vpc_id = module.vpc.vpc_id
+  name   = join("_", ["sg", module.vpc.vpc_id])
+  dynamic "ingress" {
+    for_each = var.rules
+    content {
+      from_port   = ingress.value["port"]
+      to_port     = ingress.value["port"]
+      protocol    = ingress.value["protocol"]
+      cidr_blocks = ingress.value["cidr_blocks"]
+    }
+  }
+  egress {
+    cidr_blocks = ["0.0.0.0/0"]
+    from_port   = 0
+    protocol    = "-1"
+    to_port     = 0
+  }
+  tags = {
+    "Name" = "Terraform-Dynamic-SG"
+  }
+}
+
+resource "aws_instance" "my-instance" {
+  ami             = data.aws_ssm_parameter.ami_id.value
+  subnet_id       = module.vpc.public_subnets[0]
+  instance_type   = "t3.micro"
+  security_groups = [aws_security_group.my-sg.id]
+  user_data       = fileexists("script.sh") ? file("script.sh") : null
+}
+```
+
+```hcl:outputs.tf
+output "Web-Server-URL" {
+  description = "Web server URL"
+  value       = join("", ["http://", aws_instance.my-instance.public_ip])
+}
+
+output "Time-Date" {
+  description = "Date/time of execution"
+  value       = timestamp()
+}
+```
+
+```bash:script.sh
+#!/bin/bash
+sudo yum -y install httpd
+sudo systemctl start httpd && sudo systemctl enable httpd
+```
+
+## TF fmt, taint, import
+
+### TF fmt
+
+- Format for code readability
+- Safe to run anytime
+- Helps in keeping code consistent
+
+```shell
+tf fmt
+```
+
+### TF taint
+
+- taint a resource, forcing it to be destroyed and recreated
+- modifies the state file case the recreation workflows
+- may cause others to be modified
+
+```shell
+tf taint RESOURCE_ADD
+```
+
+- When
+  - to cause provisioners to run
+  - replace misbehaving resources
+  - mimic side effects of recreation not modeled by any attributes of the resource
+
+### TF import
+
+- map existing resources to tf using an ID
+- ID depends on underlying vendors
+- import the same resource to multiple tf resources can cause unknown behavior and is not recommende
+
+  d
+
+```shell
+tf import Resource_address ID
+```
+
+- When:
+  - need to work with existing resources
+  - not allowed to create new resources
+  - not in control of the creation process
+
+### TF config blocks
+
+- config block for controlling tf own behavior
+- only allows constant, named resources, and variables are not allowed
+
+```hcl
+terraform {
+  required_version = ">=1.0"
+  required_providers {
+    aws = ">=3.0"
+}
+```
+
+## TF workspaces (CLI)
+
+- alternate state files within the same working dir
+- tf starts with `default` workspace, cannot be deleted
+
+```shell
+# create a workspace
+tf workspace new WORKSPACE_NAME
+# select a workspace
+tf workspace select WORKSPACE_NAME
+```
+
+- Scenario:
+  - Test changes using a parallel, distinct copy of infra
+  - can be modeled against branches in version control
+- Meant to share resources and help enable collaboration
+- Access to workspace `${terraform.workspace}`
+
+- Examples:
+
+```hcl
+resource "aws_instance" "example" {
+  count = terraform.workspace == "default" ? 5 : 1
+}
+
+resource "aws_s3_bucket" "bucket" {
+  bucket = "bucket-${terraform.workspace}"
+  acl = "private"
+}
+```
+
+- Demo: Workspace
+
+```shell
+touch main.tf network.tf
+tf workspace new test
+```
+
+```hcl:network.tf
+resource "aws_vpc" "vpc_master" {
+  cidr_block = "10.0.0.0/16"
+  tags = {
+    Name = "${terraform.workspace}-vpc"
+  }
+}
+
+data "aws_availability_zones" "azs" {
+  state = "available"
+}
+
+resource "aws_subnet" "subnet" {
+  availability_zone = element(data.aws_availability_zones.azs.names, 0)
+  vpc_id            = aws_vpc.vpc_master.id
+  cidr_block        = "10.0.1.0/24"
+
+  tags = {
+    Name = "${terraform.workspace}-subnet"
+  }
+}
+
+resource "aws_security_group" "sg" {
+  name        = "${terraform.workspace}-sg"
+  description = "Allow TCP 22"
+  vpc_id      = aws_vpc.vpc_master.id
+  ingress {
+    description = "Allow 22 from public IP"
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+  tags = {
+    Name = "${terraform.workspace}-sg"
+  }
+}
+```
+
+```hcl:main.tf
+provider "aws" {
+  region = "us-east-1"
+}
+
+data "aws_ssm_parameter" "ami_id" {
+  name = "/aws/service/ami-amazon-linux-latest/amzn2-ami-hvm-x86_64-gp2"
+}
+
+resource "aws_instance" "ec2-vm" {
+  ami                         = data.aws_ssm_parameter.ami_id.value
+  instance_type               = "t3.micro"
+  associate_public_ip_address = true
+  vpc_security_group_ids      = [aws_security_group.sg.id]
+  subnet_id                   = aws_subnet.subnet.id
+  tags = {
+    Name = "${terraform.workspace}-ec2"
+  }
+}
+```
+
+## Debugging TF
+
+- `TF_LOG` -> stderr
+- levels: TRACE, DEBUG, INFO, WARN, ERROR
+- `TF_LOG_PATH`
+
+```shell
+export TF_LOG=TRACE
+export TF_LOG_PATH=./terraform.log
+```
+
+## TF Enterprise
+
+### Sentinel
+
+- Enforces policies on your code
+- Has its own policy language
+- designed to be approached by a non-programmer
+- Benefits
+  - Sandboxing
+  - Codification
+  - Version control
+  - Testing and automation
+- Use cases
+  - For enforcing CIS standards
+  - Checking to make sure only t3.micro instance types are used
+  - Ensure SG don't allow traffic on port 22
+
+```
+import "tfplan"
+main = rule {
+  all tfplan.resouces.aws_instance as _, instances {
+    all instances as _, f {
+      (length(r.applied.tags) else 0) > 0
+    }
+  }
+}
+```
+
+### Best Practice: Vault Provider
+
+- Secret management software
+- dynamically provisions credentials and rotates them
+- encrypt sensitive data in transit and reset, provide fine-grained access to secrets using ACLs
+- inject secrets using Vault Provider
+- Benefits:
+  - Don't need long-lived credentials
+  - Inject secrets to TF deployment at runtime
+  - Fine-grained ACLs for access to temp credentials
+
+### TF Registry, TF Cloud workspaces
+
+#### TF Registry
+
+- The repository of publicly available TF providers and modules
+- you can publish and share your modules and collaborate with others
+
+#### TF Cloud workspaces
+
+- dir hosted in TF cloud
+- store old versions of state files by default
+- maintain a record of all execution
+- all TF commands executed on "managed" TF Cloud VMs
+
+### TF OSS workspaces and TF Cloud
+
+| Component               | Workspace                                                   | Cloud workspace                                                           |
+| ----------------------- | ----------------------------------------------------------- | ------------------------------------------------------------------------- |
+| Terraform Configuration | On disk                                                     | In linked version control repository or periodically uploaded via API/CLI |
+| Variable Values         | As .tfvars files, as CLI arguments, or in shell environment | In workspace (in TF Cloud)                                                |
+| State                   | On disk or in remote backend                                | In workspace (in TF Cloud)                                                |
+| Credentials and Secrets | In shell environment or entered at prompts                  | In workspace (in TF Cloud), stored as sensitive variables                 |
+
+### Benefits
+
+- Remote TF execution
+- Workspace-based org model
+- Version control integration
+- Remote state management and CLI integration
+- Private TF module registry
+- Cost estimation and Sentinel integration
+
+## Other resources
+
+https://developer.hashicorp.com/terraform/tutorials/certification/associate-review
+
+- Study guide
+- Exam review
+- Sample questions
+
+## Preperation
+
+- Basic understanding of public cloud
+- Security best practice (Sentinel and Vault provider)
+- Know TF workflow (write > plan >apply)
+- Commands
+
+```
+init state plan fmt apply validate
+```
+
+- TF state mechanism very well
+- Familiarize yourself with HCL
+- Know the difference between TF OSS and Enterprise offerings
+- Get hand on!
+
+- Reminder: TF version of the exam
+- 57 - 60 questions
+- flag questions and come back later
