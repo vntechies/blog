@@ -6,7 +6,6 @@ import { getAllFilesFrontMatter, getFileBySlug } from '@/lib/mdx'
 import { getAllSeries } from '@/lib/series'
 import kebabCase from '@/lib/utils/kebabCase'
 import fs from 'fs'
-import Image from 'next/image'
 import path from 'path'
 import { MDXLayoutRenderer } from '@/components/MDXComponents'
 
@@ -51,13 +50,10 @@ export async function getStaticProps({ params }) {
 
 export default function Series({ posts, series }) {
   // Capitalize first letter and convert space to dash
-  const title = series.title
+  const { title, images, summary } = series
   return (
     <>
-      <TagSEO
-        title={`${title} - ${siteMetadata.author}`}
-        description={`${title} series - ${siteMetadata.author}`}
-      />
+      <TagSEO title={`${title} - ${siteMetadata.author}`} description={summary} images={images} />
       <ListLayout posts={posts} title={title} />
     </>
   )

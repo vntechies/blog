@@ -57,10 +57,25 @@ export const PageSEO = ({ title, description, showCanonical }) => {
   )
 }
 
-export const TagSEO = ({ title, description }) => {
-  const ogImageUrl = siteMetadata.siteUrl + siteMetadata.socialBanner
-  const twImageUrl = siteMetadata.siteUrl + siteMetadata.socialBanner
+export const TagSEO = ({ title, description, images = [] }) => {
   const router = useRouter()
+  let imagesArr =
+    images.length === 0
+      ? [siteMetadata.socialBanner]
+      : typeof images === 'string'
+      ? [images]
+      : images
+
+  const featuredImages = imagesArr.map((img) => {
+    return {
+      '@type': 'ImageObject',
+      url: img.includes('http') ? img : siteMetadata.siteUrl + img,
+    }
+  })
+
+  const ogImageUrl = featuredImages[0].url
+  const twImageUrl = featuredImages[0].url
+
   return (
     <>
       <CommonSEO
