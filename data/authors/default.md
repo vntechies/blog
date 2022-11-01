@@ -5,7 +5,7 @@ occupation: Cây bút chính
 company: VNTechies Dev blog
 email: info@vntechies.dev
 twitter: https://twitter.com/vn_techies
-facebook: https://fb.me/vntechies
+facebook: https://fb.me/vntechies.dev
 linkedin: https://www.linkedin.com/in/vntechies/
 github: https://github.com/vntechies
 url: https://vntechies.dev/
