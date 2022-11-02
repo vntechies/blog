@@ -1,4 +1,5 @@
 User-agent: *
 Allow: /
 Disallow: /user
+Disallow: /*.xml$
 Sitemap: https://vntechies.dev/sitemap.xml
