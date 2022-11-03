@@ -44,6 +44,7 @@ const AWSCert = () => {
           href="/series/chung-chi-aws"
           className="mb-7 inline-flex items-center justify-between rounded-full bg-gray-100 py-1 px-1 pr-4 text-sm text-gray-700 hover:bg-gray-200 dark:bg-gray-800 dark:text-white dark:hover:bg-gray-700"
           role="alert"
+          aria-label="Tất cả hướng dẫn cho các kỳ thi năm 2022"
         >
           <span className="mr-3 rounded-full bg-primary-700 px-4 py-1.5 text-xs text-white">
             NEW
