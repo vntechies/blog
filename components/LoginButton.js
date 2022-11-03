@@ -24,7 +24,11 @@ export default function LoginButton() {
   }
   return (
     <>
-      <button onClick={() => signIn()} className="ml-1 mr-1 h-10 w-10 rounded p-1 sm:ml-4">
+      <button
+        aria-label="Đăng Nhập"
+        onClick={() => signIn()}
+        className="ml-1 mr-1 h-10 w-10 rounded p-1 sm:ml-4"
+      >
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"

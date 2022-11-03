@@ -110,12 +110,34 @@ export default function Course({ post, authorDetails, posts, otherCourses, prev,
             </div>
           </div>
         </header>
+
+        <div className="visible pr-4 pt-6 pb-6 md:invisible md:h-0 md:pt-0 md:pb-0 md:pr-0 xl:border-b xl:border-gray-200 xl:pt-11 xl:dark:border-gray-700">
+          <h3 className="dark:text-secondary-400 text-xl font-bold text-primary-600">Nội dung</h3>
+          <ul className="my-4">
+            {posts.map((post) => {
+              return (
+                <li key={post}>
+                  <a
+                    className={`my-2 block rounded-md py-4 px-2 text-sm text-slate-800 hover:bg-slate-200 dark:text-slate-300 hover:dark:bg-slate-800 ${
+                      router.asPath === `/courses/${post.slug}`
+                        ? 'bg-gray-200 font-bold text-primary-400 dark:bg-gray-800 dark:text-primary-400'
+                        : ''
+                    }`}
+                    href={`/courses/${post.slug}`}
+                  >
+                    {post.title}
+                  </a>
+                </li>
+              )
+            })}
+          </ul>
+        </div>
         <div
           className="divide-y divide-gray-200 pb-8 dark:divide-gray-700 md:grid md:grid-cols-3 md:gap-x-4 md:divide-y-0"
           style={{ gridTemplateRows: 'auto 1fr' }}
         >
-          <div className="pt-6 pb-10 pr-4 md:pr-0 xl:border-b xl:border-gray-200 xl:pt-11 xl:dark:border-gray-700">
-            <div className="sticky top-8 h-[calc(100vh-5.75rem)] overflow-y-scroll">
+          <div className="invisible pt-0 pb-0 pr-4 md:visible md:pt-6 md:pb-10 md:pr-0 xl:border-b xl:border-gray-200 xl:pt-11 xl:dark:border-gray-700">
+            <div className="sticky top-8 h-0 overflow-y-scroll md:h-[calc(100vh-5.75rem)]">
               <h3 className="dark:text-secondary-400 text-xl font-bold text-primary-600">
                 Nội dung
               </h3>
