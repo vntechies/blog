@@ -10,7 +10,7 @@
 	<a href="https://vntechies.dev">
 		<img src="https://img.shields.io/badge/vntechies.dev-111827?style=for-the-badge&logo=About.me&logoColor=ea580c" />
 	</a>
-	<a href="https://discord.gg/YecagKUqpS">
+	<a href="https://discord.com/invite/YecagKUqpS">
 		<img src="https://img.shields.io/badge/Discord-5865F2?style=for-the-badge&logo=discord&logoColor=white" />
 	</a>
 	<a href="https://fb.me/vntechies">
