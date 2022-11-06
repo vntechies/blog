@@ -112,5 +112,149 @@ summary: 'Notes for AWS Certified SysOps – Associate exam based on AcloudGuru 
 
 - Cross-account access (delegation)
   - Provide access to another AWS account from another account
+- Identity Federation
+  - Users ordside AWS can assume a role for temporary access to aws account and resources
+- These users assume an identify provider access role
+- Example identity providers:
+  - Active Directory
+  - Single sign on providers: like Facebook, Google, Amazon
+
+## IAM: Multi -Factor Authentication (MFA)
+
+### What is Multi -Factor Authentication?
+
+- A security method that requires multiple seperate authentications
+- One authentication option we nave with AWS uses time-based codes.
+- Familiar examples of MFA: ATM to withdraw morey, both physical card & a PIN
+
+### AWS Scenario
+
+- Enable MFA in order to access AWS console:
+  - Users type in their username and password as well as a time-based code
+  - The username and password are not enough to be authenticated
+  - The time-based code can be on the user's computer, smartphone or a device they carry around
+- This should be turn on for users who have access to the console
+- MFA Delete for S3 obrects can be used to mitigate acidental deletions
+
+## Amazon 53: Bucket Policies
+
+- JSON statement used to allow or deny permission across obfects in a single bucket
+
+### Elements of a Pucket Policies
+
+#### Effect
+
+- Define whether to allow or deny the action
+
+#### Action
+
+- Actions we want to allow or deny
+- Important **An explicit deny always override an explicit allow**
+
+#### Resource
+
+- Used to identity resources (like a bucket & object) with ARNs
+
+#### Principal
+
+- An account or users that this policy applies to
+- Specific to S3 bucket policies, not user policies
+
+#### Sid (Optional)
+
+- Statement identifier that provides a way to indude information about an individual statement
+
+#### Condition (Optional)
+
+- Specify condition for when the policy is in effect
+
+## S3 Data Integrity
+
+### Versioning
+
+- Enable to store new versions for every modification or deletion
+  - Help with accidental deletion by creating Dersions for deleted obrects
+
+### Replication
+
+- Object are replicated across AZ automatically
+- Standard and Infrequent Acces options at differents price options
+
+### Multi-Factor Authentication Delete (MFA Delete)
+
+- MFA to prevent accidental deletion of objects
+  - Requires Versioning enable on a bucket
+- We can enforce the use of MFA in order to permanently delete an object
+- Only root account (the bucket owner) can access this feature
+
+## Amazon VPC: Security Group and NACLS
+
+### VPC (Virtual Private Clond)
+
+- Isolate workloads into separented VPCs (based on applications , department, test, dev, etc)
+
+### Security Groups
+
+- Group instances with similar functions
+- Stateful = every allowed TCP or UDP ports will be allowed in both directions.
+
+### NACLS (Network Access Control list)
+
+- Stateless = inbound and outbound rules are separate, no dependencies
+- Granular control over IP protocols (allow and deny rules for inbound and outbound evaluated in order)
+- Work with security groups (NACLs applies for the whole subnet, security groups app to members)
+- Ephemeral ports: Client requests depending on OS(port 1024-65535)
+
+### Host-based Fire walls: Os-level frewalls as needed
+
+![Os-level frewalls as needed](/static/images/assets/aws_sysops_firewalls.png)
+
+## AWS STS: Federation
+
+### Secure Token Service (STS)
+
+An extensions of IAM that allows for management of temporary security credentials for IAM users or federated users
+
+- It allows for granular control of how long the access remains active
+  - Fifteen minutes to one hour (default = 1 hour)
+- Credentials are not stored with the user or service granted temporary access
+  -A token is attached to the access request of API call
+- Beneficial in a mumber of ways
+  - Low risk of credentials being exposed (not distributed)
+  - Do not have to create IAM identities for every user
+  - Because they are temporary in nature, there is no need to rotate keys
+- STS uses a single endpoint
+  - This single endpoint resides in us-east-1
+  - Latency can be reduced by using STS API calls to regions that support them
+  - Temporary credentials have global scope, just like IAM
+
+### Identity Federation
+
+- Federation: Providing a non-AWS user temporary AWS access by linking that user's indentity accross multiple identity systems
+- Federation with Third-Party Providers:
+  - Most commonly used in web and mohile applications
+  - Amazon Cognito allows for creation of unique identities for users
+  - Uses identity providers to federate them: Facebook, Google, Amazon, etc
+- Establishing Single-Sign-On (SSO) using SAML2.0
+  - Most commonly used in enterprise environment with an existing directory system
+    - Active Drectory,...
+  - Federated users can access AWS resources using their corporate domain account
+  - Federation also aids user management by allowing central management of accouts
+
+## Amazon Inspector
+
+Inspector can
+
+- Analyze the behavior of your AWS account
+- Test network accessibility and security state
+- Assesses for secunty vulnerabitaties and deviations from best pratices
+- **Target**: A collection of Ecz instances
+- **Assessment template**: Composed of security rules and produce a list of findings
+- **Assessment run**: Applying the assegment tiplate to a tanget
+- **Findings**: Security report, organized by severity level
+- **Features**:
+  - Configuration scanning and activity monitoring engine:
+    - Determines what a target look like, its behavior, and any dependencies it may have
+    - Identifies security and compliances issues
 
 **TO BE UPDATED**
