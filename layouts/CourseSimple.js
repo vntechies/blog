@@ -8,7 +8,13 @@ import ScrollTopAndComment from '@/components/ScrollTopAndComment'
 export default function CourseSimple({ frontMatter, authorDetails, next, prev, children }) {
   return (
     <SectionContainer>
-      <CourseSEO url={`${siteMetadata.siteUrl}/courses/${frontMatter.slug}`} {...frontMatter} />
+      <CourseSEO
+        {...frontMatter}
+        title={`${
+          frontMatter.index === 0 ? `Khoá học ${frontMatter.title}` : `${frontMatter.title}`
+        }`}
+        url={`${siteMetadata.siteUrl}/courses/${frontMatter.slug}`}
+      />
       <ScrollTopAndComment />
       <article className="post">
         <div>

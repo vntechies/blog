@@ -12,7 +12,7 @@ export default function Series({ series }) {
   return (
     <>
       <PageSEO
-        title={`Series - ${siteMetadata.author}`}
+        title={`Series - ${siteMetadata.title}`}
         description={`Series - ${siteMetadata.description}`}
       />
       <div className="divide-y divide-gray-200 dark:divide-gray-700">

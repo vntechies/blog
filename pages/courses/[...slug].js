@@ -81,6 +81,7 @@ export default function Course({ post, authorDetails, posts, otherCourses, prev,
           courseItems={posts}
           url={`${siteMetadata.siteUrl}/courses/${frontMatter.slug}`}
           {...frontMatter}
+          showCanonical={false}
         />
       )}
 

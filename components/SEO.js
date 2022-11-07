@@ -198,6 +198,7 @@ export const CourseSEO = ({
   date,
   canonicalUrl,
   images = [],
+  showCanonical,
 }) => {
   const router = useRouter()
   const publishedAt = new Date(date).toISOString()
@@ -273,6 +274,7 @@ export const CourseSEO = ({
         ogImage={featuredImages}
         twImage={twImageUrl}
         canonicalUrl={canonicalUrl}
+        showCanonical={showCanonical}
       />
       <Head>
         {date && <meta property="course:published_time" content={publishedAt} />}
