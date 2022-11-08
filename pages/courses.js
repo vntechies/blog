@@ -13,7 +13,7 @@ export default function Courses({ courses }) {
   return (
     <>
       <PageSEO
-        title={`Khoá học - ${siteMetadata.title}`}
+        title={`Khoá học - ${siteMetadata.headerTitle}`}
         description={siteMetadata.descriptions.courses}
       />
       <div className="divide-y divide-gray-200 dark:divide-gray-700">

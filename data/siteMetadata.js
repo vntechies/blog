@@ -1,7 +1,7 @@
 const siteMetadata = {
   title: 'VNTechies Dev Blog 🇻🇳 - Kho tài nguyên về Cloud ☁️ / DevOps 🚀',
   author: 'VNTechies',
-  headerTitle: 'VNTechies',
+  headerTitle: 'VNTechies Dev Blog',
   description:
     '🇻🇳 VNTechies Dev Blog - Kho tài nguyên dành cho người Việt yêu công nghệ 👨‍💻👩‍💻 📝 Tài liệu, khoá học, hướng dẫn DevOps, ☁️ Cloud computing, 🌐 web & 📱 mobile apps, Infrastructure Automation, CI/CD 🚀',
   descriptions: {

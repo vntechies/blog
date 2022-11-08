@@ -20,7 +20,7 @@ export default function Blog({ posts, initialDisplayPosts, pagination }) {
   return (
     <>
       <PageSEO
-        title={`Blog - ${siteMetadata.title}`}
+        title={`Blog - ${siteMetadata.headerTitle}`}
         description={siteMetadata.descriptions.blog}
       />
       <ListLayout

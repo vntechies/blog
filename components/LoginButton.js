@@ -10,7 +10,7 @@ export default function LoginButton() {
     return (
       <>
         {/* <button onClick={() => signOut()}> */}
-        <Link href="/user">
+        <Link alt={`Người dùng ${session.user.name}`} href="/user">
           <div
             title={session.user.name}
             className="ml-1 mr-1 h-10 w-10 rounded bg-zinc-200 bg-cover bg-center p-1 shadow-inner dark:bg-zinc-800 sm:ml-4"
@@ -30,7 +30,7 @@ export default function LoginButton() {
         className="ml-1 mr-1 h-10 w-10 rounded p-1 sm:ml-4"
       >
         <svg
-          xmlns="http://www.w3.org/2000/svg"
+          xmlns="https://www.w3.org/2000/svg"
           fill="none"
           viewBox="0 0 24 24"
           strokeWidth="1.5"

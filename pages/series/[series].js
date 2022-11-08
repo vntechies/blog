@@ -53,7 +53,11 @@ export default function Series({ posts, series }) {
   const { title, images, summary } = series
   return (
     <>
-      <TagSEO title={`${title} - ${siteMetadata.title}`} description={summary} images={images} />
+      <TagSEO
+        title={`${title} - ${siteMetadata.headerTitle}`}
+        description={summary}
+        images={images}
+      />
       <ListLayout posts={posts} title={title} />
     </>
   )

@@ -54,7 +54,7 @@ const AWSCert = () => {
             className="ml-2 h-5 w-5"
             fill="currentColor"
             viewBox="0 0 20 20"
-            xmlns="http://www.w3.org/2000/svg"
+            xmlns="https://www.w3.org/2000/svg"
           >
             <path
               fillRule="evenodd"

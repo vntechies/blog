@@ -140,7 +140,7 @@ export default function Course({ post, authorDetails, posts, otherCourses, prev,
           <div className="invisible pt-0 pb-0 pr-4 md:visible md:pt-6 md:pb-10 md:pr-0 xl:border-b xl:border-gray-200 xl:pt-11 xl:dark:border-gray-700">
             <div className="sticky top-8 h-0 overflow-y-scroll md:h-[calc(100vh-5.75rem)]">
               <h3 className="dark:text-secondary-400 text-xl font-bold text-primary-600">
-                Nội dung
+                Nội dung khoá học
               </h3>
               <ul className="my-4">
                 {posts.map((post) => {
@@ -167,6 +167,7 @@ export default function Course({ post, authorDetails, posts, otherCourses, prev,
                 <div className="my-4 hidden grid-cols-1 gap-4 dark:border-slate-800 md:grid">
                   {otherCourses.map((course) => (
                     <Link
+                      alt={`Tới ${course.title}`}
                       key={course.title}
                       href={`/courses/${course.slug}`}
                       className="grid grid-cols-3 items-center justify-center rounded-md bg-slate-100 text-sm drop-shadow transition duration-200 hover:-translate-y-1 hover:bg-neutral-200 dark:bg-neutral-800 dark:hover:bg-neutral-700"

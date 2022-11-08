@@ -10,7 +10,7 @@ export default function User() {
     return (
       <>
         <PageSEO
-          title={`Thông tin người dùng - ${siteMetadata.title}`}
+          title={`Thông tin người dùng - ${siteMetadata.headerTitle}`}
           description={`Thông tin người dùng - ${siteMetadata.title}`}
         />
         <div className="space-y-2 pt-6 pb-8 md:space-y-5">

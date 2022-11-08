@@ -3,7 +3,12 @@ import Image from 'next/image'
 
 const ArticleThumbnail = ({ slug, title, image }) => {
   return (
-    <Link href={`/blog/${slug}`} title={title} className="w-full xl:w-auto">
+    <Link
+      alt={`Đọc bài "${title}"`}
+      href={`/blog/${slug}`}
+      title={title}
+      className="w-full xl:w-auto"
+    >
       <Image
         alt={title}
         className="rounded object-cover"

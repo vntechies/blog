@@ -10,7 +10,7 @@ const BottomNav = () => {
       <nav className="pb-safe fixed bottom-0 w-full border-t bg-zinc-100 dark:border-zinc-800 dark:bg-zinc-900">
         <div className="mx-auto flex h-16 max-w-md items-center justify-around px-6">
           {links.map(({ href, label, icon }) => (
-            <Link key={label} href={href}>
+            <Link alt={label} key={label} href={href}>
               <a
                 className={`flex h-full w-full flex-col items-center justify-center space-y-1 ${
                   route === href
@@ -45,7 +45,7 @@ const links = [
     href: '/',
     icon: (
       <svg
-        xmlns="http://www.w3.org/2000/svg"
+        xmlns="https://www.w3.org/2000/svg"
         viewBox="0 0 24 24"
         fill="currentColor"
         className="h-6 w-6"
@@ -60,7 +60,7 @@ const links = [
     href: '/blog',
     icon: (
       <svg
-        xmlns="http://www.w3.org/2000/svg"
+        xmlns="https://www.w3.org/2000/svg"
         viewBox="0 0 24 24"
         fill="currentColor"
         className="h-6 w-6"
@@ -79,7 +79,7 @@ const links = [
     href: '/courses',
     icon: (
       <svg
-        xmlns="http://www.w3.org/2000/svg"
+        xmlns="https://www.w3.org/2000/svg"
         viewBox="0 0 24 24"
         fill="currentColor"
         className="h-6 w-6"
@@ -95,7 +95,7 @@ const links = [
     href: '/series',
     icon: (
       <svg
-        xmlns="http://www.w3.org/2000/svg"
+        xmlns="https://www.w3.org/2000/svg"
         viewBox="0 0 20 20"
         fill="currentColor"
         className="h-5 w-5"
@@ -111,7 +111,7 @@ const links = [
     href: '/about',
     icon: (
       <svg
-        xmlns="http://www.w3.org/2000/svg"
+        xmlns="https://www.w3.org/2000/svg"
         viewBox="0 0 20 20"
         fill="currentColor"
         className="h-5 w-5"

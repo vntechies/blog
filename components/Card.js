@@ -10,7 +10,7 @@ const Card = ({ title, description, imgSrc, href, showMore = true }) => (
     >
       {imgSrc &&
         (href ? (
-          <Link href={href} aria-label={`Link to ${title}`}>
+          <Link alt={`Link tới ${title}`} href={href} aria-label={`Link tới ${title}`}>
             <Image
               alt={title}
               src={imgSrc}
@@ -31,7 +31,7 @@ const Card = ({ title, description, imgSrc, href, showMore = true }) => (
       <div className="p-6">
         <h2 className="mb-3 text-2xl font-bold leading-8 tracking-tight">
           {href ? (
-            <Link href={href} aria-label={`Link to ${title}`}>
+            <Link alt={`Link tới ${title}`} href={href} aria-label={`Link tới ${title}`}>
               {title}
             </Link>
           ) : (
@@ -41,9 +41,10 @@ const Card = ({ title, description, imgSrc, href, showMore = true }) => (
         <p className="prose mb-3 max-w-none text-gray-500 dark:text-gray-400">{description}</p>
         {href && showMore && (
           <Link
+            alt={`Link tới ${title}`}
             href={href}
             className="text-base font-medium leading-6 text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
-            aria-label={`Link to ${title}`}
+            aria-label={`Link tới ${title}`}
           >
             Xem thêm 👉
           </Link>
