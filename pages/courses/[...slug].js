@@ -32,9 +32,9 @@ export async function getStaticProps({ params }) {
   const allPosts = all.reverse()
   const post = await getFileBySlug('courses', params.slug.join('/'))
   const course = params.slug[0]
-  const sameCoursePosts = allPosts.filter(
-    (p) => p.draft !== true && p.slug.split('/')[0] === course
-  )
+  const sameCoursePosts = allPosts
+    .filter((p) => p.draft !== true && p.slug.split('/')[0] === course)
+    .sort((a, b) => a.index - b.index)
   const postIndex = post.frontMatter.index
   const prev =
     allPosts.filter((p) => p.slug.split('/')[0] === course && p.index === postIndex - 1)[0] || null

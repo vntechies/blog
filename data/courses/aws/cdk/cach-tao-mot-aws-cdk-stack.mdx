@@ -1,0 +1,62 @@
+---
+title: Cách tạo một AWS CDK Stack
+date: '2022-11-08'
+tags: ['aws', 'aws cdk', 'python', 'devops']
+images: ['/static/images/ogps/aws_cdk_stack.png']
+summary: 'Hướng dẫn này cung cấp mã nguồn ví dụ nhằm tạo AWS CDK Stack với Python'
+index: 3
+---
+
+<TOCInline toc={props.toc} asDisclosure />
+
+## AWS CDK Stack là gì
+
+Stack đại diện cho một nhóm tài nguyên AWS cho một lần triển khai. AWS CDK stack dựa trên AWS CloudFormation Stack. Do đó, nó có các tính năng và hạn chế giống nhau. Việc tổng hợp (synthesie) AWS CDK Stack sẽ tạo ra CloudFormation template có thể được sử dụng để triển khai trên AWS.
+
+Bạn có thể định nghĩa số lượng stack không tuỳ ý trong ứng dụng AWS CDK của mình. Đoạn mã sau đây cho biết cách tạo cấu trúc AWS CDK Stack mà bạn có thể Sử dụng làm mẫu để định nghĩa các stack của bạn.
+
+## Ví dụ cho AWS CDK Stack
+
+```python
+from aws_cdk import (
+    Stack,
+)
+from constructs import Construct
+
+
+class ExampleStack(Stack):
+
+    def __init__(self, scope: Construct, construct_id: str, **kwargs) -> None:
+        super().__init__(scope, construct_id, **kwargs)
+```
+
+Một pattern phổ biến khi tạo stack trong ứng dụng AWS CDK là mở rộng lớp cơ sở của Stack `cdk.Stack`, như trong ví dụ. Sau đó, bạn xác định phạm vi (scope), id và các tham số cho hàm `init`.
+
+## Làm thế nào để tạo một AWS CDK Stack
+
+- [Cài đặt AWS CDK](/courses/aws/cdk/huong-dan-chi-tiet-cai-dat-aws-cdk) và tạo ExampleStack tại `libs/example_stack.py`
+- Import Stack đã được tạo trong CDK App
+
+```python
+from libs.example_stack import ExampleStack
+```
+
+- Tạo một stack mới
+
+```python:app.py
+from libs.example_stack import ExampleStack
+
+app = App()
+
+ExampleStack(app, 'example_stack', {
+  # đối số truyền vào
+})
+
+app.synth()
+```
+
+![Cấu trúc folder một AWS CDK app](/static/images/assets/aws_cdk_stack.png)
+
+## Reference
+
+- [AWS CDK v2 Stacks](https://docs.aws.amazon.com/cdk/v2/guide/stacks.html)
