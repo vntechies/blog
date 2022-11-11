@@ -4,8 +4,8 @@ date: '2022-11-11'
 tags: ['aws', 'aws cdk', 'devops', 'fargate', 'ecs']
 draft: false
 images: ['/static/images/ogps/aws_scheduled_fargate_task.png']
-summary: 'Bài viết này sẽ giải thích những gì cần thiết để triển khai một tác vụ Fargate được lập lịch (Scheduled Fargate Tasks) bằng AWS CDK'
-index: 7
+summary: 'Bài viết này sẽ giải thích các bước cần thiết để triển khai một tác vụ Fargate được lập lịch (Scheduled Fargate Tasks) bằng AWS CDK'
+index: 6
 ---
 
 ## TL;DR Talk is cheap. Show me the code.
@@ -18,13 +18,13 @@ Bạn có thể tham khảo mã nguồn tại [Github repository này](https://g
 
 _Trong bài viết này, Scheduled Fargate Task sẽ được dịch là **tác vụ Fargate được lập lịch**, nếu bạn đọc có cách dịch nào tốt hơn, xin vui lòng để lại comment ở bên dưới 😍_
 
-Để sử dụng các tác vụ Fargate được lập lịch, trước tiên, bạn cần thiết lập một Virtual Private cloud (VPC). VPC là một mạng ảo được tách biệt cho phép bạn khởi chạy các tài nguyên AWS của mình, ví dụ như các tác vụ Fargate được lập lịch.
+Để sử dụng các tác vụ Fargate được lập lịch, trước tiên, bạn cần thiết lập một Virtual Private Cloud (VPC). VPC là một mạng ảo được tách biệt cho phép bạn khởi tạo vào triển khai các tài nguyên AWS của mình, ví dụ như các tác vụ Fargate được lập lịch.
 
 Bạn có thể chỉ định dải địa chỉ IP cho VPC, thêm mạng con (subnet), liên kết nhóm bảo mật (security group)và định cấu hình bảng định tuyến (route tables). Đối với bài viết này, chúng tôi sẽ tạo một VPC với 9 mạng con được chia trên 3 AZs bằng AWS CDK.
 
 Dưới đây là một ví dụ về cách tạo VPC:
 
-```yaml:aws_cdk_scheduled_fargate_task_stack.py
+```python:aws_cdk_scheduled_fargate_task_stack.py
 # Tạo VPC với 9 subnets trên 3 AZs
 my_vpc = ec2.Vpc(
     self,
@@ -55,7 +55,7 @@ my_vpc = ec2.Vpc(
 
 Sau khi đã triển khai các tài nguyên phụ thuộc, chúng ta có thể tiếp tục với tài nguyên Fargate thực tế. Đoạn mã tiếp theo sử dụng thư viện Cấu trúc CDK chính thức cho Cấu trúc ECS cấp cao hơn (aws-ecs-pattern) để tạo Nhiệm vụ Fargate đã lên lịch:
 
-```yaml:aws_cdk_scheduled_fargate_task_stack.py
+```python:aws_cdk_scheduled_fargate_task_stack.py
 # Tạo ECS Cluster
 my_cluster = ecs.Cluster(
     self,
@@ -70,7 +70,7 @@ my_cluster = ecs.Cluster(
 
 Sau khi đã triển khai các tài nguyên trên, chúng ta có thể tiếp tục với tài nguyên Fargate. Đoạn mã dưới dây sử dụng [CDK Construct library for higher-level ECS Constructs](https://docs.aws.amazon.com/cdk/api/v1/docs/aws-ecs-patterns-readme.html) (aws-ecs-patterns) để tạo một tác vụ Fargate được lập lịch (Scheduled Fargate Task):
 
-```yaml:aws_cdk_scheduled_fargate_task_stack.py
+```python:aws_cdk_scheduled_fargate_task_stack.py
 image = ecs.ContainerImage.from_registry("amazonlinux:2")
 
 ecs_patterns.ScheduledFargateTask(
@@ -102,6 +102,14 @@ ecs_patterns.ScheduledFargateTask(
 ![Tác vụ Fargate đã được tạo](/static/images/assets/aws_cdk_fargate_ecs.png)
 
 ![Log được tạo bởi tác vụ Fargate được lên lịch](/static/images/assets/aws_cdk_fargate_cloudwatch.png)
+
+## Dọn dẹp tài nguyên
+
+Xoá stack vừa được tạo bởi AWS CDK để tránh phát sinh chi phí không cần thiết bạn nhé 😉
+
+```shell
+cdk destroy
+```
 
 ## Kết luận
 
