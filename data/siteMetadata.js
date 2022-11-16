@@ -3,7 +3,7 @@ const siteMetadata = {
   author: 'VNTechies',
   headerTitle: 'VNTechies Dev Blog',
   description:
-    '🇻🇳 VNTechies Dev Blog - Kho tài nguyên dành cho người Việt yêu công nghệ 👨‍💻👩‍💻 📝 Tài liệu, khoá học, hướng dẫn DevOps, ☁️ Cloud computing, 🌐 web & 📱 mobile apps, Infrastructure Automation, CI/CD 🚀',
+    'VNTechies Dev Blog - Kho tài nguyên dành cho người Việt yêu công nghệ. Tài liệu, hướng dẫn DevOps, Cloud computing, Infrastructure Automation, CI/CD',
   descriptions: {
     blog: 'Các bài viết kỹ thuật tập trung vào các 🚀 giải pháp công nghệ ☁️ Cloud computing, DevOps, phát triển 🌐 web & 📱 mobile apps, CI/CD',
     series:
