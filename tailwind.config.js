@@ -14,6 +14,15 @@ module.exports = {
   ],
   darkMode: 'class',
   theme: {
+    fontSize: {
+      sm: '0.875rem',
+      base: '1.1rem',
+      xl: '1.2rem',
+      '2xl': '1.5rem',
+      '3xl': '1.9rem',
+      '4xl': '2.4rem',
+      '5xl': '3rem',
+    },
     extend: {
       spacing: {
         '9/16': '56.25%',
@@ -25,11 +34,11 @@ module.exports = {
         14: '3.5rem',
       },
       fontFamily: {
-        sans: ['InterVariable', ...defaultTheme.fontFamily.sans],
+        sans: ['Space Grotesk', 'InterVariable', ...defaultTheme.fontFamily.sans],
       },
       colors: {
         primary: colors.orange,
-        gray: colors.gray,
+        gray: colors.neutral,
       },
       typography: (theme) => ({
         DEFAULT: {
@@ -63,7 +72,7 @@ module.exports = {
               backgroundColor: theme('colors.gray.800'),
             },
             code: {
-              color: theme('colors.red.500'),
+              color: theme('colors.red.400'),
               backgroundColor: theme('colors.gray.100'),
               paddingLeft: '4px',
               paddingRight: '4px',

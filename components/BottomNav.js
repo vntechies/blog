@@ -20,7 +20,7 @@ const BottomNav = () => {
               >
                 {icon}
                 <span
-                  className={`text-xs ${
+                  className={`text-[13px] ${
                     route === href
                       ? 'text-orange-500 dark:text-orange-400'
                       : 'text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-50'

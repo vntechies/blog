@@ -37,7 +37,7 @@ const NewsletterForm = ({ title = 'Nhận tin từ VNTechies 📮' }) => {
 
   return (
     <div>
-      <div className="w-72 pb-1 text-lg font-semibold text-gray-800 dark:text-gray-100">
+      <div className="text-lg w-72 pb-1 font-semibold text-gray-800 dark:text-gray-100">
         {title}
       </div>
       <form className="flex flex-col" onSubmit={subscribe}>

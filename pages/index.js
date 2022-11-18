@@ -9,8 +9,9 @@ import AWSCert from '@/components/home/AWSCert'
 import Hero from '@/components/home/Hero'
 import Features from '@/components/home/Features'
 import Newsletter from '@/components/home/NewsLetter'
+import ArticleList from '@/components/ArticleList'
 
-const MAX_DISPLAY = 3
+const MAX_DISPLAY = 6
 
 export async function getStaticProps() {
   const posts = await getAllFilesFrontMatter('blog')
@@ -24,25 +25,28 @@ export default function Home({ posts }) {
       <PageSEO title={siteMetadata.title} description={siteMetadata.description} />
       <Hero />
       <Features />
-      <AWSCert />
       {/* TODO */}
       {/* <Team /> */}
       <div className="divide-y divide-gray-200 dark:divide-gray-700">
         <div className="space-y-2 pt-6 pb-8 md:space-y-5">
-          <h2 className="text-3xl font-extrabold leading-9 tracking-tight text-gray-900 dark:text-gray-100 sm:text-4xl sm:leading-10 md:text-6xl md:leading-14">
+          <h2 className="md:text-6xl text-3xl font-extrabold leading-9 tracking-tight text-gray-900 dark:text-gray-100 sm:text-4xl sm:leading-10 md:leading-14">
             🌟 Bài viết mới nhất
           </h2>
         </div>
-        <ul className="divide-y divide-gray-200 dark:divide-gray-700">
-          {!posts.length && 'Không có bài viết nào.'}
-          {posts.slice(0, MAX_DISPLAY).map((frontMatter) => {
-            return (
-              <li key={frontMatter.slug} className="py-12">
-                <Article {...frontMatter} image={frontMatter.images[0]} />
-              </li>
-            )
-          })}
-        </ul>
+        <div className="container mx-auto py-8">
+          <div className="grid grid-cols-1 gap-8 md:grid-cols-2 xl:grid-cols-3">
+            {!posts.length && 'Không có bài viết nào.'}
+            {posts.slice(0, MAX_DISPLAY).map((frontMatter) => {
+              return (
+                <ArticleList
+                  key={frontMatter.title}
+                  {...frontMatter}
+                  image={frontMatter.images[0]}
+                />
+              )
+            })}
+          </div>
+        </div>
       </div>
       {posts.length > MAX_DISPLAY && (
         <div className="flex justify-end text-base font-medium leading-6">
@@ -56,6 +60,7 @@ export default function Home({ posts }) {
           </Link>
         </div>
       )}
+      <AWSCert />
       <FAQ />
       <Newsletter />
     </>

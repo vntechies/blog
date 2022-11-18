@@ -180,7 +180,7 @@ export default function Course({ post, authorDetails, posts, otherCourses, prev,
                           layout="fill"
                         />
                       </span>
-                      <p className="col-span-2 p-2 text-xs lg:p-4 lg:text-base">{course.title}</p>
+                      <p className="text-xs col-span-2 p-2 lg:p-4 lg:text-base">{course.title}</p>
                     </Link>
                   ))}
                 </div>

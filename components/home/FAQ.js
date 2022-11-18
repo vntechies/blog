@@ -73,7 +73,7 @@ const FAQ = () => {
           <div>
             {faqs.map((faq) => (
               <div key={faq.question} className="mb-10">
-                <h3 className="mb-4 flex items-center text-lg font-medium text-gray-900 dark:text-white">
+                <h3 className="text-lg mb-4 flex items-center font-medium text-gray-900 dark:text-white">
                   <svg
                     className="mr-2 h-5 w-5 flex-shrink-0 text-gray-500 dark:text-gray-400"
                     fill="currentColor"
