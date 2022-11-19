@@ -1,9 +1,5 @@
-import Link from '@/components/Link'
-import Tag from '@/components/Tag'
-import siteMetadata from '@/data/siteMetadata'
 import { useState } from 'react'
 import Pagination from '@/components/Pagination'
-import formatDate from '@/lib/utils/formatDate'
 import ArticleList from '@/components/ArticleList'
 
 export default function ListLayout({ posts, title, initialDisplayPosts = [], pagination }) {
@@ -21,7 +17,7 @@ export default function ListLayout({ posts, title, initialDisplayPosts = [], pag
     <>
       <div className="divide-y divide-gray-200 dark:divide-gray-700">
         <div className="space-y-2 pt-6 pb-8 md:space-y-5">
-          <h1 className="text-3xl font-extrabold leading-9 tracking-tight text-gray-900 dark:text-gray-100 sm:text-4xl sm:leading-10 md:text-6xl md:leading-14">
+          <h1 className="md:text-6xl text-3xl font-extrabold leading-9 tracking-tight text-gray-900 dark:text-gray-100 sm:text-4xl sm:leading-10 md:leading-14">
             {title}
           </h1>
           <div className="relative max-w-lg">
@@ -48,16 +44,20 @@ export default function ListLayout({ posts, title, initialDisplayPosts = [], pag
             </svg>
           </div>
         </div>
-        <ul>
-          {!filteredBlogPosts.length && 'No posts found.'}
-          {displayPosts.map((frontMatter) => {
-            return (
-              <li key={frontMatter.slug} className="py-4">
-                <ArticleList {...frontMatter} image={frontMatter.images[0]} />
-              </li>
-            )
-          })}
-        </ul>
+        <div className="container mx-auto py-8">
+          <div className="grid grid-cols-1 gap-8 md:grid-cols-2 xl:grid-cols-3">
+            {!filteredBlogPosts.length && 'Không có bài viết nào.'}
+            {displayPosts.map((frontMatter) => {
+              return (
+                <ArticleList
+                  key={frontMatter.title}
+                  {...frontMatter}
+                  image={frontMatter.images[0]}
+                />
+              )
+            })}
+          </div>
+        </div>
       </div>
       {pagination && pagination.totalPages > 1 && !searchValue && (
         <Pagination currentPage={pagination.currentPage} totalPages={pagination.totalPages} />

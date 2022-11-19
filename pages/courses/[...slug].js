@@ -119,7 +119,7 @@ export default function Course({ post, authorDetails, posts, otherCourses, prev,
               return (
                 <li key={post}>
                   <a
-                    className={`my-2 block rounded-md py-4 px-2 text-sm text-slate-800 hover:bg-slate-200 dark:text-slate-300 hover:dark:bg-slate-800 ${
+                    className={`my-2 block rounded-md py-4 px-2 text-sm text-gray-800 hover:bg-gray-200 dark:text-gray-300 hover:dark:bg-gray-800 ${
                       router.asPath === `/courses/${post.slug}`
                         ? 'bg-gray-200 font-bold text-primary-400 dark:bg-gray-800 dark:text-primary-400'
                         : ''
@@ -147,7 +147,7 @@ export default function Course({ post, authorDetails, posts, otherCourses, prev,
                   return (
                     <li key={post}>
                       <a
-                        className={`my-2 block rounded-md py-4 px-2 text-sm text-slate-800 hover:bg-slate-200 dark:text-slate-300 hover:dark:bg-slate-800 ${
+                        className={`my-2 block rounded-md py-4 px-2 text-sm text-gray-800 hover:bg-gray-200 dark:text-gray-300 hover:dark:bg-gray-800 ${
                           router.asPath === `/courses/${post.slug}`
                             ? 'bg-gray-200 font-bold text-primary-400 dark:bg-gray-800 dark:text-primary-400'
                             : ''
@@ -160,17 +160,17 @@ export default function Course({ post, authorDetails, posts, otherCourses, prev,
                   )
                 })}
               </ul>
-              <div className="hidden border-t border-slate-200 pt-12 dark:border-slate-700 md:block">
+              <div className="hidden border-t border-gray-200 pt-12 dark:border-gray-700 md:block">
                 <h3 className="dark:text-secondary-400 text-xl font-bold text-primary-600">
                   Khoá học khác
                 </h3>
-                <div className="my-4 hidden grid-cols-1 gap-4 dark:border-slate-800 md:grid">
+                <div className="my-4 hidden grid-cols-1 gap-4 dark:border-gray-800 md:grid">
                   {otherCourses.map((course) => (
                     <Link
                       alt={`Tới ${course.title}`}
                       key={course.title}
                       href={`/courses/${course.slug}`}
-                      className="grid grid-cols-3 items-center justify-center rounded-md bg-slate-100 text-sm drop-shadow transition duration-200 hover:-translate-y-1 hover:bg-neutral-200 dark:bg-neutral-800 dark:hover:bg-neutral-700"
+                      className="grid grid-cols-3 items-center justify-center rounded-md bg-gray-100 text-sm drop-shadow transition duration-200 hover:-translate-y-1 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700"
                     >
                       <span className="relative h-full w-20 lg:h-24 lg:w-full">
                         <Image
@@ -180,7 +180,7 @@ export default function Course({ post, authorDetails, posts, otherCourses, prev,
                           layout="fill"
                         />
                       </span>
-                      <p className="col-span-2 p-2 text-xs lg:p-4 lg:text-base">{course.title}</p>
+                      <p className="text-xs col-span-2 p-2 lg:p-4 lg:text-base">{course.title}</p>
                     </Link>
                   ))}
                 </div>
@@ -200,7 +200,7 @@ export default function Course({ post, authorDetails, posts, otherCourses, prev,
                 />
               </div>
             </div>
-            <Share title={frontMatter.title} href={`/courses/${frontMatter.slug}`} />
+            <Share fileName={frontMatter.fileName} href={`/courses/${frontMatter.slug}`} />
             <div className="prose max-w-none pt-10 pb-8 text-base dark:prose-dark">
               <MDXLayoutRenderer
                 layout={frontMatter.layout || DEFAULT_LAYOUT}

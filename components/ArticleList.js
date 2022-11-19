@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import Image from 'next/image'
 import Link from '@/components/Link'
 import Tag from '@/components/Tag'
@@ -6,33 +7,34 @@ import formatDate from '@/lib/utils/formatDate'
 
 const ArticleList = ({ slug, date, title, summary, tags, image }) => {
   return (
-    <article className="space-y-5 sm:space-x-0 sm:space-y-5 xl:grid xl:grid-cols-4 xl:items-baseline xl:space-x-8 xl:space-y-2">
-      <div className="xl:row-span-2">
-        <ArticleThumbnail slug={slug} title={title} image={image} />
-      </div>
-      <div className="space-y-3 xl:col-span-3">
-        <div>
-          <h2 className="text-2xl font-bold leading-8 tracking-tight">
-            <Link
-              alt={`Đọc bài "${title}"`}
-              href={`/blog/${slug}`}
-              className="text-gray-900 dark:text-gray-100"
-            >
-              {title}
-            </Link>
-          </h2>
-          <div className="flex flex-wrap">
-            {tags.map((tag) => (
-              <Tag key={tag} text={tag} />
-            ))}
+    <>
+      <div className="group bg-day dark:bg-night w-full bg-opacity-50 dark:bg-opacity-50">
+        <Link
+          className="c-card block transform overflow-hidden rounded-lg bg-transparent transition duration-500"
+          href={`/blog/${slug}`}
+        >
+          <div className="relative max-h-4 overflow-hidden rounded-lg pb-60">
+            <span>
+              <ArticleThumbnail slug={slug} title={title} image={image} />
+            </span>
           </div>
-        </div>
-        <div className="prose max-w-none text-gray-500 dark:text-gray-400">{summary}</div>
-        <small>
-          <time dateTime={date}>{formatDate(date)}</time>
-        </small>
+          <div className="py-4">
+            <span className="inline-flex items-center justify-between gap-2">
+              {tags.slice(0, 3).map((tag) => (
+                <span
+                  key={tag}
+                  className="inline-block rounded border border-gray-700 py-1 px-2 text-sm"
+                >
+                  {tag}
+                </span>
+              ))}
+            </span>
+            <h2 className="mt-2 mb-2 font-bold hover:underline md:text-xl">{title}</h2>
+            <p className="text-sm tracking-wider text-gray-600 dark:text-gray-300">{summary}</p>
+          </div>
+        </Link>
       </div>
-    </article>
+    </>
   )
 }
 

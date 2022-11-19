@@ -3,7 +3,7 @@ name: Anh Cloud
 avatar: /static/images/authors/anhcloud.jpeg
 occupation: Cây bút chính
 company: VNTechies Dev blog
-email: info@vntechies.dev
+email: anhcloud@vntechies.dev
 twitter: https://twitter.com/vn_techies
 facebook: https://fb.me/vntechies.cloud
 linkedin: https://www.linkedin.com/in/vntechies/

@@ -149,10 +149,11 @@
  * @version 1.0
  */
 
+code,
 code[class*='language-'],
 pre[class*='language-'] {
   color: #ebdbb2; /* fg1 / fg */
-  font-family: Consolas, Monaco, 'Andale Mono', monospace;
+  font-family: 'JetBrains Mono', Consolas, Monaco, 'Andale Mono', monospace;
   direction: ltr;
   text-align: left;
   white-space: pre;

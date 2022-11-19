@@ -5,7 +5,7 @@ const AWSCert = () => {
   return (
     <section className="bg-white dark:bg-gray-900">
       <div className="mx-auto max-w-screen-xl py-8 px-4 text-center lg:py-16 lg:px-12">
-        <h2 className="mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 dark:text-white md:text-5xl lg:text-6xl">
+        <h2 className="lg:text-6xl mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 dark:text-white md:text-5xl">
           Hướng dẫn học chứng chỉ AWS
         </h2>
         <div className="container py-12">
@@ -46,7 +46,7 @@ const AWSCert = () => {
           role="alert"
           aria-label="Tất cả hướng dẫn cho các kỳ thi năm 2022"
         >
-          <span className="mr-3 rounded-full bg-primary-700 px-4 py-1.5 text-xs text-white">
+          <span className="text-xs mr-3 rounded-full bg-primary-700 px-4 py-1.5 text-white">
             NEW
           </span>{' '}
           <span className="text-sm font-medium">Tất cả hướng dẫn cho các kỳ thi năm 2022</span>

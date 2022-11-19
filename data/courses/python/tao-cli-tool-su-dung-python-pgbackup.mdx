@@ -365,18 +365,12 @@ setup(
 ```
 
 - Chúng ta trỏ CLI module tới một hàm main và đó cũng là hàm mà chúng ta sẽ tạo sau đây, hàm main cần:
-
-  - import package boto
-
-    3
-  - import module pgdump, storag
-
-    e
-  - tạo ra một parser và xử lý các đối số truyền vào
-  - tạo ra database dump
-  - tuỳ vào loại driver sẽ
-    - lưu file ở local storage
-    - tạo s3 client và upload file lên s3 bucket
+  - Import package boto3, module pgdump và storage
+  - Tạo ra một parser và xử lý các đối số truyền vào
+  - Tạo ra database dump
+  - Tuỳ vào loại driver sẽ
+    - Lưu file ở local storage
+    - Tạo s3 client và upload file lên s3 bucket
 
 ```python:src/pgbackup/cli.py
 ...

@@ -11,7 +11,6 @@ import { BlogNewsletterForm } from './NewsletterForm'
 export const MDXComponents = {
   Image,
   TOCInline,
-  Card,
   a: CustomLink,
   pre: Pre,
   BlogNewsletterForm: BlogNewsletterForm,
