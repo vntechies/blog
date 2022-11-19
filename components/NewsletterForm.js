@@ -50,7 +50,7 @@ const NewsletterForm = ({ title = 'Nhận tin từ VNTechies 📮' }) => {
             className="w-72 rounded-md px-4 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-primary-600 dark:bg-black"
             id="email-input"
             name="email"
-            placeholder={subscribed ? 'Bạn đã đăng ký!  🎉' : 'Email của bạn'}
+            placeholder={subscribed ? 'Bạn đã đăng ký!  🎉' : 'Nhập ngay email 💌'}
             ref={inputEl}
             required
             type="email"
@@ -65,7 +65,7 @@ const NewsletterForm = ({ title = 'Nhận tin từ VNTechies 📮' }) => {
             type="submit"
             disabled={subscribed}
           >
-            {subscribed ? 'Cảm ơn 🥰!' : 'Đăng ký'}
+            {subscribed ? 'Cảm ơn 🥰!' : 'Nhận bản tin'}
           </button>
         </div>
       </form>

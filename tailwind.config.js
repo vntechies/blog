@@ -34,11 +34,11 @@ module.exports = {
         14: '3.5rem',
       },
       fontFamily: {
-        sans: ['Space Grotesk', 'InterVariable', ...defaultTheme.fontFamily.sans],
+        sans: ['InterVariable', ...defaultTheme.fontFamily.sans],
       },
       colors: {
         primary: colors.orange,
-        gray: colors.neutral,
+        gray: colors.slate,
       },
       typography: (theme) => ({
         DEFAULT: {

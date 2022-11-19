@@ -8,8 +8,6 @@ const ArticleThumbnail = ({ slug, title, image }) => {
       className="absolute inset-0 h-full w-full transform object-cover opacity-90 transition duration-700 group-hover:opacity-100 dark:opacity-80"
       src={image}
       layout="fill"
-      width={640}
-      height={400}
       decoding="async"
       sizes="50vw"
     />

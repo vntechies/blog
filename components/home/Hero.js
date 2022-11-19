@@ -16,7 +16,7 @@ const Hero = () => {
           <div className="flex flex-col items-start space-y-3 sm:flex-row sm:items-center sm:space-x-4 sm:space-y-0">
             <Link
               href="/blog"
-              className="mr-1 inline-flex items-center justify-center rounded-lg bg-primary-400 px-5 py-3 text-center text-base font-medium focus:ring-4 focus:ring-primary-300 hover:bg-primary-800 dark:bg-primary-700 dark:focus:ring-primary-900"
+              className="mr-1 inline-flex items-center justify-center rounded-lg bg-primary-400 px-5 py-3 text-center text-base font-medium text-black focus:ring-4 focus:ring-primary-300 hover:bg-primary-500 dark:bg-primary-700 dark:text-white dark:focus:ring-primary-900 dark:hover:bg-primary-800"
             >
               Đọc bài ngay!
               <svg
@@ -36,7 +36,7 @@ const Hero = () => {
               href="https://facebook.com/vntechies"
               arial="VNTechies Page"
               type="button"
-              className="dark:focus:ring-[#3b5998]/55 mr-3 inline-flex items-center justify-center rounded-lg bg-[#3b5998] px-5 py-3 text-center text-base font-medium focus:ring-4 focus:ring-4 focus:ring-primary-300 focus:ring-[#3b5998]/50 hover:bg-[#3b5998]/90"
+              className="dark:focus:ring-[#3b5998]/55 mr-3 inline-flex items-center justify-center rounded-lg bg-[#3b5998] px-5 py-3 text-center text-base font-medium text-white focus:ring-4 focus:ring-4 focus:ring-primary-300 focus:ring-[#3b5998]/50 hover:bg-[#3b5998]/90"
             >
               <svg
                 className="mr-2 -ml-1 h-4 w-4"

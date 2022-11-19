@@ -1,9 +1,5 @@
-import Link from '@/components/Link'
-import Tag from '@/components/Tag'
-import siteMetadata from '@/data/siteMetadata'
 import { useState } from 'react'
 import Pagination from '@/components/Pagination'
-import formatDate from '@/lib/utils/formatDate'
 import ArticleList from '@/components/ArticleList'
 
 export default function ListLayout({ posts, title, initialDisplayPosts = [], pagination }) {
@@ -50,8 +46,8 @@ export default function ListLayout({ posts, title, initialDisplayPosts = [], pag
         </div>
         <div className="container mx-auto py-8">
           <div className="grid grid-cols-1 gap-8 md:grid-cols-2 xl:grid-cols-3">
-            {!posts.length && 'Không có bài viết nào.'}
-            {filteredBlogPosts.map((frontMatter) => {
+            {!filteredBlogPosts.length && 'Không có bài viết nào.'}
+            {displayPosts.map((frontMatter) => {
               return (
                 <ArticleList
                   key={frontMatter.title}

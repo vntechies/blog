@@ -24,7 +24,7 @@ input:-webkit-autofill:focus {
   transition: background-color 600000s 0s, color 600000s 0s;
 }
 
-.post a:any-link {
+.prose a:any-link {
   text-decoration: none !important;
   border-bottom: 0.75px dotted;
 }
