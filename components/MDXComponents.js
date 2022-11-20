@@ -4,7 +4,6 @@ import { getMDXComponent } from 'mdx-bundler/client'
 import Image from './Image'
 import CustomLink from './Link'
 import TOCInline from './TOCInline'
-import Card from './Card'
 import Pre from './Pre'
 import { BlogNewsletterForm } from './NewsletterForm'
 

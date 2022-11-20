@@ -10,6 +10,7 @@ import Image from '@/components/Image'
 import formatDate from '@/lib/utils/formatDate'
 import { CourseSEO } from '@/components/SEO'
 import siteMetadata from '@/data/siteMetadata'
+import HorizontalCard from '@/components/HorizontalCard'
 
 const root = process.cwd()
 
@@ -166,22 +167,12 @@ export default function Course({ post, authorDetails, posts, otherCourses, prev,
                 </h3>
                 <div className="my-4 hidden grid-cols-1 gap-4 dark:border-gray-800 md:grid">
                   {otherCourses.map((course) => (
-                    <Link
-                      alt={`Tới ${course.title}`}
+                    <HorizontalCard
                       key={course.title}
+                      title={course.title}
                       href={`/courses/${course.slug}`}
-                      className="grid grid-cols-3 items-center justify-center rounded-md bg-gray-100 text-sm drop-shadow transition duration-200 hover:-translate-y-1 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700"
-                    >
-                      <span className="relative h-full w-20 lg:h-24 lg:w-full">
-                        <Image
-                          alt={course.title}
-                          className="rounded-tl-md rounded-bl-md object-cover"
-                          src={course.images[0]}
-                          layout="fill"
-                        />
-                      </span>
-                      <p className="text-xs col-span-2 p-2 lg:p-4 lg:text-base">{course.title}</p>
-                    </Link>
+                      image={course.images[0]}
+                    />
                   ))}
                 </div>
               </div>

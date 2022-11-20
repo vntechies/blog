@@ -6,6 +6,7 @@ import siteMetadata from '@/data/siteMetadata'
 import Comments from '@/components/comments'
 import ScrollTopAndComment from '@/components/ScrollTopAndComment'
 import Image from '@/components/Image'
+import HorizontalCard from '@/components/HorizontalCard'
 
 export default function PostLayout({ frontMatter, authorDetails, next, prev, children }) {
   const { date, title, images } = frontMatter
@@ -54,26 +55,20 @@ export default function PostLayout({ frontMatter, authorDetails, next, prev, chi
             </div>
             <Comments frontMatter={frontMatter} />
             <footer>
-              <div className="flex flex-col text-sm font-medium sm:flex-row sm:justify-between sm:text-base">
+              <div className="flex grid flex-col gap-5 text-sm font-medium sm:flex-row sm:justify-between sm:text-base md:grid-cols-2">
                 {prev && (
-                  <div className="pt-4 xl:pt-8">
-                    <Link
-                      href={`/blog/${prev.slug}`}
-                      className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
-                    >
-                      👈 {prev.title}
-                    </Link>
-                  </div>
+                  <HorizontalCard
+                    title={prev.title}
+                    image={prev.images[0]}
+                    href={`/blog/${prev.slug}`}
+                  />
                 )}
                 {next && (
-                  <div className="pt-4 xl:pt-8">
-                    <Link
-                      href={`/blog/${next.slug}`}
-                      className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
-                    >
-                      {next.title} 👉
-                    </Link>
-                  </div>
+                  <HorizontalCard
+                    title={next.title}
+                    image={next.images[0]}
+                    href={`/blog/${next.slug}`}
+                  />
                 )}
               </div>
             </footer>

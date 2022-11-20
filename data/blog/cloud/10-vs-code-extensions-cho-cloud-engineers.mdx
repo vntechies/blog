@@ -1,0 +1,242 @@
+---
+title: '10 VScode extensions cho Cloud/DevOps Engineer'
+date: '2022-11-20'
+tags: ['vscode', 'cloudengineer', 'aws', 'docker', 'azure']
+draft: false
+images: ['/static/images/ogps/10_vs_extensions.png']
+summary: '10 VS Code extensions hữu ích dành cho Cloud/DevOps engineer bao gồm Docker, Kubernetes, AWS, Azure, GCP Toolkits, Hashicorp Terraform,...'
+---
+
+Với Cloud/DevOps engineer, viết code + scripting có thể là một trong những việc mà chúng ta cần phải làm thường xuyên. Với cá nhân mình thì VSCode là lựa chọn hàng đầu cho công việc hàng ngày vì sự tiện dụng của nó, cho dù thi thoảng vẫn sử dụng NeoVim cho việc scripting 😅.
+
+Dựa trên khảo sát của Stack Overflow năm 2022[^1], VSCode cũng là lựa chọn đứng thứ 2 sau NeoVim trong hạng mục editor dành cho các developer.
+
+![Stack Overflow Survey 2022 editor rank](/static/images/assets/10_vs_extensions_survey.png)
+
+Có hàng nghìn extensions dành cho VS Code và với một Cloud/DevOps engineer thì việc lựa chọn các extension tốt để giúp tăng hiệu suất công việc có thể sẽ rất khó và tốn nhiều thời gian. Ngược lại, việc lạm dụng quá nhiều extensions không cần thiết lại là một điều không tốt (làm VSCode chậm hơn, overlap giữa nhiều extensions,...).
+
+VNTechies đã tự trải nghiệm rất nhiều extensions và thông qua trải nghiệm cá nhân sẽ cung cấp cho các bạn danh sách gồm 10 extensions tốt nhất dành cho Cloud/DevOps engineer để giúp bạn tiết kiệm thời gian.
+
+Hãy trải nghiệm trên editor của bạn và cho VNTechies biết ý kiến của bạn nhé!
+
+<TOCInline toc={props.toc} asDisclosure />
+
+## 1. Docker
+
+[Extension Docker cho VS Code](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-docker) giúp bạn dễ dàng tạo, chỉnh sửa các Dockerfile. Extension này được phát triển bởi Microsoft và có các chức năng như đánh dấu cú pháp (syntax highlight), tùy chọn gỡ lỗi, tự động hoàn thành (IntelliSense) và khả năng xây dựng container ngay trong VSCode từ các Dockerfiles.
+
+![Extension Docker cho VS Code](https://github.com/microsoft/vscode-docker/raw/HEAD/resources/readme/overview.gif)
+
+<p align="center">
+  <small>Nguồn: [github.com/microsoft](https://github.com/microsoft/vscode-docker)</small>
+</p>
+
+Như bạn có thể thấy trong ví dụ trên, extension có gợi ý để hoàn thành các lệnh mà bạn muốn thêm vào
+Dockerfile. Bạn có thể kiểm tra và xây dựng Dockerfile của mình bằng cách chạy lệnh `Build image` (nhấp
+chuột phải vào Dockerfile) và có thể tiếp tục làm việc trong VS Code thay vì phải chuyển đi chuyển lại
+giữa terminal và editor.
+
+> Lưu ý: Hãy đảm bảo cài đặt Docker Desktop trên máy tính của bạn trước khi sử dụng extension này, nếu không câu lệnh Build sẽ không hoạt động.
+
+## 2. Kubernetes
+
+![Kurbenetes explorer](https://devblogs.microsoft.com/premier-developer/wp-content/uploads/sites/31/2019/01/kb10.png)
+
+<p align="center">
+  <small>
+    Nguồn:
+    [devblogs.microsoft.com](https://devblogs.microsoft.com/premier-developer/why-you-should-consider-vs-code-for-your-kubernetes-docker-work/)
+  </small>
+</p>
+
+Nếu coi Docker là một thành phần quan trọng của việc phát triển các ứng dụng Cloud Native, thì Kubernetes có thể coi là "Hệ điều hành". Kubernetes đang dẫn trong việc biến điện toán Cloud Native trở thành nguồn mở và được hỗ trợ mạnh mẽ bởi tất cả các public cloud provider lớn.
+
+Kubernetes cũng đi kèm với một CLI cung cấp khả năng triển khai, chạy, quản lý cụm Kubernetes. [Extension Kubernetes cho VS Code](https://marketplace.visualstudio.com/items?itemName=ms-kubernetes-tools.vscode-kubernetes-tools) cho phép chúng ta nhìn rõ được cụm Kubernetes, bao gồm Namespaces, Nodes, Workloads, Network, Storage, Configuration. Nó cũng cung cấp tổng quan về các dịch vụ Kubernetes trên cloud và các Helm repositories đã được kết nối.
+
+## 3. DotEnv
+
+[Extension DotEnv cho VS Code](https://marketplace.visualstudio.com/items?itemName=mikestead.dotenv) có chức năng đánh dấu cú pháp cho các file môi trường .env. Trong các dự án, chúng ta thường sử dụng các biến .env (ví dụ cho các CI/CD pipelines). Vì vậy, việc đánh dấu cú pháp các tệp này giúp mắc ít lỗi hơn và cho phép đọc các biến môi trường nhanh hơn rất nhiều so với một tệp chỉ có chữ màu trắng/đen không được đánh dấu.
+
+![Dotenv VSCode hiển thị đánh dấu cú pháp trên tệp .env](https://github.com/mikestead/vscode-dotenv/raw/master/images/screenshot.png)
+
+<p align="center">
+  <small>Nguồn: [github.com/mikestead](https://github.com/mikestead/vscode-dotenv)</small>
+</p>
+
+## 4. HashiCorp Terraform
+
+https://giphy.com/gifs/H2rjaNoYht3TYihjrP
+
+Terraform là công cụ dành cho Cơ sở hạ tầng dưới dạng mã (IaC) khá phổ biến giúp xây dựng và triển khai tài nguyên trên cloud, chính vì vậy tôi đã thêm [extension này](https://marketplace.visualstudio.com/items?itemName=HashiCorp.terraform) vào danh sách.
+
+Tính năng tiện lợi nhất mà chúng ta nhận được khi sử dụng extension này là đánh dấu cú pháp và tự động hoàn thành cho các files Terraform.
+
+Như bản có thể thấy trên demo, extension này liệt kê tất cả các loại resource của aws mà chúng ta không cần phải đánh toàn bộ. Ưu điểm của việc tự động hoàn thành là bạn không cần phải liên tục quay lại đọc tài liệu API để tìm hiểu các thuộc tính của tài nguyên khi sử dụng nó trong mã của mình.
+
+## 5. Visual Studio IntelliCode
+
+[Visual Studio IntelliCode](https://marketplace.visualstudio.com/items?itemName=VisualStudioExptTeam.vscodeintellicode) là một extension cung cấp khả năng hoàn thành mã do AI hỗ trợ. Theo tôi, điều này nên trở thành một phần mặc định của VSCode vì mọi Cloud/DevOps engineer đều được hưởng lợi từ chức năng này.
+
+https://giphy.com/gifs/oQRJJ4Whze7odzU40Q
+
+Như bạn có thể thấy trong bản ví dụ minh họa, nếu một phương thức hoặc lớp chứa các giao diện thì IntelliCode sẽ có thể chọn các tham chiếu và sẽ cố gắng tự động hoàn thành nó cho người dùng khi họ nhập mã.
+
+## 6. AWS Toolkit
+
+[Extension AWS Toolkit](https://marketplace.visualstudio.com/items?itemName=AmazonWebServices.aws-toolkit-vscode) giúp việc tương tác và xây dựng các tài nguyên trên AWS trở nên nhanh và hiệu quả hơn. Một số tính năng đáng chú ý bao gồm:
+
+- AWS Explorer - Truy vào các dịch vụ AWS trong tài khoản của bạn thông qua VSCode, ví dụ: xem và thực thi các hàm AWS Lambda.
+  ![AWS Explorer](https://github.com/aws/aws-toolkit-vscode/raw/HEAD/resources/marketplace/vscode/overview-aws-explorer.png)
+  {' '}
+  <p align="center">
+    <small>Nguồn: [github.com/aws](https://github.com/aws/aws-toolkit-vscode/)</small>
+  </p>
+- CDK Explorer - Truy cập ứng dụng AWS CDK của bạn và xem cách các thành phần được kết nối với nhau.
+  ![CDK Explorer](https://github.com/aws/aws-toolkit-vscode/raw/HEAD/resources/marketplace/vscode/cdk-tree-view.png)
+  <p align="center">
+    <small>Nguồn: [github.com/aws](https://github.com/aws/aws-toolkit-vscode/)</small>
+  </p>
+- Amazon CloudWatch Log - Bạn có thể truy cập/xem CloudWatch log real-time (tải 10.000 dòng gần nhất) và timestamp của chúng.
+
+![Amazon CloudWatch Log](https://github.com/vntechies/gif-hosting/raw/main/aws_toolkit.gif)
+
+Như bạn có thể thấy trong ví dụ ở trên, bạn có thể sử dụng AWS Explorer để tìm tài nguyên một region, xem nội dung trực tiếp trong VSCode. Việc này có thể tiết kiệm rất nhiều thời gian vì bạn không cần phải đăng nhập vào AWS Console, tự tìm tài nguyên đó và xem kết quả.
+
+> Việc sử dụng AWS credential để kết nối/truy cập môi trường trên AWS bằng VSCode có thể sẽ tạo ra các lỗ hổng về bảo mật. Hãy cố gắng tuân quy tắc quyền tối thiểu (Principle of least privilege) khi tạo các credential và hạn chế làm việc này trên môi trường production.
+
+## 7. Shell-format
+
+[Shell-format](https://marketplace.visualstudio.com/items?itemName=foxundermoon.shell-format) là một extension tốt giúp format các tệp shell của bạn.
+
+![Ví dụ định dạng tiện ích mở rộng VS Code định dạng Shell](https://github.com/foxundermoon/vs-shell-format/raw/master/image/shell_format.gif)
+
+<p align="center">
+  <small>Nguồn: [github.com/foxundermoon](https://github.com/foxundermoon/vs-shell-format/)</small>
+</p>
+
+Bên cạnh việc định dạng tập lệnh của bạn, extension cũng bổ sung đánh dấu cú pháp để bạn có thể dễ dàng viết và đọc các phần khác nhau của tệp shell.
+
+Extension hỗ trợ format các loại tệp sau:
+
+|  Ngôn ngữ   |       Phần mở rộng       |
+| :---------: | :----------------------: |
+| Shellscript |        .sh .bash         |
+| Dockerfile  |        Dockerfile        |
+| Ignore file | .gitignore .dockerignore |
+| Properties  |       .properties        |
+| Jvmoptions  | .vmoptions , jvm.options |
+|    Hosts    |        /etc/hosts        |
+|    Bats     |          .bats           |
+
+## 8. Azure Tools
+
+[Là extension của Microsoft](https://marketplace.visualstudio.com/items?itemName=ms-vscode.vscode-node-azure-pack&ssr=false#overview) cho VS Code cung cấp các chức năng giúp chúng ta dễ dàng theo dõi và tương tác với các dịch vụ được cung cấp bởi tài khoản Azure của mình thông qua rất nhiều extensions.
+
+![Azure Tools cho Visual Studio Code](https://github.com/microsoft/vscode-node-azure-pack/raw/HEAD/resources/readme/explorer.png)
+
+<p align="center">
+  <small>Nguồn: [github.com/microsoft](https://github.com/microsoft/vscode-node-azure-pack/)</small>
+</p>
+
+Các tính năng nổi bật như:
+
+- Giúp triển khai các ứng dụng web với [Azure Static Web Apps](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-azurestaticwebapps), [App Service](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-azureappservice)
+- Quản lý cơ sở dữ liệu với [Azure Databases](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-cosmosdb)
+- Các ứng dụng serverless với [Azure Funtions](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-azurefunctions) và các dịch vụ lưu trữ với [Azure Storage](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-azurestorage)
+- Theo dõi và quản lý các tài nguyên thông qua [Azure Resource Groups](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-azureresourcegroups)
+
+## 9. Cloud Code
+
+Mặc dù Google Cloud Platform (GCP) đang ở phía sau về market share so với AWS và Azure, nhưng cũng cung cấp những dịch vụ rất tốt, đặc biệt là trong lĩnh vực Machine learning/AI. Google Cloud cũng cung cấp [extension cho VS Code](https://marketplace.visualstudio.com/items?itemName=GoogleCloudTools.cloudcode) để viết, chạy và gỡ lỗi các ứng dụng cloud native một cách nhanh chóng và dễ dàng. Giống như AWS và Azure, đây là một extension có rất nhiều tính năng giúp chúng ta tương tác một cách dễ dàng với các tài nguyên trên môi trường cloud.
+
+![Cloud code quản lý cụm Kubernetes cục bộ hoặc Cụm GKE Kubernetes](https://github.com/GoogleCloudPlatform/cloud-code-vscode/raw/master/images/cloud-code-quick-deploy.gif)
+
+<p align="center">
+  <small>
+    {' '}
+    Nguồn: [github.com/GoogleCloudPlatform](https://github.com/GoogleCloudPlatform/cloud-code-vscode/)
+  </small>
+</p>
+
+Extension có tính năng quản lý cụm Kubernetes cục bộ hoặc Cụm GKE Kubernetes, cloud run giúp tạo và triển khai Ứng dụng Cloud Run. Cuối cùng nhưng không kém phần quan trọng, nó cung cấp API Cloud để truy cập và kích hoạt tất cả API Google Cloud, và add thêm các thư viện cloud client trong project của bạn. Nếu bạn đang sử dụng GCP, đây là tiện ích mở rộng phải có.
+
+## 10. GitLens
+
+Nếu bạn đang phát triển các dự án Cơ sở hạ tầng dưới dạng Mã, thì có khả năng cao là bạn đang sử dụng git. Phần mở rộng: GitLens cải thiện chức năng git trong Mã VS. Một số tính năng đáng chú ý đáng được đề cập là:
+
+![git blame](https://raw.githubusercontent.com/gitkraken/vscode-gitlens/main/images/docs/current-line-blame.png)
+
+<p align="center">
+  <small>Nguồn: [github.com/gitkraken](https://github.com/gitkraken/vscode-gitlens/)</small>
+</p>
+
+- git blame - hiển thị ai đã sửa đổi từng dòng trong tệp
+- git change - làm nổi bật các thay đổi cục bộ (chưa publish) hoặc các dòng được thay đổi bởi commit gần nhất
+- điều hướng sửa đổi - hiển thị lịch sử git của một tệp và cho phép bạn dễ dàng điều hướng nó
+
+![Xem các sửa đổi bằng GitLens](https://raw.githubusercontent.com/gitkraken/vscode-gitlens/main/images/docs/revision-navigation.gif)
+
+<p align="center">
+  <small>Nguồn: [github.com/gitkraken](https://github.com/gitkraken/vscode-gitlens/)</small>
+</p>
+
+## Đề cử danh dự
+
+### 11. Remote - SSH
+
+[Extension Remote - SSH](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-ssh) cho phép bạn sử dụng bất kỳ máy từ xa nào có máy chủ SSH làm môi trường phát triển của mình.
+
+- Phát triển trên cùng một hệ điều hành mà bạn triển khai hoặc sử dụng phần cứng lớn hơn, nhanh hơn hoặc chuyên dụng hơn máy cục bộ của bạn theo mô hình thin client (đặc biệt với các ứng dụng ML/AI)
+- Nhanh chóng hoán đổi giữa các môi trường phát triển từ xa khác nhau và thực hiện cập nhật một cách an toàn mà không lo ảnh hưởng đến máy local của bạn.
+- Truy cập môi trường phát triển hiện có từ nhiều máy hoặc vị trí.
+- Gỡ lỗi một ứng dụng đang chạy ở một nơi khác, chẳng hạn như trang web của khách hàng hoặc trên cloud (**không khuyến khích cho môi trường production**)
+
+![Remote vào máy chủ SSH](https://microsoft.github.io/vscode-remote-release/images/ssh-readme.gif)
+
+<p align="center">
+  <small>Nguồn: [microsoft.github.io](https://microsoft.github.io/vscode-remote-release/)</small>
+</p>
+
+### 12. Dev Containers
+
+[Extension Dev Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) cho phép bạn sử dụng Docker container làm môi trường phát triển với đầy đủ các tính năng.
+Dù bạn có triển khai tới các container hay không, các container vẫn sẽ là một môi trường phát triển rất tốt vì bạn có thể:
+
+- Phát triển với chuỗi công cụ nhất quán, dễ tái sản xuất trên cùng một hệ điều hành mà bạn triển khai.
+- Nhanh chóng hoán đổi giữa các môi trường phát triển riêng biệt và thực hiện cập nhật một cách an toàn mà không lo ảnh hưởng đến máy local của bạn.
+- Giúp các thành viên nhóm/cộng tác viên mới dễ dàng thiết lập và chạy trong một môi trường phát triển nhất quán.
+- Thử các công nghệ mới hoặc sao chép một bản sao của mã nguồn mà không ảnh hưởng đến thiết lập local của bạn.
+
+![Remote vào container](https://microsoft.github.io/vscode-remote-release/images/remote-containers-readme.gif)
+
+<p align="center">
+  <small>Nguồn: [microsoft.github.io](https://microsoft.github.io/vscode-remote-release/)</small>
+</p>
+
+### 13. WSL
+
+Đề cử sáng giá cho người dùng windows muốn sử dụng môi trường Linux để viết code/phát triển ứng dụng vì đơn giản là bạn có thể. [Extension WSL](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-wsl) cho phép bạn sử dụng VSCode trên Windows để xây dựng các ứng dụng Linux chạy trên Windows Subsystem for Linux (WSL) cho phép bạn có trải nghiệm giống như bạn đang thao tác trên Windows.
+
+![Remote vào WSL](https://microsoft.github.io/vscode-remote-release/images/remote-wsl-open-code.gif)
+
+<p align="center">
+  <small>Nguồn: [microsoft.github.io](https://microsoft.github.io/vscode-remote-release/)</small>
+</p>
+
+## TL,DR
+
+1. [Docker](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-docker)
+2. [Kubernetes](https://marketplace.visualstudio.com/items?itemName=ms-kubernetes-tools.vscode-kubernetes-tools)
+3. [DotEnv](https://marketplace.visualstudio.com/items?itemName=mikestead.dotenv)
+4. [Hashicorp Terraform](https://marketplace.visualstudio.com/items?itemName=HashiCorp.terraform)
+5. [Visual Studio IntelliCode](https://marketplace.visualstudio.com/items?itemName=VisualStudioExptTeam.vscodeintellicode)
+6. [AWS Toolkit](https://marketplace.visualstudio.com/items?itemName=AmazonWebServices.aws-toolkit-vscode)
+7. [Shell-format](https://marketplace.visualstudio.com/items?itemName=foxundermoon.shell-format)
+8. [Azure Tools](https://marketplace.visualstudio.com/items?itemName=ms-vscode.vscode-node-azure-pack&ssr=false#overview)
+9. [Cloud Run](https://marketplace.visualstudio.com/items?itemName=GoogleCloudTools.cloudcode)
+10. [YAML](https://marketplace.visualstudio.com/items?itemName=redhat.vscode-yaml)
+11. [Remote - SSH](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-ssh)
+12. [Dev Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers)
+13. [WSL](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-wsl)
+
+[^1]: [Survey của Stack Overflow năm 2022](https://survey.stackoverflow.co/2022/#section-most-loved-dreaded-and-wanted-integrated-development-environment)
