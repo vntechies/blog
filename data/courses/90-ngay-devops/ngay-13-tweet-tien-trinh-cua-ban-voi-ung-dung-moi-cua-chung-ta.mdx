@@ -48,7 +48,7 @@ Bây giờ chúng ta đã hoàn tất việc chuẩn bị trên Twitter. Hãy đ
 
 ## Twitter Bot
 
-Đây là mà chúng ta bắt đầu trong ứng dụng của mình [day13_example1](https://github.com/vntechies/90DaysOfDevOps/blob/main/Days/Go/day13_example1.go) nhưng trước tiên, chúng ta cần kiểm tra xem mã có đúng để tạo một tweet không
+Đây là mà chúng ta bắt đầu trong ứng dụng của mình [day13_example1](https://github.com/vntechies/90DaysOfDevOps/blob/main/2022/Days/Go/day13_example1.go) nhưng trước tiên, chúng ta cần kiểm tra xem mã có đúng để tạo một tweet không
 
 Chúng ta cần viết mã để đưa đầu ra hoặc tin nhắn tới Twitter dưới dạng một tweet. Chúng ta sẽ sử dụng [go-twitter](https://github.com/dghubble/go-twitter) - một thư viện client viết bằng Go cho Twitter API.
 
@@ -74,7 +74,7 @@ export ACCESS_TOKEN
 export ACCESS_TOKEN_SECRET
 ```
 
-Ở giai đoạn này, bạn có thể xem mã tại [day13_example2](https://github.com/vntechies/90DaysOfDevOps/blob/main/Days/Go/day13_example2.go) nhưng bạn sẽ thấy ở đây rằng chúng ta sẽ sử dụng một cấu trúc (struct) để khai báo khóa, secrts và tokens.
+Ở giai đoạn này, bạn có thể xem mã tại [day13_example2](https://github.com/vntechies/90DaysOfDevOps/blob/main/2022/Days/Go/day13_example2.go) nhưng bạn sẽ thấy ở đây rằng chúng ta sẽ sử dụng một cấu trúc (struct) để khai báo khóa, secrts và tokens.
 
 Sau đó, chúng ta có một `func` để phân tích cú pháp các thông tin đăng nhập và tạo kết nối đó với API Twitter và nếu kết nối thành công, chúng ta sẽ gửi một tweet.
 
@@ -162,7 +162,7 @@ func main() {
 
 Bây giờ chúng ta cần hợp nhất hai thứ này vào một file `main.go`. Chắc chắn sẽ có người cho rằng có cách làm tốt hơn cho việc này nhưng cách làm này có thể giúp chúng ta đạt được mục đích cuối cùng.
 
-Bạn có thể xem được mã đã được gộp tại [day13_example3](https://github.com/vntechies/90DaysOfDevOps/blob/main/Days/Go/day13_example3.go) hoặc dưới đây.
+Bạn có thể xem được mã đã được gộp tại [day13_example3](https://github.com/vntechies/90DaysOfDevOps/blob/main/2022/Days/Go/day13_example3.go) hoặc dưới đây.
 
 ```go
 package main
@@ -296,7 +296,7 @@ GOARCH=arm64 GOOS=linux go build -o ${BINARY_NAME}_0.1_linux_arm64 main.go
 GOARCH=arm64 GOOS=darwin go build -o ${BINARY_NAME}_0.1_darwin_arm64 main.go
 ```
 
-Các câu lệnh này sẽ cung cấp cho bạn các tệp nhị phân cho tất cả các nền tảng ở trên. Sau đó, bạn có thể lấy tệp này và tạo một makefile để tạo các tệp nhị phân này bất cứ khi nào bạn thêm các tính năng và chức năng mới vào mã của mình. Tôi đã bao gồm [makefile](https://github.com/vntechies/90DaysOfDevOps/blob/main/Days/Go/makefile)
+Các câu lệnh này sẽ cung cấp cho bạn các tệp nhị phân cho tất cả các nền tảng ở trên. Sau đó, bạn có thể lấy tệp này và tạo một makefile để tạo các tệp nhị phân này bất cứ khi nào bạn thêm các tính năng và chức năng mới vào mã của mình. Tôi đã bao gồm [makefile](https://github.com/vntechies/90DaysOfDevOps/blob/main/2022/Days/Go/makefile)
 
 Đây là những gì tôi đã sử dụng để tạo các bản phát hành, bạn có thể tham khảo thêm tại [git repository](https://github.com/MichaelCade/90DaysOfDevOps/releases)
 

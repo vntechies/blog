@@ -18,9 +18,9 @@ Hôm qua [Ngày 11](/courses/90-ngay-devops/ngay-11-bien-hang-so-kieu-du-lieu), 
 
 Trước khi làm điều đó, chúng ta hãy xem xét lại ứng dụng của mình và xem qua các biến mà chúng ta muốn kiểm tra trước khi nhận thông tin đầu vào của người dùng.
 
-Hôm qua, chúng ta đã hoàn thành mã giống như file [day11_example4.go](https://github.com/vntechies/90DaysOfDevOps/blob/main/Days/Go/day11_example4.go), chúng ta đã xác định thủ công các biến và hằng số `challenge, daystotal, dayscomplete`.
+Hôm qua, chúng ta đã hoàn thành mã giống như file [day11_example4.go](https://github.com/vntechies/90DaysOfDevOps/blob/main/2022/Days/Go/day11_example4.go), chúng ta đã xác định thủ công các biến và hằng số `challenge, daystotal, dayscomplete`.
 
-Bây giờ hãy thêm một biến mới có tên là `TwitterName`, bạn có thể tìm thấy mã mới này tại [day12_example1.go](https://github.com/vntechies/90DaysOfDevOps/blob/main/Days/Go/day12_example1.go) và đây sẽ là đầu ra nếu chạy mã này.
+Bây giờ hãy thêm một biến mới có tên là `TwitterName`, bạn có thể tìm thấy mã mới này tại [day12_example1.go](https://github.com/vntechies/90DaysOfDevOps/blob/main/2022/Days/Go/day12_example1.go) và đây sẽ là đầu ra nếu chạy mã này.
 
 ![](/static/images/assets/Day12_Go1.png)
 
@@ -42,7 +42,7 @@ fmt.Scan(&TwitterName)
 
 Lưu ý việc sử dụng `&` trước biến. Đây được gọi là một con trỏ mà chúng ta sẽ đề cập trong phần tiếp theo.
 
-Trong mã của chúng ta [day12_example2.go](https://github.com/vntechies/90DaysOfDevOps/blob/main/Days/Go/day12_example2.go), bạn có thể thấy rằng chúng ta yêu cầu người dùng nhập hai biến, `TwitterName` và` DaysCompleted`
+Trong mã của chúng ta [day12_example2.go](https://github.com/vntechies/90DaysOfDevOps/blob/main/2022/Days/Go/day12_example2.go), bạn có thể thấy rằng chúng ta yêu cầu người dùng nhập hai biến, `TwitterName` và` DaysCompleted`
 
 Bây giờ hãy chạy chương trình và bạn thấy có đầu vào cho cả hai điều trên.
 
@@ -56,7 +56,7 @@ Bây giờ hãy chạy chương trình và bạn thấy có đầu vào cho cả
 remainingDays = remainingDays - DaysCompleted
 ```
 
-Bạn có thể xem chương trình đã hoàn thành tại đây [day12_example3.go](https://github.com/vntechies/90DaysOfDevOps/blob/main/Days/Go/day12_example3.go).
+Bạn có thể xem chương trình đã hoàn thành tại đây [day12_example3.go](https://github.com/vntechies/90DaysOfDevOps/blob/main/2022/Days/Go/day12_example3.go).
 
 Nếu chạy chương trình này, bạn có thể thấy phép tính đơn giản được thực hiện dựa trên đầu vào của người dùng và giá trị của `remainingDays`
 
@@ -68,7 +68,7 @@ Con trỏ là một biến (đặc biệt) trỏ đến địa chỉ bộ nhớ 
 
 Bạn có thể đọc kỹ hơn tại [geeksforgeeks](https://www.geeksforgeeks.org/pointers-in-golang/)
 
-Hãy đơn giản hóa mã và xem chương trình thay đổi khi có và không có `&` trước một các lệnh in của chúng ta, nó sẽ in ra địa chỉ bộ nhớ của con trỏ. Tôi đã thêm ví dụ ở đây. [Day12_example4.go](https://github.com/vntechies/90DaysOfDevOps/blob/main/Days/Go/day12_example4.go)
+Hãy đơn giản hóa mã và xem chương trình thay đổi khi có và không có `&` trước một các lệnh in của chúng ta, nó sẽ in ra địa chỉ bộ nhớ của con trỏ. Tôi đã thêm ví dụ ở đây. [Day12_example4.go](https://github.com/vntechies/90DaysOfDevOps/blob/main/2022/Days/Go/day12_example4.go)
 
 Dưới đây là kết quả chạy mã này
 
