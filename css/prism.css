@@ -154,6 +154,7 @@ code[class*='language-'],
 pre[class*='language-'] {
   color: #ebdbb2; /* fg1 / fg */
   font-family: 'JetBrains Mono', Consolas, Monaco, 'Andale Mono', monospace;
+  font-weight: 600;
   direction: ltr;
   text-align: left;
   white-space: pre;
