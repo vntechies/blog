@@ -52,7 +52,9 @@ Bây giờ hãy bật lại máy ảo và bây giờ nó sẽ có một địa c
 
 Chúng ta biết SSH đã được định cấu hình trên máy vì chúng ta đã sử dụng nó với vagrant nhưng cũng có thể xác nhận bằng cách chạy
 
-`sudo systemctl status ssh`
+```shell
+sudo systemctl status ssh
+```
 
 ![](/static/images/assets/Day18_Linux3.png)
 
@@ -86,7 +88,9 @@ Khóa SSH có nghĩa là chúng ta cung cấp một cặp khóa để cả máy 
 
 Tạo một khóa rất dễ dàng. Trên máy cục bộ của chúng ta (Windows) chúng ta có thể sử dụng lệnh sau nếu bạn đã cài đặt ssh-client và tôi tin rằng câu lệnh tương tự sẽ hoạt động trên các hệ điều hành khác.
 
-`ssh-keygen -t ed25519`
+```shell
+ssh-keygen -t ed25519
+```
 
 Tôi sẽ không đi sâu vào `ed25519` là gì và có nghĩa như thế nào nhưng bạn có thể tự tìm kiếm nếu muốn hiểu thêm về [mã hoá](https://en.wikipedia.org/wiki/EdDSA#Ed25519)
 
@@ -102,13 +106,17 @@ Tôi đã sử dụng Powershell để tạo khóa trên máy khách Windows c�
 
 Bây giờ, chúng ta có thể quay lại Powershell để kiểm tra xem kết nối của chúng ta hiện có hoạt động với Khóa SSH mà không cần mật khẩu hay không.
 
-`ssh vagrant@192.168.169.135`
+```shell
+ssh vagrant@192.168.169.135
+```
 
 ![](/static/images/assets/Day18_Linux9.png)
 
 Chúng ta có thể nâng cao tính bảo mật hơn nữa nếu cần bằng cách sử dụng cụm mật khẩu (passphrase). Chúng ta cũng có thể tiến thêm một bước nữa khi không cho phép kết nối bằng mật khẩu, có nghĩa là chỉ cho phép kết nối thông qua cặp khóa. Bạn có thể thực hiện điều này trong tệp cấu hình dưới đây
 
-`sudo nano /etc/ssh/sshd_config`
+```shell
+sudo nano /etc/ssh/sshd_config
+```
 
 Có một dòng là `PasswordAuthentication yes` và nó đang bị comment với ký tự `#` ở đầu dóng. Bạn nên xoá ký tự này và thay đổi yes thành no, lưu tệp cấu hình và cuối cùng là khởi động lại dịch vụ SSH với `sudo systemctl reload sshd`
 
@@ -129,7 +137,9 @@ Bạn cũng có thể thấy stack này được gọi là LAMP stack.
 
 Apache2 là một máy chủ HTTP mã nguồn mở. Chúng ta có thể cài đặt apache2 với câu lệnh sau
 
-`sudo apt-get install apache2`
+```shell
+sudo apt-get install apache2
+```
 
 Để xác nhận rằng apache2 đã được cài đặt một cách chính xác, chúng ta có thể chạy `sudo service apache2 restart`
 
@@ -155,11 +165,13 @@ Khởi động lại dịch vụ apache2 `sudo systemctl restart apache2`
 
 Bây giờ, hãy xác nhận rằng hệ thống của chúng ta được cấu hình đúng cho PHP. Tạo tệp sau bằng cách sử dụng lệnh này, thao tác này sẽ mở một tệp trống ở định dạng nano.
 
-`sudo nano /var/www/html/90Days.php`
+```shell
+sudo nano /var/www/html/90Days.php
+```
 
 Sau đó sao chép phần sau, sử dụng control + x để thoát và lưu lại tệp của bạn.
 
-```
+```php
 <?php
 phpinfo();
 ?>
@@ -173,29 +185,20 @@ Bây giờ, hãy điều truy cập vào IP máy ảo Linux của bạn với 90
 
 Sau đó, tôi đã xem qua hướng dẫn này cài đặt WordPress trên LAMP stack của chúng ta, một số lệnh sẽ có ở bên dưới nếu không được đề cập tới trong hướng dẫn ["cách cài đặt WordPress trên Ubuntu với LAMP"](https://blog.ssdnodes.com/blog/how-to-install-wordpress-on-ubuntu-18-04-with-lamp-tutorial/)
 
-`sudo mysql -u root -p`
-
-`CREATE DATABASE wordpressdb;`
-
-`CREATE USER 'admin-user'@'localhost' IDENTIFIED BY 'password';`
-
-`GRANT ALL PRIVILEGES ON wordpressdb.* TO 'admin-user'@'localhost';`
-
-`FLUSH PRIVILEGES;`
-
-`EXIT;`
-
-`sudo apt install php-curl php-gd php-mbstring php-xml php-xmlrpc php-soap php-intl php-zip`
-
-`sudo systemctl restart apache2`
-
-`cd /var/www`
-
-`sudo curl -O https://wordpress.org/latest.tar.gz`
-
-`sudo tar -xvf latest.tar.gz`
-
-`sudo rm latest.tar.gz`
+```shell
+sudo mysql -u root -p
+CREATE DATABASE wordpressdb;
+CREATE USER 'admin-user'@'localhost' IDENTIFIED BY 'password';
+GRANT ALL PRIVILEGES ON wordpressdb.* TO 'admin-user'@'localhost';
+FLUSH PRIVILEGES;
+EXIT;
+sudo apt install php-curl php-gd php-mbstring php-xml php-xmlrpc php-soap php-intl php-zip
+sudo systemctl restart apache2
+cd /var/www
+sudo curl -O https://wordpress.org/latest.tar.gz
+sudo tar -xvf latest.tar.gz
+sudo rm latest.tar.gz
+```
 
 Tại thời điểm này, bạn đang ở Bước 4 trong bài hướng dẫn được liên kết, bạn sẽ cần làm chính xác theo các bước để đảm bảo có tất cả các quyền cần thiết cho thư mục WordPress.
 

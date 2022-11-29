@@ -55,7 +55,7 @@ Tất cả các lệnh đã được sử dụng trước đó trong bài về L
 
 Hãy thêm một đoạn mã sau vào tập lệnh của chúng ta.
 
-```
+```shell
 mkdir 90DaysOfDevOps
 cd 90DaysOfDevOps
 touch Day19
@@ -98,7 +98,7 @@ Nếu bây giờ chúng ta chạy tập lệnh `sh` của mình,bạn sẽ tác 
 
 Chúng ta cũng có thể sử dụng đầu vào của người dùng để gán cho các biến của chúng ta bằng cách sau:
 
-```
+```shell
 echo "Enter your name"
 read name
 ```
@@ -109,7 +109,7 @@ Sau đó chúng ta định nghĩa đầu vào được nhập là biến `$name`
 
 Có thể chúng ta muốn tìm hiểu xem ai đang tham gia thử thách và đã hoàn thành bao nhiêu ngày, chúng ta có thể xác định điều này bằng cách sử dụng các điều kiện `if` `if-else` `else-if`, đây là những gì chúng ta đã định nghĩa trong tập lệnh của mình .
 
-```
+```shell
 #!/bin/bash
 #  ___   ___  ____                   ___   __ ____              ___
 # / _ \ / _ \|  _ \  __ _ _   _ ___ / _ \ / _|  _ \  _____   __/ _ \ _ __  ___
@@ -162,7 +162,7 @@ Chúng ta cũng có thể sử dụng tập lệnh bash để xác định thôn
 - `-r file` Đúng nếu tệp có thể đọc được
 - `-s file` Đúng nếu tệp có kích thước khác 0
 
-```
+```shell
 FILE="90DaysOfDevOps.txt"
 if [ -f "$FILE" ]
 then
@@ -202,7 +202,7 @@ Sau đó chúng ta có thể sử dụng `nano create_user.sh` để bắt đầ
 
 Chúng ta có thể xem xét yêu cầu đầu tiên "Người dùng có thể được chuyển vào dưới dạng đối số dòng lệnh", chúng ta có thể làm như sao
 
-```
+```shell
 #! /usr/bin/bash
 
 #A user can be passed in as a command line argument
@@ -217,7 +217,7 @@ Tiếp tục chạy phần này bằng cách sử dụng `./create_user.sh Micha
 
 Tiếp theo, chúng ta có thể thực hiện yêu cầu thứ hai "Người dùng được tạo với tên của đối số dòng lệnh", điều này có thể được thực hiện bằng lệnh `useradd`. Tuỳ chọn `-m` để tạo thư mục home cho người dùng tại /home/username
 
-```
+```shell
 #! /usr/bin/bash
 
 #A user can be passed in as a command line argument
@@ -236,7 +236,7 @@ Sau đó, chúng ta có thể kiểm tra xem tài khoản này đã được t�
 
 Yêu cầu tiếp theo của chúng ta là "Mật khẩu có thể được nhập dưới dạng đối số dòng lệnh." Trước hết, chúng ta sẽ không bao giờ làm điều này trong môi trường sản xuất.
 
-```
+```shell
 #! /usr/bin/bash
 
 #A user can be passed in as a command line argument
@@ -259,7 +259,7 @@ Yêu cầu cuối cùng là "Thông báo tạo tài khoản thành công đượ
 
 Bây giờ tập lệnh này có thể được sử dụng để nhanh chóng tích hợp và thiết lập người dùng mới trên hệ thống Linux của chúng ta. Nhưng có lẽ thay vì một vài người trong lịch sử phải giải quyết vấn đề này và sau đó phải lấy cho người khác tên người dùng hoặc mật khẩu mới của họ, chúng tôi có thể thêm một số đầu vào của người dùng mà chúng tôi đã đề cập trước đó để nắm bắt các biến của chúng tôi.
 
-```
+```shell
 #! /usr/bin/bash
 
 echo "What is your intended username?"
@@ -310,4 +310,4 @@ Tôi đã tạo một tệp bash rất đơn giản giúp tôi tạo cụm Kuber
 - [Learn the Linux Fundamentals - Part 1](https://www.youtube.com/watch?v=kPylihJRG70)
 - [Linux for hackers (don't worry you don't need to be a hacker!)](https://www.youtube.com/watch?v=VbEx7B_PTOE)
 
-Hẹn gặp lại vào ngày 20.
+Hẹn gặp lại vào [ngày 20](/courses/90-ngay-devops/ngay-20-thiet-lap-may-tram-phat-trien).
