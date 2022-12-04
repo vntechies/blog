@@ -1,0 +1,131 @@
+---
+title: Mở đầu chuỗi bài deploy Spring boot application với Kubernetes
+date: '2020-11-11'
+tags: ['api', 'rest api']
+series: ['k8s-spring-boot']
+draft: false
+authors: ['mau'] #change me
+images: ['/static/images/ogps/k8s-springboot.png']
+summary: 'Sample summary'
+---
+
+![](/static/images/ogps/k8s-springboot.png)
+
+## 1. Giới thiệu chung
+
+Trong chuỗi bài này, chúng ta cùng nhau tìm hiểu cách deploy một Spring Boot application trên local Kubernetes như: Minikube hoặc MicroK8s. Trong loại bài này chúng ta sẽ đi qua những phần cơ bản như: Pod, ReplicationController, ReplicaSet, Deployment, service,... Mục đích của chuỗi bài này là tìm hiểu những thành phần cơ bản của Kubernetes thông qua việc deploy Spring Boot application.
+
+## 2. Cài đặt môi trường
+
+- Cài đặt [JDK](https://www.digitalocean.com/community/tutorials/how-to-install-java-with-apt-on-ubuntu-22-04).
+- Cài đặt [Docker](https://docs.docker.com/engine/install/ubuntu/).
+- Cài đặt [MicroK8s](https://dev.to/urlichsanais/getting-started-with-kubernetes-kubectl-and-microk8s-on-ubuntu-pko).
+
+## 3. Setup Spring boot application
+
+Truy cập [Spring Initializr](https://start.spring.io/) để tạo mới một spring boot project.
+
+![](/static/images/assets/tao-moi-project-spring-boot.png)
+
+Spring boot app đơn giản gồm có 2 API: tạo mới student và lấy tất cả danh sách student. Bạn có thể tham khảo source code [ở đây](https://github.com/nbthanh98/k8s-springboot-series).
+
+- File Student.java define các thông tin về Student:
+
+  ```java
+  @Table(name = "students")
+  @Entity
+  @Data
+  @AllArgsConstructor
+  @NoArgsConstructor
+  public class Student {
+      @Id
+      @GeneratedValue(strategy = GenerationType.AUTO)
+      private Long id;
+      private String code;
+      private String name;
+      private Integer age;
+  }
+  ```
+
+- File StudentController.java define các API tạo mới Student và lấy danh sách Student:
+
+  ```java
+  @RestController
+  @RequestMapping(value = "/api/students")
+  public class StudentController {
+
+      private final IStudentService iStudentService;
+
+      public StudentController(IStudentService iStudentService) {
+          this.iStudentService = iStudentService;
+      }
+
+      @RequestMapping(value = "/create", method = RequestMethod.POST)
+      public ResponseEntity<CreateStudentResponse> createStudent(@RequestBody CreateStudentRequest request) {
+          return new ResponseEntity<>(iStudentService.createStudent(request), HttpStatus.CREATED);
+      }
+
+      @RequestMapping(value = "/getAll", method = RequestMethod.GET)
+      public ResponseEntity<List<Student>> getAll() {
+          return new ResponseEntity<>(iStudentService.getAll(), HttpStatus.OK);
+      }
+  }
+  ```
+
+- File StudentServiceImpl define các logic tạo mới và lấy danh sách Student:
+
+  ```java
+  @Service
+  public class StudentServiceImpl implements IStudentService {
+
+      private final IStudentRepository iStudentRepository;
+
+      public StudentServiceImpl(IStudentRepository iStudentRepository) {
+          this.iStudentRepository = iStudentRepository;
+      }
+
+      @Override
+      public CreateStudentResponse createStudent(CreateStudentRequest createStudentRequest) {
+          final int min = 1;
+          final int max = 999999;
+          Random rand = new Random();
+          int studentCodeNumber;
+          boolean isExistStudentCode;
+          String studentCodeStr;
+          do {
+              studentCodeNumber = rand.nextInt((max - min) + 1) + min;
+              studentCodeStr = formatStudentCode(String.valueOf(studentCodeNumber));
+              Student student = iStudentRepository.findByCode(studentCodeStr);
+              isExistStudentCode = !Objects.isNull(student);
+          } while (isExistStudentCode);
+
+          Student student = new Student();
+          student.setName(createStudentRequest.getName());
+          student.setAge(createStudentRequest.getAge());
+          student.setCode(studentCodeStr);
+          return new ModelMapper().map(iStudentRepository.save(student), CreateStudentResponse.class);
+      }
+
+      private String formatStudentCode(String shopCode) {
+          if (shopCode.length() == 6) {
+              return shopCode;
+          }
+          StringBuilder shopCodeBuilder = new StringBuilder(shopCode);
+          while (shopCodeBuilder.length() < 6) {
+              shopCodeBuilder.insert(0, "0");
+          }
+          shopCode = shopCodeBuilder.toString();
+          return shopCode;
+      }
+
+
+      @Override
+      public List<Student> getAll() {
+          return iStudentRepository.findAll();
+      }
+  }
+  ```
+
+## 4. Tóm lại
+
+Trong bài mở đầu chuỗi series về spring boot và k8s này đã giới thiệu về mục tiêu của series, các bước chuẩn bị về môi trường cũng như giới thiệu qua về spring boot application mà sẽ sử dụng. Ở bài tiếp theo thì chúng ta sẽ đi tìm hiểu cách đóng gói spring boot container với Pods trong Kubernetes.
