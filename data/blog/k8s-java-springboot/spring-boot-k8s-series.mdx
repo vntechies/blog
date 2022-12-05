@@ -1,5 +1,5 @@
 ---
-title: Mở đầu chuỗi bài deploy Spring boot application với Kubernetes
+title: Mở đầu chuỗi bài hướng dẫn triển khai Spring boot application với Kubernetes
 date: '2020-11-11'
 tags: ['api', 'rest api']
 series: ['k8s-spring-boot']
@@ -11,9 +11,11 @@ summary: 'Sample summary'
 
 ![](/static/images/ogps/k8s-springboot.png)
 
+<TOCInline toc={props.toc} asDisclosure />
+
 ## 1. Giới thiệu chung
 
-Trong chuỗi bài này, chúng ta cùng nhau tìm hiểu cách deploy một Spring Boot application trên local Kubernetes như: Minikube hoặc MicroK8s. Chúng ta sẽ đi qua những phần cơ bản như: Pod, ReplicationController, ReplicaSet, Deployment, Service,... Mục đích là tìm hiểu những thành phần cơ bản của Kubernetes thông qua việc deploy Spring Boot application.
+Trong chuỗi bài này, chúng ta cùng nhau tìm hiểu cách phát triển (develop) và triển khai (deploy) một ứng dụng quản lý học sinh trên K8s. Mục đích của chuỗi bài này là tìm hiểu những thành phần cơ bản của Kubernetes thông qua việc triển khai (deploy) ứng dụng trên K8s. Trong bài mở đầu này thì sẽ hướng dẫn cách cài đặt môi trường, tạo mới project và giới thiệu qua về ứng dụng mà sẽ triển khai.
 
 ## 2. Cài đặt môi trường
 
@@ -23,16 +25,16 @@ Trong chuỗi bài này, chúng ta cùng nhau tìm hiểu cách deploy một Spr
 
 ## 3. Setup Spring boot application
 
-Truy cập [Spring Initializr](https://start.spring.io/) để tạo mới một spring boot project. Điền thông tin của project như:
+Ứng dụng quản lý học sinh viết bằng Spring Boot đơn giản gồm 2 API: Tạo mới học sinh, lấy danh sách học sinh. Bạn có thể tham khảo source code [ở đây](https://github.com/nbthanh98/k8s-springboot-series).
 
-- Thêm thông tin project: `k8s-springboot-series`, build tool: `Maven`, Spring Boot: `3.0.0`, java version: `11`.
-- Thêm các dependencies: `Spring Web`, `Spring Boot DevTools`, `Lombok`, `MySQL Driver`, `Spring Data JPA`.
+Truy cập [Spring Initializr](https://start.spring.io/) để tạo mới một Spring Boot project và thêm một số thông tin của project như:
+
+- Thông tin project: tên: `k8s-springboot-series`, build tool: `Maven`, Spring Boot: `3.0.0`, java version: `11`.
+- Thông tin dependencies: `Spring Web`, `Spring Boot DevTools`, `Lombok`, `MySQL Driver`, `Spring Data JPA`.
 
 ![](/static/images/assets/tao-moi-project-spring.png)
 
-Spring boot app đơn giản gồm có 2 API: tạo mới student và lấy tất cả danh sách student. Bạn có thể tham khảo source code [ở đây](https://github.com/nbthanh98/k8s-springboot-series).
-
-Student.java định nghĩa các trường thông tin về Student:
+Class `Student` dưới đây định nghĩa các trường thông tin về Student:
 
 ```java
 @Table(name = "students")
@@ -50,7 +52,10 @@ public class Student {
 }
 ```
 
-StudentController.java define các API tạo mới Student và lấy danh sách Student:
+Class `StudentController` dưới đây định nghĩa các API như:
+
+- POST `/api/students/create`: tạo mới Student.
+- GET `/api/students`: lấy danh sách Student.
 
 ```java
 @RestController
@@ -75,7 +80,7 @@ public class StudentController {
   }
 ```
 
-StudentServiceImpl define các logic tạo mới và lấy danh sách Student:
+Class `StudentServiceImpl` định nghĩa các logic tạo mới và lấy danh sách Student:
 
 ```java
 @Service
@@ -131,4 +136,4 @@ public class StudentServiceImpl implements IStudentService {
 
 ## 4. Tóm lại
 
-Trong bài mở đầu chuỗi series về spring boot và kubernetes này đã giới thiệu về mục tiêu của series, các bước chuẩn bị về môi trường cũng như giới thiệu qua về spring boot application mà sẽ sử dụng. Ở bài tiếp theo thì chúng ta sẽ đi tìm hiểu cách đóng gói spring boot container với Pods trong Kubernetes.
+Trong bài mở đầu chuỗi series về spring boot và kubernetes này đã giới thiệu về mục tiêu của series, các bước chuẩn bị về môi trường cũng như giới thiệu qua về spring boot application mà sẽ sử dụng. Ở bài tiếp theo thì chúng ta sẽ đi tìm hiểu cách đóng gói spring boot container với `Pod` trong Kubernetes.
