@@ -1,0 +1,95 @@
+---
+title: Pods - Triển khai spring boot container trên Kubernetes
+date: '2020-12-10'
+tags: ['api', 'rest api', 'kubernetes']
+series: ['k8s-spring-boot']
+draft: false
+authors: ['thanhnb']
+images: ['/static/images/ogps/k8s-springboot.png']
+summary: 'Sample summary'
+---
+
+![Spring boot application với Kubernetes](/static/images/ogps/k8s-springboot.png)
+
+<TOCInline toc={props.toc} asDisclosure />
+
+## 1. Giới thiệu chung
+
+Đây là buổi thứ hai trong series triển khai ứng dụng spring boot trên Kubernetes. Trong bài này thì mình cùng nhau tìm hiểu về `Pod`, cách đóng gói containers với `Pod` và sẽ đi qua những phần sau:
+
+- Đóng gói ứng dụng Spring boot với Docker container.
+- Tìm hiểu về cách tạo mới, triển khai `Pods` trên Kubernetes.
+- Tìm hiểu về cách nhóm các `Pods` với `labels`.
+- Tìm hiểu về vòng đời của `Pod`.
+
+Các bạn có thể tham khảo source code [ở đây](https://github.com/nbthanh98/k8s-springboot-series.git) và checkout nhánh: `series/k8s-springboot/pod`.
+
+## 2. Yêu cầu môi trường
+
+Đầu tiên bạn cần cài [Docker](https://www.docker.com/), bạn có thể kiểm tra rằng `Docker` đã cài trên máy hay chưa bằng lệnh:
+
+```shell
+docker run hello-world
+
+# Nếu mà show cái message như dưới đây thì đã cài Docker thành công rôi.
+Hello from Docker!
+This message shows that your installation appears to be working correctly.
+```
+
+Bạn cũng cần có môi trường local Kubernetes, bạn có thể sử dụng [Minikube](https://kubernetes.io/vi/docs/tasks/tools/install-minikube/) hoặc [MicroK8s](https://microk8s.io/tutorials) nhưng trong series này mình sử dụng `MicroK8s`. Bạn có thể kiểm tra môi trường Kubernetes bằng lệnh:
+
+```shell
+# Kiểm tra kubectl đã được cài hay chưa?, sử dụng lệnh:
+kubectl cluster-info
+
+Kubernetes control plane is running at https://192.168.1.123:16443
+
+To further debug and diagnose cluster problems, use 'kubectl cluster-info dump'.
+
+# Kiểm tra trạng thái của các nodes, sử dụng lệnh:
+kubectl get nodes
+
+NAME   STATUS   ROLES    AGE   VERSION
+nbt    Ready    <none>   9d    v1.25.4
+```
+
+## 3. Đóng gói Spring boot application với Docker
+
+![Dockerfile, Docker image and Docker containers](/static/images/assets/dockerfile-dockerimage-container.png)
+
+**Docker là gì?**
+
+Docker giúp cho các Developer và Sysadmin để triển khai ứng dụng với container. Nó cho phép tạo các môi trường độc lập và tách biệt, khi cần triển khai ứng dụng trên môi trường nào thì chỉ cần pull Docker image của ứng dụng đó và tạo container thì ứng dụng của bạn sẽ được khơi chạy ngay lập tức.
+
+**Tại sao lại sử dụng Docker?**
+
+Vì Docker cho phép tạo ra các môi trường độc lập và tách biệt, điều này sẽ giúp nhất quán về môi trường khi triển khai ứng dụng lên nhiều môi trường khác nhau. Docker có cộng đồng người sử dụng lớn, có nhiều Docker image chất lượng được đóng góp từ cộng đồng và các docker image này cũng được fix lỗi và cập nhật thường xuyên.
+
+**Triển khai Spring boot application với Docker**
+
+Tạo `Dockerfile` bên trong `Dockerfile` là các lệnh để hướng dẫn Docker tạo Docker image. Ví dụ `Dockerfile` như file dưới đây:
+
+```dockerfile
+FROM adoptopenjdk/openjdk11:latest
+WORKDIR /workspace
+COPY target/*-SNAPSHOT.jar /workspace/app.jar
+ENV TZ="Asia/Ho_Chi_Minh"
+EXPOSE 8080
+ENTRYPOINT ["java","-jar","/workspace/app.jar"]
+```
+
+Dockerfile trên bao gồm các lệnh:
+
+- `FROM`: Lệnh này sẽ pull một Docker image ở đây là `adoptopenjdk/openjdk11:latest` để tạo ra một base image layer, các lệnh tiếp theo trong `Dockerfile` sẽ được thực thi trên base image layer này. `Dockerfile` bắt buộc phải bắt đầu từ `FROM`.
+
+- `WORKDIR`: Các lệnh tiếp theo trong `Dockerfile` sẽ được thực hiện trong folder mà lệnh `WORKDIR` định nghĩa, trường hợp này là folder `/workspace`.
+
+- `COPY`: Thực hiện copy file jar ở folder `target` vào folder `/workspace/` bên trong container.
+
+- `ENV`: Sử dụng để truyền biến môi trường vào bên trong container, trường hợp này là `TZ="Asia/Ho_Chi_Minh"`.
+
+- `EXPOSE`: Dùng để mô tả rằng ứng dụng sẽ chạy ở port bao nhiêu, trường hợp này là port `8080`.
+
+- `ENTRYPOINT`: Khi container start thì lênh bên trong `ENTRYPOINT` sẽ được thực hiện, trường hợp này là chạy file jar.
+
+## 4. Tổng kết
