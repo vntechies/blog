@@ -67,29 +67,133 @@ Vì Docker cho phép tạo ra các môi trường độc lập và tách biệt,
 
 **Triển khai Spring boot application với Docker**
 
-Tạo `Dockerfile` bên trong `Dockerfile` là các lệnh để hướng dẫn Docker tạo Docker image. Ví dụ `Dockerfile` như file dưới đây:
+1. **Tạo Dockerfile và build Docker image từ Dockerfile**
 
-```dockerfile
-FROM adoptopenjdk/openjdk11:latest
-WORKDIR /workspace
-COPY target/*-SNAPSHOT.jar /workspace/app.jar
-ENV TZ="Asia/Ho_Chi_Minh"
-EXPOSE 8080
-ENTRYPOINT ["java","-jar","/workspace/app.jar"]
-```
+   Đầu tiên cần tạo `Dockerfile` bên trong `Dockerfile` là các lệnh để hướng dẫn Docker tạo Docker image. Ví dụ `Dockerfile` như file dưới đây:
 
-Dockerfile trên bao gồm các lệnh:
+   ```dockerfile
+   FROM adoptopenjdk/openjdk11:latest
+   WORKDIR /workspace
+   COPY target/*-SNAPSHOT.jar /workspace/app.jar
+   ENV TZ="Asia/Ho_Chi_Minh"
+   EXPOSE 8080
+   ENTRYPOINT ["java","-jar","/workspace/app.jar"]
+   ```
 
-- `FROM`: Lệnh này sẽ pull một Docker image ở đây là `adoptopenjdk/openjdk11:latest` để tạo ra một base image layer, các lệnh tiếp theo trong `Dockerfile` sẽ được thực thi trên base image layer này. `Dockerfile` bắt buộc phải bắt đầu từ `FROM`.
+   Dockerfile trên bao gồm các lệnh:
 
-- `WORKDIR`: Các lệnh tiếp theo trong `Dockerfile` sẽ được thực hiện trong folder mà lệnh `WORKDIR` định nghĩa, trường hợp này là folder `/workspace`.
+   - `FROM`: Lệnh này sẽ pull một Docker image ở đây là `adoptopenjdk/openjdk11:latest` để tạo ra một base image layer, các lệnh tiếp theo trong `Dockerfile` sẽ được thực thi trên base image layer này. `Dockerfile` bắt buộc phải bắt đầu từ `FROM`.
 
-- `COPY`: Thực hiện copy file jar ở folder `target` vào folder `/workspace/` bên trong container.
+   - `WORKDIR`: Các lệnh tiếp theo trong `Dockerfile` sẽ được thực hiện trong folder mà lệnh `WORKDIR` định nghĩa, trường hợp này là folder `/workspace`.
 
-- `ENV`: Sử dụng để truyền biến môi trường vào bên trong container, trường hợp này là `TZ="Asia/Ho_Chi_Minh"`.
+   - `COPY`: Thực hiện copy file jar ở folder `target` vào folder `/workspace/` bên trong container.
 
-- `EXPOSE`: Dùng để mô tả rằng ứng dụng sẽ chạy ở port bao nhiêu, trường hợp này là port `8080`.
+   - `ENV`: Sử dụng để truyền biến môi trường vào bên trong container, trường hợp này là `TZ="Asia/Ho_Chi_Minh"`.
 
-- `ENTRYPOINT`: Khi container start thì lênh bên trong `ENTRYPOINT` sẽ được thực hiện, trường hợp này là chạy file jar.
+   - `EXPOSE`: Dùng để mô tả rằng ứng dụng sẽ chạy ở port bao nhiêu, trường hợp này là port `8080`.
 
-## 4. Tổng kết
+   - `ENTRYPOINT`: Khi container start thì lênh bên trong `ENTRYPOINT` sẽ được thực hiện, trường hợp này là chạy file jar.
+
+   Bây giờ bạn có thể build docker image bằng lệnh sau:
+
+   ```shell
+   docker build -t k8s-springboot-series:latest -f Dockerfile .
+
+   Sending build context to Docker daemon  18.05MB
+   Step 1/6 : FROM adoptopenjdk/openjdk11:latest
+    ---> 49877461f3c7
+   Step 2/6 : WORKDIR /workspace
+    ---> Running in af4cc5d9485b
+   Removing intermediate container af4cc5d9485b
+    ---> 93bad477e120
+   Step 3/6 : COPY target/*-SNAPSHOT.jar /workspace/app.jar
+    ---> 08b67e5bfac9
+   Step 4/6 : ENV TZ="Asia/Ho_Chi_Minh"
+    ---> Running in 87c88aba3e8b
+   Removing intermediate container 87c88aba3e8b
+    ---> 8482d4c26ef8
+   Step 5/6 : EXPOSE 8080
+    ---> Running in 19fcfb82ca20
+   Removing intermediate container 19fcfb82ca20
+    ---> cc97ad8d0a21
+   Step 6/6 : ENTRYPOINT ["java","-jar","/workspace/app.jar"]
+    ---> Running in 2d87a166c58a
+   Removing intermediate container 2d87a166c58a
+    ---> 1403dab63194
+   Successfully built 1403dab63194
+   Successfully tagged k8s-springboot-series:latest
+   ```
+
+   Kiểm tra docker image bằng lệnh:
+
+   ```shell
+   docker images
+
+   REPOSITORY                TAG       IMAGE ID       CREATED         SIZE
+   k8s-springboot-series     latest    1403dab63194   7 minutes ago   456MB
+   ```
+
+2. **Tạo docker container từ docker image**
+
+   Sau bước build docker image từ Dockerfile trên thì bạn đã có một docker image là `k8s-springboot-series:latest`, giờ bạn có thể tạo một hoặc nhiều docker container từ docker image vừa build bằng lệnh sau:
+
+   ```shell
+   docker run --name k8s-springboot-series -d -p 8080:8080 k8s-springboot-series:latest
+   ```
+
+   Kiểm tra docker container bằng lệnh:
+
+   ```shell
+   docker ps
+
+   CONTAINER ID   IMAGE                          COMMAND                  CREATED         STATUS         PORTS                                       NAMES
+   14330e1c04cb   k8s-springboot-series:latest   "java -jar /workspac…"   3 seconds ago   Up 2 seconds   0.0.0.0:8080->8080/tcp, :::8080->8080/tcp   k8s-springboot-series
+   ```
+
+3. **Dùng [Postman](https://www.postman.com/downloads/) gọi thử các API**
+
+   **API tạo mới Student:**
+
+   Endpoint: `/api/students`, method `POST` và Request body:
+
+   ```json
+   {
+     "fullName": "NGUYEN BA THANH",
+     "dateOfBirth": "29/04/1998",
+     "hometown": "HA DONG, HA NOI",
+     "gender": "MALE"
+   }
+   ```
+
+   ![API tạo mới Student với Postman](/static/images/assets/call-api-create-student.png)
+
+   **API lấy danh sách Student:**
+
+   Endpoint: `/api/students`, method `GET`.
+
+   ![API lấy danh sách Student với Postman](/static/images/assets/get-all-student.png)
+
+## 4. Đóng gói container với Pods và triển khai trên Kubernetes
+
+Ở phần 3 chúng ta đã đóng gói Spring boot application với Docker, trong phần này thì chúng ta sẽ tìm hiểu cách đóng gói containers với `Pods` trong Kubernetes.
+
+![Pods kubernetes](/static/images/assets/pod-kubernetes.png)
+
+**Pods là gì?**
+
+Đối với Docker thì containers là đơn vị nhỏ nhất, còn trong Kubernetes thì `Pods` là object nhỏ nhất có thể triển khai trên Kubernetes. Kubernetes thì không chạy container một cách trực tiếp, thay vì đó thì Kubernetes sẽ đóng gói một hoặc nhiều containers vào một object được gọi là `Pod` và triển khải trên Kubernetes. Các containers bên trong `Pod` thì chia sẻ network và storage resources:
+
+- `Network`: Các containers bên trong `Pod` có thể giao tiếp với nhau dễ dàng thông qua `localhost:<PORT_CONTAINER>`.
+- `Storage`: Các containers bên trong `Pod` có thể chia sẻ với nhau cùng volumes.
+
+**Tại sao Kubernetes không chạy containers trực tiếp?**
+
+Thêm nội dung ở đây
+
+**Cách tạo Pod**
+
+- Tạo Pod bằng cách dùng lệnh
+
+- Tạo Pod bằng manifests file
+
+## 5. Tổng kết
