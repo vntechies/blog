@@ -150,7 +150,7 @@ Vì Docker cho phép tạo ra các môi trường độc lập và tách biệt,
    14330e1c04cb   k8s-springboot-series:latest   "java -jar /workspac…"   3 seconds ago   Up 2 seconds   0.0.0.0:8080->8080/tcp, :::8080->8080/tcp   k8s-springboot-series
    ```
 
-3. **Dùng [Postman](https://www.postman.com/downloads/) gọi thử các API**
+3. **Dùng [Postman](https://www.postman.com/downloads/) gọi các API**
 
    **API tạo mới Student:**
 
@@ -186,14 +186,157 @@ Vì Docker cho phép tạo ra các môi trường độc lập và tách biệt,
 - `Network`: Các containers bên trong `Pod` có thể giao tiếp với nhau dễ dàng thông qua `localhost:<PORT_CONTAINER>`.
 - `Storage`: Các containers bên trong `Pod` có thể chia sẻ với nhau cùng volumes.
 
-**Tại sao Kubernetes không chạy containers trực tiếp?**
+**Tại sao Kubernetes sử dụng Pod mà không chạy trực tiếp containers?**
 
 Thêm nội dung ở đây
 
-**Cách tạo Pod**
+**Định nghĩa Pod YAML file**
 
-- Tạo Pod bằng cách dùng lệnh
+`Pods` hoặc các object khác của Kubernetes thường được tạo bằng cách define các file YAML (thường được gọi là file YAML manifest). Bạn cũng có thể sử dụng lệnh `kubectl run ...` để tạo, nhưng trong thực tế mình không thấy cách này thường xuyên được sử dụng vì việc define ra các YAML manifest có thể giúp tái sử dụng nhiều lần. Vd file `pod-springboot-series.yaml` dưới đây mình define:
 
-- Tạo Pod bằng manifests file
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: k8s-springboot-series
+  labels:
+    app: k8s-springboot-series
+spec:
+  containers:
+    - name: k8s-springboot-series
+      image: thanhnb1/k8s-springboot-series:latest
+      ports:
+        - containerPort: 8080
+          name: http
+  restartPolicy: Always
+```
+
+Mô tả các phần của file yaml trên:
+
+| Pod YAML     | Mô tả                                                                                                                                                                                                                                                                                            |
+| ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `apiVersion` | Mô tả version của [Kubernetes API](https://kubernetes.io/docs/reference/kubernetes-api/) mà bạn sử dụng để tạo object/resource, ở đây là `v1`.                                                                                                                                                   |
+| `kind`       | Mô tả loại object/resource của Kubernetes, ở file trên thì là `Pod`.                                                                                                                                                                                                                             |
+| `metadata`   | Mô tả các thông tin khác của Pod như: name, labels, namespace và các thông tin khác về object/resource. File trên thì tên của `Pod` là: `name: k8s-springboot-series`, lables của `Pod` là: `app: k8s-springboot-series`.                                                                        |
+| `spec`       | Mô tả các thông tin của container như: tên container là gì?, dùng docker image là gì?, port của container là gì?. Ở file trên thì tên của container là: `name: k8s-springboot-series`, dùng image: `image: thanhnb1/k8s-springboot-series:latest`, port của container là: `containerPort: 8080`. |
+
+**Tạo Pods từ YAML file**
+
+Để tạo `Pod` từ YAML file thì sử dụng lệnh: `kubectl apply -f <path-yaml-file>`. Lệnh này có thể sử dụng để tạo các object/resource khác của Kubernetes không chi riêng `Pod`.
+
+```shell
+kubectl apply -f <path-yaml-file>
+
+# Thực hiện tạo Pod từ file pod-springboot-series.yaml
+kubectl apply -f k8s/pod-springboot-series.yaml
+pod/k8s-springboot-series created
+```
+
+**Lấy danh sách Pods đã tạo**
+
+Sau khi tạo `Pod` từ YAML file thành công, thì muốn lấy danh sách `Pod` đã tạo thì sử dụng lệnh: `kubectl get pods`. Nếu trạng thái của `Pod` là `Running` thì tức là quá trình tạo `Pod` đã thành công.
+
+```shell
+kubectl get pods
+
+NAME                               READY   STATUS    RESTARTS        AGE
+k8s-springboot-series              1/1     Running   0               3m30s
+```
+
+**Xem logs của ứng dụng**
+
+Trong series này thì ứng dụng của mình là spring boot, để xem logs của ứng dụng bên trong `Pod` thì sử dụng lệnh: `kubectl logs -f pod/<pod-name>`. Trong trường hợp `Pod` của các bạn có nhiều hơn một container thì có thể thêm tham số `-c` như sau: `kubectl logs -f pod/<pod-name> -c <container-name>`để xem đúng container muốn xem logs nhé.
+
+```shell
+kubectl logs -f pod/k8s-springboot-series
+
+kubectl logs -f pod/k8s-springboot-series -c k8s-springboot-series
+
+.   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::                (v2.7.6)
+
+2022-12-11 23:23:53.775  INFO 1 --- [           main] c.v.k.K8sSpringbootSeriesApplication     : Starting K8sSpringbootSeriesApplication v0.0.1-SNAPSHOT using Java 11.0.16.1 on k8s-springboot-series with PID 1 (/workspace/app.jar started by root in /workspace)
+2022-12-11 23:23:53.776  INFO 1 --- [           main] c.v.k.K8sSpringbootSeriesApplication     : No active profile set, falling back to 1 default profile: "default"
+2022-12-11 23:23:54.309  INFO 1 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2022-12-11 23:23:54.316  INFO 1 --- [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2022-12-11 23:23:54.316  INFO 1 --- [           main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.69]
+2022-12-11 23:23:54.355  INFO 1 --- [           main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2022-12-11 23:23:54.356  INFO 1 --- [           main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 553 ms
+2022-12-11 23:23:54.660  INFO 1 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2022-12-11 23:23:54.666  INFO 1 --- [           main] c.v.k.K8sSpringbootSeriesApplication     : Started K8sSpringbootSeriesApplication in 1.14 seconds (JVM running for 1.384)
+```
+
+**Gửi request đến ứng dụng bên trong Pod**
+
+Phần trên khi xem trạng thái của `Pod` đang là `Running`, xem logs của ứng dụng thì thấy `Tomcat started on port(s): 8080` tức là ứng dụng spring boot đã đang chạy rồi và đang lắng nghe ở cổng 8080. Trong thực tế thì mình không thấy request sẽ được đi thẳng đến `Pods` mà nó sẽ đi qua một object khác của Kubernetes đó là `Service` (sẽ tìm hiểu ở bài sau). Vì là object `Service` sẽ tìm hiểu ở bài sau bên trong bài này thì mình sẽ gửi thẳng request đến `Pod` luôn.
+
+- Gửi request từ bên ngoài
+
+  Sử dụng lệnh `kubectl port-forward` để forward từ máy local port 8888 đến port 8080 của ứng dụng
+
+  ```shell
+  kubectl port-forward pod/k8s-springboot-series 8888:8080
+  ```
+
+  Sau khi chạy lệnh trên thì mình có thể truy cập ứng dụng từ máy local và thông qua port 8888. Dùng [Postman](https://www.postman.com/downloads/) gọi các API:
+
+  API tạo mới Student
+
+  ![call-api-create-student-postman](/static/images/assets/call-api-create-student-postman.png)
+
+  API danh sách Student
+
+  ![call-api-get-all-student-postman](/static/images/assets/call-api-get-all-student-postman.png)
+
+- Gửi request từ một `Pod` khác.
+
+  Tạo mới một `Pod` mục đích là đứng từ `Pod` `debug-pod` này gọi đến API của `Pod` `k8s-springboot-series` thông qua IP của Pod.
+
+  ```YAML
+  apiVersion: v1
+  kind: Pod
+  metadata:
+    name: debug-pod
+  spec:
+    containers:
+      - image: pete911/debug-pod:latest
+        name: debug-pod
+        command:
+          - sleep
+          - "36000"
+  ```
+
+  Tạo `debug-pod` từ yaml file trên:
+
+  ```shell
+  kubectl apply -f k8s/pod-test-api.yaml
+  ```
+
+  Lấy danh sách Pods cùng với IP:
+
+  ```shell
+  kubectl get pods -o wide
+  NAME                               READY   STATUS    RESTARTS         AGE     IP            NODE   NOMINATED NODE   READINESS GATES
+  k8s-springboot-series              1/1     Running   0                99m     10.1.28.73    nbt    <none>           <none>
+  debug-pod                          1/1     Running   0                9m15s   10.1.28.75    nbt    <none>           <none>
+  ```
+
+  Truy cập vào `pod: debug-pod` và gọi api đến `pod: k8s-springboot-series` thông qua `IP: 10.1.28.73`:
+
+  ```shell
+  kubectl exec -it po/debug-pod sh
+
+  # Gọi đến API lấy danh sách Student
+
+  / # curl --location --request GET '10.1.28.73:8080/api/students'
+  [{"id":"90b1115a-66b4-48c3-bbb6-6a20cd2c5edc","fullName":"NGUYEN BA THANH","dateOfBirth":"29/04/1998","hometown":"HA DONG, HA NOI","gender":"MALE"}]/ #
+  ```
+
+  Như vậy là đã gọi API thành công từ `pod: debug-pod` `pod: k8s-springboot-series` thông qua `IP: 10.1.28.73`. Cái `IP: 10.1.28.73` này thì được gán cho `Pod` khi `Pod` được tạo mới, có nghĩa là mỗi lần `Pod` bị xóa đi tạo lại thì sẽ lại được gán cho một IP khác nhau. và IP này chỉ sử dụng được trong nội bộ Cluster, sẽ không truy cập được IP này từ bên ngoài Cluster.
 
 ## 5. Tổng kết
