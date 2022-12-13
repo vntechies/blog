@@ -6,7 +6,7 @@ series: ['k8s-spring-boot']
 draft: false
 authors: ['thanhnb']
 images: ['/static/images/ogps/k8s-springboot.png']
-summary: 'Sample summary'
+summary: 'Trong bài đầu tiên, chúng ta cùng nhau cài đặt môi trường phát triển cho ứng dụng Java Springboot'
 index: 1
 ---
 
@@ -42,7 +42,7 @@ Thông tin project và các dependencies:
 
 Class `Student` dưới đây định nghĩa các trường thông tin về Student:
 
-```java
+```java:src/main/java/com/vntechies/k8sspringbootseries/entity/Student.java
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -70,7 +70,7 @@ Class `StudentControllers` dưới đây định nghĩa các API như:
 - POST `/api/students`: tạo mới Student.
 - GET `/api/students`: lấy danh sách Student.
 
-```java
+```java:src/main/java/com/vntechies/k8sspringbootseries/controllers/StudentControllers.java
 @RestController
 @RequestMapping(value = "/api/students")
 public class StudentControllers {
@@ -95,7 +95,7 @@ public class StudentControllers {
 
 Class `StudentServiceImpl` dưới đây định nghĩa các logic tạo mới `Student` và lấy danh sách `Student`:
 
-```java
+```java:src/main/java/com/vntechies/k8sspringbootseries/services/StudentServiceImpl.java
 @Service
 public class StudentServiceImpl implements IStudentService {
 
