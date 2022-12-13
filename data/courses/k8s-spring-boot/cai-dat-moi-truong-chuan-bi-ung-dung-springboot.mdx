@@ -1,15 +1,14 @@
 ---
-title: Triển khai ứng dụng springboot trên Kubernetes - giới thiệu
-date: '2020-11-11'
-tags: ['api', 'rest api']
+title: Cài đặt môi trường, chuẩn bị ứng dụng Springboot
+date: '2022-12-01'
+tags: ['api', 'rest-api', 'springboot']
 series: ['k8s-spring-boot']
 draft: false
 authors: ['thanhnb']
 images: ['/static/images/ogps/k8s-springboot.png']
 summary: 'Sample summary'
+index: 1
 ---
-
-![Spring boot application với Kubernetes](/static/images/ogps/k8s-springboot.png)
 
 <TOCInline toc={props.toc} asDisclosure />
 
@@ -33,12 +32,13 @@ Truy cập [Spring Initializr](https://start.spring.io/) để tạo mới một
 
 Thông tin project và các dependencies:
 
-| Project             | Value                   | Dependencies                     |
-| ------------------- | ----------------------- | -------------------------------- |
-| Tên                 | `k8s-springboot-series` | `Spring Web`                     |
-| Build tool          | `Maven`                 | `Spring Boot DevTools`           |
-| Spring Boot version | `2.7.6`                 | `Lombok`                         |
-| Java version        | `11`                    | `Spring Configuration Processor` |
+| Project             | Value                                                                                        |
+| ------------------- | -------------------------------------------------------------------------------------------- |
+| Tên                 | `k8s-springboot-series`                                                                      |
+| Build tool          | `Maven`                                                                                      |
+| Spring Boot version | `2.7.6`                                                                                      |
+| Java version        | `11`                                                                                         |
+| Dependencies        | `Spring Web`<br />`Spring Boot DevTools`<br />`Lombok`<br />`Spring Configuration Processor` |
 
 Class `Student` dưới đây định nghĩa các trường thông tin về Student:
 
