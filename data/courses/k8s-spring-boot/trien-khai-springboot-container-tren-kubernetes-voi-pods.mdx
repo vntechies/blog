@@ -149,7 +149,7 @@ Docker cho phép tạo ra các môi trường độc lập và tách biệt, đi
    14330e1c04cb   k8s-springboot-series:latest   "java -jar /workspac…"   3 seconds ago   Up 2 seconds   0.0.0.0:8080->8080/tcp, :::8080->8080/tcp   k8s-springboot-series
    ```
 
-3. **Dùng [Postman](https://www.postman.com/downloads/) gọi các API**
+3. **Dùng [Postman](https://www.postman.com/downloads/) để test các API ứng dụng**
 
    **API tạo mới Student:**
 
@@ -191,7 +191,7 @@ Vì một pod có thể chứa một hoặc nhiều containers. Lý do chính đ
 
 **Định nghĩa Pod YAML file**
 
-Pod hoặc các object khác của Kubernetes thường được tạo bằng cách định nghĩa các file YAML (thường được gọi là file YAML manifest). Bạn cũng có thể sử dụng lệnh `kubectl run ...` để tạo các object nhưng trong thực tế, cách này không thường xuyên được sử dụng. Lý do là việc tạo các object thông qua định nghĩa các file YAML giúp chúng ta tái sử dụng nhiều lần, bảo đảm tính nhất quá và quản lý một cách tốt hơn. Ví dụ như file YAML dưới đây định nghĩa một pod trên k8s.
+Pod hoặc các object khác của Kubernetes thường được tạo bằng cách định nghĩa các file YAML (thường được gọi là file YAML manifest). Bạn cũng có thể sử dụng lệnh `kubectl run ...` để tạo các object nhưng trong thực tế, cách này không thường xuyên được sử dụng. Lý do là việc tạo các object thông qua định nghĩa các file YAML giúp chúng ta tái sử dụng nhiều lần, bảo đảm tính nhất quán và quản lý một cách tốt hơn. Ví dụ như file YAML dưới đây định nghĩa một pod trên k8s.
 
 ```yaml:pod-springboot-series.yaml
 apiVersion: v1
