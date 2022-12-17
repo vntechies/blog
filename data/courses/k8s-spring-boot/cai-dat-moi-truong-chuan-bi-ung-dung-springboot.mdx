@@ -19,8 +19,21 @@ Trong chuỗi bài này, chúng ta cùng nhau tìm hiểu cách phát triển v�
 ## 2. Cài đặt môi trường
 
 - Cài đặt [JDK](https://docs.oracle.com/javase/8/docs/technotes/guides/install/install_overview.html).
+- Cài đăt [Maven](https://maven.apache.org/install.html).
 - Cài đặt [Docker](https://docs.docker.com/engine/install/ubuntu/).
+- Cài đặt [Kubectl](https://kubernetes.io/docs/tasks/tools/#kubectl).
 - Cài đặt [MicroK8s](https://microk8s.io/tutorials).
+
+Sử dụng `MicroK8s` khi chạy lệnh `kubectl ...` thì cần kèm theo `microk8s` đằng trước như: `microk8s kubectl ...`, để ngắn gọn hơn thì bạn có thể làm như sau:
+
+```shell
+cd $HOME
+mkdir .kube
+cd .kube
+microk8s config > config
+
+kubectl config use-context microk8s
+```
 
 ## 3. Setup Spring boot application
 
