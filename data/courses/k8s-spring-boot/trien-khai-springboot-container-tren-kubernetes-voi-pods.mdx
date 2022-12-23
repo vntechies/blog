@@ -18,7 +18,6 @@ index: 2
 
 - Đóng gói ứng dụng Spring boot với Docker container.
 - Tạo mới, triển khai pod trên Kubernetes.
-- Nhóm các pod sử dụng `labels`.
 - Vòng đời của pod.
 
 Các bạn có thể tham khảo source code [ở đây](https://github.com/nbthanh98/k8s-springboot-series.git) và checkout nhánh: `series/k8s-springboot/pod`.
@@ -338,4 +337,32 @@ kubectl exec -it po/debug-pod sh
 
 Như vậy là chúng ta đã gọi API thành công từ `debug-pod` tới pod `k8s-springboot-series` thông qua `IP: 10.1.28.73`. Địa chỉ IP (`IP: 10.1.28.73`)được gán cho pod khi nó được tạo mới, điều này có nghĩa là mỗi lần pod bị xóa đi tạo lại, nó sẽ được gán cho một IP mới. IP này chỉ sử dụng được trong nội bộ cluster, không truy cập được IP này từ bên ngoài Cluster.
 
-## 5. Tổng kết
+## 5. Vòng đời của Pod
+
+Ở bước 4 chúng ta đã tìm hiểu về `Pod` và đóng gói container với `Pod`, ở phần này thì chúng ta sẽ tìm hiều vòng đời của `Pod`.
+
+![vong doi cua pod](/static/images/assets/pod-life-cycle.png)
+
+Khi define `pod` bằng YAML file, khi thực hiện lệnh `kubectl apply -f <path-yaml-pod>` thì là chúng ta đang gọi api đến `API Server`, mô tả `pod` trong file yaml sẽ được Kubernetes Cluster lưu lại và coi đó là trạng thái chúng ta mong muốn. Lúc này `Pod` sẽ được triển khai đến một Node phù hợp và `Pod` cũng có những trạng thái như sau:
+
+- `Peding`: `Pod` ở trạng thái này khi thực hiện apply Pod YAML file đến `API Server` thành công nhưng một hoặc nhiều containers chưa được tạo thành công, hoặc `Pod` đang chờ được triển khai trên một Node nào đó phù hợp.
+
+- `Running`: Khi này `Pod` đã được triển khai trên Node, tất cả containers đã được tạo thành công và ít nhất một container vẫn đang ở trạng thái running hoặc đang trong quá trình starting hoặc restarting.
+
+- `Successed (completed)`: Khi mà tất cả container trong Pod đã kết thúc thành công và không được khởi động lại.
+
+- `Failed`: Khi một hoặc tất cả container bên trong `Pod` không chạy thành công, thì `Pod` sẽ ở trạng thái này.
+
+- `Unkown`: Triển khai `Pod` trên một Node nào đó thì `kubelet` trên Node cần phải gửi report cho Master Node về trạng thái của `Pod` nhưng vì một lý do nào đó mà điều này không diễn ra được thì `Pod` sẽ ở trạng thái `Unkown`.
+
+Để kiểm tra trạng thái của `Pod` bạn có thể sử dụng lệnh:
+
+```shell
+kubectl get po/<pod-name> -o yaml | grep phase
+```
+
+Các bạn có thể tham khảo thêm tại [trang web chính thức của Kubernetes](https://pwittrock.github.io/docs/concepts/workloads/pods/pod-lifecycle/).
+
+## 6. Tổng kết
+
+Qua bài này thì chúng ta đã tìm hiểu được cách tạo `Pod`, cách đóng gói container với `Pod` cũng như tìm hiểu về vòng đời của `Pod`. Ở bài sau thì chúng ta cùng tìm hiểu cách quản lý `Pod` bằng cách không tạo Pod một cách trực tiếp mà sẽ tạo thông qua `ReplicationController` hoặc `Deployment`.
