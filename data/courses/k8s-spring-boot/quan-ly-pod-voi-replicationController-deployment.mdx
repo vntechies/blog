@@ -181,3 +181,64 @@ k8s-springboot-series   3         3         3       101s
   k8s-springboot-series-hvn2k   1/1     Running   0          17m
   k8s-springboot-series-9f9sl   1/1     Running   0          17m
   ```
+
+  Khi thực hiện triển khai lại `ReplicationController` đã sửa container image tag từ `latest` sang `v2` thì khi lấy danh sách pod thì vẫn thấy những pod cũ và vẫn đang chạy container image tag `latest` không cập nhật lại image mới là `v2`. Để pod cập nhật image tag mới thì sẽ phải xóa pod cũ đi, lúc này `ReplicationController` sẽ tạo lại pod theo pod template mới với image tag là `v2`.
+
+  ![RC update pod template](/static/images/assets/2-rc-update-pod-template.png)
+
+  ```shell
+  # Xóa pod k8s-springboot-series-9f9sl
+  kubectl delete pod/k8s-springboot-series-9f9sl
+  pod "k8s-springboot-series-9f9sl" deleted
+
+  # Lấy danh sách pods
+  kubectl get po
+  NAME                          READY   STATUS    RESTARTS   AGE
+  k8s-springboot-series-5lwwg   1/1     Running   0          37m
+  k8s-springboot-series-hvn2k   1/1     Running   0          17m
+  k8s-springboot-series-wlbps   1/1     Running   0          3s
+
+  # Kiểm tra image tag của po `k8s-springboot-series-wlbps` mới được tạo bởi ReplicationController.
+  kubectl get po/k8s-springboot-series-wlbps -o yaml| grep image:
+  - image: thanhnb1/k8s-springboot-series:v2
+    image: docker.io/thanhnb1/k8s-springboot-series:v2
+  ```
+
+- Tăng/giảm số lượng pods (Horizonetally scaling pods)
+
+  `ReplicationControllers` sẽ đảm bảo số lượng pod chạy trên Kubernetes cluster trong cùng một thời điểm. Để định nghĩa số lượng pod mong muốn thì sử dụng `replicas`, ví dụ trên thì đang định nghĩa `replicas: 3`. Để tăng/giảm số lượng pod thì có thể sửa trong `ReplicationControllers` YAML file trường `replicas`, hoặc sử dụng lệnh `kubectl scale rc <replicationController-name> --replicas=<pod-number>`.
+
+  Tăng/giảm số lượng pod bằng cách sửa trường `replicas` từ 3 lên 10. Khi triển khai lại `ReplicationControllers` thì:
+
+  ```shell
+  kubectl apply -f k8s/k8s-springboot-ReplicationController.yaml
+  replicationcontroller/k8s-springboot-series configured
+
+  # Lấy danh sách pod, những pod được tạo thêm thì sẽ sử dụng pod template mới image tag là `v2`.
+  kubectl get po
+  NAME                          READY   STATUS    RESTARTS    AGE
+  k8s-springboot-series-hvn2k   1/1     Running   0           37m
+  k8s-springboot-series-5lwwg   1/1     Running   0           17m
+  k8s-springboot-series-wlbps   1/1     Running   0           23m
+  k8s-springboot-series-cld6n   1/1     Running   0           15s # Pod mới tạo thêm, image tag là `v2`.
+  k8s-springboot-series-4dz77   1/1     Running   0           15s # Pod mới tạo thêm, image tag là `v2`.
+  k8s-springboot-series-zk5pq   1/1     Running   0           15s # Pod mới tạo thêm, image tag là `v2`.
+  k8s-springboot-series-cwwms   1/1     Running   0           15s # Pod mới tạo thêm, image tag là `v2`.
+  k8s-springboot-series-jcbnt   1/1     Running   0           15s # Pod mới tạo thêm, image tag là `v2`.
+  k8s-springboot-series-9bv5l   1/1     Running   0           15s # Pod mới tạo thêm, image tag là `v2`.
+  k8s-springboot-series-snmrz   1/1     Running   0           15s # Pod mới tạo thêm, image tag là `v2`.
+  ```
+
+  Tăng/giảm số lượng pod bằng cách sử dụng lệnh:
+
+  ```shell
+  kubectl scale rc k8s-springboot-series --replicas=3
+  replicationcontroller/k8s-springboot-series scaled
+
+  # lấy danh sách pod.
+  kubectl get po
+  NAME                          READY   STATUS    RESTARTS  AGE
+  k8s-springboot-series-hvn2k   1/1     Running   0         4h44m
+  k8s-springboot-series-5lwwg   1/1     Running   0         5h4m
+  k8s-springboot-series-wlbps   1/1     Running   0         31m
+  ```
