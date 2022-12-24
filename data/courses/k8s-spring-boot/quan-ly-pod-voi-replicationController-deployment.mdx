@@ -24,7 +24,7 @@ index: 3
 
 Bài trước chúng ta đã đóng gói containers vào `Pod` và triển khai trên Kubernetes, nhưng `Pod` không scale được (tăng hoặc giảm số lượng `Pod`) và `Pod` cũng khó để có thể update hoặc rollbacks. Để giải quyết vấn đề trên thì trong Kubernetes thì thường sẽ sử dụng các controllers để đóng gói `Pod` vào và quản lý.
 
-### 2.1 Vấn đề khi triển khai Pod một cách trực tiếp
+### 2.1. Vấn đề khi triển khai Pod một cách trực tiếp
 
 **Self Healing**
 
@@ -48,7 +48,7 @@ NAME       READY   STATUS      RESTARTS   AGE
 
 Chúng ta đang mong muốn rằng khi xóa `pod` thì Kubernetes sẽ tạo mới `Pod` mới nhưng phía trên khi xóa `pod` `k8s-springboot-series` thì không thấy có `pod` mới được tạo ra.
 
-### 2.2 Replication Controller trong Kubernetes
+### 2.2. Replication Controller trong Kubernetes
 
 **1. Replication Controller là gì?**
 
@@ -242,3 +242,47 @@ k8s-springboot-series   3         3         3       101s
   k8s-springboot-series-5lwwg   1/1     Running   0         5h4m
   k8s-springboot-series-wlbps   1/1     Running   0         31m
   ```
+
+### 2.3. Deployment trong Kubernetes
+
+Ở phần trước chúng ta đã tìm hiểu về `ReplicationController`. Nó giúp chúng ta đảm bảo số lượng pod của ứng dụng chạy trên cùng một thời điểm, cũng như dễ dàng có thể tăng hoặc giảm số lượng pod. Nhưng có vấn đề khi cập nhật pod template, khi cập nhật pod template thì các pod trước đó không được cập nhật mà phải xóa các pod cũ đi để `ReplicationController` tạo mới các pod theo pod template mới. Vấn đề này sẽ được giải quyết với Deployment trong Kubernetes.
+
+**1. Deployment trong Kubernetes là gì?**
+
+`Deployment` là một object/resource của Kubernetes. `Deployment` có thể đảm bảo số lượng pod chạy trên cùng một thời điểm và có thể tăng/giảm số lượng pod theo mong muốn giống như sử dụng `ReplicationController` hoặc `ReplicaSet`. Tuy nhiên `Deployment` có thêm các chiến lược update. `ReplicaSet` hoạt động gần giống với `ReplicationController` và có thêm một số điểm khác, bạn có thể tham khảo thêm ở [trang web chính thức của Kubernetes](https://kubernetes.io/docs/concepts/workloads/controllers/replicaset/).
+
+**2. Tại sao lại cần sử dụng Deployment?**
+
+**3. Tạo Deployment bằng YAML file**
+
+```YAML
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: k8s-springboot-series
+  labels:
+    app: k8s-springboot-series
+spec:
+  selector:
+    matchLabels:
+      app: k8s-springboot-series
+  replicas: 1
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: k8s-springboot-series
+    spec:
+      containers:
+        - name: k8s-springboot-series
+          image: thanhnb1/k8s-springboot-series:latest
+          ports:
+            - containerPort: 8080
+      restartPolicy: Always
+```
+
+## 3. Tổng kết
