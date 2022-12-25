@@ -353,7 +353,7 @@ Khi define `pod` bằng YAML file, khi thực hiện lệnh `kubectl apply -f <p
 
 - `Failed`: Khi một hoặc tất cả container bên trong `Pod` không chạy thành công, thì `Pod` sẽ ở trạng thái này.
 
-- `Unkown`: Triển khai `Pod` trên một Node nào đó thì `kubelet` trên Node cần phải gửi report cho Master Node về trạng thái của `Pod` nhưng vì một lý do nào đó mà điều này không diễn ra được thì `Pod` sẽ ở trạng thái `Unkown`.
+- `Unkown`: Khi triển khai `Pod` trên một Node, `kubelet` trên Node sẽ report cho Master Node về trạng thái của `Pod`, nhưng vì một lý do nào đó mà điều này không xảy ra khiến `Pod` sẽ rơi vào trạng thái trạng thái `Unkown`.
 
 Để kiểm tra trạng thái của `Pod` bạn có thể sử dụng lệnh:
 
