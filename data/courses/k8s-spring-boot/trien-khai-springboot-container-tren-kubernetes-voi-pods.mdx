@@ -351,7 +351,7 @@ Khi define `pod` bằng YAML file, khi thực hiện lệnh `kubectl apply -f <p
 
 - `Successed (completed)`: Khi mà tất cả container trong Pod đã kết thúc thành công và không được khởi động lại.
 
-- `Failed`: Khi một hoặc tất cả container bên trong `Pod` không chạy thành công, thì `Pod` sẽ ở trạng thái này.
+- `Failed`: Khi một hoặc tất cả container bên trong `Pod` không khởi động thành công thì `Pod` sẽ ở trạng thái này.
 
 - `Unkown`: Khi triển khai `Pod` trên một Node, `kubelet` trên Node sẽ report cho Master Node về trạng thái của `Pod`, nhưng vì một lý do nào đó mà điều này không xảy ra khiến `Pod` sẽ rơi vào trạng thái trạng thái `Unkown`.
 
