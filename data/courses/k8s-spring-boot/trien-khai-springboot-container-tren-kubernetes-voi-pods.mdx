@@ -345,7 +345,7 @@ Như vậy là chúng ta đã gọi API thành công từ `debug-pod` tới pod 
 
 Khi define `pod` bằng YAML file, khi thực hiện lệnh `kubectl apply -f <path-yaml-pod>` thì là chúng ta đang gọi api đến `API Server`, mô tả `pod` trong file yaml sẽ được Kubernetes Cluster lưu lại và coi đó là trạng thái chúng ta mong muốn. Lúc này `Pod` sẽ được triển khai đến một Node phù hợp và `Pod` cũng có những trạng thái như sau:
 
-- `Peding`: `Pod` ở trạng thái này khi thực hiện apply Pod YAML file đến `API Server` thành công nhưng một hoặc nhiều containers chưa được tạo thành công, hoặc `Pod` đang chờ được triển khai trên một Node nào đó phù hợp.
+- `Pending`: `Pod` ở trạng thái này khi thực hiện apply Pod YAML file đến `API Server` thành công nhưng một hoặc nhiều containers chưa được tạo thành công, hoặc `Pod` đang chờ được triển khai trên một Node nào đó phù hợp.
 
 - `Running`: Khi này `Pod` đã được triển khai trên Node, tất cả containers đã được tạo thành công và ít nhất một container vẫn đang ở trạng thái running hoặc đang trong quá trình starting hoặc restarting.
 
