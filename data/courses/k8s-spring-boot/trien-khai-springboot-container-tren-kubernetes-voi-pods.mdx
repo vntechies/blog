@@ -1,0 +1,368 @@
+---
+title: Đóng gói với ứng dụng với container và pods
+date: '2022-12-10'
+tags: ['api', 'rest-api', 'springboot', 'kubernetes']
+series: ['k8s-spring-boot']
+draft: false
+authors: ['thanhnb']
+images: ['/static/images/ogps/k8s-springboot.png']
+summary: ' Trong bài này chúng ta sẽ cùng nhau tìm hiểu về Pod, cách đóng gói ứng dụng với containers và Pod'
+index: 2
+---
+
+<TOCInline toc={props.toc} asDisclosure />
+
+## 1. Giới thiệu chung
+
+Đây là bài viết thứ hai trong series triển khai ứng dụng spring boot trên Kubernetes. Trong bài này, chúng ta sẽ cùng nhau tìm hiểu về `pod`, cách đóng gói ứng dụng với containers và pod thông qua những nội dung sau:
+
+- Đóng gói ứng dụng Spring boot với Docker container.
+- Tạo mới, triển khai pod trên Kubernetes.
+- Vòng đời của pod.
+
+Các bạn có thể tham khảo source code [ở đây](https://github.com/nbthanh98/k8s-springboot-series.git) và checkout nhánh: `series/k8s-springboot/pod`.
+
+## 2. Yêu cầu môi trường
+
+Đầu tiên chúng ta cần cài [Docker](https://www.docker.com/), có thể kiểm tra quá trình cài đặt `Docker` bằng lệnh:
+
+```shell
+docker run hello-world
+
+# Nếu output là message dưới đây thì quá trình cài đặt đã thành công
+Hello from Docker!
+This message shows that your installation appears to be working correctly.
+```
+
+Chúng ta cũng cần cài đặt Kubernetes ở local, việc này có thể sử dụng [Minikube](https://kubernetes.io/vi/docs/tasks/tools/install-minikube/) hoặc [MicroK8s](https://microk8s.io/tutorials). Trong series này, chúng ta sẽ sử dụng `MicroK8s`. Bạn có thể kiểm tra việc cài đặt Kubernetes bằng lệnh:
+
+```shell
+# Kiểm tra việc cài đặt kubectl sử dụng lệnh:
+kubectl cluster-info
+
+Kubernetes control plane is running at https://192.168.1.123:16443
+
+To further debug and diagnose cluster problems, use 'kubectl cluster-info dump'.
+
+# Kiểm tra trạng thái của các nodes, sử dụng lệnh:
+kubectl get nodes
+
+NAME   STATUS   ROLES    AGE   VERSION
+nbt    Ready    <none>   9d    v1.25.4
+```
+
+## 3. Đóng gói ứng dụng Spring boot với Docker
+
+![Dockerfile, Docker image and Docker containers](/static/images/assets/dockerfile-dockerimage-container.png)
+
+### Docker là gì?
+
+Docker là một nền tảng giúp xây dựng, kiểm thử, triển khai ứng dụng một cách nhanh chóng bằng cách đóng gói phần mềm với container. Khi cần triển khai ứng dụng trên các môi trường, chúng ta chỉ cần pull docker image của ứng dụng đó và tạo container thì ứng dụng sẽ được khởi chạy ngay lập tức.
+
+### Tại sao lại sử dụng Docker?
+
+Docker cho phép tạo ra các môi trường độc lập và tách biệt, điều này sẽ giúp nhất quán về môi trường khi phát triển và triển khai ứng dụng trên các máy khác nhau. Docker có cộng đồng người sử dụng lớn, có nhiều Docker image chất lượng được đóng góp từ cộng đồng và các images này cũng được fix lỗi và cập nhật thường xuyên.
+
+### Triển khai Spring boot application với Docker
+
+1. **Tạo Dockerfile và build Docker image từ Dockerfile**
+
+   - Đầu tiên cần tạo `Dockerfile`. `Dockerfile` chứa các lệnh hướng dẫn Docker tạo ra Docker image. Ví dụ chúng ta có `Dockerfile` như file dưới đây:
+
+   ```dockerfile
+   FROM adoptopenjdk/openjdk11:latest
+   WORKDIR /workspace
+   COPY target/*-SNAPSHOT.jar /workspace/app.jar
+   ENV TZ="Asia/Ho_Chi_Minh"
+   EXPOSE 8080
+   ENTRYPOINT ["java","-jar","/workspace/app.jar"]
+   ```
+
+- Dockerfile trên bao gồm các lệnh:
+
+  - `FROM`: Lệnh này sẽ pull một Docker image (ở đây là `adoptopenjdk/openjdk11:latest`) để tạo ra một base image layer, các lệnh tiếp theo trong `Dockerfile` sẽ được thực thi trên base image layer này. `Dockerfile` bắt buộc phải bắt đầu với `FROM`.
+
+  - `WORKDIR`: Các lệnh tiếp theo trong `Dockerfile` sẽ được thực hiện trong folder mà lệnh `WORKDIR` định nghĩa, trường hợp này là folder `/workspace`.
+
+  - `COPY`: Thực hiện copy file jar ở folder `target` vào folder `/workspace/` bên trong container.
+
+  - `ENV`: Sử dụng để truyền biến môi trường vào bên trong container, trường hợp này là `TZ="Asia/Ho_Chi_Minh"`.
+
+  - `EXPOSE`: Sẽ quy định cổng mà container sẽ lắng nghe và tiếp nhận traffic, trường hợp này là port `8080`.
+
+  - `ENTRYPOINT`: Khi container start thì lệnh bên trong `ENTRYPOINT` sẽ được thực thi, trường hợp này là chạy file jar.
+
+- Bạn có thể build docker image bằng lệnh sau:
+
+  ```shell
+  docker build -t k8s-springboot-series:latest -f Dockerfile .
+
+  Sending build context to Docker daemon  18.05MB
+  Step 1/6 : FROM adoptopenjdk/openjdk11:latest
+  ---> 49877461f3c7
+  Step 2/6 : WORKDIR /workspace
+  ---> Running in af4cc5d9485b
+  Removing intermediate container af4cc5d9485b
+  ---> 93bad477e120
+  Step 3/6 : COPY target/*-SNAPSHOT.jar /workspace/app.jar
+  ---> 08b67e5bfac9
+  Step 4/6 : ENV TZ="Asia/Ho_Chi_Minh"
+  ---> Running in 87c88aba3e8b
+  Removing intermediate container 87c88aba3e8b
+  ---> 8482d4c26ef8
+  Step 5/6 : EXPOSE 8080
+  ---> Running in 19fcfb82ca20
+  Removing intermediate container 19fcfb82ca20
+  ---> cc97ad8d0a21
+  Step 6/6 : ENTRYPOINT ["java","-jar","/workspace/app.jar"]
+  ---> Running in 2d87a166c58a
+  Removing intermediate container 2d87a166c58a
+  ---> 1403dab63194
+  Successfully built 1403dab63194
+  Successfully tagged k8s-springboot-series:latest
+  ```
+
+- Kiểm tra docker image bằng lệnh:
+
+  ```shell
+  docker images
+
+  REPOSITORY                TAG       IMAGE ID       CREATED         SIZE
+  k8s-springboot-series     latest    1403dab63194   7 minutes ago   456MB
+  ```
+
+2. **Tạo docker container từ docker image**
+
+   Sau bước build docker image từ Dockerfile trên thì bạn đã có một docker image là `k8s-springboot-series:latest`, giờ bạn có thể chạy một hoặc nhiều docker container từ docker image vừa được build bằng lệnh sau:
+
+   ```shell
+   docker run --name k8s-springboot-series -d -p 8080:8080 k8s-springboot-series:latest
+   ```
+
+   Kiểm tra docker container bằng lệnh:
+
+   ```shell
+   docker ps
+
+   CONTAINER ID   IMAGE                          COMMAND                  CREATED         STATUS         PORTS                                       NAMES
+   14330e1c04cb   k8s-springboot-series:latest   "java -jar /workspac…"   3 seconds ago   Up 2 seconds   0.0.0.0:8080->8080/tcp, :::8080->8080/tcp   k8s-springboot-series
+   ```
+
+3. **Dùng [Postman](https://www.postman.com/downloads/) để test các API ứng dụng**
+
+   **API tạo mới Student:**
+
+   Endpoint: `/api/students`, method `POST` và Request body:
+
+   ```json
+   {
+     "fullName": "NGUYEN BA THANH",
+     "dateOfBirth": "29/04/1998",
+     "hometown": "HA DONG, HA NOI",
+     "gender": "MALE"
+   }
+   ```
+
+   ![API tạo mới Student với Postman](/static/images/assets/call-api-create-student.png)
+
+   **API lấy danh sách Student:**
+
+   Endpoint: `/api/students`, method `GET`.
+
+   ![API lấy danh sách Student với Postman](/static/images/assets/get-all-student.png)
+
+## 4. Đóng gói container với pods và triển khai trên Kubernetes
+
+Ở bước 3 chúng ta đã đóng gói ứng dụng Spring boot với container, trong phần này thì chúng ta sẽ tìm hiểu cách đóng gói containers với pod trong Kubernetes.
+
+![pods kubernetes](/static/images/assets/pod-kubernetes.png)
+
+**Pod là gì?**
+
+Đối với Docker, containers là đơn vị nhỏ nhất có thể triển khai, còn với Kubernetes đó là pod. Kubernetes không chạy container một cách trực tiếp mà thay vào đó Kubernetes sẽ đóng gói một hoặc nhiều containers trong một pod và triển khai pod trên cụm Kubernetes. Các containers bên trong pod chia sẻ network namespace bao gồm địa chỉ IP, network port và storage resources:
+
+- `Network`: Các containers bên trong pod có thể giao tiếp với nhau dễ dàng thông qua `localhost:<PORT_CONTAINER>`.
+- `Storage`: Các containers bên trong pod có thể chia sẻ với nhau một volume.
+
+**Tại sao Kubernetes sử dụng Pod mà không chạy trực tiếp containers?**
+
+Vì một pod có thể chứa một hoặc nhiều containers. Lý do chính để pod có thể chạy containers là để có thể chạy các ứng dụng trợ giúp hỗ trợ ứng dụng chính. Ví dụ như các ứng dụng đẩy và kéo dữ liệu, proxy, monitoring,.... Việc sử dụng một pod để chạy các containers này giúp đơn giản hoá quá trình giao tiếp, làm việc giữa các ứng dụng này. Tham khảo thêm [trang web chính thức của Kubernetes](https://kubernetes.io/docs/tasks/access-application-cluster/communicate-containers-same-pod-shared-volume/)
+
+**Định nghĩa Pod YAML file**
+
+Pod hoặc các object khác của Kubernetes thường được tạo bằng cách định nghĩa các file YAML (thường được gọi là file YAML manifest). Bạn cũng có thể sử dụng lệnh `kubectl run ...` để tạo các object nhưng trong thực tế, cách này không thường xuyên được sử dụng. Lý do là việc tạo các object thông qua định nghĩa các file YAML giúp chúng ta tái sử dụng nhiều lần, bảo đảm tính nhất quán và quản lý một cách tốt hơn. Ví dụ như file YAML dưới đây định nghĩa một pod trên k8s.
+
+```yaml:pod-springboot-series.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: k8s-springboot-series
+  labels:
+    app: k8s-springboot-series
+spec:
+  containers:
+    - name: k8s-springboot-series
+      image: thanhnb1/k8s-springboot-series:latest
+      ports:
+        - containerPort: 8080
+          name: http
+  restartPolicy: Always
+```
+
+Mô tả các phần của file yaml trên:
+
+| Tên          | Định nghĩa                                                                                                                                                                                                                                                                       |
+| ------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `apiVersion` | Version của [Kubernetes API](https://kubernetes.io/docs/reference/kubernetes-api/) mà bạn sử dụng để tạo object/resource, ở đây là `v1`.                                                                                                                                         |
+| `kind`       | Loại object/resource của Kubernetes, ở file trên là pod.                                                                                                                                                                                                                         |
+| `metadata`   | Các thông tin như: name, labels, namespace và các thông tin khác của object/resource. Ở file trên, tên của pod là: `name: k8s-springboot-series`, lables của pod là: `app: k8s-springboot-series`.                                                                               |
+| `spec`       | Mô tả các thông tin của container như: tên container, docker image được sử dụng, port của container. Ở file trên, tên của container là: `name: k8s-springboot-series`, dùng image: `image: thanhnb1/k8s-springboot-series:latest`, port của container là: `containerPort: 8080`. |
+
+**Tạo pod từ YAML file**
+
+Để tạo pod từ YAML file ta sử dụng lệnh: `kubectl apply -f <path-yaml-file>`. Lệnh này còn được sử dụng để tạo các object/resource khác của Kubernetes, không chi riêng pod.
+
+```shell
+kubectl apply -f <path-yaml-file>
+
+# Tạo Pod từ file pod-springboot-series.yaml
+kubectl apply -f k8s/pod-springboot-series.yaml
+pod/k8s-springboot-series created
+```
+
+**Lấy danh sách pods**
+
+Sau khi tạo pod từ YAML file thành công, nếu muốn lấy danh sách pod đã tạo ta sử dụng lệnh: `kubectl get pods`. Nếu trạng thái của pod là `Running` thì quá trình tạo pod đã thành công.
+
+```shell
+kubectl get pods
+
+NAME                               READY   STATUS    RESTARTS        AGE
+k8s-springboot-series              1/1     Running   0               3m30s
+```
+
+**Xem logs của ứng dụng**
+
+Trong series này, ứng dụng của chúng ta sử dụng spring boot, để xem logs của ứng dụng bên trong pod ta sử dụng lệnh: `kubectl logs -f pod/<pod-name>`. Trong trường hợp pod của các bạn có nhiều hơn một container thì có thể thêm tham số `-c` như sau: `kubectl logs -f pod/<pod-name> -c <container-name>` để xem logs của container cụ thể.
+
+```shell
+kubectl logs -f pod/k8s-springboot-series
+
+kubectl logs -f pod/k8s-springboot-series -c k8s-springboot-series
+
+.   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::                (v2.7.6)
+
+2022-12-11 23:23:53.775  INFO 1 --- [           main] c.v.k.K8sSpringbootSeriesApplication     : Starting K8sSpringbootSeriesApplication v0.0.1-SNAPSHOT using Java 11.0.16.1 on k8s-springboot-series with PID 1 (/workspace/app.jar started by root in /workspace)
+2022-12-11 23:23:53.776  INFO 1 --- [           main] c.v.k.K8sSpringbootSeriesApplication     : No active profile set, falling back to 1 default profile: "default"
+2022-12-11 23:23:54.309  INFO 1 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2022-12-11 23:23:54.316  INFO 1 --- [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2022-12-11 23:23:54.316  INFO 1 --- [           main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.69]
+2022-12-11 23:23:54.355  INFO 1 --- [           main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2022-12-11 23:23:54.356  INFO 1 --- [           main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 553 ms
+2022-12-11 23:23:54.660  INFO 1 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2022-12-11 23:23:54.666  INFO 1 --- [           main] c.v.k.K8sSpringbootSeriesApplication     : Started K8sSpringbootSeriesApplication in 1.14 seconds (JVM running for 1.384)
+```
+
+**Gửi request đến ứng dụng bên trong Pod**
+
+Trạng thái của pod ở phần trên là `Running`. Khi xem logs của ứng dụng thì thấy dòng `Tomcat started on port(s): 8080`, điều đó có nghĩa là ứng dụng spring boot đã được khởi động và đang lắng nghe ở cổng 8080. Trong thực tế, chúng ta sẽ không serve các request trực tiếp bằng pod mà sẽ sử dụng `Service`. Service là một cách để expose một ứng dụng chạy trên nhiều pods như một dịch vụ mạng (network service). Tuy nhiên chúng ta sẽ tìm hiểu sau hơn về nó ở bài viết sau, trong bài viết này, chúng ta sẽ kiểm tra ứng dụng bằng cách gửi request trực tiếp đến pod theo 2 cách:
+
+1. Gửi request từ bên ngoài
+
+Sử dụng lệnh `kubectl port-forward` để forward port 8888 của máy local đến port 8080 của ứng dụng
+
+```shell
+kubectl port-forward pod/k8s-springboot-series 8888:8080
+```
+
+Sau khi chạy lệnh trên, chúng ta có thể truy cập ứng dụng và thông qua port 8888. Dùng [Postman](https://www.postman.com/downloads/) gọi các API:
+
+API tạo mới Student
+
+![call-api-create-student-postman](/static/images/assets/call-api-create-student-postman.png)
+
+API danh sách Student
+
+![call-api-get-all-student-postman](/static/images/assets/call-api-get-all-student-postman.png)
+
+2. Gửi request từ một pod khác
+
+Tạo mới một `debug-pod` và gọi đến API của pod `k8s-springboot-series` từ pod mới được tạo thông qua IP.
+
+```YAML:debug-pod.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: debug-pod
+spec:
+  containers:
+    - image: pete911/debug-pod:latest
+      name: debug-pod
+      command:
+        - sleep
+        - "36000"
+```
+
+Tạo `debug-pod` từ yaml file trên:
+
+```shell
+kubectl apply -f k8s/pod-test-api.yaml
+```
+
+Lấy danh sách pods cùng với IP:
+
+```shell
+kubectl get pods -o wide
+NAME                               READY   STATUS    RESTARTS         AGE     IP            NODE   NOMINATED NODE   READINESS GATES
+k8s-springboot-series              1/1     Running   0                99m     10.1.28.73    nbt    <none>           <none>
+debug-pod                          1/1     Running   0                9m15s   10.1.28.75    nbt    <none>           <none>
+```
+
+Truy cập vào `pod: debug-pod` và gọi api đến `pod: k8s-springboot-series` thông qua `IP: 10.1.28.73`:
+
+```shell
+kubectl exec -it po/debug-pod sh
+
+# Gọi đến API lấy danh sách Student
+
+/ # curl --location --request GET '10.1.28.73:8080/api/students'
+[{"id":"90b1115a-66b4-48c3-bbb6-6a20cd2c5edc","fullName":"NGUYEN BA THANH","dateOfBirth":"29/04/1998","hometown":"HA DONG, HA NOI","gender":"MALE"}]/ #
+```
+
+Như vậy là chúng ta đã gọi API thành công từ `debug-pod` tới pod `k8s-springboot-series` thông qua `IP: 10.1.28.73`. Địa chỉ IP (`IP: 10.1.28.73`)được gán cho pod khi nó được tạo mới, điều này có nghĩa là mỗi lần pod bị xóa đi tạo lại, nó sẽ được gán cho một IP mới. IP này chỉ sử dụng được trong nội bộ cluster, không truy cập được IP này từ bên ngoài Cluster.
+
+## 5. Vòng đời của Pod
+
+Ở bước 4 chúng ta đã tìm hiểu về `Pod` và đóng gói container với `Pod`, ở phần này thì chúng ta sẽ tìm hiều vòng đời của `Pod`.
+
+![vong doi cua pod](/static/images/assets/pod-life-cycle.png)
+
+Khi define `pod` bằng YAML file, khi thực hiện lệnh `kubectl apply -f <path-yaml-pod>` thì là chúng ta đang gọi api đến `API Server`, mô tả `pod` trong file yaml sẽ được Kubernetes Cluster lưu lại và coi đó là trạng thái chúng ta mong muốn. Lúc này `Pod` sẽ được triển khai đến một Node phù hợp và `Pod` cũng có những trạng thái như sau:
+
+- `Pending`: `Pod` ở trạng thái này khi thực hiện apply Pod YAML file đến `API Server` thành công nhưng một hoặc nhiều containers chưa được tạo thành công, hoặc `Pod` đang chờ được triển khai trên một Node nào đó phù hợp.
+
+- `Running`: Khi này `Pod` đã được triển khai trên Node, tất cả containers đã được tạo thành công và ít nhất một container vẫn đang ở trạng thái running hoặc đang trong quá trình starting hoặc restarting.
+
+- `Successed (completed)`: Khi tất cả containers trong Pod đã khởi động thành công và không bị khởi động lại.
+
+- `Failed`: Khi một hoặc tất cả container bên trong `Pod` không khởi động thành công thì `Pod` sẽ ở trạng thái này.
+
+- `Unkown`: Khi triển khai `Pod` trên một Node, `kubelet` trên Node sẽ report cho Master Node về trạng thái của `Pod`, nhưng vì một lý do nào đó mà điều này không xảy ra khiến `Pod` sẽ rơi vào trạng thái trạng thái `Unkown`.
+
+Để kiểm tra trạng thái của `Pod` bạn có thể sử dụng lệnh:
+
+```shell
+kubectl get po/<pod-name> -o yaml | grep phase
+```
+
+Các bạn có thể tham khảo thêm tại [trang web chính thức của Kubernetes](https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/).
+
+## 6. Tổng kết
+
+Qua bài này thì chúng ta đã tìm hiểu được cách tạo `Pod`, cách đóng gói container với `Pod` cũng như tìm hiểu về vòng đời của `Pod`. Ở bài sau thì chúng ta cùng tìm hiểu cách quản lý `Pod` với `ReplicationController` hoặc `Deployment`.
