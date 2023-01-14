@@ -57,7 +57,9 @@ NAME       READY   STATUS      RESTARTS   AGE
 
 **2. Tại sao lại cần Replication Controller?**
 
-**3. Tạo Replication Controller bằng YAML file**
+Thay vì định nghĩa và triển khai pod một cách trực tiếp thì sẽ dùng `Replication Controller` để tạo và quản lý pod nhằm đảm bảo số lượng pod chạy trên cùng một thời điểm. Như vấn đề ở phần 3.1 thì mong muốn khi pod nào đó bị crash hoặc bị xóa thì sẽ có các pod mới được tạo lên tránh việc request gọi vào ứng dụng bị lỗi.
+
+**3. Tạo Replication Controller bằng file YAML**
 
 ```yaml
 apiVersion: v1
@@ -81,11 +83,17 @@ spec:
             - containerPort: 8080
 ```
 
-`ReplicationController` được chia thành 3 phần:
+Các thành phần trong ReplicationController:
 
-- `label selector`: Dùng để tìm những pod sẽ được `ReplicationController` quản lý. Ở đây `label selector` là: `app: k8s-series`, nghĩa là `ReplicationController` sẽ tìm những pod có label cùng là `app: k8s-series` để quản lý.
-- `replica`: Số lượng pod mà bạn mong muốn ứng dụng sẽ chạy trên một thời điểm. Ở file trên thì `replicas: 3`, nghĩa là `ReplicationController` sẽ phải đảm bảo rằng luôn luôn có 3 pod được chạy trên cùng một thời điểm.
-- `pod template`: Template mà `ReplicationController` sẽ dùng để tạo pod.
+| Tên             | Định nghĩa                                                                                                                                                                   |
+| --------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `apiVersion`    | Version của Kubernetes API mà bạn sử dụng để tạo object/resource, ở đây là v1.                                                                                               |
+| `kind`          | Loại object/resource của Kubernetes, ở file trên là `ReplicationController`.                                                                                                 |
+| `metadata`      | Các thông tin như: name, labels, namespace và các thông tin khác của object/resource. Ở file trên, tên của ReplicationController là: `name: k8s-springboot-series`.          |
+| `spec`          | Mô tả các thành phần của ReplicationController như: replicas, selector, và podTemplate.                                                                                      |
+| `spec.replicas` | Mô tả số lượng pod sẽ được ReplicationController tạo và quản lý. Ở file trên là 3, lúc này ReplicationController sẽ đảm bảo số lượng pod luôn là 3 trên một thời điểm.       |
+| `spec.selector` | Mô tả các labels selector mà ReplicationController sẽ dùng để tìm và quản lý pod có cùng labels. Ở trên ReplicationController sẽ tìm các pod có labels là: `app: k8s-series` |
+| `spec.template` | Mô tả podTemplate mà ReplicationController sẽ tạo.                                                                                                                           |
 
 **4. Triển khai ReplicationController trên Kubernetes**
 
@@ -242,7 +250,7 @@ k8s-springboot-series   3         3         3       101s
   k8s-springboot-series-wlbps   1/1     Running   0         31m
   ```
 
-### 2.3. Deployment trong Kubernetes
+## 4. Deployment trong Kubernetes
 
 Ở phần trước chúng ta đã tìm hiểu về `ReplicationController`. Nó giúp chúng ta đảm bảo số lượng pod của ứng dụng chạy trên cùng một thời điểm, cũng như dễ dàng có thể tăng hoặc giảm số lượng pod. Nhưng có vấn đề khi cập nhật pod template, khi cập nhật pod template thì các pod trước đó không được cập nhật mà phải xóa các pod cũ đi để `ReplicationController` tạo mới các pod theo pod template mới. Vấn đề này sẽ được giải quyết với Deployment trong Kubernetes.
 
