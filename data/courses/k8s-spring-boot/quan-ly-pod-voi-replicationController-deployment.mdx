@@ -128,7 +128,7 @@ k8s-springboot-series   3         3         3       101s
 
 - Thay đổi podTemplate
 
-  Thực hiện thay đổi container image từ `thanhnb1/k8s-springboot-series:latest` sang `thanhnb1/k8s-springboot-series:v2`.
+  Thực hiện thay đổi image tag từ `latest` sang `v2`.
 
   ```YAML
   apiVersion: v1
@@ -230,7 +230,7 @@ k8s-springboot-series   3         3         3       101s
 
 ## 3. Triển khai ứng dụng với Deployment trong Kubernetes
 
-Ở phần trước chúng ta đã tìm hiểu về ReplicationController. Nó giúp chúng ta đảm bảo số lượng pod của ứng dụng chạy trên cùng một thời điểm, cũng như dễ dàng có thể tăng hoặc giảm số lượng pod. Nhưng có vấn đề khi cập nhật podTemplate thì các pod hiện tại sẽ không được cập nhật mà phải xóa các pod hiện tại đi để ReplicationController tạo mới các pod theo podTemplate mới. Vấn đề này sẽ được giải quyết với Deployment trong Kubernetes.
+Ở phần 2 chúng ta đã tìm hiểu về ReplicationController. Nó giúp chúng ta đảm bảo số lượng pod của ứng dụng chạy trên cùng một thời điểm, cũng như dễ dàng có thể tăng hoặc giảm số lượng pod. Nhưng có vấn đề khi cập nhật podTemplate thì các pod hiện tại sẽ không được cập nhật mà phải xóa các pod hiện tại đi để ReplicationController tạo mới các pod theo podTemplate mới. Vấn đề này sẽ được giải quyết với Deployment trong Kubernetes.
 
 ### 3.1. Deployment trong Kubernetes là gì?
 
@@ -361,14 +361,14 @@ Khi triển khai Deployment trên Kubernetes thì sẽ tạo ra:
   k8s-springboot-series-7cbfd878f6   0         0         0       11m
   ```
 
-  Khi chúng ta thực hiện thay đổi podTemplate và triển khai lại Deployment thì thấy có replicaSet `k8s-springboot-series-87d545bb5` được tạo mới, replicaSet `k8s-springboot-series-7cbfd878f6` đã giảm số lượng pod về 0. Khi thay đổi podTemplate thì deployment sẽ tạo một replicaSet mới. Các pod (phiên bản mới) sẽ thay thế dần dần các pod (phiên bản cũ) cho đến khi các pod (phiên bản cũ) đã được thay thế hết bằng các pod (phiên bản mới). Cách mà Deployment cập nhật phiên bản của ứng dụng đó gọi các các chiến lược deployment (Deployment Strategy), Deployment sử dụng RollingUpdate là chiến lược mặc định.
+  Khi thực hiện thay đổi podTemplate và triển khai lại Deployment thì thấy có replicaSet `k8s-springboot-series-87d545bb5` được tạo mới và replicaSet trước đó đã giảm số lượng pod về 0. Khi thay đổi podTemplate thì Deployment sẽ tạo một replicaSet mới. Các pod (phiên bản mới) sẽ thay thế dần dần các pod (phiên bản cũ) cho đến khi các pod (phiên bản cũ) đã được thay thế hết bằng các pod (phiên bản mới). Cách mà Deployment cập nhật phiên bản của ứng dụng đó gọi các các chiến lược Deployment (Deployment Strategy). Deployment sử dụng RollingUpdate là chiến lược mặc định.
 
 - Thực hiện rollback giữa các phiên bản của ứng dụng.
 
-  Khi thực hiện cập nhật podTemplate thấy rằng sẽ tạo replicaSet mới và replicaSet cũ thì không bị xóa đi mà chỉ giảm số lượng pod về 0. Tại sao các replicaSet trước đó không bị xóa đi nhỉ? Giả sử khi cập nhật phiên bản mới cho ứng dụng nhưng phiên bản mới này có vấn đề và bạn muốn quay về lại phiên bản trước đó của ứng dụng thì việc giữ lại các replicaSet trước sẽ giúp thay đổi giữa phiên bản của ứng dụng.
+  Khi triển khai ứng dụng bằng Deployment lần đầu thì sẽ là phiên bản đầu tiên nên REVISION = 1. Ở phần trên đã thay đổi podTemplate (từ `latest` sang `v2`) và triển khai lại Deployment nên sẽ có thêm một phiên bản mới của Deployment lúc này REVISION = 2. REVISION sẽ theo dõi những thay đổi được thực hiện trên Deployment và cho phép rollback giữa các phiên bản của deployment ứng dung nếu cần thiết.
 
   ```shell
-  # 1. Lấy danh sách version của ứng dụng.
+  # 1. Lấy danh sách phiên bản của Deployment ứng dụng.
   kubectl rollout history deployment k8s-springboot-series
   deployment.apps/k8s-springboot-series
   REVISION  CHANGE-CAUSE
@@ -376,12 +376,12 @@ Khi triển khai Deployment trên Kubernetes thì sẽ tạo ra:
   2         <none>
 
   # 2. Có thể thêm CHANGE-CAUSE bằng lệnh dưới đây để dễ dàng rollback giữa các phiên bản hơn.
-  kubectl annotate deployment/<DEPLOYMENT_NAME> kubernetes.io/change-cause="thêm note ở đây"
+  kubectl annotate deployment/<DEPLOYMENT_NAME> kubernetes.io/change-cause="thêm mô tả"
 
   kubectl annotate deployment/k8s-springboot-series kubernetes.io/change-cause="change image tag from latest to v2"
   deployment.apps/k8s-springboot-series annotated
 
-  # Lấy lại danh sách phiên bản của Re
+  # Lấy lại danh sách phiên bản của Deployment ứng dụng.
   kubectl rollout history deployment k8s-springboot-series
   deployment.apps/k8s-springboot-series
   REVISION  CHANGE-CAUSE
@@ -392,7 +392,7 @@ Khi triển khai Deployment trên Kubernetes thì sẽ tạo ra:
   kubectl get deployment/k8s-springboot-series -o yaml | grep deployment.kubernetes.io/revision:
     deployment.kubernetes.io/revision: "2"
 
-  # Thực hiện rollback về phiên bản cụ thể nào đó (từ revision: "2" => revision: "1")
+  # Thực hiện rollback về phiên bản cụ thể nào đó từ revision: "2" => revision: "1" (rollback lại image tag là latest).
   kubectl rollout undo deployment/k8s-springboot-series --to-revision=1
   deployment.apps/k8s-springboot-series rolled back
 
@@ -403,7 +403,17 @@ Khi triển khai Deployment trên Kubernetes thì sẽ tạo ra:
   k8s-springboot-series-7cbfd878f6-lsc64   1/1     Running   0          36s
   k8s-springboot-series-7cbfd878f6-84rxh   1/1     Running   0          29s
 
-  # Kiểm tra phiên bản hiện tại của Deployment ứng dụng
+  # Kiểm tra phiên bản hiện tại ứng dụng.
+  kubectl describe po/k8s-springboot-series-7cbfd878f6-9bdl7 | grep Image
+    Image:          thanhnb1/k8s-springboot-series:latest
   ```
 
-## 3. Tổng kết
+## 4. Tổng kết
+
+Qua này này chúng ta đã tìm hiều về cách triển khai ứng dụng và quản lý pod của ứng dụng bằng các object trong Kubernetes như: ReplicationController và Deployment. Chúng ta đã thực hiện:
+
+- Tìm hiểu và triển khai ứng dụng với ReplicationController và Deployment.
+- Thực hiện cập nhật podTemplate với ReplicationController và cập nhật podTemplate với Deployment.
+- Thực hiện rollback các phiên bản trước đó của ứng dụng khi triển khai ứng dụng với Deployment.
+
+Ở bài viết sau chúng ta sẽ tìm hiểu về cách truy cập ứng dụng từ bên ngoài cụm Kubernetes và cách các ứng dụng gọi nhau trong cụm Kubernetes.
