@@ -221,7 +221,7 @@ Tuy nhiên, vì một số lý do, mọi người không phải lúc nào cũng 
 
 Có chính xác **0 lý do** cho việc Docker image ở môi trường sản xuất cần có git, framework kiểm thử hoặc trình biên dịch/trình thu nhỏ.
 
-Cam kết về việc sử dụng một artifact chung để triển khai luôn là giữa các môi trường để đảm bảo rằng những gì bạn đang kiểm thử cũng là những gì bạn sẽ triển khai (sẽ được nói rõ hơn ở phần sau) là một trận thua. Nhưng cố gắng cố gắng sử dụng những gì ở môi trường local cho giai đoạn phát triển cho môi trường sản xuất sẽ không ổn.
+Việc sử dụng một artifact chung để triển khai luôn là giữa các môi trường để đảm bảo rằng những gì bạn đang kiểm thử cũng là những gì bạn sẽ triển khai (sẽ được nói rõ hơn ở phần sau) là một điều nên làm. Nhưng cố gắng cố gắng sử dụng những gì ở môi trường local trong quá trình phát triển cho môi trường sản xuất thì không tốt một chút nào.
 
 Tóm lại, hãy cố gắng hiểu vai trò của các Docker image mà bạn sử dụng. Mỗi image nên có một vai trò duy nhất. Nếu bạn đang chuyển các framework/thư viện kiểm thử đến môi trường sản xuất thì bạn đang làm sai. Bạn cũng nên dành một chút thời gian để tìm hiểu và sử dụng [multi-stage builds](https://docs.docker.com/build/building/multi-stage/)
 
