@@ -191,7 +191,7 @@ k8s-springboot-series   3         3         3       101s
 
 - Tăng/giảm số lượng pods (Horizonetally scaling pods)
 
-  `ReplicationController` sẽ đảm bảo số lượng pod chạy trên Kubernetes cluster trong cùng một thời điểm. Để định nghĩa số lượng pod mong muốn thì sử dụng `replicas`, ví dụ trên thì đang định nghĩa `replicas: 3`. Để tăng/giảm số lượng pod thì có thể sửa trong `ReplicationController` YAML file trường `replicas`, hoặc sử dụng lệnh `kubectl scale rc <replicationController-name> --replicas=<pod-number>`.
+  `ReplicationController` sẽ đảm bảo số lượng pod chạy trên Kubernetes cluster trong cùng một thời điểm. Để định nghĩa số lượng pod mong muốn ta sử dụng `replicas`. Trong ví dụ trên, chúng ta đang định nghĩa `replicas: 3`. Để tăng/giảm số lượng pod, chúng ta có thể sửa trong `ReplicationController` YAML file tại trường `replicas`, hoặc sử dụng lệnh `kubectl scale rc <replicationController-name> --replicas=<pod-number>`.
 
   Tăng/giảm số lượng pod bằng cách sửa trường `spec.replicas` từ 3 lên 10 trong file YAML:
 
