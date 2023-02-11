@@ -14,7 +14,7 @@ index: 3
 
 ## 1. Giới thiệu chung
 
-Ở bài [trước](https://vntechies.dev/courses/k8s-spring-boot/trien-khai-springboot-container-tren-kubernetes-voi-pods) thì chúng ta đã đóng gói container ứng dụng với pod và triển khai pod trực tiếp trên Kubernetes. Với cách triển khai trực tiếp pod lên Kubernetes có một số vấn đề. Giả sử vì một lý do nào đó mà pod chạy ứng dụng bị crash hoặc bị xóa mất thì lúc này các request gọi vào ứng dụng sẽ bị lỗi, giải quyết vấn đề trên thì có thể tăng số lượng pod chạy ứng dụng và phải đảm bảo một số lượng pod nhất định cùng chạy trên một thời điểm để khi mà một pod bị lỗi thì các request gọi vào ứng dụng vẫn được xử lý bởi các pod còn lại.
+Ở bài [trước](/courses/k8s-spring-boot/trien-khai-springboot-container-tren-kubernetes-voi-pods), chúng ta đã đóng gói container ứng dụng với pod và triển khai pod trên Kubernetes. Tuy nhiên, cách khai trực tiếp này có một số vấn đề. Giả sử vì một lý do nào đó mà pod chạy ứng dụng bị crash hoặc bị xóa mất, lúc này các request gọi vào ứng dụng sẽ bị lỗi. Để giải quyết vấn đề trên, chúng ta có thể tăng số lượng pod chạy ứng dụng và phải đảm bảo một số lượng pod nhất định cùng chạy trên một thời điểm để khi một pod bị lỗi thì các request gọi vào ứng dụng vẫn được xử lý bởi các pod còn lại.
 
 Kubernetes có các object để giúp tăng hoặc giảm số lượng pod và tự động quản lý pod của ứng dụng như: ReplicationController, ReplicaSet và Deployment. Bài này chúng ta sẽ tìm hiểu các object trên và sẽ đi qua những phần sau:
 
