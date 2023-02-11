@@ -27,15 +27,17 @@ Kubernetes có các object để giúp tăng hoặc giảm số lượng pod và
 
 Ở phần này, chúng ta sẽ tìm hiểu cách tạo và quản lý Pod với ReplicationController thông qua việc triển khai một ứng dụng spring boot.
 
-### 2.1. ReplicationController là gì?
+### 2.1. ReplicationController là gì? Tại sao lại cần ReplicationController?
 
-ReplicationController là một object của Kubernetes được sử dụng để đảm bảo số lượng pod nhất định chạy trên cùng một thời điểm. Khi có một pod nào đó bị lỗi hoặc bị xóa, một pod mới sẽ được tạo để đảm bảo số lượng pod chạy trên cùng một thời điểm. Bạn có thể tham khảo thêm về ReplicationController ở [docs chính thức của Kubernetes](https://kubernetes.io/docs/concepts/workloads/controllers/replicationcontroller/).
+ReplicationController là một object của Kubernetes. Khi triển khai ứng dụng trên kubernetes thông qua ReplicationController thì sẽ giúp ta giải quyết một số vấn đề như sau:
 
-### 2.2. Tại sao lại cần ReplicationController?
+- **Đảm bảo số lượng pod nhất định của ứng dụng chạy trên cùng một thời điểm**. Ví dụ ta muốn ứng dụng chạy trên 3 pod trên một thời điểm, trong trường hợp nào đó mà một hoặc hai pod bị vấn đề (bị xóa, crash,..) không xử lý được request từ client thì vẫn còn những pod khác xử lý để tránh request đến ứng dụng bị lỗi. Các pod mới cũng sẽ được tạo thêm để đảm bảo số lượng pod trên một thời điểm.
 
-Thay vì định nghĩa và triển khai pod một cách trực tiếp thì sẽ dùng ReplicationController để tạo và quản lý pod nhằm đảm bảo số lượng pod chạy trên cùng một thời điểm. Chúng ta mong muốn có thể chạy nhiều pod cho ứng dụng và khi pod nào đó bị crash hoặc bị xóa thì sẽ có các pod mới được tạo lên tránh việc request gọi vào ứng dụng bị lỗi.
+- **Có thể tăng (scale up) hoặc giảm (scale down) số lượng pod của ứng dụng theo mong muốn**. Ví dụ có `transfer-service` chịu trách nhiệm chuyển tiền. Ngày bình thường thì có thể chạy một hoặc 2 pod là đủ để xử lý request rồi, nhưng những ngày đặc biệt (nhận lương, hoặc ngày lễ mua sắm,...) có thể lượng request sẽ nhiều thì ta có thể tăng số lượng pod của ứng dụng lên để đáp ứng lượng request. Còn khi qua những ngày đặc biệt này thì có thể giảm số lượng pod đi về như cũ.
 
-### 2.3. Tạo và triển khai ứng dụng với ReplicationController
+Bạn có thể tham khảo thêm về ReplicationController ở [docs chính thức của Kubernetes](https://kubernetes.io/docs/concepts/workloads/controllers/replicationcontroller/).
+
+### 2.2. Tạo và triển khai ứng dụng với ReplicationController
 
 **1. Tạo ReplicationController bằng file YAML**
 
@@ -232,17 +234,19 @@ k8s-springboot-series   3         3         3       101s
 
 Ở phần 2 chúng ta đã tìm hiểu về ReplicationController. Nó giúp chúng ta đảm bảo số lượng pod của ứng dụng chạy trên cùng một thời điểm, cũng như dễ dàng có thể tăng hoặc giảm số lượng pod. Nhưng có vấn đề khi cập nhật podTemplate thì các pod hiện tại sẽ không được cập nhật mà phải xóa các pod hiện tại đi để ReplicationController tạo mới các pod theo podTemplate mới. Vấn đề này sẽ được giải quyết với Deployment trong Kubernetes.
 
-### 3.1. Deployment trong Kubernetes là gì?
+### 3.1. Deployment trong Kubernetes là gì? Tại sao lại cần sử dụng Deployment?
 
-Deployment là một object của Kubernetes. Deployment sử dụng một object khác trong Kubernetes đó là ReplicaSet để tăng/giảm số lượng pod và quản lý số lượng pod chạy trên cùng một thời điểm, ngoài ra Deployment còn có thêm các chiến lược để cập nhật podTemplate và có thể rollbacks giữa các version của ứng dụng.
+Deployment là một object của Kubernetes. Khi triển khai ứng dụng thông qua Deployment thì sẽ giúp ta giải quyết một số vấn đề như sau:
 
-[ReplicaSet](https://kubernetes.io/docs/concepts/workloads/controllers/replicaset/) hoạt động khá tương tự như ReplicationController, ReplicaSet giống như bản nâng cấp của ReplicationController. Bạn có thể tham khảo thêm sự khác nhau của hai object này [ở đây](https://stackoverflow.com/questions/36220388/what-is-the-difference-between-replicaset-and-replicationcontroller).
+- **Đảm bảo số lượng pod nhất định của ứng dụng chạy trên cùng một thời điểm và có thể tăng (scale up) hoặc giảm (scale down) số lượng pod của ứng dụng theo mong muốn**. Khá giống với ReplicationController tuy nhiên Deployment lại sử dụng một object khác đó là [ReplicaSet](https://kubernetes.io/docs/concepts/workloads/controllers/replicaset/). Object này hoạt động khá tương tự như ReplicationController, ReplicaSet giống như bản nâng cấp của ReplicationController. Bạn có thể tham khảo thêm sự khác nhau của hai object này [ở đây](https://stackoverflow.com/questions/36220388/what-is-the-difference-between-replicaset-and-replicationcontroller).
 
-### 3.2. Tại sao lại cần sử dụng Deployment?
+- **Có các chiến lược thay đổi hoặc nâng cấp ứng dụng (deployment strategy)**. Mô tả cách mà thay đổi hoặc nâng cấp ứng dụng, tùy vào mục đích mà sẽ sử dụng những chiến lược khác nhau. Deployment sẽ sử dụng RollingUpdate làm chiến lược mặc định.
 
-Ở phần 2 chúng ta sử dụng ReplicationController để tạo và quản lý pod thì có vấn đề khi cập nhật podTemplate. Khi cập nhật podTemplate các pod đang chạy sẽ không được cập nhật mà phải xóa các pod hiện tại đi để ReplicationController tạo mới pod theo podTemplate đã được cập nhật. Để giải quyết vấn đề trên thì sẽ không tạo và triển khai trực tiếp ReplicationController hoặc ReplicaSet mà sẽ tạo thông qua Deployment. Deployment có thể quản lý, cập nhật podTemplate và rollbacks giữa các phiên bản của ứng dụng.
+- **Có thể rollback giữa các phiên bản của ứng dụng**. Ví dụ khi nâng cấp phiên bản mới của ứng dụng (image tag mới) mà những thay đổi này có vấn đề nào đó thì ta có thể rollback về các phiên bản trước đó của ứng dụng.
 
-### 3.3. Tạo và triển khai ứng dụng với Deployment
+Bạn có thể tham khảo thêm về Deployment ở [docs chính thức của Kubernetes](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/).
+
+### 3.2. Tạo và triển khai ứng dụng với Deployment
 
 **1. Tạo Deployment bằng file YAML**
 
