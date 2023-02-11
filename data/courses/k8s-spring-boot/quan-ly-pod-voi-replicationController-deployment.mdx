@@ -183,7 +183,7 @@ k8s-springboot-series   3         3         3       101s
   k8s-springboot-series-hvn2k   1/1     Running   0          17m
   k8s-springboot-series-wlbps   1/1     Running   0          3s
 
-  # Kiểm tra image tag của po `k8s-springboot-series-wlbps` mới được tạo bởi ReplicationController.
+  # Kiểm tra image tag của pod `k8s-springboot-series-wlbps` mới được tạo bởi ReplicationController.
   kubectl get po/k8s-springboot-series-wlbps -o yaml| grep image:
   - image: thanhnb1/k8s-springboot-series:v2
     image: docker.io/thanhnb1/k8s-springboot-series:v2
