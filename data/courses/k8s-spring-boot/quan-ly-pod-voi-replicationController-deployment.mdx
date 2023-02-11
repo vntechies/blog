@@ -45,7 +45,7 @@ kind: ReplicationController
 metadata:
   name: k8s-springboot-series # Tên của ReplicationController
 spec:
-  replicas: 3 # Số lượng Pod muốn chạy trên một thời điểm.
+  replicas: 3 # Số lượng Pod muốn chạy tại một thời điểm.
   selector:
     app: k8s-series # Label sử dụng để tim các pods để quản lý.
   template: # Phần này định nghĩa podTemplate để ReplicationController tạo.
