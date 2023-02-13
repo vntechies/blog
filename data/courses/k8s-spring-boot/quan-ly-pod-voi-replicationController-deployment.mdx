@@ -1,0 +1,423 @@
+---
+title: Quản lý Pod với ReplicationController và Deployment
+date: '2022-12-23'
+tags: ['api', 'rest-api', 'springboot', 'kubernetes']
+series: ['k8s-spring-boot']
+draft: false
+authors: ['thanhnb']
+images: ['/static/images/ogps/k8s-springboot.png']
+summary: 'Trong bài này chúng ta sẽ cùng nhau tìm hiểu về cách quản lý Pod trong Kubernetes'
+index: 3
+---
+
+<TOCInline toc={props.toc} asDisclosure />
+
+## 1. Giới thiệu chung
+
+Ở bài [trước](/courses/k8s-spring-boot/trien-khai-springboot-container-tren-kubernetes-voi-pods), chúng ta đã đóng gói container ứng dụng với pod và triển khai pod trên Kubernetes. Tuy nhiên, cách khai trực tiếp này có một số vấn đề. Giả sử vì một lý do nào đó mà pod chạy ứng dụng bị crash hoặc bị xóa mất, lúc này các request gọi vào ứng dụng sẽ bị lỗi. Để giải quyết vấn đề trên, chúng ta có thể tăng số lượng pod chạy ứng dụng và phải đảm bảo một số lượng pod nhất định cùng chạy trên một thời điểm để khi một pod bị lỗi thì các request gọi vào ứng dụng vẫn được xử lý bởi các pod còn lại.
+
+Kubernetes có các object để giúp tăng hoặc giảm số lượng pod và tự động quản lý pod của ứng dụng như: ReplicationController, ReplicaSet và Deployment. Bài này chúng ta sẽ tìm hiểu các object trên và sẽ đi qua những phần sau:
+
+- ReplicationController, ReplicaSet trong Kubernetes là gì?
+- Cách tạo và triển khai ứng dụng với ReplicationController.
+- Deployment trong Kubernetes là gì? Tại sao lại cần Deployment?
+- Cách tạo và triển khai ứng dụng với với Deployment.
+
+## 2. Tạo và quản lý Pod với ReplicationController
+
+Ở phần này, chúng ta sẽ tìm hiểu cách tạo và quản lý Pod với ReplicationController thông qua việc triển khai một ứng dụng spring boot.
+
+### 2.1. ReplicationController là gì? Tại sao lại cần ReplicationController?
+
+ReplicationController là một object của Kubernetes. Khi triển khai ứng dụng trên kubernetes thông qua ReplicationController thì sẽ giúp ta giải quyết một số vấn đề như sau:
+
+- **Đảm bảo số lượng pod nhất định của ứng dụng chạy trên cùng một thời điểm**. Ví dụ ta muốn ứng dụng chạy trên 3 pod trên một thời điểm, trong trường hợp nào đó mà một hoặc hai pod bị vấn đề (bị xóa, crash,..) không xử lý được request từ client thì vẫn còn những pod khác xử lý để tránh request đến ứng dụng bị lỗi. Các pod mới cũng sẽ được tạo thêm để đảm bảo số lượng pod trên một thời điểm.
+
+- **Có thể tăng (scale up) hoặc giảm (scale down) số lượng pod của ứng dụng theo mong muốn**. Ví dụ có `transfer-service` chịu trách nhiệm chuyển tiền. Ngày bình thường thì có thể chạy một hoặc 2 pod là đủ để xử lý request rồi, nhưng những ngày đặc biệt (nhận lương, hoặc ngày lễ mua sắm,...) có thể lượng request sẽ nhiều thì ta có thể tăng số lượng pod của ứng dụng lên để đáp ứng lượng request. Còn khi qua những ngày đặc biệt này thì có thể giảm số lượng pod đi về như cũ.
+
+Bạn có thể tham khảo thêm về ReplicationController ở [docs chính thức của Kubernetes](https://kubernetes.io/docs/concepts/workloads/controllers/replicationcontroller/).
+
+### 2.2. Tạo và triển khai ứng dụng với ReplicationController
+
+**1. Tạo ReplicationController bằng file YAML**
+
+```yaml
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: k8s-springboot-series # Tên của ReplicationController
+spec:
+  replicas: 3 # Số lượng Pod muốn chạy tại một thời điểm.
+  selector:
+    app: k8s-series # Label sử dụng để tim các pods để quản lý.
+  template: # Phần này định nghĩa podTemplate để ReplicationController tạo.
+    metadata:
+      name: k8s-springboot-series
+      labels:
+        app: k8s-series
+    spec:
+      containers:
+        - name: k8s-springboot-series
+          image: thanhnb1/k8s-springboot-series:latest
+          ports:
+            - containerPort: 8080
+```
+
+Các thành phần trong ReplicationController:
+
+| Tên             | Định nghĩa                                                                                                                                                                   |
+| --------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `apiVersion`    | Version của Kubernetes API mà bạn sử dụng để tạo object/resource, ở đây là v1.                                                                                               |
+| `kind`          | Loại object/resource của Kubernetes, ở file trên là `ReplicationController`.                                                                                                 |
+| `metadata`      | Các thông tin như: name, labels, namespace và các thông tin khác của object/resource. Ở file trên, tên của ReplicationController là: `name: k8s-springboot-series`.          |
+| `spec`          | Mô tả các thành phần của ReplicationController như: replicas, selector, và podTemplate.                                                                                      |
+| `spec.replicas` | Mô tả số lượng pod sẽ được ReplicationController tạo và quản lý. Ở file trên là 3, lúc này ReplicationController sẽ đảm bảo số lượng pod luôn là 3 trên một thời điểm.       |
+| `spec.selector` | Mô tả các labels selector mà ReplicationController sẽ dùng để tìm và quản lý pod có cùng labels. Ở trên ReplicationController sẽ tìm các pod có labels là: `app: k8s-series` |
+| `spec.template` | Mô tả podTemplate mà ReplicationController sẽ tạo.                                                                                                                           |
+
+**2. Triển khai ReplicationController trên Kubernetes**
+
+```shell
+# Lấy danh sách pods. Hiện tại không có Pod nào trên namespace default.
+
+kubectl get pods
+No resources found in default namespace.
+```
+
+Triển khai ReplicationController trên Kubernetes thì sử dụng lệnh `kubectl apply -f <path-replication-controller-file>`.
+
+```shell
+kubectl apply -f k8s-springboot-ReplicationController.yaml
+replicationcontroller/k8s-springboot-series created
+
+# Lấy danh sách pod. Hiện tại thì đã có 3 pod mới được tạo vì `replicas: 3`.
+kubectl get po
+NAME                          READY   STATUS    RESTARTS   AGE
+k8s-springboot-series-5lwwg   1/1     Running   0          8s
+k8s-springboot-series-ff9v2   1/1     Running   0          8s
+k8s-springboot-series-qfgh8   1/1     Running   0          8s
+
+# Lấy danh sách `ReplicationController`
+kubectl get rc
+NAME                    DESIRED   CURRENT   READY   AGE
+k8s-springboot-series   3         3         3       101s
+
+# DESIRED=3. Trạng thái mong muốn trên Kubernetes có 3 pod trên cùng một thời điểm (`replicas=3`).
+# CURRENT=3. Trạng thái hiện tại trên Kubernetes, đang có 3 pod điều running trên cùng một thời điểm.
+# READY=3. Số lượng pod hiện tại running trên Kubernetes.
+```
+
+**3. Test ReplicationController trên Kubernetes**
+
+- Xóa Pod xem ReplicationController có tạo mới pod hay không?
+
+  Chúng ta tạo ra `ReplicationController` để giúp quản lý các pod có cùng labels. Phải đảm bảo rằng số lượng Pod chạy trên cùng một thời điểm là giống như định nghĩa. Giả sử khi có một hoặc nhiều pod bị crash hoặc bị xóa thì phải tạo một hoặc nhiều pod mới sao cho đủ số lượng pod chạy trên một thời điểm.
+
+  ```shell
+  # Xóa pod k8s-springboot-series-qfgh8 và k8s-springboot-series-ff9v2
+
+  kubectl delete po/k8s-springboot-series-qfgh8 po/k8s-springboot-series-ff9v2
+  pod "k8s-springboot-series-qfgh8" deleted
+  pod "k8s-springboot-series-ff9v2" deleted
+
+  # Lấy danh sách pod
+  kubectl get po
+  NAME                          READY   STATUS    RESTARTS   AGE
+  k8s-springboot-series-5lwwg   1/1     Running   0          20m
+  k8s-springboot-series-hvn2k   1/1     Running   0          38s # Pod này được ReplicationController tạo mới.
+  k8s-springboot-series-9f9sl   1/1     Running   0          38s # Pod này được ReplicationController tạo mới.
+  ```
+
+- Thay đổi podTemplate
+
+  Thực hiện thay đổi image tag từ `latest` sang `v2`.
+
+  ```YAML
+  apiVersion: v1
+  kind: ReplicationController
+  metadata:
+    name: k8s-springboot-series     # Tên của ReplicationController
+  spec:
+    replicas: 3                     # Số lượng Pod muốn chạy trên một thời điểm.
+    selector:
+      app: k8s-series               # Label sử dụng để tim các pods để quản lý.
+    template:                       # Phần này định nghĩa podTemplate để ReplicationController tạo.
+      metadata:
+        name: k8s-springboot-series
+        labels:
+          app: k8s-series
+      spec:
+        containers:
+          - name: k8s-springboot-series
+            image: thanhnb1/k8s-springboot-series:v2 # thay đổi từ tag `latest` thành `v2`.
+            ports:
+              - containerPort: 8080
+  ```
+
+  Thực hiện triển khai `ReplicationController` mới được thay đổi contaimer image.
+
+  ```shell
+  kubectl apply -f k8s-springboot-ReplicationController.yaml
+  replicationcontroller/k8s-springboot-series configured
+
+  # Lấy danh sách pod
+
+  kubectl get po
+  NAME                          READY   STATUS    RESTARTS   AGE
+  k8s-springboot-series-5lwwg   1/1     Running   0          37m
+  k8s-springboot-series-hvn2k   1/1     Running   0          17m
+  k8s-springboot-series-9f9sl   1/1     Running   0          17m
+  ```
+
+  Khi thực hiện triển khai lại `ReplicationController` đã sửa container image tag từ `latest` sang `v2` thì khi lấy danh sách pod thì vẫn thấy những pod cũ và vẫn đang chạy container image tag `latest` không cập nhật lại image mới là `v2`. Để pod cập nhật image tag mới thì sẽ phải xóa pod cũ đi, lúc này `ReplicationController` sẽ tạo lại pod theo podTemplate mới với image tag là `v2`.
+
+  ![RC update podTemplate](/static/images/assets/2-rc-update-pod-template.png)
+
+  ```shell
+  # Xóa pod k8s-springboot-series-9f9sl
+  kubectl delete pod/k8s-springboot-series-9f9sl
+  pod "k8s-springboot-series-9f9sl" deleted
+
+  # Lấy danh sách pods
+  kubectl get po
+  NAME                          READY   STATUS    RESTARTS   AGE
+  k8s-springboot-series-5lwwg   1/1     Running   0          37m
+  k8s-springboot-series-hvn2k   1/1     Running   0          17m
+  k8s-springboot-series-wlbps   1/1     Running   0          3s
+
+  # Kiểm tra image tag của pod `k8s-springboot-series-wlbps` mới được tạo bởi ReplicationController.
+  kubectl get po/k8s-springboot-series-wlbps -o yaml| grep image:
+  - image: thanhnb1/k8s-springboot-series:v2
+    image: docker.io/thanhnb1/k8s-springboot-series:v2
+  ```
+
+- Tăng/giảm số lượng pods (Horizonetally scaling pods)
+
+  `ReplicationController` sẽ đảm bảo số lượng pod chạy trên Kubernetes cluster trong cùng một thời điểm. Để định nghĩa số lượng pod mong muốn ta sử dụng `replicas`. Trong ví dụ trên, chúng ta đang định nghĩa `replicas: 3`. Để tăng/giảm số lượng pod, chúng ta có thể sửa trong `ReplicationController` YAML file tại trường `replicas`, hoặc sử dụng lệnh `kubectl scale rc <replicationController-name> --replicas=<pod-number>`.
+
+  Tăng/giảm số lượng pod bằng cách sửa trường `spec.replicas` từ 3 lên 10 trong file YAML:
+
+  ```shell
+  kubectl apply -f k8s/k8s-springboot-ReplicationController.yaml
+  replicationcontroller/k8s-springboot-series configured
+
+  # Lấy danh sách pod, những pod được tạo thêm thì sẽ sử dụng podTemplate mới image tag là `v2`.
+  kubectl get po
+  NAME                          READY   STATUS    RESTARTS    AGE
+  k8s-springboot-series-hvn2k   1/1     Running   0           37m
+  k8s-springboot-series-5lwwg   1/1     Running   0           17m
+  k8s-springboot-series-wlbps   1/1     Running   0           23m
+  k8s-springboot-series-cld6n   1/1     Running   0           15s # Pod mới tạo thêm, image tag là `v2`.
+  k8s-springboot-series-4dz77   1/1     Running   0           15s # Pod mới tạo thêm, image tag là `v2`.
+  k8s-springboot-series-zk5pq   1/1     Running   0           15s # Pod mới tạo thêm, image tag là `v2`.
+  k8s-springboot-series-cwwms   1/1     Running   0           15s # Pod mới tạo thêm, image tag là `v2`.
+  k8s-springboot-series-jcbnt   1/1     Running   0           15s # Pod mới tạo thêm, image tag là `v2`.
+  k8s-springboot-series-9bv5l   1/1     Running   0           15s # Pod mới tạo thêm, image tag là `v2`.
+  k8s-springboot-series-snmrz   1/1     Running   0           15s # Pod mới tạo thêm, image tag là `v2`.
+  ```
+
+  Tăng/giảm số lượng pod bằng cách sử dụng lệnh:
+
+  ```shell
+  kubectl scale rc k8s-springboot-series --replicas=3
+  replicationcontroller/k8s-springboot-series scaled
+
+  # lấy danh sách pod.
+  kubectl get po
+  NAME                          READY   STATUS    RESTARTS  AGE
+  k8s-springboot-series-hvn2k   1/1     Running   0         4h44m
+  k8s-springboot-series-5lwwg   1/1     Running   0         5h4m
+  k8s-springboot-series-wlbps   1/1     Running   0         31m
+  ```
+
+## 3. Triển khai ứng dụng với Deployment trong Kubernetes
+
+Ở phần 2 chúng ta đã tìm hiểu về ReplicationController. Nó giúp chúng ta đảm bảo số lượng pod của ứng dụng chạy trên cùng một thời điểm, cũng như dễ dàng có thể tăng hoặc giảm số lượng pod. Nhưng có vấn đề khi cập nhật podTemplate thì các pod hiện tại sẽ không được cập nhật mà phải xóa các pod hiện tại đi để ReplicationController tạo mới các pod theo podTemplate mới. Vấn đề này sẽ được giải quyết với Deployment trong Kubernetes.
+
+### 3.1. Deployment trong Kubernetes là gì? Tại sao lại cần sử dụng Deployment?
+
+Deployment là một object của Kubernetes. Khi triển khai ứng dụng thông qua Deployment thì sẽ giúp ta giải quyết một số vấn đề như sau:
+
+- **Đảm bảo số lượng pod nhất định của ứng dụng chạy trên cùng một thời điểm và có thể tăng (scale up) hoặc giảm (scale down) số lượng pod của ứng dụng theo mong muốn**. Khá giống với ReplicationController tuy nhiên Deployment lại sử dụng một object khác đó là [ReplicaSet](https://kubernetes.io/docs/concepts/workloads/controllers/replicaset/). Object này hoạt động khá tương tự như ReplicationController, ReplicaSet giống như bản nâng cấp của ReplicationController. Bạn có thể tham khảo thêm sự khác nhau của hai object này [ở đây](https://stackoverflow.com/questions/36220388/what-is-the-difference-between-replicaset-and-replicationcontroller).
+
+- **Có các chiến lược thay đổi hoặc nâng cấp ứng dụng (deployment strategy)**. Mô tả cách mà thay đổi hoặc nâng cấp ứng dụng, tùy vào mục đích mà sẽ sử dụng những chiến lược khác nhau. Deployment sẽ sử dụng RollingUpdate làm chiến lược mặc định.
+
+- **Có thể rollback giữa các phiên bản của ứng dụng**. Ví dụ khi nâng cấp phiên bản mới của ứng dụng (image tag mới) mà những thay đổi này có vấn đề nào đó thì ta có thể rollback về các phiên bản trước đó của ứng dụng.
+
+Bạn có thể tham khảo thêm về Deployment ở [docs chính thức của Kubernetes](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/).
+
+### 3.2. Tạo và triển khai ứng dụng với Deployment
+
+**1. Tạo Deployment bằng file YAML**
+
+```YAML:springboot-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: k8s-springboot-series
+  labels:
+    app: k8s-springboot-series
+spec:
+  selector:
+    matchLabels:
+      app: k8s-springboot-series
+  replicas: 3
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: k8s-springboot-series
+    spec:
+      containers:
+        - name: k8s-springboot-series
+          image: thanhnb1/k8s-springboot-series:latest
+          ports:
+            - containerPort: 8080
+      restartPolicy: Always
+```
+
+Các thành phần trong Deployment:
+
+| Tên             | Định nghĩa                                                                                                                                                                                                |
+| --------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `apiVersion`    | Version của Kubernetes API mà bạn sử dụng để tạo object/resource. Như file trên thì `apiVersion: apps/v1`.                                                                                                |
+| `kind`          | Loại object/resource của Kubernetes, Như file trên thì `kind: Deployment`.                                                                                                                                |
+| `metadata`      | Các thông tin như: name, labels, namespace và các thông tin khác của object/resource. Ở file trên, tên của ReplicationController là: `name: k8s-springboot-series`, labels: `app: k8s-springboot-series`. |
+| `spec`          | Mô tả các thành phần của Deployment như: selector, replicas, strategy và podTemplate.                                                                                                                     |
+| `spec.selector` | ReplicaSet sẽ dùng để tìm và quản lý pod có cùng labels. Ở trên ReplicaSet sẽ tìm các pod có labels là: `app: k8s-springboot-series`.                                                                     |
+| `spec.replicas` | Deployment sẽ sử dụng ReplicaSet để tạo và quản lý pod. Như file trên thì `replicas: 3` tức là ReplicaSet sẽ đảm bảo có 3 pod chạy trên một thời điểm.                                                    |
+| `spec.strategy` | Mô tả chiến lược khi thực hiện update ứng dụng. Deployment cung cấp nhiều chiến lược như: Recreate, RollingUpdate,... Trong trường hợp này là sử dụng chiến lược RollingUpdate.                           |
+| `spec.template` | Mô tả podTemplate mà ReplicaSet sẽ tạo và quản lý.                                                                                                                                                        |
+
+**2. Triển khai Deployment trên Kubernetes**
+
+```shell
+# Triển khai deployment bằng lệnh: kubectl apply -f <path-deployment-file>
+kubectl apply -f springboot-deployment.yaml
+deployment.apps/k8s-springboot-series created
+
+# Lấy danh sách pods
+kubectl get pods
+NAME                                     READY   STATUS    RESTARTS   AGE
+k8s-springboot-series-7cbfd878f6-rkc8w   1/1     Running   0          8s
+k8s-springboot-series-7cbfd878f6-s5nwt   1/1     Running   0          8s
+k8s-springboot-series-7cbfd878f6-phj58   1/1     Running   0          8s
+
+# Lấy danh sách ReplicaSet
+kubectl get rs
+NAME                               DESIRED   CURRENT   READY   AGE
+k8s-springboot-series-7cbfd878f6   3         3         3       43s
+
+# Lấy danh sách deployment
+kubectl get deployment
+NAME                    READY   UP-TO-DATE   AVAILABLE   AGE
+k8s-springboot-series   3/3     3            3           65s
+```
+
+Khi triển khai Deployment trên Kubernetes thì sẽ tạo ra:
+
+- Pod: Các pod trên được tạo theo podTemplate được mô tả ở phần `spec.template` trong file Deployment.
+- ReplicaSet: `k8s-springboot-series-7cbfd878f6`. ReplicaSet sẽ giúp tạo và quản lý pod nhằm đảm bảo số lượng pod chạy trên cùng một thời điểm. Deployment có thể có nhiều ReplicaSet mỗi lần thay đổi podTemplate thì sẽ đều tạo ra một ReplicaSet mới.
+
+**3. Test Deployment trên Kubernetes**
+
+- Thực hiện thay đổi podTemplate
+
+  Thực hiện cập nhật podTemplate, đổi image tag của container từ: `latest` sang `v2` rồi sau đó triển khai lại Deployment.
+
+  ```shell
+  # Thay đổi container image từ `latest` sang `v2` và triển khai lại deployment.
+  kubectl apply -f springboot-deployment.yaml
+  deployment.apps/k8s-springboot-series configured
+
+  # Lấy danh sách pods trong quá trình update.
+  kubectl get po -w
+  NAME                                     READY   STATUS    RESTARTS   AGE
+  k8s-springboot-series-7cbfd878f6-rkc8w   1/1     Running   0          4m32s
+  k8s-springboot-series-7cbfd878f6-s5nwt   1/1     Running   0          4m32s
+  k8s-springboot-series-7cbfd878f6-phj58   1/1     Running   0          4m32s
+  k8s-springboot-series-87d545bb5-7974m    0/1     Pending   0          0s
+  k8s-springboot-series-87d545bb5-7974m    0/1     ContainerCreating   0          0s
+  k8s-springboot-series-87d545bb5-7974m    1/1     Running             0          3s
+  k8s-springboot-series-7cbfd878f6-s5nwt   1/1     Terminating         0          4m51s
+  k8s-springboot-series-87d545bb5-wqp4j    0/1     Pending             0          0s
+  k8s-springboot-series-87d545bb5-wqp4j    0/1     ContainerCreating   0          0s
+  k8s-springboot-series-7cbfd878f6-s5nwt   1/1     Terminating         0          4m51s
+  ....
+  k8s-springboot-series-7cbfd878f6-rkc8w   1/1     Terminating         0          4m57s
+  k8s-springboot-series-7cbfd878f6-rkc8w   0/1     Terminating         0          4m58s
+
+  # Lấy danh sách pods sau quá trình thay đổi podTemplate.
+  kubectl get po
+  NAME                                    READY   STATUS    RESTARTS   AGE
+  k8s-springboot-series-87d545bb5-7974m   1/1     Running   0          89s
+  k8s-springboot-series-87d545bb5-wqp4j   1/1     Running   0          86s
+  k8s-springboot-series-87d545bb5-z5zrg   1/1     Running   0          83s
+
+  # Lấy danh sách ReplicaSet sau khi thay đổi podTemplate.
+  kubectl get rs
+  NAME                               DESIRED   CURRENT   READY   AGE
+  k8s-springboot-series-87d545bb5    3         3         3       6m16s
+  k8s-springboot-series-7cbfd878f6   0         0         0       11m
+  ```
+
+  Khi thực hiện thay đổi podTemplate và triển khai lại Deployment thì thấy có replicaSet `k8s-springboot-series-87d545bb5` được tạo mới và replicaSet trước đó đã giảm số lượng pod về 0. Khi thay đổi podTemplate thì Deployment sẽ tạo một replicaSet mới. Các pod (phiên bản mới) sẽ thay thế dần dần các pod (phiên bản cũ) cho đến khi các pod (phiên bản cũ) đã được thay thế hết bằng các pod (phiên bản mới). Cách mà Deployment cập nhật phiên bản của ứng dụng đó gọi các các chiến lược Deployment (Deployment Strategy). Deployment sử dụng RollingUpdate là chiến lược mặc định.
+
+- Thực hiện rollback giữa các phiên bản của ứng dụng.
+
+  Khi triển khai ứng dụng bằng Deployment lần đầu thì sẽ là phiên bản đầu tiên nên REVISION = 1. Ở phần trên đã thay đổi podTemplate (từ `latest` sang `v2`) và triển khai lại Deployment nên sẽ có thêm một phiên bản mới của Deployment lúc này REVISION = 2. REVISION sẽ theo dõi những thay đổi được thực hiện trên Deployment và cho phép rollback giữa các phiên bản của deployment ứng dung nếu cần thiết.
+
+  ```shell
+  # 1. Lấy danh sách phiên bản của Deployment ứng dụng.
+  kubectl rollout history deployment k8s-springboot-series
+  deployment.apps/k8s-springboot-series
+  REVISION  CHANGE-CAUSE
+  1         <none>
+  2         <none>
+
+  # 2. Có thể thêm CHANGE-CAUSE bằng lệnh dưới đây để dễ dàng rollback giữa các phiên bản hơn.
+  kubectl annotate deployment/<DEPLOYMENT_NAME> kubernetes.io/change-cause="thêm mô tả"
+
+  kubectl annotate deployment/k8s-springboot-series kubernetes.io/change-cause="change image tag from latest to v2"
+  deployment.apps/k8s-springboot-series annotated
+
+  # Lấy lại danh sách phiên bản của Deployment ứng dụng.
+  kubectl rollout history deployment k8s-springboot-series
+  deployment.apps/k8s-springboot-series
+  REVISION  CHANGE-CAUSE
+  1         <none>
+  2         change image tag from latest to v2
+
+  # Kiểm tra phiên bản hiện tại của Deployment ứng dụng
+  kubectl get deployment/k8s-springboot-series -o yaml | grep deployment.kubernetes.io/revision:
+    deployment.kubernetes.io/revision: "2"
+
+  # Thực hiện rollback về phiên bản cụ thể nào đó từ revision: "2" => revision: "1" (rollback lại image tag là latest).
+  kubectl rollout undo deployment/k8s-springboot-series --to-revision=1
+  deployment.apps/k8s-springboot-series rolled back
+
+  # Danh sách pod mới
+  kubectl get po
+  NAME                                     READY   STATUS    RESTARTS   AGE
+  k8s-springboot-series-7cbfd878f6-9bdl7   1/1     Running   0          41s
+  k8s-springboot-series-7cbfd878f6-lsc64   1/1     Running   0          36s
+  k8s-springboot-series-7cbfd878f6-84rxh   1/1     Running   0          29s
+
+  # Kiểm tra phiên bản hiện tại ứng dụng.
+  kubectl describe po/k8s-springboot-series-7cbfd878f6-9bdl7 | grep Image
+    Image:          thanhnb1/k8s-springboot-series:latest
+  ```
+
+## 4. Tổng kết
+
+Qua này này chúng ta đã tìm hiều về cách triển khai ứng dụng và quản lý pod của ứng dụng bằng các object trong Kubernetes như: ReplicationController và Deployment. Chúng ta đã thực hiện:
+
+- Tìm hiểu và triển khai ứng dụng với ReplicationController và Deployment.
+- Thực hiện cập nhật podTemplate với ReplicationController và cập nhật podTemplate với Deployment.
+- Thực hiện rollback các phiên bản trước đó của ứng dụng khi triển khai ứng dụng với Deployment.
+
+Ở bài viết sau chúng ta sẽ tìm hiểu về cách truy cập ứng dụng từ bên ngoài cụm Kubernetes và cách các ứng dụng kết nối, liên lạc với nhau bên trong cụm Kubernetes.
