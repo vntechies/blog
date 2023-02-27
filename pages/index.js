@@ -10,6 +10,7 @@ import Hero from '@/components/home/Hero'
 import Features from '@/components/home/Features'
 import Newsletter from '@/components/home/NewsLetter'
 import ArticleList from '@/components/ArticleList'
+import FreeCourses from '@/components/home/FreeCourses'
 
 const MAX_DISPLAY = 6
 
@@ -60,6 +61,7 @@ export default function Home({ posts }) {
           </Link>
         </div>
       )}
+      <FreeCourses />
       <AWSCert />
       <FAQ />
       <Newsletter />

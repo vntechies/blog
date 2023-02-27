@@ -49,7 +49,7 @@ const AWSCert = () => {
           <span className="text-xs mr-3 rounded-full bg-primary-700 px-4 py-1.5 text-white">
             NEW
           </span>{' '}
-          <span className="text-sm font-medium">Tất cả hướng dẫn cho các kỳ thi năm 2022</span>
+          <span className="text-sm font-medium">Tất cả hướng dẫn cho các kỳ thi năm 2023</span>
           <svg
             className="ml-2 h-5 w-5"
             fill="currentColor"
