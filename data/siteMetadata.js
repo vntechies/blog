@@ -23,7 +23,7 @@ const siteMetadata = {
   twitter: 'https://twitter.com/vn_techies',
   instagram: 'https://www.instagram.com/vn_techies/',
   facebook: 'https://facebook.com/vntechies',
-  youtube: 'https://www.youtube.com/channel/UCl_qarJJ3dES5X_CRGQjNLw',
+  youtube: 'https://www.youtube.com/@vntechies',
   linkedin: 'https://linkedin.com/company/vntechies',
   messenger: 'https://m.me/vntechies',
   discord: 'https://discord.com/invite/YecagKUqpS',
