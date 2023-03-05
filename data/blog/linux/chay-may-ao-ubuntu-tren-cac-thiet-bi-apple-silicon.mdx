@@ -1,0 +1,82 @@
+---
+title: Chạy máy ảo Ubuntu trên các thiết bị Apple Silicon
+date: '2023-03-05'
+tags: ['devops', 'linux', 'applesilicon']
+draft: false
+images: ['/static/images/ogps/ubuntum1.png']
+summary: 'Sử dụng multipass, Microsoft Remote Desktop để chạy máy ảo Ubuntu với giao diện đồ hoạ'
+---
+
+![Chạy máy ảo Ubuntu trên các thiết bị Apple Silicon](/static/images/ogps/ubuntum1.png)
+
+Tháng 11 năm 2020, [Apple cho ra mắt dòng chip Apple silicon](https://www.apple.com/pl/newsroom/2020/11/apple-unleashes-m1/) cải thiện hiệu năng đáng kinh ngạc trên các thiết bị của mình, và M1 là dòng chip đầu tiên được thiết kế. Đã một thời gian kể từ khi Apple công bố chip M1 của mình và chuyển qua sử dụng dòng chip Apple Silicon cho toàn bộ dòng sản phẩm Mac của mình.
+
+Ubuntu là hệ điều hành Linux mã nguồn mở không chỉ hỗ trợ kiến trúc x86 mà còn có phiên bản cho kiến trúc ARM. Vậy làm thế nào để chạy máy ảo Ubuntu 22.04 trên một thiết bị Apple Silicon? Tháng 10 năm 2022, [VirtualBox bản 7.0 đã hỗ trợ các dòng chip của Apple Silicon](https://arstechnica.com/gadgets/2022/10/virtualbox-7-0-adds-first-arm-mac-client-full-encryption-windows-11-tpm/). Tuy nhiên chúng ta có một lựa chọn khác đơn giản hơn, đó là sử dụng [Multipass](https://multipass.run/) của Canonical.
+
+```shell
+# Cài đặt multipass với brew
+brew install multipass
+```
+
+Bắt đầu từ phiên bản 1.9.0+mac, Multipass hỗ trợ phiên bản Ubuntu 22.04 LTS Jammy Jellyfish
+
+```shell
+> multipass version
+multipass 1.9.0+mac
+multipassd 1.9.0+mac
+> multipass find
+Image Aliases Version Description
+18.04 bionic 20220505 Ubuntu 18.04 LTS
+20.04 focal,lts 20220419 Ubuntu 20.04 LTS
+21.10 impish 20220309 Ubuntu 21.10
+22.04 jammy 20220420 Ubuntu 22.04 LTS 👈
+anbox-cloud-appliance latest Anbox Cloud Appliance
+charm-dev latest A development and testing environment for charmers
+docker latest A Docker environment with Portainer and related tools
+minikube latest minikube is local Kubernetes
+```
+
+To install it, simply run launch command and give the image name as parameter:
+Để cài đặt, chỉ cần chạy lệnh `launch` với phiên bản mong muốn
+
+```shell
+multipass launch 22.04
+```
+
+Lệnh này sẽ triển khai một phiên bản Ubuntu với một cầu hình mặc định (sử dụng `multipass launch -help` để biết chi tiết). Nếu bạn muốn sử dụng Ubuntu dưới chế độ đồ hoà thì tốt nhất là tăng lượng tài nguyên được phân bổ. Ví dụ câu lệnh dưới đây sẽ khởi chạy một máy ảo Ubuntu 22.04 có tên là `primary` và được cấp 2 CPU, 4GB bộ nhớ và 50GB dung lượng ổ đĩa.
+
+```shell
+multipass launch 22.04 -n primary -c 2 -m 4G -d 50G
+```
+
+Tiếp theo, để cài đặt môi trường đồ hoạ (vì image được multipass sử dụng không có màn hình đồ hoạ được cài đặt sẵn), chúng ta kết nối tới VM bằng cách chạy lệnh `multipass shell <tên VM>` và bắt đầu cài đặt các gói cần thiết.
+
+```shell
+> multipass shell
+Welcome to Ubuntu 22.04 LTS (GNU/Linux 5.15.0–25-generic aarch64)
+> sudo apt update
+> sudo apt install ubuntu-desktop xrdp -y
+```
+
+Cuối cùng, chúng ta đặt mật khẩu cho người dùng hệ điều hành ubuntu mặc định:
+
+```shell
+sudo passwd ubuntu
+```
+
+hoặc tạo một người dùng mới cho OS để sử dụng cho chế độ đồ hoạ
+
+```shell
+sudo adduser username
+sudo usermod -aG sudo username
+```
+
+![Truy cập Ubuntu bằng Microsoft Remote Desktop](/static/images/assets/ubuntum1_01.png)
+
+Sử dụng ứng dụng **[Microsoft Remote Desktop](https://apps.apple.com/us/app/microsoft-remote-desktop/id1295203466?mt=12)** từ App Store để kết nối với VM ở chế độ đồ họa.
+
+Để truy cập máy ảo mới được cài đặt, trước tiên, bạn sẽ phải biết địa chỉ IP của máy ảo bằng cách chạy lệnh `ip a` trong Ubuntu shell hoặc bằng cách chạy `multipass list` trên máy chủ Mac của bạn.
+
+![Màn hình chào mừng M2](/static/images/assets/ubuntum1_02.webp)
+
+Sử dụng địa chỉ IP để kết nối bằng các ứng dụng như **Microsoft Remote Desktop**, có thể tải xuống miễn phí từ App Store và bạn sẽ thấy màn hình chào mừng của Ubuntu 22.04.
