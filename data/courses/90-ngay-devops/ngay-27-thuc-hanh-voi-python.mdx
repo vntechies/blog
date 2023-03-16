@@ -61,7 +61,7 @@ Bạn có thể thấy tôi đang kết nối SSH đến router của mình tron
 
 ### Sử dụng Python để thu thập thông tin từ các thiết bị
 
-Ví dụ đầu tiên là sử dụng Python để thu thập thông tin từ tất cả các thiết bị của mình. Cụ thể hơn, tôi sẽ kết nối đến từng thiết bị và chạy một lệnh đơn giản để lấy thông tin cấu hình của mỗi card mạng. Tôi đã lưu chương trình này tại đây [netmiko_con_multi.py](../../Days/Networking/netmiko_con_multi.py)
+Ví dụ đầu tiên là sử dụng Python để thu thập thông tin từ tất cả các thiết bị của mình. Cụ thể hơn, tôi sẽ kết nối đến từng thiết bị và chạy một lệnh đơn giản để lấy thông tin cấu hình của mỗi card mạng. Tôi đã lưu chương trình này tại đây [netmiko_con_multi.py](https://github.com/vntechies/90DaysOfDevOps/tree/main/2022/Days/Networking/netmiko_con_multi.py)
 
 Khi tôi chạy chương trình này, tôi có thể thấy cấu hình của mỗi cổng trên tất cả các thiết bị của mình.
 
@@ -73,17 +73,17 @@ Việc này rất hữu ích nếu bạn có nhiều thiết bị khác nhau, h�
 
 Ví dụ trước đó là rất hữu ích nhưng còn việc sử dụng Python để định cấu hình thiết bị của chúng ta thì sao? Trong kịch bản này, chúng ta có một cổng trunk giữa `SW1` và `SW2`, một lần nữa hãy tưởng tượng nếu điều này được thực hiện trên nhiều switch và chúng ta muốn tự động hóa việc này mà không phải kết nối thủ công đến từng switch để thực hiện thay đổi cấu hình.
 
-Chúng ta có thể sử dụng chương trình [netmiko_sendchange.py](../../Days/Networking/netmiko_sendchange.py) để thực hiện điều này. Thao tác này sẽ kết nối qua SSH và thực hiện thay đổi cần thiết trên `SW1` và `SW2`.
+Chúng ta có thể sử dụng chương trình [netmiko_sendchange.py](https://github.com/vntechies/90DaysOfDevOps/tree/main/2022/Days/Networking/netmiko_sendchange.py) để thực hiện điều này. Thao tác này sẽ kết nối qua SSH và thực hiện thay đổi cần thiết trên `SW1` và `SW2`.
 
 ![](/static/images/assets/Day27_Networking7.png)
 
-Nếu bạn đã xem code, bạn sẽ thấy thông báo xuất hiện và cho chúng ta biết `sending configuration to device` nhưng không có xác nhận rằng điều này đã được thực hiện, chúng ta có thể thêm đoạn code bổ sung vào chương trình để thực hiện kiểm tra và xác thực việc cấu hình trên các switch hoặc chúng ta có thể sửa đổi đoạn code của ví dụ thứ nhất để cho chúng ta thấy điều đó. [netmiko_con_multi_vlan.py](../../Days/Networking/netmiko_con_multi_vlan.py)
+Nếu bạn đã xem code, bạn sẽ thấy thông báo xuất hiện và cho chúng ta biết `sending configuration to device` nhưng không có xác nhận rằng điều này đã được thực hiện, chúng ta có thể thêm đoạn code bổ sung vào chương trình để thực hiện kiểm tra và xác thực việc cấu hình trên các switch hoặc chúng ta có thể sửa đổi đoạn code của ví dụ thứ nhất để cho chúng ta thấy điều đó. [netmiko_con_multi_vlan.py](https://github.com/vntechies/90DaysOfDevOps/tree/main/2022/Days/Networking/netmiko_con_multi_vlan.py)
 
 ![](Images/Day27_Networking8.png)
 
 ### Sao lưu cấu hình của các thiết bị
 
-Một ví dụ khác là sao lưu các cấu hình mạng của các thiết bị. Nếu bạn không muốn kết nối với mọi thiết bị có trên mạng của mình, bạn có thể chỉ định thiết bị mà bạn muốn sao lưu. Bạn có thể tự động hóa việc này bằng cách sử dụng chương trình [backup.py](../../Days/Networking/backup.py). Bạn sẽ cần điền vào file [backup.txt](../../Days/Networking/backup.txt) các địa chỉ IP mà bạn muốn sao lưu.
+Một ví dụ khác là sao lưu các cấu hình mạng của các thiết bị. Nếu bạn không muốn kết nối với mọi thiết bị có trên mạng của mình, bạn có thể chỉ định thiết bị mà bạn muốn sao lưu. Bạn có thể tự động hóa việc này bằng cách sử dụng chương trình [backup.py](https://github.com/vntechies/90DaysOfDevOps/tree/main/2022/Days/Networking/backup.py). Bạn sẽ cần điền vào file [backup.txt](https://github.com/vntechies/90DaysOfDevOps/tree/main/2022/Days/Networking/backup.txt) các địa chỉ IP mà bạn muốn sao lưu.
 
 Chạy chương trình trên và bạn sẽ thấy nội dung như bên dưới.
 
@@ -138,6 +138,6 @@ Vì tôi không phải là một kỹ sư mạng nên phần lớn các ví dụ
 
 - [Hands-On Enterprise Automation with Python (Book)](https://www.packtpub.com/product/hands-on-enterprise-automation-with-python/9781788998512)
 
-Hẹn gặp lại các bạn vào Ngày 28, nơi mà chúng ta sẽ tìm hiểu về điện toán đám mây (cloud computing) và các kiến thức cơ bản xoay quanh chủ đề này.
+Hẹn gặp lại các bạn vào [Ngày 28](/courses/90-ngay-devops/ngay-28-buc-tranh-toan-canh-devops-va-cloud), nơi mà chúng ta sẽ tìm hiểu về điện toán đám mây (cloud computing) và các kiến thức cơ bản xoay quanh chủ đề này.
 
 > Các bài viết là bản tiếng Việt của tài liệu [90DaysOfDevOps](https://github.com/MichaelCade/90DaysOfDevOps/tree/main/Days) của [Micheal Cade](https://twitter.com/MichaelCade1) và có qua sửa đổi, bổ sung. Tất cả đều có license [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License][cc-by-nc-sa].
