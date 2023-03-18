@@ -29,6 +29,7 @@ export default function Courses({ courses }) {
             {courses.map((course) => {
               return (
                 <Card
+                  isFree={course.isFree}
                   key={course.title}
                   title={course.title}
                   description={course.summary}
