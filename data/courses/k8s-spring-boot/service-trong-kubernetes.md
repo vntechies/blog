@@ -14,11 +14,30 @@ index: 4
 
 ## 1. Giới thiệu chung
 
-Ở bài [trước](/courses/k8s-spring-boot/quan-ly-pod-voi-replicationController-deployment) chúng ta đã tìm hiểu cách triển khai ứng dụng và quản lý các pod của ứng dụng thông qua ReplicationController và Deployment. Mỗi pod đều sẽ có một địa chỉ IP và địa chỉ IP này sẽ thay đổi nếu pod được tạo lại. Nếu dùng địa chỉ IP của pod để cấu hình các ứng dụng thì sẽ không ổn vì:
+Ở bài [trước](/courses/k8s-spring-boot/quan-ly-pod-voi-replicationController-deployment), chúng ta đã tìm hiểu cách triển khai ứng dụng và quản lý các pod của ứng dụng thông qua ReplicationController và Deployment. Có vấn đề thế này, thường trong một hệ thống sẽ có rất nhiều những ứng dụng cùng hoạt động. Giả sử mỗi ứng dụng sẽ được triển khai trên nhiều pod (có thể tăng/giảm số lượng pod linh hoạt), làm cách nào để các ứng dụng này có thể tương tác với nhau mà không cần quan tâm đến số lượng pod cũng như địa chỉ IP của chúng (vì địa chỉ IP của pod là KHÔNG cố định, có thể bị thay đổi).
 
-- Mỗi khi pod bị xóa và tạo lại thì pod sẽ được gắn với một đia chỉ IP mới. Nên nếu mà fix cứng địa chỉ IP của Pod để cấu hình ứng dụng thì sẽ bị sai nếu pod bị xóa đi và tạo lại.
-- Một ứng dụng có thể được chạy bởi nhiều pod, các ứng dụng này có thể tăng hoặc giảm số lượng pod mà mỗi pod lại được assign một địa chỉ IP riêng.
+Chúng ta mong muốn rằng có một thứ gì đó đứng phía trước các pod của ứng dụng (mình tạm gọi là "X"). Đối tượng "X" này phải có địa chỉ IP không bị thay đổi khi các pod phía sau thay đổi, và các ứng dụng khi tương tác với nhau thay vì tương tác trực tiếp với các pod của ứng dụng thì sẽ tương tác với "X".
 
-Chúng ta mong muốn Client thì không nên cần quan tâm về một số lượng pod và địa chỉ IP của chúng. Thay vì đó nên có phải có một thứ gì đó mình tạm gọi là X (địa chỉ IP, port và DNS thì stable) đứng trước các pod và Client chỉ quan tâm đến X mà không cần quan tâm đến số lượng pod và địa chỉ IP của pod.
+Trong Kubernetes có một đối tượng gọi là "Service" sẽ giúp các ứng dụng bên trong cụm Kubernetes tương tác với nhau mà không cần tương tác trực tiếp với các pod của các ứng dụng.
 
 ## 2. Service trong Kubernetes là gì?
+
+![Service trong Kubernetes](/static/images/assets/service-k8s-1.png)
+
+_Credit: Internet_
+
+Service là một đối tượng trong Kubernetes. Service sẽ đứng phía trước các pod của hai ứng dụng và khi các ứng dụng cần tương tác với nhau thì sẽ tương tác thông qua object Service. Những thông tin của Service (địa chỉ IP, DNS và port) sẽ KHÔNG bị thay đổi dù cho các pod của hai ứng dụng có thể tăng/giảm số lượng, khi thực hiện update, rollback,... Service còn thực hiện load-balances (phân tải) các request vào các pod (round robin). Kubernetes hỗ trợ các loại service như: **ClusterIP**, **NodePort**, **LoadBalancer**.
+
+Bạn có thể tìm hiểu thêm về object Service [tại trang web chính thức của Kubernetes](https://kubernetes.io/docs/concepts/services-networking/service/).
+
+## 3. Truy ứng dụng từ bên trong cụm Kubernetes
+
+### 3.1 Tạo Service bằng file YAML
+
+```yaml
+
+```
+
+## 4. Truy cập ứng dụng từ bên ngoài cụm Kubernetes
+
+### 4.1 Tạo Service bằng file YAML
