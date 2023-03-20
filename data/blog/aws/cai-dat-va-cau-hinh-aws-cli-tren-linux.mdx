@@ -1,0 +1,246 @@
+---
+title: Cài đặt và cấu hình AWS CLI trên Linux
+date: '2023-03-20'
+tags: ['aws', 'awscli', 'cloud']
+draft: false
+images: ['/static/images/ogps/awscliubuntu.png']
+summary: 'Trong bài viết này, chúng ta sẽ tìm hiểu cách cài đặt và cấu hình AWS CLI trên hệ thống Linux. Chúng ta cũng sẽ xem xét tất cả các phương pháp cấu hình và chi tiết quan trọng của AWS CLI.'
+---
+
+Trong bài viết này, chúng ta sẽ tìm hiểu cách cài đặt và cấu hình AWS CLI trên hệ thống Linux. Chúng ta cũng sẽ xem xét tất cả các phương pháp cấu hình và chi tiết quan trọng của AWS CLI.
+
+<TOCInline toc={props.toc} asDisclosure />
+
+## Điều kiện trước tiên
+
+Dưới đây là các điều kiện cần có để cài đặt và cấu hình AWS CLI.
+
+- Một tài khoản AWS hợp lệ
+- AWS IAM user với access key và secret key với quyền truy cập các dịch vụ của AWS. Nếu chưa có, bạn có thể tạo mới và lấy từ AWS IAM.
+
+## Cài đặt AWS CLI
+
+### Bước 1: Download tệp cài đặt AWS CLI sử dụng curl
+
+```shell
+curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+```
+
+hoặc câu lệnh dưới dây cho các máy sử dụng kiến trúc ARM
+
+```shell
+curl "https://awscli.amazonaws.com/awscli-exe-linux-aarch64.zip" -o "awscliv2.zip"
+```
+
+### Bước 2: Giải nén các tập tin.
+
+```shell
+unzip awscliv2.zip
+```
+
+### Bước 3: Cài đặt aws-cli
+
+```shell
+sudo ./aws/install
+```
+
+Lệnh trên tạo một liên kết vật lý có tên aws trong thư mục `/usr/local/bin` và thêm tệp thực thi của AWS CLI tại `/usr/local/aws-cli`.
+
+![liên kết vật lý aws cli](/static/images/assets/awscli1.png)
+
+### Bước 4: Kiểm tra phiên bản AWS CLI, xác nhận cài đặt thành công
+
+```shell
+> aws --version
+aws-cli/2.11.4 Python/3.11.2 Linux/5.15.0-67-generic exe/aarch64.ubuntu.22 prompt/off
+```
+
+## Cấu hình AWS CLI
+
+Để truy cập cách dịch vụ AWS từ CLI, bạn cần cấu hình CLI bằng access key và secret key của AWS. Bạn có thể làm điều này bằng 2 cách: sử dụng CLI hoặc sử dụng biến môi trường
+
+### Sử dụng command line
+
+Sử dụng CLI, bạn có thể định cấu hình access keys và secret keys của AWS và các giá trị mặc định và lưu lại các cấu hình trong thư mục `~/.aws`.
+
+Bạn có thể chọn cách này cho máy trạm của mình. Nếu muốn sử dụn nhiều tài khoản AWS, bạn có thể cấu hình sử dụng profile, chúng ta sẽ đề cập ở phẩn sau của bài viết.
+
+Để cấu hình bằng CLI, thực hiện lệnh sau.
+
+```shell
+aws configure
+```
+
+Bạn sẽ phải nhập access key, secret key, region và định dạng đầu ra mặc định (json, yaml, yaml-stream, text, table). Cung cấp các chi tiết theo hướng dẫn sau.
+
+```shell
+> /usr/local/bin$ aws configure
+AWS Access Key ID [None]: AKIAVFK6HGGG4DPNBE6W
+AWS Secret Access Key [None]: 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
+Default region name [None]: us-east-1
+Default output format [None]: yaml
+```
+
+Sau khi cấu hình, bạn sẽ thấy hai tệp sau trong thư mục `.aws`
+
+```shell
+> cd $HOME/.aws
+> ls
+config  credentials
+```
+
+![nội dung các file của aws config](/static/images/assets/awscli2.png)
+
+- `config`: Chứa tất cả các cấu hình mặc định như region và định dạng đầu ra. Bạn có thể thay đổi các giá trị này bất kỳ lúc nào thay cho các giá trị mặc định.
+- `credentials`: Tệp này chứa access key và secret key dưới dạng plain text.
+
+Các giá trị trong các tệp trên có thể được ghi đè thông qua các biến môi trường CLI.
+
+Sau khi cấu hình AWS CLI, hãy thử tạo một S3 bucket sử dụng câu lệnh
+
+```shell
+> aws s3api create-bucket --bucket bucket-sieu-to-khong-lo-se-duoc-xoa
+Location: /bucket-sieu-to-khong-lo-se-duoc-xoa
+
+> aws s3api list-buckets
+Buckets:
+- CreationDate: '2023-03-20T08:08:06+00:00'
+  Name: bucket-sieu-to-khong-lo-se-duoc-xoa
+Owner:
+  DisplayName: lab+LabServices-Prod-2769
+  ID: 1d523b3e9bfc2accbb4c6045f44ca5c0c100f958207e41779a8412206ecbb39b
+```
+
+### Sử dụng biến môi trường
+
+AWS CLI hỗ trợ các biến môi trường. Nếu bạn cấu hình các giá trị dưới dạng biến môi trường, AWS CLI sẽ sử dụng các giá trị đó để xác thực với AWS. Dưới đây là các biến môi trường quan trọng
+
+| CLI Environment Variable | Value                                                                       |
+| ------------------------ | --------------------------------------------------------------------------- |
+| AWS_ACCESS_KEY_ID        | AWS Access key                                                              |
+| AWS_SECRET_ACCESS_KEY    | AWS Secret key                                                              |
+| AWS_DEFAULT_REGION       | Region AWS mặc định. Example, us-east-1                                     |
+| AWS_DEFAULT_OUTPUT       | Định dạng mặc định của AWS CLI.<br/>[json, yaml, yaml-stream, text & table] |
+
+Bạn có thể cài đặt biến môi trường bằng lệnh `export` như dưới dây. Thay thế các biến bằng giá trị của bạn.
+
+```shell
+export AWS_ACCESS_KEY_ID=AKIAVFK6HGGG4DPNBE6W
+export AWS_SECRET_ACCESS_KEY=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
+export AWS_DEFAULT_REGION=us-east-1
+export AWS_DEFAULT_OUTPUT=json
+```
+
+Để biết các biến môi trường có sẵn, tham khảo [tài liệu chính thức của AWS CLI](https://docs.aws.amazon.com/cli/latest/topic/config-vars.html).
+
+Để xác minh cấu hình, hãy thực hiện lệnh sau.
+
+```shell
+> aws s3api list-buckets
+Buckets:
+- CreationDate: '2023-03-20T08:08:06+00:00'
+  Name: bucket-sieu-to-khong-lo-se-duoc-xoa
+Owner:
+  DisplayName: lab+LabServices-Prod-2769
+  ID: 1d523b3e9bfc2accbb4c6045f44ca5c0c100f958207e41779a8412206ecbb39b
+```
+
+**Lưu ý quan trọng**: Các biến môi trường chỉ khả dụng trong phiên làm việc với shell của người dùng. Nếu bạn đăng xuất, bạn cần cài đặt lại các biến để nó có sẵn cho phiên làm việc mới. Ngoài ra, các biến môi trường sẽ ghi đè cấu hình mặc định có tại `$HOME/.aws`.
+
+### Cấu hình AWS CLI sử dụng nhiều tài khoản AWS bằng profiles
+
+Trong nhiều trường hợp, bạn cần kết ối với nhiều tài khoản AWS từ một máy trạm (VD: tài khoản dev, stg,prod,...), bạn có thể sử dụng cấu hình profile cho AWS CLI.
+
+Bạn có thể tạo một profile mới bằng cách sử dụng lệnh sau. Trong đó dev là tên profile. Bạn có thể tạo nhiều profile với các tên khác nhau.
+
+```shell
+aws configure --profile dev
+```
+
+Sau khi cấu hình profile, bạn có thể thấy các giá trị trong tệp `$HOME/.aws/` như dưới đây
+
+![các giá trị trong tệp cấu hình](/static/images/assets/awslinux3.png)
+
+Các thông tin xác thực cũng được lưu trong tệp `$HOME/.aws/credentials`
+
+> Bạn cũng có thể nhập thông tin hồ sơ theo cách thủ công vào tệp `config` và `credentials`
+
+Để chọn hoặc di chuyển giữa các profile khác nhau, hãy sử dụng biến môi trường AWS_PROFILE với tên profile mong muốn như dưới đây.
+
+```shell
+export AWS_PROFILE=dev
+```
+
+Ngoài ra, bạn có thể sử dụng profile cho các lệnh CLI riêng biệt như dưới đây.
+
+```shell
+aws s3api delete-bucket --bucket bucket-sieu-to-khong-lo-se-duoc-xoa --profile dev
+```
+
+### Cấu hình định dạng đầu ra AWS CLI
+
+Để thay đổi định dạng đầu ra của AWS CLI, bạn có thể chỉnh sửa tệp cấu hình hoặc chạy lệnh aws configure để cập nhật định dạng đầu ra mới.
+
+Ngoài ra, bạn có thể sử dụng cờ --output với lệnh aws để ghi đè định dạng đầu ra mặc định.
+
+Ví dụ: để liệt kê các S3 buckets ở định dạng bảng, bạn có thể sử dụng lệnh sau với cờ --output.
+
+```shell
+aws ec2 description-instance --output table
+```
+
+Và dầu ra sẽ xuất hiện dưới dạng sau.
+
+![đầu ra dưới dạng bảng của aws cli](/static/images/assets/awsclilinux4.png)
+
+## Các cấu hình quan trọng của AWS CLI
+
+Bảng dưới đây có các cấu hình AWS CLI quan trọng và vị trí của chúng.
+
+| AWS CLI Configuration                        | Details                                                                               |
+| -------------------------------------------- | ------------------------------------------------------------------------------------- |
+| Vị trí cấu hình mặc định                     | $HOME/.aws/config                                                                     |
+| Vị trí thông tin xác thực mặc định.          | $HOME/.aws/credentials                                                                |
+| Biến môi trường thay đổi profile của AWS CLI | AWS_PROFILE                                                                           |
+| AWS_DEFAULT_OUTPUT                           | Các định dạng đầu ra AWS CLI được hỗ trợ.<br/>[json, yaml, yaml-stream, text & table] |
+
+## Các best practices của AWS CLI
+
+Sau đây là một số best practices khi sử dụng AWS CLI.
+
+- Luôn bảo mật thông tin đăng nhập AWS của bạn, đảm bảo bạn không vô tình để access key và secret key trong mã nguồn.
+- Sử dụng các profile để kết nối với các tài khoản AWS khác nhau.
+- Khi sử dụng các profiles, hãy luôn xác minh môi trường mà bạn đang chạy lệnh CLI trước khi thực thi lệnh vì bạn có thể vô tình xóa hoặc cập nhật các dịch vụ sản xuất.
+- Nếu bạn muốn sử dụng AWS CLI trên EC2, hãy luôn sử dụng IAM role thay cho access key và secret key.
+
+## AWS CLI Tips
+
+Vì đầu ra của AWS CLI trên Linux sẽ được thu gọn, nếu bạn muốn xem toàn bộ đầu ra bằng CLI, hãy cấu hình biến môi trường AWS_PAGER thành một chuỗi trống như minh họa bên dưới.
+
+```shell
+export AWS_PAGER=""
+```
+
+Bạn cũng có thể đặt cấu hình này bằng tệp cấu hình như bên dưới.
+
+```shell
+[default]
+region = us-east-1
+output = json
+aws_page=""
+```
+
+## Kết luận
+
+Trong bài viết này, chúng ta đã nói về cách cài đặt và các cấu hình quan trọng của AWS CLI.
+
+Làm việc với AWS CLI là kỹ năng quan trọng đối với các Kỹ sư DevOps làm việc trên môi trường điện toán đám mây, bạn sẽ phải thiết lập CLI trên máy trạm hoặc máy chủ để phục vụ cho các tác vụ tự động hoá.
+
+Khi làm việc với CI/CD pipelines, hãy lưu tâm và thực hành các phương pháp bảo mật tốt nhất để cấu hình CLI bằng cách giới hạn quyền truy cập dịch vụ AWS đối với mỗi IAM role/user được tạo.
+
+## Tham khảo
+
+Bài viêt có sử dụng tư liệu từ hai nguồn sau:
+
+- https://devopscube.com/install-configure-aws-cli-linux/
+- https://aws.amazon.com/vi/cli/
