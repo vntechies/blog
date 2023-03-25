@@ -1,30 +1,21 @@
 ---
 title: '10 tips để code python sạch hơn'
 draft: false
-images: ['/static/images/ogps/python_programming.jpeg']
+images: ['/static/images/ogps/10tipspython.png']
 summary: 'Các mẹo nhỏ giúp code Python sạch hơn sử dụng các tính năng tích hợp của ngôn ngữ'
 tags: ['devops', 'python', 'devtips']
 date: '2022-10-25'
 isFree: true
-index: 2
+index: 1
 ---
 
 _Python_ là một trong những ngôn ngữ phổ biến nhất trên thế giới. Nó có rất nhiều ứng dụng thực tế bao gồm phát triển web, ứng dụng dành cho máy tính để bàn, IoT, phân tích dữ liệu và học máy. Bài viết này bao gồm mười mẹo giúp mã của bạn trở nên sạch và dễ đọc hơn.
 
-Chúng ta sẽ sử dụng các icon sau để biểu thị một vài danh mục
-
-- 💩 - mã mà bạn nên tránh.
-- 🤔 - mã nói chung là ổn, nhưng bỏ qua các tính năng được tích hợp trong ngôn ngứ
-- 🐍 - mã được coi là tốt.
-- 💡 - bonus.
-- ❌ - điểm chưa tốt, nên tránh
-- ✅ - điểm tốt, nên dùng
-
 ## 1. Kiểm tra null
 
-Một trường hợp rất hay xảy ra là kiểm tra xem một biến có trống không (hoặc null) trước khi sử dụng. Trong Python, _null_ được biểu thị bằng từ khóa `None`. Hai đoạn mã bên dưới tạo ra kết quả giống hệt nhau. sử dụng từ khóa `if` theo sau là tên biến.
+Một việc chúng ta rất hay làm là kiểm tra xem một biến có trống không (hoặc null) trước khi sử dụng. Trong Python, _null_ được biểu thị bằng từ khóa `None`. Hai đoạn mã bên dưới tạo ra kết quả giống hệt nhau. sử dụng từ khóa `if` theo sau là tên biến.
 
-💡 _Mẹo bổ sung_: Sử dụng `f-strings` để định dạng chuỗi. Bắt đầu chuỗi f bằng cách nhập _f_ ngay trước chuỗi thông thường `(f"...")` và đặt các biến bên trong dấu ngoặc nhọn, Python sẽ định dạng kết quả thành một chuỗi chứa các biến.
+💡 _Bonus Tip_: Sử dụng `f-strings` để định dạng chuỗi. Bắt đầu chuỗi f bằng cách nhập _f_ ngay trước chuỗi thông thường `(f"...")` và đặt các biến bên trong dấu ngoặc nhọn, Python sẽ định dạng kết quả thành một chuỗi chứa các biến.
 
 ```python:null_checks.py
 # Kiểm tra null: Phiên bản chấp nhận được 🤔 - Nên tránh "if x is not None" ❌
@@ -238,10 +229,14 @@ Trong trường hợp này, mã đơn giản hơn vẫn sẽ chạy tốt, tuy n
 ```python:context_managers.py
 # Quản lý tệp - sử dụng open và f.close() ❌
 f = open("file.txt", "w")
-f.write("Hi mom!")
+f.write("Chào mẹ, con lên TV này!")
 f.close()
 
 # Phiên bản tốt hơn 🐍 -  Sử dụng context manager ✅
 with open("file.txt", "w") as f:
-    f.write("Hi mom!")
+    f.write("Chào mẹ, con lên TV này!")
 ```
+
+## Reference
+
+- https://fireship.io/lessons/code-this-not-that-python-edition/
