@@ -1,0 +1,247 @@
+---
+title: '10 tips để code python sạch hơn'
+draft: false
+images: ['/static/images/ogps/python_programming.jpeg']
+summary: 'Các mẹo nhỏ giúp code Python sạch hơn sử dụng các tính năng tích hợp của ngôn ngữ'
+tags: ['devops', 'python', 'devtips']
+date: '2022-10-25'
+isFree: true
+index: 2
+---
+
+_Python_ là một trong những ngôn ngữ phổ biến nhất trên thế giới. Nó có rất nhiều ứng dụng thực tế bao gồm phát triển web, ứng dụng dành cho máy tính để bàn, IoT, phân tích dữ liệu và học máy. Bài viết này bao gồm mười mẹo giúp mã của bạn trở nên sạch và dễ đọc hơn.
+
+Chúng ta sẽ sử dụng các icon sau để biểu thị một vài danh mục
+
+- 💩 - mã mà bạn nên tránh.
+- 🤔 - mã nói chung là ổn, nhưng bỏ qua các tính năng được tích hợp trong ngôn ngứ
+- 🐍 - mã được coi là tốt.
+- 💡 - bonus.
+- ❌ - điểm chưa tốt, nên tránh
+- ✅ - điểm tốt, nên dùng
+
+## 1. Kiểm tra null
+
+Một trường hợp rất hay xảy ra là kiểm tra xem một biến có trống không (hoặc null) trước khi sử dụng. Trong Python, _null_ được biểu thị bằng từ khóa `None`. Hai đoạn mã bên dưới tạo ra kết quả giống hệt nhau. sử dụng từ khóa `if` theo sau là tên biến.
+
+💡 _Mẹo bổ sung_: Sử dụng `f-strings` để định dạng chuỗi. Bắt đầu chuỗi f bằng cách nhập _f_ ngay trước chuỗi thông thường `(f"...")` và đặt các biến bên trong dấu ngoặc nhọn, Python sẽ định dạng kết quả thành một chuỗi chứa các biến.
+
+```python:null_checks.py
+# Kiểm tra null: Phiên bản chấp nhận được 🤔 - Nên tránh "if x is not None" ❌
+n = 42
+if n is not None:
+    print(f"n tồn tại và có giá trị {n}")
+
+# Phiên bản tốt 🐍: Sử dụng if đơn giản ✅
+if n:
+    print(f"n tồn tại và có giá trị {n}")
+```
+
+## 2. Kiểm tra phần tử trong 1 list
+
+Chúng ta cần kiểm tra xem danh sách `(L)` có chứa giá trị của một biến cụ thể `(x)` hay không.
+Một cách để làm điều này là sử dụng vòng lặp `for` để lặp qua tất cả các phần tử và kiểm tra sự giống nhau. Python cung cấp một shortcut rất hữu ích đó là sử dụng từ khóa `in`.
+
+{/* {{< file "python" "" >}} */}
+
+```python:contains.py
+# Check if a value is contained in a list
+L = ["JavaScript", "Python", "Ruby", "PHP", "Rust"]
+x = "Rust"
+
+# Phiên bản chấp nhận được 🤔 - Sử dụng vòng lặp for và check từng phần tử ❌
+for i in range(len(L)):
+    if x == L[i]:
+        print(f"{x} có trong list")
+
+# Phiên bản tốt 🐍: Sử dụng "if x in L" ✅
+if x in L:
+    print(f"{x} có trong list")
+```
+
+## 3. List Comprehensions
+
+Một xử lý phổ biến là tạo một list trống và append các giá trị vào đó.
+Ví dụ: chúng ta muốn một list các số bình phương trong một phạm vi nhất định.
+Cách để thực hiện điều này là xác định danh sáchh và sử dụng vòng lặp `for` để duyệt qua các giá trị và append vào một list.
+
+Python cung cấp một one-liner cho mục đích này, được gọi là "list comprehension". Để viêt một comprehension, bắt đầu với biểu thức mà bạn sử dụng cho phương thức append. Sau đó, viết điều kiện cho vòng lặp `for` ngay sau biểu thức đó và đặt mọi thứ trong một cặp dấu ngoặc vuông. Comprehensions có thể sử dụng với dict, set và generators. Tuy nhiên, hãy cố gắng tránh sử dụng chúng với các biểu thức phức tạp. Việc code dễ đọc rất quan trọng.
+
+```python:list_comprehension.py
+# Phiên bản chấp nhận được 🤔 - Sử dụng vòngg lặp for và append ❌
+squares = []
+for num in range(12):
+    squares.append(num ** 2)
+
+# Phiên bản tốt 🐍: Sử dụng list comprehension ✅
+squares = [num ** 2 for num in range(12)]
+
+# Bonus Tip 💡: Bạn có thể sử dụng dictionary, set, and generator comprehensions
+squares_dict = {num: num ** 2 for num in range(12)} # dictionary
+squares_set = {num ** 2 for num in range(12)}       # set
+squares_gen = (num ** 2 for num in range(12))       # generator
+```
+
+## 4. Sử dụng Any/All
+
+Nói đến one-liner, Python cung cấp một vài hàm tích hợp có thể kiểm tra một điều kiện đúng với ít nhất _một_ phần tử hoặc với _tất cả_ các phần tử trong một hàm lặp. Để minh hoạ, chúng ta hãy nghĩ tới một ví dụ đơn giản. Chúng ta muốn lấy một list các số âm, cách đơn giản nhất để làm điều này là viết một hàm lặp `for` và sử dụng một flag. Cách tốt hơn là sử dụng hàm `any`.
+
+```python:any.pyy
+# Checking for negative values in a list
+nums = [1, 2, 3, 4, 5, -42, 6, 7, 8]
+
+# Phiên bản không hiệu quả 🤔 - Sử dụng vòngg lặp for và một flag ❌
+contains_neg = False # flag
+for num in nums:
+    if num < 0:
+        contains_neg = True
+
+# Phiên bản tốt 🐍 - Sử dụng hàm "any" được tích hợp ✅
+contains_neg = any(num < 0 for num in nums) # True
+
+# Bonus Tip 💡: Python cũng có hàm "all" được tích hợp ✅
+contains_neg = not all(num >= 0 for num in nums) # True
+```
+
+- `any` - Trả về True nếu điều kiện đúng với bất kỳ phần tử nào trong khi duyệt. Trả về False nếu rỗng.
+- `all` - Trả về True nếu điều kiện đúng với tất cả các phần tử trong khi duyệt (hoặc nếu rỗng).
+
+## 5. Iterations
+
+Python cung cấp một cú pháp rất gọn mà nhiều người thường không để ý. Ví dụ, khi duyệt các giá trị của một list, pattern chung là sử dụng một vòng lặp for và một index. Nếu chúng ta chỉ quan tâm tới giá trị của các phần tử, cách gọn gàng hơn là sử dụng vòng lặp `for` và duyệt _trực tiếp_ các phần tử của list. Nếu chúng ta cần sử dụng index, cách gọn nhất là sử dụng `enumerate`.
+
+```python:iterations.py
+# Iterating over a single list
+L = ["a", "b", "c", "d"]
+
+# phiên bản chấp nhận được 🤔 - sử dụng index trong khoảng ❌
+for i in range(len(L)):
+    val = L[i]
+    print(i, val)
+
+# Cách tốt hơn 🐍: Trực tiếp truy cập các phần tử ✅
+for el in L:
+    print(el)
+
+# Cách tốt hơn 🐍: Sử dụng enumerate nếu bạn cần dùng cặp index, valu ✅
+for i, val in enumerate(L):
+    print(i, val)
+```
+
+💡 _Bonus Tip_: Cách này cũng được áp dụng cho việc lặp lại nhiều list. Chúng ta có duyệ trực tiếp giá trị trong 2 collections sử dụng `zip`. Nếu cần sử dụng index, hãy kết hợp `enumerate` và `zip`.
+
+```python:iterations.py
+# Bonus Tip 💡:  Duyệt nhiều list
+A = ["a", "b", "c", "d"]
+B = ["e", "f", "g", "h"]
+
+# phiên bản chấp nhận được 🤔 - sử dụng index trong khoảng ❌
+for i in range(len(A)):
+    va, vb = A[i], B[i]
+    print(i, va, vb)
+
+# Cách tốt hơn 🐍: Sử dụng zip để lấy giá trị các phần tử ✅
+for va, vb in zip(A, B):
+    print(va, vb)
+
+# Cách tốt hơn 🐍: Kết hợp zip và enumerate để để lấy cặp index, value của các phần tử ✅
+for i, (va, vb) in enumerate(zip(A, B)):
+    print(i, va, vb)
+```
+
+## 6. Lấy giá trị từ Tuple
+
+Một việc hữu ích nữa cần biết là lấy giá trị trực tiếp từ một tuple. Một cách làm là lấy từng giá trị sử dụng index.
+Cách hiệu quả hơn là lấy trực tiếp từ tuple.
+
+```python:existence.py
+# Lấy giá trị từ tuple
+some_tuple = (1, 2, 3)
+
+# Phiên bản chấp nhận được 🤔 - Lấy giá trị theo index ❌
+x = some_tuple[0]
+y = some_tuple[1]
+z = some_tuple[2]
+
+
+# Phiên bản tốt hơn 🐍 - Lấy trục tiếp giá trị từ tuple ✅
+x, y, z = some_tuple
+```
+
+## 7. Toán tử bậc ba
+
+Python sử dụng `if/elif/else` để điều khiển luồng. Ví dụ: xem xét nhu cầu quyết định dấu của một biến dựa trên giá trị của nó. Cách dễ nhất là sử dụng `if/else` để đưa ra quyết định. Tuy nhiên, có một cách gọn gàng hơn để làm điều này là sử dụng toán tử bậc 3.
+
+```python:ternary_operator.py
+# Gán một giá trị dựa trên điều kiện
+a = 42
+
+# Phiên bản chấp nhận được 🤔 - sủ dụng if/else ❌
+if a > 0:
+    sign = "positive"
+else:
+    sign = "negative"
+
+# Phiên bản tốt nhất 🐍 - sử dụng toán tử bậc ba ✅
+sign = "positive" if (a > 0) else "negative" # dấu ngoặc đơn không bắt buộc
+```
+
+## 8. Generators
+
+[_Generators_](https://docs.python.org/3/howto/functional.html#generators) là một công cụ để tiết kiệm bố nhớ và cải thiện hiệu suất. Nói chung, chúng _yield_ ra một giá trị tại một thời điển và có thể lặp đi lặp lại nhiều lần. Hãy tưởng tượng chúng ta đang muốn tính tổng của 42.000 số tự nhiên đầu tiên, chúng ta có thể sử dụng list comprehension để tính các giá trị bằng hàm `sum` được tích hợp sẵn. Việc xây dựng một list cần 351064 bytes. Sử dụng generator giảm giá trị này xuống còn 112 bytes. Điều này thực sự ấn tượng.
+
+```python:generators.py
+from sys import getsizeof
+
+# Không tối ưu bộ nhớ 💩: Sử dụng list ❌
+L = [n for n in range(42_000)]
+sum(L) # 881979000
+getsizeof(L) # 351064 bytes
+
+# Tối ưu bộ nhớ 🔥: Sử dụng generator ✅
+G = (n for n in range(42_000))
+sum(G) # 881979000
+getsizeof(G) # 112 bytes
+```
+
+## 9. Đối số mặc định có thể thay đổi (Mutable Default Arguments)
+
+Python hỗ trợ các giá trị mặc định cho tham số hàm. Nếu giá trị cho tham số không được truyền trong khi gọi hàm, thì giá trị mặc định sẽ là giá trị được chỉ định. Nếu giá trị mặc định thuộc loại có thể thay đổi, điều này có thể gây ra một số trường hợp không tốt. Ví dụ, khi sử dụng danh sách trống làm giá trị mặc định. Nếu danh sách được sửa đổi, giá trị mặc định cũng được sửa đổi theo. Trong hầu hết trường hợp, điều này không được thực hiện một cách cố ý. Nếu không có giá trị được truyền trong khi gọi hàm, chúng ta có thể đảm bảo một danh sách trống được tạo.
+
+```python:mutable_default_args.py
+# Đối số mặc định có thể thay đổi 💩:  Cách không đúng  ❌
+def append_element(elem, L=[]):
+    L.append(elem)
+    return L
+
+L1 = append_element(21) # [21]
+L2 = append_element(42) # [21, 42] - ...
+
+
+# Cách đúng 🔥: Sử dụng None ✅
+def better_append(elem, L=None):
+    if L is None:
+        L = []
+    L.append(elem)
+    return L
+
+L1 = better_append(21) # [21]
+L2 = better_append(42) # [42]
+
+```
+
+## 10. Quản lý nghữ cảnh (Context Managers)
+
+Mẹo cuối cùng là sử dụng context manager để đảm bảo rằng tài nguyên được đóng đúng cách.
+Trong trường hợp này, mã đơn giản hơn vẫn sẽ chạy tốt, tuy nhiên, nếu nếu nó liên quan đến logic phức tạp hơn và một ngoại lệ xuất hiện trong quá trình ghi, tệp sẽ không được đóng đúng cách. Một tình huống phổ biến hay sảy ra là quên đóng tệp. Context manager cảnh đảm bảo tệp sẽ luôn được đóng, bất kể có ngoại lệ nào.
+
+```python:context_managers.py
+# Quản lý tệp - sử dụng open và f.close() ❌
+f = open("file.txt", "w")
+f.write("Hi mom!")
+f.close()
+
+# Phiên bản tốt hơn 🐍 -  Sử dụng context manager ✅
+with open("file.txt", "w") as f:
+    f.write("Hi mom!")
+```

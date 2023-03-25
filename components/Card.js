@@ -31,6 +31,8 @@ const Card = ({ title, description, imgSrc, href, showMore = true, isFree }) => 
                   MIỄN PHÍ
                 </span>
               )}
+              <br />
+              {title}
             </Link>
           ) : (
             { title }

@@ -29,15 +29,7 @@
 
 ---
 
-🇻🇳 VNTechies Dev Blog - Kho tài nguyên dành cho người Việt yêu công nghệ 👨‍💻👩‍💻
-
-📝 Tài liệu, khoá học, hướng dẫn
-
-☁️ Cloud computing, DevOps
-
-🚀 Infrastructure Automation, CI/CD
-
-🌐 web & 📱 mobile apps
+🇻🇳 VNTechies Dev Blog - Kho tài nguyên mã nguồn mở với sứ mệnh đào tạo kiến thức, định hướng nghề nghiệp cho cộng đồng Cloud ☁️ DevOps 🚀
 
 ---
 
