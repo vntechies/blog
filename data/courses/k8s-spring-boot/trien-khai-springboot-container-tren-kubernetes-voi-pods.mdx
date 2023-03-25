@@ -14,17 +14,17 @@ index: 2
 
 ## 1. Giới thiệu chung
 
-Đây là bài viết thứ hai trong series triển khai ứng dụng spring boot trên Kubernetes. Trong bài này, chúng ta sẽ cùng nhau tìm hiểu về `pod`, cách đóng gói ứng dụng với containers và pod thông qua những nội dung sau:
+Đây là bài viết thứ hai trong series triển khai ứng dụng spring boot trên Kubernetes. Trong bài này, chúng ta sẽ cùng nhau tìm hiểu về pod, cách đóng gói ứng dụng với containers và pod thông qua những nội dung sau:
 
 - Đóng gói ứng dụng Spring boot với Docker container.
 - Tạo mới, triển khai pod trên Kubernetes.
 - Vòng đời của pod.
 
-Các bạn có thể tham khảo source code [ở đây](https://github.com/nbthanh98/k8s-springboot-series.git) và checkout nhánh: `series/k8s-springboot/pod`.
+Các bạn có thể tham khảo source code [ở đây](https://github.com/nbthanh98/k8s-springboot-series.git).
 
 ## 2. Yêu cầu môi trường
 
-Đầu tiên chúng ta cần cài [Docker](https://www.docker.com/), có thể kiểm tra quá trình cài đặt `Docker` bằng lệnh:
+Đầu tiên chúng ta cần cài [Docker](https://www.docker.com/), có thể kiểm tra quá trình cài đặt Docker bằng lệnh:
 
 ```shell
 docker run hello-world
@@ -55,6 +55,8 @@ nbt    Ready    <none>   9d    v1.25.4
 
 ![Dockerfile, Docker image and Docker containers](/static/images/assets/dockerfile-dockerimage-container.png)
 
+_Credit: Internet_
+
 ### Docker là gì?
 
 Docker là một nền tảng giúp xây dựng, kiểm thử, triển khai ứng dụng một cách nhanh chóng bằng cách đóng gói phần mềm với container. Khi cần triển khai ứng dụng trên các môi trường, chúng ta chỉ cần pull docker image của ứng dụng đó và tạo container thì ứng dụng sẽ được khởi chạy ngay lập tức.
@@ -65,111 +67,179 @@ Docker cho phép tạo ra các môi trường độc lập và tách biệt, đi
 
 ### Triển khai Spring boot application với Docker
 
-1. **Tạo Dockerfile và build Docker image từ Dockerfile**
+**1. Tạo Dockerfile và build Docker image từ Dockerfile**
 
-   - Đầu tiên cần tạo `Dockerfile`. `Dockerfile` chứa các lệnh hướng dẫn Docker tạo ra Docker image. Ví dụ chúng ta có `Dockerfile` như file dưới đây:
+Đầu tiên cần tạo `Dockerfile`. File này chứa các lệnh hướng dẫn Docker tạo ra Docker image. Ví dụ chúng ta có `Dockerfile` như file dưới đây:
 
-   ```dockerfile
-   FROM adoptopenjdk/openjdk11:latest
-   WORKDIR /workspace
-   COPY target/*-SNAPSHOT.jar /workspace/app.jar
-   ENV TZ="Asia/Ho_Chi_Minh"
-   EXPOSE 8080
-   ENTRYPOINT ["java","-jar","/workspace/app.jar"]
-   ```
+```dockerfile
+FROM adoptopenjdk/openjdk11:latest
+WORKDIR /workspace
+COPY target/*-SNAPSHOT.jar /workspace/app.jar
+ENV TZ="Asia/Ho_Chi_Minh"
+EXPOSE 8080
+ENTRYPOINT ["java","-jar","/workspace/app.jar"]
+```
 
-- Dockerfile trên bao gồm các lệnh:
+_Chúng ta sẽ tạo hai file Dockerfile cho hai service: Students và Courses_.
 
-  - `FROM`: Lệnh này sẽ pull một Docker image (ở đây là `adoptopenjdk/openjdk11:latest`) để tạo ra một base image layer, các lệnh tiếp theo trong `Dockerfile` sẽ được thực thi trên base image layer này. `Dockerfile` bắt buộc phải bắt đầu với `FROM`.
+File Dockerfile trên bao gồm các lệnh:
 
-  - `WORKDIR`: Các lệnh tiếp theo trong `Dockerfile` sẽ được thực hiện trong folder mà lệnh `WORKDIR` định nghĩa, trường hợp này là folder `/workspace`.
+- `FROM`: Lệnh này sẽ pull một Docker image (ở đây là `adoptopenjdk/openjdk11:latest`) để tạo ra một base image layer, các lệnh tiếp theo trong `Dockerfile` sẽ được thực thi trên base image layer này. `Dockerfile` bắt buộc phải bắt đầu với `FROM`.
 
-  - `COPY`: Thực hiện copy file jar ở folder `target` vào folder `/workspace/` bên trong container.
+- `WORKDIR`: Các lệnh tiếp theo trong `Dockerfile` sẽ được thực hiện trong folder mà lệnh `WORKDIR` định nghĩa, trường hợp này là folder `/workspace`.
 
-  - `ENV`: Sử dụng để truyền biến môi trường vào bên trong container, trường hợp này là `TZ="Asia/Ho_Chi_Minh"`.
+- `COPY`: Thực hiện copy file jar ở folder `target` vào folder `/workspace/` bên trong container.
 
-  - `EXPOSE`: Sẽ quy định cổng mà container sẽ lắng nghe và tiếp nhận traffic, trường hợp này là port `8080`.
+- `ENV`: Sử dụng để truyền biến môi trường vào bên trong container, trường hợp này là `TZ="Asia/Ho_Chi_Minh"`.
 
-  - `ENTRYPOINT`: Khi container start thì lệnh bên trong `ENTRYPOINT` sẽ được thực thi, trường hợp này là chạy file jar.
+- `EXPOSE`: Sẽ quy định cổng mà container sẽ lắng nghe và tiếp nhận traffic, trường hợp này là port `8080`.
 
-- Bạn có thể build docker image bằng lệnh sau:
+- `ENTRYPOINT`: Khi container start thì lệnh bên trong `ENTRYPOINT` sẽ được thực thi, trường hợp này là chạy file jar.
 
-  ```shell
-  docker build -t k8s-springboot-series:latest -f Dockerfile .
+Build file jar từ source code của project với build tool là maven:
 
-  Sending build context to Docker daemon  18.05MB
-  Step 1/6 : FROM adoptopenjdk/openjdk11:latest
-  ---> 49877461f3c7
-  Step 2/6 : WORKDIR /workspace
-  ---> Running in af4cc5d9485b
-  Removing intermediate container af4cc5d9485b
-  ---> 93bad477e120
-  Step 3/6 : COPY target/*-SNAPSHOT.jar /workspace/app.jar
-  ---> 08b67e5bfac9
-  Step 4/6 : ENV TZ="Asia/Ho_Chi_Minh"
-  ---> Running in 87c88aba3e8b
-  Removing intermediate container 87c88aba3e8b
-  ---> 8482d4c26ef8
-  Step 5/6 : EXPOSE 8080
-  ---> Running in 19fcfb82ca20
-  Removing intermediate container 19fcfb82ca20
-  ---> cc97ad8d0a21
-  Step 6/6 : ENTRYPOINT ["java","-jar","/workspace/app.jar"]
-  ---> Running in 2d87a166c58a
-  Removing intermediate container 2d87a166c58a
-  ---> 1403dab63194
-  Successfully built 1403dab63194
-  Successfully tagged k8s-springboot-series:latest
-  ```
+```shell
+# 1. Build jar file của Student service:
+cd students
+mvn clean package -Dmaven.test.skip=true
 
-- Kiểm tra docker image bằng lệnh:
+....
+[INFO] Building jar: /home/nbt/thanhnb/springboot-k8s/students/target/students-0.0.1-SNAPSHOT.jar
+[INFO]
+[INFO] --- spring-boot-maven-plugin:2.7.6:repackage (repackage) @ students ---
+[INFO] Replacing main artifact with repackaged archive
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  1.743 s
+[INFO] Finished at: 2023-03-26T01:18:56+07:00
+[INFO] ------------------------------------------------------------------------
 
-  ```shell
-  docker images
+# 2. Build jar file của Courses service:
+cd courses
+mvn clean package -Dmaven.test.skip=true
 
-  REPOSITORY                TAG       IMAGE ID       CREATED         SIZE
-  k8s-springboot-series     latest    1403dab63194   7 minutes ago   456MB
-  ```
+....
+[INFO] --- maven-jar-plugin:3.2.2:jar (default-jar) @ courses ---
+[INFO] Building jar: /home/nbt/thanhnb/springboot-k8s/courses/target/courses-0.0.1-SNAPSHOT.jar
+[INFO]
+[INFO] --- spring-boot-maven-plugin:2.7.6:repackage (repackage) @ courses ---
+[INFO] Replacing main artifact with repackaged archive
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  1.815 s
+[INFO] Finished at: 2023-03-26T01:30:44+07:00
+[INFO] ------------------------------------------------------------------------
 
-2. **Tạo docker container từ docker image**
+# Nhìn thấy kết quả BUILD SUCCESS như vậy là quá trình build thành công. File jar sẽ được lưu ở foler /target/ của project.
+```
 
-   Sau bước build docker image từ Dockerfile trên thì bạn đã có một docker image là `k8s-springboot-series:latest`, giờ bạn có thể chạy một hoặc nhiều docker container từ docker image vừa được build bằng lệnh sau:
+Bạn có thể build docker image bằng lệnh sau:
 
-   ```shell
-   docker run --name k8s-springboot-series -d -p 8080:8080 k8s-springboot-series:latest
-   ```
+```shell
+docker build -t <IMAGE_NAME>:<IMAGE_TAG> -f Dockerfile <PATH_TO_Dockerfile>
 
-   Kiểm tra docker container bằng lệnh:
+# 1. Build docker image Students service:
+docker build -t thanhnb1/students-service:latest -f Dockerfile .
 
-   ```shell
-   docker ps
+Sending build context to Docker daemon   39.3MB
+Step 1/6 : FROM adoptopenjdk/openjdk11:latest
+ ---> 49877461f3c7
+Step 2/6 : WORKDIR /workspace
+ ---> Using cache
+ ---> 93bad477e120
+Step 3/6 : COPY target/*-SNAPSHOT.jar /workspace/app.jar
+ ---> 3049232f9355
+Step 4/6 : ENV TZ="Asia/Ho_Chi_Minh"
+ ---> Running in 40eff8b73961
+Removing intermediate container 40eff8b73961
+ ---> 65144a0e2f0d
+Step 5/6 : EXPOSE 8080
+ ---> Running in cbf6d4f1047d
+Removing intermediate container cbf6d4f1047d
+ ---> 117495a4ebe6
+Step 6/6 : ENTRYPOINT ["java","-jar","/workspace/app.jar"]
+ ---> Running in 02392551945c
+Removing intermediate container 02392551945c
+ ---> ed7873e44035
+Successfully built ed7873e44035
+Successfully tagged thanhnb1/students-service:latest
 
-   CONTAINER ID   IMAGE                          COMMAND                  CREATED         STATUS         PORTS                                       NAMES
-   14330e1c04cb   k8s-springboot-series:latest   "java -jar /workspac…"   3 seconds ago   Up 2 seconds   0.0.0.0:8080->8080/tcp, :::8080->8080/tcp   k8s-springboot-series
-   ```
+-----------------------------------------------------------------------
 
-3. **Dùng [Postman](https://www.postman.com/downloads/) để test các API ứng dụng**
+# 2. Build docker image Courses service:
+docker build -t thanhnb1/courses-service:latest -f Dockerfile .
 
-   **API tạo mới Student:**
+Sending build context to Docker daemon  39.37MB
+Step 1/6 : FROM adoptopenjdk/openjdk11:latest
+ ---> 49877461f3c7
+Step 2/6 : WORKDIR /workspace
+ ---> Using cache
+ ---> 93bad477e120
+Step 3/6 : COPY target/*-SNAPSHOT.jar /workspace/app.jar
+ ---> cc0daf95ad2a
+Step 4/6 : ENV TZ="Asia/Ho_Chi_Minh"
+ ---> Running in 2c76b81ef94b
+Removing intermediate container 2c76b81ef94b
+ ---> 711931c3234e
+Step 5/6 : EXPOSE 8080
+ ---> Running in 67eb91727fb0
+Removing intermediate container 67eb91727fb0
+ ---> 29154e45fe4c
+Step 6/6 : ENTRYPOINT ["java","-jar","/workspace/app.jar"]
+ ---> Running in 5c871e3ace5d
+Removing intermediate container 5c871e3ace5d
+ ---> 952be9fc9167
+Successfully built 952be9fc9167
+Successfully tagged thanhnb1/courses-service:latest
+```
 
-   Endpoint: `/api/students`, method `POST` và Request body:
+Kiểm tra docker image bằng lệnh:
 
-   ```json
-   {
-     "fullName": "NGUYEN BA THANH",
-     "dateOfBirth": "29/04/1998",
-     "hometown": "HA DONG, HA NOI",
-     "gender": "MALE"
-   }
-   ```
+```shell
+docker images
 
-   ![API tạo mới Student với Postman](/static/images/assets/call-api-create-student.png)
+REPOSITORY                       TAG                IMAGE ID       CREATED              SIZE
+thanhnb1/courses-service         latest             952be9fc9167   About a minute ago   478MB
+thanhnb1/students-service        latest             ed7873e44035   13 minutes ago       478MB
+```
 
-   **API lấy danh sách Student:**
+**2. Tạo docker container từ docker image**
 
-   Endpoint: `/api/students`, method `GET`.
+Sau bước build docker image từ Dockerfile trên thì bạn đã có một docker image là `k8s-springboot-series:latest`, giờ bạn có thể chạy một hoặc nhiều docker container từ docker image vừa được build bằng lệnh sau:
 
-   ![API lấy danh sách Student với Postman](/static/images/assets/get-all-student.png)
+```shell
+docker run --name k8s-springboot-series -d -p 8080:8080 k8s-springboot-series:latest
+```
+
+Kiểm tra docker container bằng lệnh:
+
+```shell
+docker ps
+
+CONTAINER ID   IMAGE                          COMMAND                  CREATED         STATUS         PORTS                                       NAMES
+14330e1c04cb   k8s-springboot-series:latest   "java -jar /workspac…"   3 seconds ago   Up 2 seconds   0.0.0.0:8080->8080/tcp, :::8080->8080/tcp   k8s-springboot-series
+```
+
+**3. Dùng [Postman](https://www.postman.com/downloads/) để test các API ứng dụng**
+
+_API tạo mới Student_: `/api/students`, method `POST` và Request body:
+
+```json
+{
+  "fullName": "NGUYEN BA THANH",
+  "dateOfBirth": "29/04/1998",
+  "hometown": "HA DONG, HA NOI",
+  "gender": "MALE"
+}
+```
+
+![API tạo mới Student với Postman](/static/images/assets/call-api-create-student.png)
+
+_API lấy danh sách Student_: `/api/students`, method `GET`.
+
+![API lấy danh sách Student với Postman](/static/images/assets/get-all-student.png)
 
 ## 4. Đóng gói container với pods và triển khai trên Kubernetes
 

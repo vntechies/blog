@@ -24,7 +24,7 @@ Trong chuỗi bài này, chúng ta cùng nhau tìm hiểu cách phát triển v�
 - Cài đặt [Kubectl](https://kubernetes.io/docs/tasks/tools/#kubectl).
 - Cài đặt [MicroK8s](https://microk8s.io/tutorials).
 
-Trong chuỗi bài này mình sử dụng [MicroK8s](https://microk8s.io/tutorials) để tạo cụm Kubernetes. Đối với MicroK8s khi tương tác với cụm Kubernetes thì sẽ kèm theo chuỗi "microk8s" ở phía trước câu lệnh như: "microk8s kubectl...". Để ngắn gọn hơn thì bạn có thể làm như sau:
+Trong chuỗi bài này chúng ta sẽ sử dụng [MicroK8s](https://microk8s.io/tutorials) để tạo cụm Kubernetes. Đối với MicroK8s khi tương tác với cụm Kubernetes thì sẽ kèm theo chuỗi "microk8s" ở phía trước câu lệnh như: "microk8s kubectl...". Để ngắn gọn hơn thì bạn có thể làm như sau:
 
 ```shell
 cd $HOME
@@ -136,7 +136,7 @@ File `Student.java` dưới đây định nghĩa các trường thông tin về 
 public class Student {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "fullName")
@@ -302,7 +302,7 @@ File `CoursesMembers.java` dùng để lưu thông tin học sinh đã tham gia 
 public class CoursesMembers {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "course_id")
