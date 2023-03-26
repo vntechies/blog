@@ -24,7 +24,7 @@ Trong chuỗi bài này, chúng ta cùng nhau tìm hiểu cách phát triển v�
 - Cài đặt [Kubectl](https://kubernetes.io/docs/tasks/tools/#kubectl).
 - Cài đặt [MicroK8s](https://microk8s.io/tutorials).
 
-Sử dụng `MicroK8s` khi chạy lệnh `kubectl ...` thì cần kèm theo `microk8s` đằng trước như: `microk8s kubectl ...`, để ngắn gọn hơn thì bạn có thể làm như sau:
+Trong chuỗi bài này chúng ta sẽ sử dụng [MicroK8s](https://microk8s.io/tutorials) để tạo cụm Kubernetes. Đối với MicroK8s khi tương tác với cụm Kubernetes thì sẽ kèm theo chuỗi "microk8s" ở phía trước câu lệnh như: "microk8s kubectl...". Để ngắn gọn hơn thì bạn có thể làm như sau:
 
 ```shell
 cd $HOME
@@ -35,40 +35,125 @@ microk8s config > config
 kubectl config use-context microk8s
 ```
 
-## 3. Setup Spring boot application
+## 3. Giới thiệu về ứng dụng
 
-Ứng dụng quản lý học sinh viết bằng Spring Boot đơn giản gồm 2 API: Tạo mới học sinh, lấy danh sách học sinh. Bạn có thể tham khảo source code [ở đây](https://github.com/nbthanh98/k8s-springboot-series).
+![Hình mô tả services](/static/images/assets/k8s-springboot-services.png)
 
-Truy cập [Spring Initializr](https://start.spring.io/) để tạo mới một Spring Boot project và thêm một số thông tin của project như:
+Ứng dụng đơn quản lý học sinh đơn giản được viết bằng Java gồm hai service "Students-service" và "Courses-service":
 
-![Tạo mới project Spring boot với Spring Initializr](/static/images/assets/tao-moi-project-springboot.png)
+1. Students-service: Quản lý các thông tin về học sinh. Gồm các API như:
+
+```shell
+# Tạo mới học sinh:
+curl --location --request POST 'localhost:8080/api/students' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "fullName": "NGUYEN BA THANH",
+    "dateOfBirth": "29/04/1998",
+    "hometown": "HA DONG, HA NOI",
+    "gender": "MALE"
+}'
+
+# Danh sách học sinh:
+curl --location --request GET 'localhost:8080/api/students'
+```
+
+2. Courses-service: Quản lý các thông tin khóa học. Gồm các API như:
+
+```shell
+# Tạo mới khóa học:
+curl --location --request POST 'localhost:8081/api/courses/v1/createCourse' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "name": "HOC LAM GIAU",
+    "desc": "NEU MUON CO 100 ti THI PHAI THAM GIA NGAY :D",
+    "author": "VNTechies"
+}'
+
+# Tham gia khóa học:
+curl --location --request POST 'localhost:8081/api/courses/v1/joinCourse' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "courseId": "1",
+    "studentId": "1"
+}'
+
+# Lấy thông tin chi tiết khóa học:
+curl --location --request GET 'localhost:8081/api/courses/v1/getCourseDetailBy?courseId=1'
+```
+
+Bạn có thể tham khảo source code [ở đây](https://github.com/nbthanh98/k8s-springboot-series).
+
+## 4. Setup Spring boot application
+
+Truy cập [Spring Initializr](https://start.spring.io/) để tạo mới một Spring Boot project. Điền thêm một số thông tin của project.
+
+### 4.1 Setup Students service
+
+1. Tạo mới project Spring boot với Spring Initializr
+
+![Tạo mới project Spring boot với Spring Initializr](/static/images/assets/create-project-student-service.png)
 
 Thông tin project và các dependencies:
 
-| Project             | Value                                                                                        |
-| ------------------- | -------------------------------------------------------------------------------------------- |
-| Tên                 | `k8s-springboot-series`                                                                      |
-| Build tool          | `Maven`                                                                                      |
-| Spring Boot version | `2.7.6`                                                                                      |
-| Java version        | `11`                                                                                         |
-| Dependencies        | `Spring Web`<br />`Spring Boot DevTools`<br />`Lombok`<br />`Spring Configuration Processor` |
+| Project             | Value                                                                                                                                     |
+| ------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
+| Tên                 | `students`                                                                                                                                |
+| Build tool          | `Maven`                                                                                                                                   |
+| Spring Boot version | `2.7.10`                                                                                                                                  |
+| Java version        | `11`                                                                                                                                      |
+| Dependencies        | `Spring Web`<br />`Spring Boot DevTools`<br />`Lombok`<br />`Spring Configuration Processor`<br /> `MySQL Driver`<br /> `Spring Data JPA` |
 
-Class `Student` dưới đây định nghĩa các trường thông tin về Student:
+2. Tạo file `application.yaml` để cấu hình service
 
-```java:src/main/java/com/vntechies/k8sspringbootseries/entity/Student.java
+```yaml:src/main/resources/application.yaml
+server:
+  port: ${SERVER_PORT:8081}
+
+# Cấu hình thông tin database (MySQL) gồm: tên database, username và password của user MySQL.
+spring:
+  datasource:
+    driverClassName: com.mysql.jdbc.Driver
+    url: ${MYSQL_URL:jdbc:mysql://localhost:3306/students}
+    username: ${MYSQL_USERNAME:students}
+    password: ${MYSQL_PASSWORD:VNTechies2023}
+  jpa:
+    hibernate.ddl-auto: update
+    generate-ddl: true
+    show-sql: true
+```
+
+3. Một số class của Students service
+
+File `Student.java` dưới đây định nghĩa các trường thông tin về học sinh:
+
+```java:students/src/main/java/com/vntechies/k8sspringbootseries/students/entities/Student.java
 @Data
+@Entity
 @AllArgsConstructor
 @NoArgsConstructor
+@Table(name = "students")
 public class Student {
-    private UUID id;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(name = "fullName")
     private String fullName;
+
+    @Column(name = "dob")
     private String dateOfBirth;
+
+    @Column(name = "hometown")
     private String hometown;
+
+    @Column(name = "gender")
+    @Enumerated(EnumType.STRING)
     private Gender gender;
 
     public static Student createFrom(CreateStudentRequest request) {
         Student student = new Student();
-        student.setId(UUID.randomUUID());
         student.setFullName(request.getFullName());
         student.setDateOfBirth(request.getDateOfBirth());
         student.setHometown(request.getHometown());
@@ -78,12 +163,12 @@ public class Student {
 }
 ```
 
-Class `StudentControllers` dưới đây định nghĩa các API như:
+File `StudentControllers.java` dưới đây định nghĩa một số API như:
 
-- POST `/api/students`: tạo mới Student.
-- GET `/api/students`: lấy danh sách Student.
+- POST: /api/students: Tạo mới học sinh.
+- GET: /api/students: Lấy danh sách học sinh.
 
-```java:src/main/java/com/vntechies/k8sspringbootseries/controllers/StudentControllers.java
+```java:students/src/main/java/com/vntechies/k8sspringbootseries/students/controllers/StudentControllers.java
 @RestController
 @RequestMapping(value = "/api/students")
 public class StudentControllers {
@@ -95,41 +180,237 @@ public class StudentControllers {
     }
 
     @PostMapping
-    public ResponseEntity<StudentResp> createStudent(@RequestBody CreateStudentRequest request) {
+    public ResponseEntity<StudentDTO> createStudent(@RequestBody CreateStudentRequest request) {
         return new ResponseEntity<>(iStudentService.createStudent(request), HttpStatus.CREATED);
     }
 
     @GetMapping
-    public ResponseEntity<List<StudentResp>> getAllStudents() {
+    public ResponseEntity<List<StudentDTO>> getAllStudents() {
         return new ResponseEntity<>(iStudentService.getAll(), HttpStatus.OK);
     }
 }
 ```
 
-Class `StudentServiceImpl` dưới đây định nghĩa các logic tạo mới `Student` và lấy danh sách `Student`:
+File `StudentServiceImpl.java` dưới đây định nghĩa các logic cho các API phía trên:
 
-```java:src/main/java/com/vntechies/k8sspringbootseries/services/StudentServiceImpl.java
+```java:students/src/main/java/com/vntechies/k8sspringbootseries/services/StudentServiceImpl.java
 @Service
 public class StudentServiceImpl implements IStudentService {
 
     private static final ObjectMapper objectMapper = new ObjectMapper();
-    private static final List<Student> STUDENTS = new ArrayList<>();
+    private final IStudentRepository iStudentRepository;
 
-    @Override
-    public StudentResp createStudent(CreateStudentRequest request) {
-        Student student = Student.createFrom(request);
-        STUDENTS.add(student);
-        return objectMapper.convertValue(student, StudentResp.class);
+    public StudentServiceImpl(IStudentRepository iStudentRepository) {
+        this.iStudentRepository = iStudentRepository;
     }
 
     @Override
-    public List<StudentResp> getAll() {
-        List<StudentResp> studentRespList = new ArrayList<>();
-        for (Student student : STUDENTS) {
-            StudentResp studentResp = objectMapper.convertValue(student, StudentResp.class);
+    public StudentDTO createStudent(CreateStudentRequest request) {
+        Student student = iStudentRepository.save(Student.createFrom(request));
+        return objectMapper.convertValue(student, StudentDTO.class);
+    }
+
+    @Override
+    public List<StudentDTO> getAll() {
+        List<Student> students = iStudentRepository.findAll();
+        List<StudentDTO> studentRespList = new ArrayList<>();
+        for (Student student : students) {
+            StudentDTO studentResp = objectMapper.convertValue(student, StudentDTO.class);
             studentRespList.add(studentResp);
         }
         return studentRespList;
+    }
+}
+```
+
+### 4.2 Setup Courses service
+
+1. Tạo mới project Spring boot với Spring Initializr
+
+![Tạo mới project Spring boot với Spring Initializr](/static/images/assets/create-project-courses-service.png)
+
+Thông tin project và các dependencies:
+
+| Project             | Value                                                                                                                                     |
+| ------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
+| Tên                 | `courses`                                                                                                                                 |
+| Build tool          | `Maven`                                                                                                                                   |
+| Spring Boot version | `2.7.10`                                                                                                                                  |
+| Java version        | `11`                                                                                                                                      |
+| Dependencies        | `Spring Web`<br />`Spring Boot DevTools`<br />`Lombok`<br />`Spring Configuration Processor`<br /> `MySQL Driver`<br /> `Spring Data JPA` |
+
+2. Tạo file `application.yaml` để cấu hình service
+
+```yaml:courses/src/main/resources/application.yaml
+server:
+  port : ${SERVER_PORT:8080}
+
+# Cấu hình thông tin database (MySQL) gồm: tên database, username và password của user MySQL.
+spring:
+  datasource:
+    driverClassName: com.mysql.jdbc.Driver
+    url: ${MYSQL_URL:jdbc:mysql://localhost:3306/courses}
+    username: ${MYSQL_USERNAME:courses}
+    password: ${MYSQL_PASSWORD:VNTechies2023}
+  jpa:
+    hibernate.ddl-auto: update
+    generate-ddl: true
+    show-sql: true
+
+# Cấu hình thông tin URI của Students service.
+clients:
+  services:
+    students:
+      uri: ${STUDENTS_URI:http://localhost:8081}
+```
+
+3. Một số class của Courses service
+
+File `Courses.java` định nghĩa các thông tin khóa học:
+
+```java:courses/src/main/java/com/vntechies/k8sspringbootseries/courses/entities/Courses.java
+@Data
+@Entity
+@NoArgsConstructor
+@AllArgsConstructor
+@Table(name = "courses")
+public class Courses {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(name = "name")
+    private String name;
+
+    @Column(name = "description")
+    private String desc;
+
+    @Column(name = "author")
+    private String author;
+}
+```
+
+File `CoursesMembers.java` dùng để lưu thông tin học sinh đã tham gia khóa học:
+
+```Java:courses/src/main/java/com/vntechies/k8sspringbootseries/courses/entities/CoursesMembers.java
+@Data
+@Entity
+@NoArgsConstructor
+@AllArgsConstructor
+@Table(name = "courses_members")
+public class CoursesMembers {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(name = "course_id")
+    private Long courseId;
+
+    @Column(name = "member_id")
+    private Long memberId;
+
+    public CoursesMembers(Long courseId, Long memberId) {
+        this.courseId = courseId;
+        this.memberId = memberId;
+    }
+}
+```
+
+File `CoursesControllers.java` dưới đây định nghĩa một số API như:
+
+- POST: /v1/createCourse: Tạo mới khóa học.
+- POST: /v1/joinCourse: Học sinh tham gia khóa học.
+- GET: /v1/getCourseDetailBy: Lấy thông tin chi tiết của khóa học.
+
+```Java:courses/src/main/java/com/vntechies/k8sspringbootseries/courses/controllers/CoursesControllers.java
+@RestController
+@RequestMapping(value = "/api/courses")
+public class CoursesControllers {
+
+    private final ICoursesService iCoursesService;
+
+    public CoursesControllers(ICoursesService iCoursesService) {
+        this.iCoursesService = iCoursesService;
+    }
+
+    @PostMapping(value = "/v1/createCourse")
+    public ResponseEntity<BaseResponse<CourseDto>> createCourse(@RequestBody CreateCourseReq req) {
+        return new ResponseEntity<>(BaseResponse.buildSuccessResp(iCoursesService.createCourse(req)), HttpStatus.OK);
+    }
+
+    @PostMapping(value = "/v1/joinCourse")
+    public ResponseEntity<BaseResponse<CourseDto>> joinCourse(@RequestBody JoinCourseReq req) {
+        return new ResponseEntity<>(BaseResponse.buildSuccessResp(iCoursesService.joinCourse(req)), HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/v1/getCourseDetailBy")
+    public ResponseEntity<BaseResponse<CourseDetail>> getCourseDetailBy(@RequestParam(name = "courseId") Long courseId) {
+        return new ResponseEntity<>(BaseResponse.buildSuccessResp(iCoursesService.getCourseDetailBy(courseId)), HttpStatus.OK);
+    }
+}
+```
+
+File `CoursesServiceImpl.java` dưới đây định nghĩa các logic cho các API phía trên:
+
+```java:courses/src/main/java/com/vntechies/k8sspringbootseries/courses/services/CoursesServiceImpl.java
+@Service
+@AllArgsConstructor
+public class CoursesServiceImpl implements ICoursesService {
+
+    private final ObjectMapper objectMapper;
+    private final IStudentClient iStudentClient;
+    private final ICoursesRepository iCoursesRepository;
+    private final ICoursesMembersRepository iCoursesMembersRepository;
+
+    @Override
+    public CourseDto createCourse(CreateCourseReq req) {
+        Courses courses = new Courses();
+        courses.setName(req.getName());
+        courses.setAuthor(req.getAuthor());
+        courses.setDesc(req.getDesc());
+        Courses coursesDB = iCoursesRepository.save(courses);
+        return objectMapper.convertValue(coursesDB, CourseDto.class);
+    }
+
+    @Override
+    public CourseDetail getCourseDetailBy(Long courseId) {
+        CourseDetail courseDetail = new CourseDetail();
+        Courses courses = iCoursesRepository.findByID(courseId);
+        if (Objects.isNull(courses)) {
+            throw new CustomException("Courses not found!");
+        }
+        List<Long> membersId = new ArrayList<>();
+        List<CoursesMembers> membersOfCourse = iCoursesMembersRepository.getAllById(courseId);
+        for (CoursesMembers member : membersOfCourse) {
+            membersId.add(member.getMemberId());
+        }
+        if (!membersId.isEmpty()) {
+            GetStudentsByIdsResp studentsResp = iStudentClient.getStudentsByIds(new GetStudentsByIdsReq(membersId));
+            List<MemberInfo> membersInfo = studentsResp.getStudents().stream()
+                    .map(studentDTO -> objectMapper.convertValue(studentDTO, MemberInfo.class))
+                    .collect(Collectors.toList());
+
+            courseDetail.setMembers(membersInfo);
+        }
+        courseDetail.setCourse(objectMapper.convertValue(courses, CourseDto.class));
+        return courseDetail;
+    }
+
+    @Override
+    public CourseDto joinCourse(JoinCourseReq req) {
+        Courses courses = iCoursesRepository.findByID(req.getCourseId());
+        if (Objects.isNull(courses)) {
+            throw new CustomException("Courses not found!");
+        }
+        StudentDTO studentDetail = iStudentClient.getStudentById(req.getStudentId());
+        if (Objects.isNull(studentDetail)) {
+            throw new CustomException("Student not found!");
+        }
+        CoursesMembers coursesMember = new CoursesMembers(courses.getId(), studentDetail.getId());
+        iCoursesMembersRepository.save(coursesMember);
+        return objectMapper.convertValue(courses, CourseDto.class);
     }
 }
 ```
