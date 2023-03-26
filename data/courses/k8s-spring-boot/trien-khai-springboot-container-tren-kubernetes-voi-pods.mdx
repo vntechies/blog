@@ -205,29 +205,154 @@ thanhnb1/courses-service         latest             952be9fc9167   About a minut
 thanhnb1/students-service        latest             ed7873e44035   13 minutes ago       478MB
 ```
 
-**2. Tạo docker container từ docker image**
+**2. Triển khai ứng dụng với Docker**
 
-Sau bước build docker image từ Dockerfile trên thì bạn đã có một docker image là `k8s-springboot-series:latest`, giờ bạn có thể chạy một hoặc nhiều docker container từ docker image vừa được build bằng lệnh sau:
+Sau bước build docker image từ Dockerfile phía trên thì bạn đã có docker image của hai service:
+
+- Courses service: thanhnb1/courses-service:latest.
+- Students service: thanhnb1/students-service:latest.
+
+Để triển khai ứng dụng với Docker cần phải tạo một hoặc nhiều container từ docker image mới build được. Tạo một hoặc nhiều container từ docker image bạn sử dụng lệnh sau:
 
 ```shell
-docker run --name k8s-springboot-series -d -p 8080:8080 k8s-springboot-series:latest
+docker run --name <CONTAINER_NAME> -d -p <PORT_MAPPING>:<PORT_CONTAINER> <IMAGE_NAME>:<IMAGE_TAG>
 ```
 
-Kiểm tra docker container bằng lệnh:
+Vì hai service: Students-service và Courses-service đang sử dụng MySQL làm database nên cần triển khai MySQL container trước. Ở đây mình sẽ triển khai MySQL container sử dụng [docker-compose](https://docs.docker.com/compose/). Bạn có thể tham khảo file docker-compose MySQL này [ở đây](https://github.com/nbthanh98/k8s-springboot-series/blob/master/docker/mysql-docker-compose.yaml):
+
+```yaml:docker/mysql-docker-compose.yaml
+version: '3'
+services:
+  mysql:
+    container_name: mysql
+    image: mysql:5.7
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    environment:
+      MYSQL_ROOT_PASSWORD: VNTechies2023
+
+volumes:
+  db_data:
+```
+
+Triển khai MySQL container sử dụng docker-compose sử dụng lệnh sau:
+
+```shell
+docker-compose -f mysql-docker-compose.yaml up -d
+
+Starting mysql ... done
+```
+
+Kiểm tra MySQL container:
 
 ```shell
 docker ps
 
-CONTAINER ID   IMAGE                          COMMAND                  CREATED         STATUS         PORTS                                       NAMES
-14330e1c04cb   k8s-springboot-series:latest   "java -jar /workspac…"   3 seconds ago   Up 2 seconds   0.0.0.0:8080->8080/tcp, :::8080->8080/tcp   k8s-springboot-series
+CONTAINER ID   IMAGE       COMMAND                  CREATED      STATUS              PORTS                                                  NAMES
+9826e663a6fc   mysql:5.7   "docker-entrypoint.s…"   2 days ago   Up About a minute   0.0.0.0:3306->3306/tcp, :::3306->3306/tcp, 33060/tcp   mysql
 ```
 
-**3. Dùng [Postman](https://www.postman.com/downloads/) để test các API ứng dụng**
+Tạo docker-compose file để triển khai Students-service và Courses-service. Bạn có thể tham khảo file docker-compose này [ở đây](https://github.com/nbthanh98/k8s-springboot-series/blob/master/docker/all-services-docker-compose.yml):
 
-_API tạo mới Student_: `/api/students`, method `POST` và Request body:
+```YAML:docker/all-services-docker-compose.yml
+version: '3'
+services:
+  mysql:
+    container_name: mysql
+    image: mysql:5.7
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    environment:
+      MYSQL_ROOT_PASSWORD: VNTechies2023
 
-```json
+  students-svc:
+    container_name: students
+
+    # Dockerimage mà Students-service sử dụng để tạo container.
+    image: thanhnb1/students-service:latest
+
+    # Các biến môi trường sẽ được thêm vào container.
+    environment:
+      - SERVER_PORT=8080
+      - MYSQL_URL=jdbc:mysql://mysql:3306/students
+      - MYSQL_USERNAME=students
+      - MYSQL_PASSWORD=VNTechies2023
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mysql
+    restart: always
+
+  courses-svc:
+    container_name: courses
+
+    # Dockerimage mà Courses-service sử dụng để tạo container.
+    image: thanhnb1/courses-service:latest
+
+    # Các biến môi trường sẽ được thêm vào container.
+    environment:
+      - SERVER_PORT=8080
+      - MYSQL_URL=jdbc:mysql://mysql:3306/courses
+      - MYSQL_USERNAME=courses
+      - MYSQL_PASSWORD=VNTechies2023
+      - STUDENTS_URI=http://students:8080
+    ports:
+      - "8081:8080"
+    depends_on:
+      - mysql
+    restart: always
+
+volumes:
+  db_data:
+```
+
+Triển khai Students-service và Courses-service sử dụng docker-compose sử dụng lệnh sau:
+
+```shell
+docker-compose -f all-services-docker-compose.yml up -d
+
+mysql is up-to-date
+Creating courses  ... done
+Creating students ... done
+```
+
+Kiểm tra Students-service và Courses-service containers:
+
+```shell
+docker ps
+
+CONTAINER ID   IMAGE                              COMMAND                  CREATED          STATUS          PORTS                                                  NAMES
+737a73fa3c11   thanhnb1/students-service:latest   "java -jar /workspac…"   49 seconds ago   Up 48 seconds   0.0.0.0:8080->8080/tcp, :::8080->8080/tcp              students
+e05ee1586cf1   thanhnb1/courses-service:latest    "java -jar /workspac…"   49 seconds ago   Up 48 seconds   0.0.0.0:8081->8080/tcp, :::8081->8080/tcp              courses
+9826e663a6fc   mysql:5.7                          "docker-entrypoint.s…"   2 days ago       Up 14 minutes   0.0.0.0:3306->3306/tcp, :::3306->3306/tcp, 33060/tcp   mysql
+```
+
+**3. Test các API của ứng dụng**
+
+Sử dụng một số công cụ để thực hiện gọi APIs ví dụ như: [postman](https://www.postman.com/downloads/), cURL,... Trong bài này mình sẽ sử dụng cURL:
+
+- [Students Service] - _API tạo mới Student_: `/api/students` với method `POST` và Request body:
+
+```shell
+# Tạo mới học sinh:
+curl --location --request POST 'localhost:8080/api/students' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "fullName": "NGUYEN BA THANH",
+    "dateOfBirth": "29/04/1998",
+    "hometown": "HA DONG, HA NOI",
+    "gender": "MALE"
+}'
+
+# Response:
 {
+  "id": 1,
   "fullName": "NGUYEN BA THANH",
   "dateOfBirth": "29/04/1998",
   "hometown": "HA DONG, HA NOI",
@@ -235,11 +360,99 @@ _API tạo mới Student_: `/api/students`, method `POST` và Request body:
 }
 ```
 
-![API tạo mới Student với Postman](/static/images/assets/call-api-create-student.png)
+- [Students Service] - _API lấy danh sách Student_: `/api/students` với method `GET`.
 
-_API lấy danh sách Student_: `/api/students`, method `GET`.
+```shell
+# Danh sách học sinh:
+curl --location --request GET 'localhost:8080/api/students'
 
-![API lấy danh sách Student với Postman](/static/images/assets/get-all-student.png)
+# Response:
+[
+  {
+    "id": 1,
+    "fullName": "NGUYEN BA THANH",
+    "dateOfBirth": "29/04/1998",
+    "hometown": "HA DONG, HA NOI",
+    "gender": "MALE"
+  }
+]
+```
+
+- [Courses Service] - _API tạo mới Course_: `/api/courses/v1/createCourse` với method `POST` và Request body:
+
+```shell
+curl --location --request POST 'localhost:8081/api/courses/v1/createCourse' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "name": "HOC LAM GIAU",
+    "desc": "NEU MUON CO 100 ti THI PHAI THAM GIA NGAY :D",
+    "author": "VNTechies"
+}'
+
+# Response:
+{
+  "success": true,
+  "msg": "Success",
+  "data": {
+    "id": 1,
+    "name": "HOC LAM GIAU",
+    "desc": "NEU MUON CO 100 ti THI PHAI THAM GIA NGAY :D",
+    "author": "VNTechies"
+  }
+}
+```
+
+- [Courses Service] - _API Học sinh tham gia Khóa Học_: `/api/courses/v1/joinCourse` với method `POST` và Request body:
+
+```shell
+curl --location --request POST 'localhost:8081/api/courses/v1/joinCourse' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "courseId": "1",
+    "studentId": "1"
+}'
+
+# Response:
+{
+  "success": true,
+  "msg": "Success",
+  "data": {
+    "id": 1,
+    "name": "HOC LAM GIAU",
+    "desc": "NEU MUON CO 100 ti THI PHAI THAM GIA NGAY :D",
+    "author": "VNTechies"
+  }
+}
+```
+
+- [Courses Service] - _API Lấy chi tiết Khóa Học_: `/api/courses/v1/joinCourse` với method `GET`:
+
+```shell
+curl --location --request GET 'localhost:8081/api/courses/v1/getCourseDetailBy?courseId=1'
+
+# Response:
+{
+  "success": true,
+  "msg": "Success",
+  "data": {
+    "course": {
+      "id": 1,
+      "name": "HOC LAM GIAU",
+      "desc": "NEU MUON CO 100 ti THI PHAI THAM GIA NGAY :D",
+      "author": "VNTechies"
+    },
+    "members": [
+      {
+        "id": 1,
+        "fullName": "NGUYEN BA THANH",
+        "dateOfBirth": "29/04/1998",
+        "hometown": "HA DONG, HA NOI",
+        "gender": "MALE"
+      }
+    ]
+  }
+}
+```
 
 ## 4. Đóng gói container với pods và triển khai trên Kubernetes
 
@@ -260,40 +473,52 @@ Vì một pod có thể chứa một hoặc nhiều containers. Lý do chính đ
 
 **Định nghĩa Pod YAML file**
 
-Pod hoặc các object khác của Kubernetes thường được tạo bằng cách định nghĩa các file YAML (thường được gọi là file YAML manifest). Bạn cũng có thể sử dụng lệnh `kubectl run ...` để tạo các object nhưng trong thực tế, cách này không thường xuyên được sử dụng. Lý do là việc tạo các object thông qua định nghĩa các file YAML giúp chúng ta tái sử dụng nhiều lần, bảo đảm tính nhất quán và quản lý một cách tốt hơn. Ví dụ như file YAML dưới đây định nghĩa một pod trên k8s.
+Pod hoặc các object khác của Kubernetes thường được tạo bằng cách định nghĩa các file YAML (thường được gọi là file YAML manifest). Bạn cũng có thể sử dụng lệnh `kubectl run ...` để tạo các object nhưng trong thực tế, cách này không thường xuyên được sử dụng. Lý do là việc tạo các object thông qua định nghĩa các file YAML giúp chúng ta tái sử dụng nhiều lần, bảo đảm tính nhất quán và quản lý một cách tốt hơn.
 
-```yaml:pod-springboot-series.yaml
+Ví dụ như file YAML dưới đây định nghĩa pod của **Students service** và cũng tương tự với **Courses Service** trên k8s.
+
+```yaml:k8s/students-service-pod.yaml
 apiVersion: v1
 kind: Pod
 metadata:
-  name: k8s-springboot-series
+  name: students-service
   labels:
-    app: k8s-springboot-series
+    app: students-service
 spec:
   containers:
-    - name: k8s-springboot-series
-      image: thanhnb1/k8s-springboot-series:latest
+    - name: students-service
+      image: thanhnb1/students-service:latest
+      env:
+      - name: SERVER_PORT
+        value: "8080"
+      - name: MYSQL_URL
+        value: "jdbc:mysql://mysql:3306/students"
+      - name: MYSQL_USERNAME
+        value: "students"
+      - name: MYSQL_PASSWORD
+        value: "VNTechies2023"
       ports:
         - containerPort: 8080
-          name: http
+          name:  http
   restartPolicy: Always
 ```
 
 Mô tả các phần của file yaml trên:
 
-| Tên          | Định nghĩa                                                                                                                                                                                                                                                                       |
-| ------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `apiVersion` | Version của [Kubernetes API](https://kubernetes.io/docs/reference/kubernetes-api/) mà bạn sử dụng để tạo object/resource, ở đây là `v1`.                                                                                                                                         |
-| `kind`       | Loại object/resource của Kubernetes, ở file trên là pod.                                                                                                                                                                                                                         |
-| `metadata`   | Các thông tin như: name, labels, namespace và các thông tin khác của object/resource. Ở file trên, tên của pod là: `name: k8s-springboot-series`, lables của pod là: `app: k8s-springboot-series`.                                                                               |
-| `spec`       | Mô tả các thông tin của container như: tên container, docker image được sử dụng, port của container. Ở file trên, tên của container là: `name: k8s-springboot-series`, dùng image: `image: thanhnb1/k8s-springboot-series:latest`, port của container là: `containerPort: 8080`. |
+| Tên                   | Định nghĩa                                                                                                                                                                                                                                                      |
+| --------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `apiVersion`          | Version của [Kubernetes API](https://kubernetes.io/docs/reference/kubernetes-api/) mà bạn sử dụng để tạo object/resource, ở đây là `v1`.                                                                                                                        |
+| `kind`                | Loại object/resource của Kubernetes, ở file trên là pod.                                                                                                                                                                                                        |
+| `metadata`            | Các thông tin như: name, labels, namespace và các thông tin khác của object/resource. Ví dụ `name: students-service`, lables của pod: `app: students-service`.                                                                                                  |
+| `spec`                | Mô tả các thông tin của container như: tên container, docker image được sử dụng, port của container. Ví dụ tên của container là: `name: students-service`, dùng image: `image: thanhnb1/students-service:latest`, port của container là: `containerPort: 8080`. |
+| `spec.containers.env` | Mô tả các thông tin biến môi trường mà sẽ được thêm vào trong container. Kubernetes cũng có hỗ trợ các object như ConfigMap và Secret để làm điều tương tự nhưng chúng ta sẽ tìm hiểu nó trong những bài sau.                                                   |
 
 **Tạo pod từ YAML file**
 
-Để tạo pod từ YAML file ta sử dụng lệnh: `kubectl apply -f <path-yaml-file>`. Lệnh này còn được sử dụng để tạo các object/resource khác của Kubernetes, không chi riêng pod.
+Để tạo pod từ YAML file ta sử dụng lệnh: `kubectl apply -f <PATH_YAML_FILE>`. Lệnh này còn được sử dụng để tạo các object/resource khác của Kubernetes, không chi riêng pod.
 
 ```shell
-kubectl apply -f <path-yaml-file>
+kubectl apply -f <PATH_YAML_FILE>
 
 # Tạo Pod từ file pod-springboot-series.yaml
 kubectl apply -f k8s/pod-springboot-series.yaml
