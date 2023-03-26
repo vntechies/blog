@@ -337,7 +337,7 @@ e05ee1586cf1   thanhnb1/courses-service:latest    "java -jar /workspac…"   49 
 
 Sử dụng một số công cụ để thực hiện gọi APIs ví dụ như: [postman](https://www.postman.com/downloads/), cURL,... Trong bài này mình sẽ sử dụng cURL:
 
-- [Students Service] - _API tạo mới Student_: `/api/students` với method `POST` và Request body:
+1. [Students Service] - _API tạo mới Student_: `/api/students` với method `POST` và Request body:
 
 ```shell
 # Tạo mới học sinh:
@@ -351,34 +351,20 @@ curl --location --request POST 'localhost:8080/api/students' \
 }'
 
 # Response:
-{
-  "id": 1,
-  "fullName": "NGUYEN BA THANH",
-  "dateOfBirth": "29/04/1998",
-  "hometown": "HA DONG, HA NOI",
-  "gender": "MALE"
-}
+{"success":true,"msg":"Success","data":{"id":1,"name":"HOC LAM GIAU","desc":"NEU MUON CO 100 ti THI PHAI THAM GIA NGAY :D","author":"VNTechies"}}
 ```
 
-- [Students Service] - _API lấy danh sách Student_: `/api/students` với method `GET`.
+2. [Students Service] - _API lấy danh sách Student_: `/api/students` với method `GET`.
 
 ```shell
 # Danh sách học sinh:
 curl --location --request GET 'localhost:8080/api/students'
 
 # Response:
-[
-  {
-    "id": 1,
-    "fullName": "NGUYEN BA THANH",
-    "dateOfBirth": "29/04/1998",
-    "hometown": "HA DONG, HA NOI",
-    "gender": "MALE"
-  }
-]
+[{"id":1,"fullName":"NGUYEN BA THANH","dateOfBirth":"29/04/1998","hometown":"HA DONG, HA NOI","gender":"MALE"}]
 ```
 
-- [Courses Service] - _API tạo mới Course_: `/api/courses/v1/createCourse` với method `POST` và Request body:
+3. [Courses Service] - _API tạo mới Course_: `/api/courses/v1/createCourse` với method `POST` và Request body:
 
 ```shell
 curl --location --request POST 'localhost:8081/api/courses/v1/createCourse' \
@@ -390,19 +376,10 @@ curl --location --request POST 'localhost:8081/api/courses/v1/createCourse' \
 }'
 
 # Response:
-{
-  "success": true,
-  "msg": "Success",
-  "data": {
-    "id": 1,
-    "name": "HOC LAM GIAU",
-    "desc": "NEU MUON CO 100 ti THI PHAI THAM GIA NGAY :D",
-    "author": "VNTechies"
-  }
-}
+{"success":true,"msg":"Success","data":{"id":1,"name":"HOC LAM GIAU","desc":"NEU MUON CO 100 ti THI PHAI THAM GIA NGAY :D","author":"VNTechies"}}
 ```
 
-- [Courses Service] - _API Học sinh tham gia Khóa Học_: `/api/courses/v1/joinCourse` với method `POST` và Request body:
+4. [Courses Service] - _API Học sinh tham gia Khóa Học_: `/api/courses/v1/joinCourse` với method `POST` và Request body:
 
 ```shell
 curl --location --request POST 'localhost:8081/api/courses/v1/joinCourse' \
@@ -413,45 +390,16 @@ curl --location --request POST 'localhost:8081/api/courses/v1/joinCourse' \
 }'
 
 # Response:
-{
-  "success": true,
-  "msg": "Success",
-  "data": {
-    "id": 1,
-    "name": "HOC LAM GIAU",
-    "desc": "NEU MUON CO 100 ti THI PHAI THAM GIA NGAY :D",
-    "author": "VNTechies"
-  }
-}
+{"success":true,"msg":"Success","data":{"id":1,"name":"HOC LAM GIAU","desc":"NEU MUON CO 100 ti THI PHAI THAM GIA NGAY :D","author":"VNTechies"}}
 ```
 
-- [Courses Service] - _API Lấy chi tiết Khóa Học_: `/api/courses/v1/joinCourse` với method `GET`:
+5. [Courses Service] - _API Lấy chi tiết Khóa Học_: `/api/courses/v1/joinCourse` với method `GET`:
 
 ```shell
 curl --location --request GET 'localhost:8081/api/courses/v1/getCourseDetailBy?courseId=1'
 
 # Response:
-{
-  "success": true,
-  "msg": "Success",
-  "data": {
-    "course": {
-      "id": 1,
-      "name": "HOC LAM GIAU",
-      "desc": "NEU MUON CO 100 ti THI PHAI THAM GIA NGAY :D",
-      "author": "VNTechies"
-    },
-    "members": [
-      {
-        "id": 1,
-        "fullName": "NGUYEN BA THANH",
-        "dateOfBirth": "29/04/1998",
-        "hometown": "HA DONG, HA NOI",
-        "gender": "MALE"
-      }
-    ]
-  }
-}
+{"success":true,"msg":"Success","data":{"course":{"id":1,"name":"HOC LAM GIAU","desc":"NEU MUON CO 100 ti THI PHAI THAM GIA NGAY :D","author":"VNTechies"},"members":[{"id":1,"fullName":"NGUYEN BA THANH","dateOfBirth":"29/04/1998","hometown":"HA DONG, HA NOI","gender":"MALE"}]}}
 ```
 
 ## 4. Đóng gói container với pods và triển khai trên Kubernetes
@@ -460,22 +408,28 @@ curl --location --request GET 'localhost:8081/api/courses/v1/getCourseDetailBy?c
 
 ![pods kubernetes](/static/images/assets/pod-kubernetes.png)
 
-**Pod là gì?**
+_Credit: Internet_
+
+### Pod là gì?
 
 Đối với Docker, containers là đơn vị nhỏ nhất có thể triển khai, còn với Kubernetes đó là pod. Kubernetes không chạy container một cách trực tiếp mà thay vào đó Kubernetes sẽ đóng gói một hoặc nhiều containers trong một pod và triển khai pod trên cụm Kubernetes. Các containers bên trong pod chia sẻ network namespace bao gồm địa chỉ IP, network port và storage resources:
 
 - `Network`: Các containers bên trong pod có thể giao tiếp với nhau dễ dàng thông qua `localhost:<PORT_CONTAINER>`.
 - `Storage`: Các containers bên trong pod có thể chia sẻ với nhau một volume.
 
-**Tại sao Kubernetes sử dụng Pod mà không chạy trực tiếp containers?**
+### Tại sao Kubernetes sử dụng Pod mà không chạy trực tiếp containers?
 
 Vì một pod có thể chứa một hoặc nhiều containers. Lý do chính để pod có thể chạy containers là để có thể chạy các ứng dụng trợ giúp hỗ trợ ứng dụng chính. Ví dụ như các ứng dụng đẩy và kéo dữ liệu, proxy, monitoring,.... Việc sử dụng một pod để chạy các containers này giúp đơn giản hoá quá trình giao tiếp, làm việc giữa các ứng dụng này. Tham khảo thêm [trang web chính thức của Kubernetes](https://kubernetes.io/docs/tasks/access-application-cluster/communicate-containers-same-pod-shared-volume/)
+
+### Cấu hình Pod và triển khai trên Kubernetes
 
 **Định nghĩa Pod YAML file**
 
 Pod hoặc các object khác của Kubernetes thường được tạo bằng cách định nghĩa các file YAML (thường được gọi là file YAML manifest). Bạn cũng có thể sử dụng lệnh `kubectl run ...` để tạo các object nhưng trong thực tế, cách này không thường xuyên được sử dụng. Lý do là việc tạo các object thông qua định nghĩa các file YAML giúp chúng ta tái sử dụng nhiều lần, bảo đảm tính nhất quán và quản lý một cách tốt hơn.
 
-Ví dụ như file YAML dưới đây định nghĩa pod của **Students service** và cũng tương tự với **Courses Service** trên k8s.
+Ví dụ như file YAML dưới đây định nghĩa pod của **Students service** và cũng tương tự với **Courses Service** trên k8s. Bạn có thể tham khảo các file cấu hình [ở đây](https://github.com/nbthanh98/k8s-springboot-series/tree/master/k8s).
+
+Tạo file students-pod.yaml để cấu hình pod cho Students service:
 
 ```yaml:k8s/students-service-pod.yaml
 apiVersion: v1
@@ -488,6 +442,8 @@ spec:
   containers:
     - name: students-service
       image: thanhnb1/students-service:latest
+
+      # Các biến môi trường sẽ được thêm vào container.
       env:
       - name: SERVER_PORT
         value: "8080"
@@ -503,15 +459,50 @@ spec:
   restartPolicy: Always
 ```
 
-Mô tả các phần của file yaml trên:
+Tạo file courses-pod.yaml để cấu hình pod cho Courses service:
 
-| Tên                   | Định nghĩa                                                                                                                                                                                                                                                      |
-| --------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `apiVersion`          | Version của [Kubernetes API](https://kubernetes.io/docs/reference/kubernetes-api/) mà bạn sử dụng để tạo object/resource, ở đây là `v1`.                                                                                                                        |
-| `kind`                | Loại object/resource của Kubernetes, ở file trên là pod.                                                                                                                                                                                                        |
-| `metadata`            | Các thông tin như: name, labels, namespace và các thông tin khác của object/resource. Ví dụ `name: students-service`, lables của pod: `app: students-service`.                                                                                                  |
-| `spec`                | Mô tả các thông tin của container như: tên container, docker image được sử dụng, port của container. Ví dụ tên của container là: `name: students-service`, dùng image: `image: thanhnb1/students-service:latest`, port của container là: `containerPort: 8080`. |
-| `spec.containers.env` | Mô tả các thông tin biến môi trường mà sẽ được thêm vào trong container. Kubernetes cũng có hỗ trợ các object như ConfigMap và Secret để làm điều tương tự nhưng chúng ta sẽ tìm hiểu nó trong những bài sau.                                                   |
+```yaml:k8s/courses-pod.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: courses-service
+  labels:
+    app: courses-service
+spec:
+  containers:
+    - name: courses-service
+      image: thanhnb1/courses-service:latest
+      env:
+      - name: SERVER_PORT
+        value: "8080"
+      - name: MYSQL_URL
+        value: "jdbc:mysql://mysql:3306/courses"
+      - name: MYSQL_USERNAME
+        value: "courses"
+      - name: MYSQL_PASSWORD
+        value: "VNTechies2023"
+
+      # Cấu hình URI gọi đến Students service. Trong thực tế sẽ cấu hình đến Object Service trong Kubernetes
+      # nhưng vì chưa tìm hiểu đến object Service này (sẽ tìm hiểu trong bài sau) nên sẽ để IP và PORT của pod.
+      - name: STUDENTS_URI
+        value: <IP_POD>:<PORT_POD>
+      ports:
+        - containerPort: 8080
+          name:  http
+  restartPolicy: Always
+```
+
+Mô tả các phần của file cấu hình pod trên:
+
+| Tên                     | Định nghĩa                                                                                                                                                                                                                                                           |
+| ----------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `apiVersion`            | Version của [Kubernetes API](https://kubernetes.io/docs/reference/kubernetes-api/) mà bạn sử dụng để tạo object/resource, ở đây là `v1`.                                                                                                                             |
+| `kind`                  | Loại object/resource của Kubernetes, ở file trên là pod.                                                                                                                                                                                                             |
+| `metadata`              | Các thông tin như: name, labels, namespace và các thông tin khác của object/resource. Ví dụ `name: students-service`, lables của pod: `app: students-service`. Tương tự như vậy với Courses service `name: courses-service`, lables của pod: `app: courses-service`. |
+| `spec.containers`       | Mô tả các thông tin của container như: tên container, docker image được sử dụng, port của container, volume nếu sử dụng.                                                                                                                                             |
+| `spec.containers.image` | Mô tả thông tin image sẽ sử dụng. Ở file trên container `students-service` sẽ sử dụng image: `thanhnb1/students-service:latest`. Tương tự như vậy với Courses service `thanhnb1/courses-service:latest`.                                                             |
+| `spec.containers.env`   | Mô tả các thông tin biến môi trường mà sẽ được thêm vào trong container. Kubernetes cũng có hỗ trợ các object như ConfigMap và Secret để làm điều tương tự, chúng ta sẽ tìm hiểu nó trong những bài tiếp theo.                                                       |
+| `spec.containers.ports` | Mô tả ports của container ở trường `containerPort`, một containers có thể có nhiều ports. Ở ví dụ trên thì có một port 8080.                                                                                                                                         |
 
 **Tạo pod từ YAML file**
 
@@ -520,9 +511,13 @@ Mô tả các phần của file yaml trên:
 ```shell
 kubectl apply -f <PATH_YAML_FILE>
 
-# Tạo Pod từ file pod-springboot-series.yaml
-kubectl apply -f k8s/pod-springboot-series.yaml
-pod/k8s-springboot-series created
+# 1. Tạo Pod students-service từ file students-pod.yaml
+kubectl apply -f students-pod.yaml
+pod/students-service created
+
+# 2. Tạo Pod courses-service từ file courses-pod.yaml
+kubectl apply -f courses-pod.yaml
+pod/courses-service created
 ```
 
 **Lấy danh sách pods**
@@ -532,20 +527,18 @@ Sau khi tạo pod từ YAML file thành công, nếu muốn lấy danh sách pod
 ```shell
 kubectl get pods
 
-NAME                               READY   STATUS    RESTARTS        AGE
-k8s-springboot-series              1/1     Running   0               3m30s
+NAME                     READY   STATUS    RESTARTS       AGE
+students-service         1/1     Running   0              13m
+courses-service          1/1     Running   0              28s
 ```
 
 **Xem logs của ứng dụng**
 
-Trong series này, ứng dụng của chúng ta sử dụng spring boot, để xem logs của ứng dụng bên trong pod ta sử dụng lệnh: `kubectl logs -f pod/<pod-name>`. Trong trường hợp pod của các bạn có nhiều hơn một container thì có thể thêm tham số `-c` như sau: `kubectl logs -f pod/<pod-name> -c <container-name>` để xem logs của container cụ thể.
+Để xem logs của container bên trong pod trên Kubernetes ta sẽ sử dụng lệnh: `kubectl logs -f pod/<pod-name>`. Trong trường hợp pod của các bạn có nhiều hơn một container thì có thể thêm tham số `-c` như sau: `kubectl logs -f pod/<pod-name> -c <container-name>` để xem logs của container cụ thể.
 
-```shell
-kubectl logs -f pod/k8s-springboot-series
-
-kubectl logs -f pod/k8s-springboot-series -c k8s-springboot-series
-
-.   ____          _            __ _ _
+```
+kubectl logs -f po/students-service -c students-service
+ .   ____          _            __ _ _
  /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
 ( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
  \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
@@ -553,15 +546,19 @@ kubectl logs -f pod/k8s-springboot-series -c k8s-springboot-series
  =========|_|==============|___/=/_/_/_/
  :: Spring Boot ::                (v2.7.6)
 
-2022-12-11 23:23:53.775  INFO 1 --- [           main] c.v.k.K8sSpringbootSeriesApplication     : Starting K8sSpringbootSeriesApplication v0.0.1-SNAPSHOT using Java 11.0.16.1 on k8s-springboot-series with PID 1 (/workspace/app.jar started by root in /workspace)
-2022-12-11 23:23:53.776  INFO 1 --- [           main] c.v.k.K8sSpringbootSeriesApplication     : No active profile set, falling back to 1 default profile: "default"
-2022-12-11 23:23:54.309  INFO 1 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
-2022-12-11 23:23:54.316  INFO 1 --- [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
-2022-12-11 23:23:54.316  INFO 1 --- [           main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.69]
-2022-12-11 23:23:54.355  INFO 1 --- [           main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
-2022-12-11 23:23:54.356  INFO 1 --- [           main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 553 ms
-2022-12-11 23:23:54.660  INFO 1 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
-2022-12-11 23:23:54.666  INFO 1 --- [           main] c.v.k.K8sSpringbootSeriesApplication     : Started K8sSpringbootSeriesApplication in 1.14 seconds (JVM running for 1.384)
+2023-03-26 22:25:32.090  INFO 1 --- [           main] c.v.k.students.StudentsApplication       : Starting StudentsApplication v0.0.1-SNAPSHOT using Java 11.0.16.1 on students-service with PID 1 (/workspace/app.jar started by root in /workspace)
+2023-03-26 22:25:32.092  INFO 1 --- [           main] c.v.k.students.StudentsApplication       : No active profile set, falling back to 1 default profile: "default"
+2023-03-26 22:25:32.476  INFO 1 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2023-03-26 22:25:32.505  INFO 1 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 23 ms. Found 1 JPA repository interfaces.
+2023-03-26 22:25:32.817  INFO 1 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2023-03-26 22:25:32.824  INFO 1 --- [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2023-03-26 22:25:32.824  INFO 1 --- [           main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.69]
+2023-03-26 22:25:32.869  INFO 1 --- [           main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2023-03-26 22:25:32.869  INFO 1 --- [           main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 750 ms
+Loading class `com.mysql.jdbc.Driver'. This is deprecated. The new driver class is `com.mysql.cj.jdbc.Driver'. The driver is automatically registered via the SPI and manual loading of the driver class is generally unnecessary.
+.............
+2023-03-26 22:25:34.308  INFO 1 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2023-03-26 22:25:34.313  INFO 1 --- [           main] c.v.k.students.StudentsApplication       : Started StudentsApplication in 2.525 seconds (JVM running for 2.813)
 ```
 
 **Gửi request đến ứng dụng bên trong Pod**
@@ -573,64 +570,91 @@ Trạng thái của pod ở phần trên là `Running`. Khi xem logs của ứng
 Sử dụng lệnh `kubectl port-forward` để forward port 8888 của máy local đến port 8080 của ứng dụng
 
 ```shell
-kubectl port-forward pod/k8s-springboot-series 8888:8080
+kubectl port-forward pod/students-service 8888:8080
+Forwarding from 127.0.0.1:8888 -> 8080
+Forwarding from [::1]:8888 -> 8080
+Handling connection for 8888
 ```
 
-Sau khi chạy lệnh trên, chúng ta có thể truy cập ứng dụng và thông qua port 8888. Dùng [Postman](https://www.postman.com/downloads/) gọi các API:
+Sau khi chạy lệnh trên, chúng ta có thể truy cập ứng dụng và thông qua port 8888. Dùng cURL để gọi các API:
 
-API tạo mới Student
+```shell
+curl --location --request POST 'localhost:8888/api/students' \
+> --header 'Content-Type: application/json' \
+> --data-raw '{
+>     "fullName": "NGUYEN BA THANH",
+>     "dateOfBirth": "29/04/1998",
+>     "hometown": "HA DONG, HA NOI",
+>     "gender": "MALE"
+> }'
 
-![call-api-create-student-postman](/static/images/assets/call-api-create-student-postman.png)
-
-API danh sách Student
-
-![call-api-get-all-student-postman](/static/images/assets/call-api-get-all-student-postman.png)
+# Response:
+{"id":1,"fullName":"NGUYEN BA THANH","dateOfBirth":"29/04/1998","hometown":"HA DONG, HA NOI","gender":"MALE"}
+```
 
 2. Gửi request từ một pod khác
 
-Tạo mới một `debug-pod` và gọi đến API của pod `k8s-springboot-series` từ pod mới được tạo thông qua IP.
+Trong file courses-pod.yaml có cấu hình biến môi trường STUDENTS_URI bằng thông tin IP và PORT của pod `student-service` để có thể gọi từ `courses-service` sang `student-service` lấy thông tin học sinh.
 
-```YAML:debug-pod.yaml
-apiVersion: v1
-kind: Pod
-metadata:
-  name: debug-pod
+```yaml:k8s/courses-pod.yaml
+...
 spec:
   containers:
-    - image: pete911/debug-pod:latest
-      name: debug-pod
-      command:
-        - sleep
-        - "36000"
-```
-
-Tạo `debug-pod` từ yaml file trên:
-
-```shell
-kubectl apply -f k8s/pod-test-api.yaml
+      # Cấu hình URI gọi đến Students service. Trong thực tế sẽ cấu hình đến Object Service trong Kubernetes
+      # nhưng vì chưa tìm hiểu đến object Service này (sẽ tìm hiểu trong bài sau) nên sẽ để IP và PORT của pod.
+      - name: STUDENTS_URI
+        value: http://10.1.28.78:8080
+...
 ```
 
 Lấy danh sách pods cùng với IP:
 
 ```shell
-kubectl get pods -o wide
-NAME                               READY   STATUS    RESTARTS         AGE     IP            NODE   NOMINATED NODE   READINESS GATES
-k8s-springboot-series              1/1     Running   0                99m     10.1.28.73    nbt    <none>           <none>
-debug-pod                          1/1     Running   0                9m15s   10.1.28.75    nbt    <none>           <none>
+kubectl get po -o wide
+
+NAME                     READY   STATUS    RESTARTS       AGE     IP            NODE   NOMINATED NODE   READINESS GATES
+students-service         1/1     Running   0              4m43s   10.1.28.78    nbt    <none>           <none>
+courses-service          1/1     Running   0              4m21s   10.1.28.113   nbt    <none>           <none>
 ```
 
-Truy cập vào `pod: debug-pod` và gọi api đến `pod: k8s-springboot-series` thông qua `IP: 10.1.28.73`:
+Thực hiện expose pod `courses-service` sử dụng lệnh `kubectl port-forward...` và gọi APIs để xem khi cấu hình STUDENTS_URI bằng thông tin IP và PORT của pod `student-service` có gọi được sang hay không?
 
 ```shell
-kubectl exec -it po/debug-pod sh
+# Expose pod Courses-service:
+kubectl port-forward pod/courses-service 8889:8080
 
-# Gọi đến API lấy danh sách Student
+# Gọi APIs /api/courses/v1/getCourseDetailBy?courseId=<COURSE_ID>
+# Chỗ này logic sẽ là `courses-service` --Call API--> `students-service` để lấy thông tin Học sinh.
 
-/ # curl --location --request GET '10.1.28.73:8080/api/students'
-[{"id":"90b1115a-66b4-48c3-bbb6-6a20cd2c5edc","fullName":"NGUYEN BA THANH","dateOfBirth":"29/04/1998","hometown":"HA DONG, HA NOI","gender":"MALE"}]/ #
+curl --location --request GET 'localhost:8889/api/courses/v1/getCourseDetailBy?courseId=1'
 ```
 
-Như vậy là chúng ta đã gọi API thành công từ `debug-pod` tới pod `k8s-springboot-series` thông qua `IP: 10.1.28.73`. Địa chỉ IP (`IP: 10.1.28.73`)được gán cho pod khi nó được tạo mới, điều này có nghĩa là mỗi lần pod bị xóa đi tạo lại, nó sẽ được gán cho một IP mới. IP này chỉ sử dụng được trong nội bộ cluster, không truy cập được IP này từ bên ngoài Cluster.
+Khi xem logs pod của Students-service thì đã thấy có request gọi sang.
+
+```
+kubectl logs -f pod/students-service -c students-service
+
+ion in 1 ms
+2023-03-27 00:00:19.730  INFO 1 --- [nio-8080-exec-1] c.v.k.students.filter.CustomURLFilter    :
+LOGGING REQUEST-----------------------------------
+[REQUEST-ID]: 7589d204-c699-4116-89da-3dd2d0bd76a4
+[PATH]: /api/students/getStudentBy
+[QUERIES]: studentId=1
+[HEADERS]:
+---accept : application/json, application/*+json
+---user-agent : Java/11.0.16.1
+---host : 10.1.28.78:8080
+---connection : keep-alive
+
+2023-03-27 00:00:19.894  INFO 1 --- [nio-8080-exec-1] c.v.k.students.filter.LoggingService     :
+LOGGING RESPONSE-----------------------------------
+[REQUEST-ID]: 7589d204-c699-4116-89da-3dd2d0bd76a4
+[BODY RESPONSE]:
+{"id":1,"fullName":"NGUYEN BA THANH","dateOfBirth":"29/04/1998","hometown":"HA DONG, HA NOI","gender":"MALE"}
+LOGGING RESPONSE-----------------------------------
+```
+
+Như vậy là chúng ta đã gọi API thành công từ `courses-service` tới pod `students-service` thông qua `IP: 10.1.28.78` (IP của pod students-service). Địa chỉ `IP: 10.1.28.78` này được gán cho pod khi nó được tạo mới, điều này có nghĩa là mỗi lần pod bị xóa đi tạo lại, nó sẽ được gán cho một IP mới. IP này chỉ sử dụng được trong nội bộ cluster, không truy cập được IP này từ bên ngoài Cluster.
 
 ## 5. Vòng đời của Pod
 
