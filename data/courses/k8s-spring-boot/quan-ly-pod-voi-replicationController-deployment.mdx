@@ -41,24 +41,58 @@ Bạn có thể tham khảo thêm về ReplicationController ở [docs chính th
 
 **1. Tạo ReplicationController bằng file YAML**
 
-```yaml
+Tạo file `students-replicationController.yaml` để cấu hình ReplicationController cho Students service:
+
+```YAML:k8s/students-replicationController.yaml
 apiVersion: v1
 kind: ReplicationController
 metadata:
-  name: k8s-springboot-series # Tên của ReplicationController
+  name: students-service
 spec:
-  replicas: 3 # Số lượng Pod muốn chạy tại một thời điểm.
+  # Số lượng Pod muốn chạy tại một thời điểm.
+  replicas: 3
+  # Label sử dụng để tìm các pods có cùng labels "app: students-service" để quản lý.
   selector:
-    app: k8s-series # Label sử dụng để tim các pods để quản lý.
-  template: # Phần này định nghĩa podTemplate để ReplicationController tạo.
+    app: students-service
+  # Phần này định nghĩa podTemplate để ReplicationController tạo.
+  template:
     metadata:
-      name: k8s-springboot-series
+      name: students-service
+      # Labels của pod.
       labels:
-        app: k8s-series
+        app: students-service
     spec:
       containers:
-        - name: k8s-springboot-series
-          image: thanhnb1/k8s-springboot-series:latest
+        - name: students-service
+          image: thanhnb1/students-service:latest
+          ports:
+            - containerPort: 8080
+```
+
+Tạo file `courses-replicationController.yaml` để cấu hình ReplicationController cho Courses service:
+
+```YAML:k8s/courses-replicationController.yaml
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: courses-service
+spec:
+  # Số lượng Pod muốn chạy tại một thời điểm.
+  replicas: 3
+  # Label sử dụng để tìm các pods có cùng labels "app: courses-service" để quản lý.
+  selector:
+    app: courses-service
+  # Phần này định nghĩa podTemplate để ReplicationController tạo.
+  template:
+    metadata:
+      name: courses-service
+      # Labels của pod.
+      labels:
+        app: courses-service
+    spec:
+      containers:
+        - name: courses-service
+          image: thanhnb1/courses-service:latest
           ports:
             - containerPort: 8080
 ```
