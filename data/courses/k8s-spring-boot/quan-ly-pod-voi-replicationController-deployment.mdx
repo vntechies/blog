@@ -124,14 +124,14 @@ spec:
 Các thành phần trong ReplicationController:
 
 | Tên             | Định nghĩa                                                                                                                                                                                                                                                                                                                     |
-| --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | --- |
+| --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `apiVersion`    | Version của Kubernetes API mà bạn sử dụng để tạo object/resource. Như file đây là v1.                                                                                                                                                                                                                                          |
 | `kind`          | Loại object/resource của Kubernetes. Như file trên là `ReplicationController`.                                                                                                                                                                                                                                                 |
 | `metadata`      | Các thông tin như: name, labels, namespace và các thông tin khác của object/resource.                                                                                                                                                                                                                                          |
 | `spec`          | Mô tả các thành phần của ReplicationController như: replicas, selector, và podTemplate.                                                                                                                                                                                                                                        |
-| `spec.replicas` | Mô tả số lượng pod sẽ được ReplicationController tạo và quản lý. Vơí cả hai file trên đều là 3, lúc này ReplicationController sẽ đảm bảo số lượng pod luôn là 3 trên một thời điểm.                                                                                                                                            |
-| `spec.selector` | Mô tả các labels selector mà ReplicationController sẽ dùng để tìm và quản lý pod có cùng labels. Với ReplicationController tên `students-service` thì sẽ tìm các pod có labels là: `app: students-service`, tương tự với ReplicationController tên `courses-service` thì sẽ tìm các pod có labels là: `name: courses-service`. |
-| `spec.template` | Mô tả podTemplate mà ReplicationController sẽ tạo gồm tên container, image sẽ dùng là gì? và mô tả các port của container.                                                                                                                                                                                                     |     |
+| `spec.replicas` | Mô tả số lượng pod sẽ được ReplicationController tạo và quản lý. Với cả hai file trên đều là 3, lúc này ReplicationController sẽ đảm bảo số lượng pod luôn là 3 trên một thời điểm.                                                                                                                                            |
+| `spec.selector` | Mô tả các labels selector mà ReplicationController sẽ dùng để tìm và quản lý pod có cùng labels. Với ReplicationController tên `students-service` thì sẽ tìm các pod có labels là: `app: students-service`. Tương tự với ReplicationController tên `courses-service` thì sẽ tìm các pod có labels là: `name: courses-service`. |
+| `spec.template` | Mô tả podTemplate mà ReplicationController sẽ tạo gồm tên container, image sẽ dùng là gì? và mô tả các port của container.                                                                                                                                                                                                     |
 
 **2. Triển khai ReplicationController trên Kubernetes**
 
@@ -142,7 +142,7 @@ kubectl get pods
 No resources found in default namespace.
 ```
 
-Triển khai ReplicationController trên Kubernetes thì sử dụng lệnh `kubectl apply -f <path-replication-controller-file>`.
+Triển khai ReplicationController trên Kubernetes bằng lệnh `kubectl apply -f <file-path>`
 
 ```shell
 kubectl apply -f students-replicationController.yaml
