@@ -632,10 +632,13 @@ students-service-5f4569998f-5ppwq   1/1     Running   0               12s
 
 ## 4. Tổng kết
 
-Qua này này chúng ta đã tìm hiều về cách triển khai ứng dụng và quản lý pod của ứng dụng bằng các object trong Kubernetes như: ReplicationController và Deployment. Chúng ta đã thực hiện:
+Qua này này chúng ta đã tìm hiều về cách triển khai ứng dụng và quản lý pod của ứng dụng bằng các object trong Kubernetes như: ReplicationController và Deployment. Chúng ta đã tìm hiểu:
 
-- Tìm hiểu và triển khai ứng dụng với ReplicationController và Deployment.
+- Triển khai ứng dụng với ReplicationController và Deployment.
+- Thực hiện tăng/giảm số lượng pod của ứng dụng.
 - Thực hiện cập nhật podTemplate với ReplicationController và cập nhật podTemplate với Deployment.
 - Thực hiện rollback các phiên bản trước đó của ứng dụng khi triển khai ứng dụng với Deployment.
+
+Đang có vấn đề thế này Courses service đang cấu hình thông tin Students service (IP và Port) để gọi sang Students service lấy thông tin học sinh. Ở bài này ta học ReplicationController, Deployment các object này giúp quản lý, có thể tăng/giảm số lượng pod theo mong muốn và thay đổi phiên bản của ứng dụng dễ dàng hơn.Nhưng trong file cấu hình của Courses service đang fix cứng thông tin (IP và Port) một pod của Students service vậy nên tăng hay giảm số lượng pod thì có ý nghĩa gì đâu vì request từ Courses service chỉ đến duy nhất một pod của Students service chưa kể trường hợp pod này bị vấn đề gì đó thì Courses service gọi sang thì lỗi luôn. Ta có giải quyết bằng cách là cấu hình một danh sách thông tin (IP và Port) của Students service và Courses service sẽ gọi sang theo danh sách thông tin này. Nhưng mà thông tin (IP và Port) của các pod Students service là không cố định vậy thì khi nào cần cập nhật lại danh sách thông tin này? Vấn đề này Kubernetes đã có giải cách giải quyết chúng ta sẽ tìm hiểu ở bài sau nhé.
 
 Ở bài viết sau chúng ta sẽ tìm hiểu về cách truy cập ứng dụng từ bên ngoài cụm Kubernetes và cách các ứng dụng kết nối, liên lạc với nhau bên trong cụm Kubernetes.
