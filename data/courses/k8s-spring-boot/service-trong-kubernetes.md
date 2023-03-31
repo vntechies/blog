@@ -14,7 +14,7 @@ index: 4
 
 ## 1. Giới thiệu chung
 
-Ở bài [trước](/courses/k8s-spring-boot/quan-ly-pod-voi-replicationController-deployment), chúng ta đã tìm hiểu cách triển khai ứng dụng và quản lý các pod của ứng dụng thông qua ReplicationController và Deployment. Có vấn đề thế này, thường trong một hệ thống sẽ có rất nhiều những ứng dụng cùng hoạt động. Giả sử mỗi ứng dụng sẽ được triển khai trên nhiều pod (có thể tăng/giảm số lượng pod linh hoạt), làm cách nào để các ứng dụng này có thể tương tác với nhau mà không cần quan tâm đến số lượng pod cũng như địa chỉ IP của chúng (vì địa chỉ IP của pod là KHÔNG cố định, có thể bị thay đổi).
+Ở bài [trước](/courses/k8s-spring-boot/quan-ly-pod-voi-replicationController-deployment), chúng ta đã tìm hiểu cách triển khai ứng dụng và quản lý các pod của ứng dụng thông qua ReplicationController và Deployment. Trong file cấu hình Courses service đang cấu hình thông tin Students service bằng IP và Port của pod để gọi sang Students service lấy thông tin học sinh. Có vấn đề thế này thường trong một hệ thống sẽ có rất nhiều những ứng dụng cùng hoạt động và mỗi ứng dụng có thể được triển khai trên nhiều pod (có thể tăng/giảm số lượng pod linh hoạt), làm cách nào để các ứng dụng này có thể tương tác với nhau mà không cần quan tâm đến số lượng pod cũng như địa chỉ IP của chúng (vì địa chỉ IP của pod là KHÔNG cố định, có thể bị thay đổi).
 
 Chúng ta mong muốn rằng có một thứ gì đó đứng phía trước các pod của ứng dụng (mình tạm gọi là "X"). Đối tượng "X" này phải có địa chỉ IP không bị thay đổi khi các pod phía sau thay đổi, và các ứng dụng khi tương tác với nhau thay vì tương tác trực tiếp với các pod của ứng dụng thì sẽ tương tác với "X".
 
@@ -39,19 +39,18 @@ Kubernetes hỗ trợ loại service là **ClusterIP Service**, loại Service n
 
 ### 3.1 Tạo ClusterIP Service bằng YAML file
 
-```yaml
+```YAML:k8s/student-clusterIP-svc.yaml
 apiVersion: v1
 kind: Service
 metadata:
-  name: student-management
-  namespace: default
+  name: students-service
 spec:
   selector:
-    app: student-management
+    app: students-service
   type: ClusterIP
   ports:
-    - port: 80
-      targetPort: 8080
+  - port: 80
+    targetPort: 8080
 ```
 
 Các thành phần của ClusterIP Service:
@@ -60,55 +59,214 @@ Các thành phần của ClusterIP Service:
 | --------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `apiVersion`    | Version của Kubernetes API mà bạn sử dụng để tạo object/resource, ở đây là v1.                                                                                                                                                                                   |
 | `kind`          | Loại object/resource của Kubernetes, ở file trên là `Service`.                                                                                                                                                                                                   |
-| `metadata`      | Các thông tin như: name, labels, namespace và các thông tin khác của object/resource. Ở file trên, tên của Service là: `name: student-management` và Service sẽ được tạo ở `namespace: default`.                                                                 |
+| `metadata`      | Các thông tin như: name, labels, namespace và các thông tin khác của object/resource. Ở file trên, tên của Service là: `name: students-service` và Service sẽ được tạo ở `namespace: default`.                                                                   |
 | `spec`          | Mô tả các thành phần của Service như: selector, type và ports.                                                                                                                                                                                                   |
-| `spec.selector` | Mô tả các labels selector mà Service sẽ dùng để tìm pod có cùng labels. Ở trên Service sẽ tìm các pod có labels là: `app: student-management`.                                                                                                                   |
+| `spec.selector` | Mô tả các labels selector mà Service sẽ dùng để tìm pod có cùng labels. Ở trên Service sẽ tìm các pod có labels là: `app: students-service`.                                                                                                                     |
 | `spec.type`     | Mô tả loại của Service. Ở trên loại Service là: `type: ClusterIP`.                                                                                                                                                                                               |
 | `spec.ports`    | Mô tả các port của Service có và mapping giữa port của Service và port của ứng dụng. Ở trên thì port của service là: `port: 80` và port của ứng dụng là: `targetPort: 8080`. Khi request đến port 80 của Service thì sẽ được forward đến port 8080 của ứng dụng. |
 
 ### 3.2 Triển khai ClusterIP Service trên Kubernetes
 
-1. Tạo Service sử dụng lệnh: `kubectl apply -f <Đường dẫn file cấu hình Service>`:
+Tạo Service sử dụng lệnh `kubectl apply -f <service-path-file>`:
 
 ```shell
 kubectl apply -f student-clusterIP-svc.yaml
-service/student-management created
+service/students-service created
 ```
 
-2. Lấy danh sách các service và pod trên namespace default:
+Lấy danh sách các service và pod:
 
 ```shell
 # Lấy danh sách các service:
 kubectl get svc -o wide
-NAME                 TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)   AGE     SELECTOR
-student-management   ClusterIP   10.152.183.48   <none>        80/TCP    2m26s   app=student-management
+NAME                 TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)        AGE    SELECTOR
+students-service     ClusterIP   10.152.183.232   <none>        80/TCP         21s    app=students-service
 
-# Lấy danh sách Pods:
+# Lấy danh sách pods:
 kubectl get pods --show-labels
-NAME                                  READY   STATUS    RESTARTS   AGE     LABELS
-student-management-5686b86f6d-rzjsj   1/1     Running   0          2m11s   app=student-management,pod-template-hash=5686b86f6d
-student-management-5686b86f6d-npsfl   1/1     Running   0          2m11s   app=student-management,pod-template-hash=5686b86f6d
-student-management-5686b86f6d-vjcv6   1/1     Running   0          2m11s   app=student-management,pod-template-hash=5686b86f6d
+NAME                                READY   STATUS    RESTARTS        AGE     LABELS
+students-service-5f4569998f-dz9f8   1/1     Running   5 (4h53m ago)   2d21h   app=students-service,pod-template-hash=5f4569998f
+students-service-5f4569998f-jrlmc   1/1     Running   5 (4h53m ago)   2d21h   app=students-service,pod-template-hash=5f4569998f
+students-service-5f4569998f-5ppwq   1/1     Running   5 (4h52m ago)   2d21h   app=students-service,pod-template-hash=5f4569998f
 ```
 
-3. Truy cập ứng dụng sử dụng CLUSTER-IP và PORT của Service:
+**1. Cấu hình Courses service gọi tới Students service thông qua ClusterIP của service**
 
-```shell
-curl --location --request GET '10.152.183.48:80/api/students'
+```YAML:k8s/courses-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: courses-service
+  labels:
+    app: courses-service
+spec:
+  selector:
+    matchLabels:
+      app: courses-service
+  replicas: 3
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: courses-service
+    spec:
+      containers:
+        - name: courses-service
+          image: thanhnb1/courses-service:latest
+          env:
+          - name: SERVER_PORT
+            value: "8080"
+          - name: MYSQL_URL
+            value: "jdbc:mysql://mysql:3306/courses"
+          - name: MYSQL_USERNAME
+            value: "courses"
+          - name: MYSQL_PASSWORD
+            value: "VNTechies2023"
 
-[{"id":"9e4c5c7c-298f-4984-ad41-3181947437ec","fullName":"NGUYEN BA THANH","dateOfBirth":"29/04/1998","hometown":"DUONG NOI, HA DONG, HA NOI","gender":"MALE"},{"id":"1e433cb8-f45a-47cd-a59c-0175047b2e13","fullName":"HA QUANG MAU","dateOfBirth":"01/01/2006","hometown":"HA NOI","gender":"MALE"}]
-
-# Khi gọi API và thấy trả về dữ liệu, như vậy là đã có thể truy cập ứng dụng thông qua CLUSTER-IP và PORT của Service.
+          # Cấu hình URI gọi đến Students service. Thường sẽ sử dụng DNS của service để cấu hình
+          # vì IP và port của service vẫn có thể thay đổi.
+          - name: STUDENTS_URI
+            value: http://10.152.183.232:80
+          ports:
+            - containerPort: 8080
+      restartPolicy: Always
 ```
 
-4. Truy cập ứng dụng sử dụng DNS của Service:
-
-Sử dụng ServiceName để gọi ứng dụng trong nội bộ cụm Kubernetes, các ứng dụng này cùng hoặc khác namespace. Sử dụng format này để gọi các ứng dụng cùng hoặc khác namespace: `<Tên Service>.<Tên namespace>.svc.cluster.local`. Nếu các ứng dụng cùng namespace thì chỉ cần sử dụng tên service.
+Gọi API `/api/courses/v1/joinCourse` để kiểm tra Courses-service có thể gọi tới Students-service thông qua Object Service (ClusterIP và Port) như đã cấu hình phía trên hay không?:
 
 ```shell
-curl --location --request GET 'http://student-management/api/students'
+# Sử dụng port-forward để có thể gọi được ứng dụng từ bên ngoài cụm Kubernetes.
+kubectl port-forward po/courses-service-6ccf6699dc-pvs4d 8080:8080
+Forwarding from 127.0.0.1:8080 -> 8080
+Forwarding from [::1]:8080 -> 8080
 
-[{"id":"8b98b13c-68b2-49b8-bf36-579a7ddf1adb","fullName":"NGUYEN BA THANH","dateOfBirth":"29/04/1998","hometown":"DUONG NOI, HA DONG, HA NOI","gender":"MALE"},{"id":"5afc7482-68b5-4114-8333-111493c423f4","fullName":"HA QUANG MAU","dateOfBirth":"01/01/2006","hometown":"HA NOI","gender":"MALE"}]
+# Gọi API `/api/courses/v1/joinCourse` thì Courses service sẽ gọi sang Students service để lấy thông tin học sinh.
+curl --location --request POST 'localhost:8080/api/courses/v1/joinCourse' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "courseId": "1",
+    "studentId": "1"
+}'
+
+# Response trả về:
+{"success":true,"msg":"Success","data":{"id":1,"name":"HOC LAM GIAU","desc":"NEU M 100 ti THI PHAI THAM GIA NGAY :D","author":"VNTechies"}}
+```
+
+Xem logs của Students-service thì cũng đã thấy có logs gọi sang. Như vậy là đã có thể gọi từ Courses-service sang Students-service thông qua thông qua Object Service (ClusterIP và Port).
+
+```
+2023-03-31 23:21:30.277  INFO 1 --- [nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+2023-03-31 23:21:30.282  INFO 1 --- [nio-8080-exec-1] c.v.k.students.filter.CustomURLFilter    :
+LOGGING REQUEST-----------------------------------
+[REQUEST-ID]: 93628ab9-c7e3-4f2b-927a-81d7153026b9
+[PATH]: /api/students
+[QUERIES]: null
+[HEADERS]:
+---host : 10.152.183.232
+---user-agent : curl/7.68.0
+---accept : */*
+
+2023-03-31 23:21:30.473  INFO 1 --- [nio-8080-exec-1] c.v.k.students.filter.LoggingService     :
+LOGGING RESPONSE-----------------------------------
+[REQUEST-ID]: 93628ab9-c7e3-4f2b-927a-81d7153026b9
+[BODY RESPONSE]:
+[{"id":1,"fullName":"NGUYEN BA THANH","dateOfBirth":"29/04/1998","hometown":"HA DONG, HA NOI","gender":"MALE"}]
+LOGGING RESPONSE-----------------------------------
+```
+
+Thông tin của Object Service (ClusterIP) trong Kubernetes sẽ không thay đổi khi số lượng pod thay đổi nhưng khi thực hiện xóa Object Service đi và triển khai lại thì thông tin (ClusterIP) này sẽ thay đổi, lúc này mà vẫn giữ cấu hình bằng ClusterIP thì sẽ không còn đúng nữa.
+
+**2. Cấu hình Courses service gọi tới Students service thông qua DNS service**
+
+Sử dụng DNS service để gọi ứng dụng trong nội bộ cụm Kubernetes, các ứng dụng này cùng hoặc khác namespace. Sử dụng format này để gọi các ứng dụng cùng hoặc khác namespace: `<SERVICE_NAME>.<NAMESPACE>.svc.cluster.local`. Nếu các ứng dụng cùng namespace thì chỉ cần sử dụng tên service.
+
+```YAML:k8s/courses-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: courses-service
+  labels:
+    app: courses-service
+spec:
+  selector:
+    matchLabels:
+      app: courses-service
+  replicas: 3
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: courses-service
+    spec:
+      containers:
+        - name: courses-service
+          image: thanhnb1/courses-service:latest
+          env:
+          - name: SERVER_PORT
+            value: "8080"
+          - name: MYSQL_URL
+            value: "jdbc:mysql://mysql:3306/courses"
+          - name: MYSQL_USERNAME
+            value: "courses"
+          - name: MYSQL_PASSWORD
+            value: "VNTechies2023"
+
+          # Cấu hình URI gọi đến Students service sử dụng DNS của service.
+          - name: STUDENTS_URI
+            value: http://students-service.default.svc.cluster.local
+          ports:
+            - containerPort: 8080
+      restartPolicy: Always
+```
+
+Gọi API `/api/courses/v1/joinCourse` để kiểm tra Courses-service có thể gọi tới Students-service thông qua Object Service (DNS) như đã cấu hình phía trên hay không?
+
+```shell
+# Sử dụng port-forward để có thể gọi được ứng dụng từ bên ngoài cụm Kubernetes.
+kubectl port-forward po/courses-service-6ccf6699dc-pvs4d 8080:8080
+Forwarding from 127.0.0.1:8080 -> 8080
+Forwarding from [::1]:8080 -> 8080
+
+# Gọi API `/api/courses/v1/joinCourse` thì Courses service sẽ gọi sang Students service để lấy thông tin học sinh.
+curl --location --request POST 'localhost:8080/api/courses/v1/joinCourse' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "courseId": "1",
+    "studentId": "1"
+}'
+
+# Response trả về:
+{"success":true,"msg":"Success","data":{"id":1,"name":"HOC LAM GIAU","desc":"NEU M 100 ti THI PHAI THAM GIA NGAY :D","author":"VNTechies"}}
+```
+
+Xem logs của Students-service thì cũng đã thấy có logs gọi sang. Như vậy là đã có thể gọi từ Courses-service sang Students-service thông qua DNS service.
+
+```
+2023-04-01 00:24:57.066  INFO 1 --- [nio-8080-exec-2] c.v.k.students.filter.CustomURLFilter    :
+LOGGING REQUEST-----------------------------------
+[REQUEST-ID]: 95cd2c0f-2bc0-4016-8b14-c2d5be73d702
+[PATH]: /api/students/getStudentBy
+[QUERIES]: studentId=1
+[HEADERS]:
+---accept : application/json, application/*+json
+---user-agent : Java/11.0.16.1
+---host : students-service
+---connection : keep-alive
+
+2023-04-01 00:24:57.071  INFO 1 --- [nio-8080-exec-2] c.v.k.students.filter.LoggingService     :
+LOGGING RESPONSE-----------------------------------
+[REQUEST-ID]: 95cd2c0f-2bc0-4016-8b14-c2d5be73d702
+[BODY RESPONSE]:
+{"id":1,"fullName":"NGUYEN BA THANH","dateOfBirth":"29/04/1998","hometown":"HA DONG, HA NOI","gender":"MALE"}
+LOGGING RESPONSE-----------------------------------
 ```
 
 Trong seri này mình sử dụng MicroK8s để tạo Kubernetes Cluster. Để tương tác được ứng dụng bằng ServiceName hãy đảm bảo rằng bạn đã enable DNS. Bạn có thể tham khảo [hướng dẫn này](https://microk8s.io/docs/addon-dns).
@@ -122,20 +280,19 @@ Kubernetes hỗ trợ loại Service khác gọi là **NodePort Service**. Đi�
 
 ### 4.1 Tạo NodePort Service bằng YAML file
 
-```yaml
+```yaml:k8s/student-nodeport-svc.yaml
 apiVersion: v1
 kind: Service
 metadata:
-  name: student-management
-  namespace: default
+  name: students-service
 spec:
   selector:
-    app: student-management
+    app: students-service
   type: NodePort
   ports:
-    - port: 80
-      targetPort: 8080
-      nodePort: 32000
+  - port: 80
+    targetPort: 8080
+    nodePort: 32000
 ```
 
 Các thành phần của NodePort Service:
@@ -143,20 +300,20 @@ Các thành phần của NodePort Service:
 | Tên                     | Định nghĩa                                                                                                                                                                            |
 | ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `spec.type`             | Mô tả loại của Service. Ở đây loại Service là: `type: NodePort`.                                                                                                                      |
-| `spec.ports.port`       | Mô tả port của Service mà được sử dụng để gọi trong nội bộ cụm Kubernetes. Ở đây Service `student-management` đang chạy ở port 80.                                                    |
+| `spec.ports.port`       | Mô tả port của Service mà được sử dụng để gọi trong nội bộ cụm Kubernetes. Ở đây Service `student-service` đang chạy ở port 80.                                                       |
 | `spec.ports.targetPort` | Mô tả port của container ứng dụng sử dụng. Ở đây thì container ứng dụng đang chạy ở port 8080.                                                                                        |
 | `spec.ports.nodePort`   | Mô tả _NodePort_ mà Service expose để ứng dụng có thể truy cập từ bên ngoài. Ở đây `nodePort: 32000` thì Service sẽ expose port 32000 (nếu không mô tả thì sẽ random từ 30000-32767). |
 
 ### 4.2 Triển khai NodePort Service trên Kubernetes
 
-1. Tạo Service sử dụng lệnh: `kubectl apply -f <Đường dẫn file cấu hình Service>`:
+Tạo Service sử dụng lệnh: `kubectl apply -f <Đường dẫn file cấu hình Service>`:
 
 ```shell
 kubectl apply -f student-nodeport-svc.yaml
 service/student-management created
 ```
 
-2. Lấy danh sách các service và pod trên namespace default:
+Lấy danh sách các service và pod trên namespace default:
 
 ```shell
 # Lấy danh sách pods:
@@ -173,7 +330,7 @@ service/student-management   NodePort    10.152.183.70   <none>        80:32000/
 # PORT(S): 80:32000/TCP. Port 32000 sẽ expose ra bên ngoài cụm Kubernetes. Bên ngoài cụm Kubernetes có thể dùng port này để truy cập ứng dụng.
 ```
 
-3. Truy cập ứng dụng từ bên trong cụm Kubernetes:
+**1. Truy cập ứng dụng từ bên trong cụm Kubernetes:**
 
 ```shell
 # 1. Truy cập ứng dụng sử dụng ClusterIP và PORT của Service:
@@ -185,7 +342,7 @@ service/student-management   NodePort    10.152.183.70   <none>        80:32000/
 [{"id":"231e55db-3c97-4307-9780-2b1fc8692d99","fullName":"NGUYEN BA THANH","dateOfBirth":"29/04/1998","hometown":"DUONG NOI, HA DONG, HA NOI","gender":"MALE"},{"id":"890def03-6f74-4b5a-b534-c65802354d75","fullName":"HA QUANG MAU","dateOfBirth":"01/01/2006","hometown":"HA NOI","gender":"MALE"}]
 ```
 
-4. Truy cập ứng dụng từ bên ngoài cụm Kubernetes sử dụng NodePort:
+**2. Truy cập ứng dụng từ bên ngoài cụm Kubernetes sử dụng NodePort:**
 
 ```shell
 curl --location --request GET 'localhost:32000/api/students'
