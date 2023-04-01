@@ -1,5 +1,5 @@
 ---
-title: Service trong Kubernetes
+title: Truy cập ứng dụng từ trong hoặc ngoài cụm Kubernetes
 date: '2022-12-10'
 tags: ['api', 'rest-api', 'springboot', 'kubernetes']
 series: ['k8s-spring-boot']
@@ -28,16 +28,16 @@ Bạn có thể tìm hiểu thêm về object Service [tại trang web chính th
 
 ## 3. Truy ứng dụng từ bên trong cụm Kubernetes
 
-![Service trong Kubernetes](/static/images/assets/service-k8s-1.png)
+![Service trong Kubernetes](/static/images/assets/clusterIP-service.png)
 
-_Credit: Internet_
+### ClusterIP Service là gì?
 
 Kubernetes hỗ trợ loại service là **ClusterIP Service**, loại Service này sẽ là loại mặc định khi triển khai. ClusterIP Service có một số đặc điểm như:
 
 - Khi triển khai sẽ có địa chỉ IP và port (chỉ có thể dùng để truy cập trong nội bộ cụm Kubernetes). Địa chỉ IP và port của Service sẽ không bị thay đổi cho dù các pod của ứng dụng đứng phía sau thay đổi. Nhưng nếu xóa Service đi triển khai lại thì Service sẽ được gắn với địa chỉ IP mới.
-- Kubernetes đăng ký một DNS giống với tên của Service, có thể sử dụng Service Name này để truy cập đến ứng dụng từ bên trong cụm Kubernetes thay vì sử dụng CLUSTER-IP và PORT.
+- Kubernetes đăng ký một Internal DNS Service giống với tên của Service, có thể sử dụng Internal DNS Service này để truy cập đến ứng dụng từ bên trong cụm Kubernetes thay vì sử dụng ClusterIP và port.
 
-### 3.1 Tạo ClusterIP Service bằng YAML file
+### Tạo ClusterIP Service bằng YAML file
 
 ```YAML:k8s/student-clusterIP-svc.yaml
 apiVersion: v1
@@ -57,15 +57,15 @@ Các thành phần của ClusterIP Service:
 
 | Tên             | Định nghĩa                                                                                                                                                                                                                                                       |
 | --------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `apiVersion`    | Version của Kubernetes API mà bạn sử dụng để tạo object/resource, ở đây là v1.                                                                                                                                                                                   |
-| `kind`          | Loại object/resource của Kubernetes, ở file trên là `Service`.                                                                                                                                                                                                   |
-| `metadata`      | Các thông tin như: name, labels, namespace và các thông tin khác của object/resource. Ở file trên, tên của Service là: `name: students-service` và Service sẽ được tạo ở `namespace: default`.                                                                   |
+| `apiVersion`    | Version của Kubernetes API mà bạn sử dụng để tạo object/resource. Ở file cấu hình trên là v1.                                                                                                                                                                    |
+| `kind`          | Loại object/resource của Kubernetes. Ở file cấu hình trên là `Service`.                                                                                                                                                                                          |
+| `metadata`      | Các thông tin như: name, labels, namespace và các thông tin khác của object/resource. Ở file cấu hình trên tên của Service là: `name: students-service` và Service sẽ được tạo ở `namespace: default`.                                                           |
 | `spec`          | Mô tả các thành phần của Service như: selector, type và ports.                                                                                                                                                                                                   |
-| `spec.selector` | Mô tả các labels selector mà Service sẽ dùng để tìm pod có cùng labels. Ở trên Service sẽ tìm các pod có labels là: `app: students-service`.                                                                                                                     |
-| `spec.type`     | Mô tả loại của Service. Ở trên loại Service là: `type: ClusterIP`.                                                                                                                                                                                               |
+| `spec.selector` | Mô tả các labels selector mà Service sẽ dùng để tìm pod có cùng labels. Ở file cấu hình trên Service sẽ tìm các pod có labels là: `app: students-service`.                                                                                                       |
+| `spec.type`     | Mô tả loại của Service. Ở file cấu hình trên loại Service là: `type: ClusterIP`.                                                                                                                                                                                 |
 | `spec.ports`    | Mô tả các port của Service có và mapping giữa port của Service và port của ứng dụng. Ở trên thì port của service là: `port: 80` và port của ứng dụng là: `targetPort: 8080`. Khi request đến port 80 của Service thì sẽ được forward đến port 8080 của ứng dụng. |
 
-### 3.2 Triển khai ClusterIP Service trên Kubernetes
+### Cấu hình và truy cập ứng dụng thông qua ClusterIP service
 
 Tạo Service sử dụng lệnh `kubectl apply -f <service-path-file>`:
 
@@ -90,7 +90,7 @@ students-service-5f4569998f-jrlmc   1/1     Running   5 (4h53m ago)   2d21h   ap
 students-service-5f4569998f-5ppwq   1/1     Running   5 (4h52m ago)   2d21h   app=students-service,pod-template-hash=5f4569998f
 ```
 
-**1. Cấu hình Courses service gọi tới Students service thông qua ClusterIP của service**
+Cấu hình Courses service gọi tới Students service thông qua ClusterIP của service
 
 ```YAML:k8s/courses-deployment.yaml
 apiVersion: apps/v1
@@ -136,7 +136,7 @@ spec:
       restartPolicy: Always
 ```
 
-Gọi API `/api/courses/v1/joinCourse` để kiểm tra Courses-service có thể gọi tới Students-service thông qua Object Service (ClusterIP và Port) như đã cấu hình phía trên hay không?:
+Gọi API "/api/courses/v1/joinCourse" để kiểm tra Courses-service có thể gọi tới Students-service thông qua Object Service (ClusterIP và Port) như đã cấu hình phía trên hay không?
 
 ```shell
 # Sử dụng port-forward để có thể gọi được ứng dụng từ bên ngoài cụm Kubernetes.
@@ -178,11 +178,11 @@ LOGGING RESPONSE-----------------------------------
 LOGGING RESPONSE-----------------------------------
 ```
 
-Thông tin của Object Service (ClusterIP) trong Kubernetes sẽ không thay đổi khi số lượng pod thay đổi nhưng khi thực hiện xóa Object Service đi và triển khai lại thì thông tin (ClusterIP) này sẽ thay đổi, lúc này mà vẫn giữ cấu hình bằng ClusterIP thì sẽ không còn đúng nữa.
+Thông tin object Service (ClusterIP) trong Kubernetes sẽ không bị phụ thuộc vào sự thay đổi tăng hoặc giảm số lượng pod của ứng dụng, nhưng khi thực hiện xóa object Service đi triển khai lại thì thông tin của object Service (ClusterIP) sẽ thay đổi nếu lúc này mà vẫn giữ cấu hình bằng ClusterIP thì sẽ không còn đúng nữa và lúc này Courses service sẽ không thể gọi sang Students service.
 
-**2. Cấu hình Courses service gọi tới Students service thông qua DNS service**
+### Cấu hình và truy cập ứng dụng thông qua Internal DNS Service
 
-Sử dụng DNS service để gọi ứng dụng trong nội bộ cụm Kubernetes, các ứng dụng này cùng hoặc khác namespace. Sử dụng format này để gọi các ứng dụng cùng hoặc khác namespace: `<SERVICE_NAME>.<NAMESPACE>.svc.cluster.local`. Nếu các ứng dụng cùng namespace thì chỉ cần sử dụng tên service.
+Sử dụng Internal DNS Service để gọi ứng dụng trong nội bộ cụm Kubernetes, các ứng dụng này cùng hoặc khác namespace. Sử dụng format này để gọi các ứng dụng cùng hoặc khác namespace: `<SERVICE_NAME>.<NAMESPACE>.svc.cluster.local`. Nếu các ứng dụng cùng namespace thì chỉ cần sử dụng tên service.
 
 ```YAML:k8s/courses-deployment.yaml
 apiVersion: apps/v1
@@ -227,7 +227,7 @@ spec:
       restartPolicy: Always
 ```
 
-Gọi API `/api/courses/v1/joinCourse` để kiểm tra Courses-service có thể gọi tới Students-service thông qua Object Service (DNS) như đã cấu hình phía trên hay không?
+Gọi API "/api/courses/v1/joinCourse" để kiểm tra Courses-service có thể gọi tới Students-service thông qua Object Service (DNS) như đã cấu hình phía trên hay không?
 
 ```shell
 # Sử dụng port-forward để có thể gọi được ứng dụng từ bên ngoài cụm Kubernetes.
@@ -269,16 +269,22 @@ LOGGING RESPONSE-----------------------------------
 LOGGING RESPONSE-----------------------------------
 ```
 
-Trong seri này mình sử dụng MicroK8s để tạo Kubernetes Cluster. Để tương tác được ứng dụng bằng ServiceName hãy đảm bảo rằng bạn đã enable DNS. Bạn có thể tham khảo [hướng dẫn này](https://microk8s.io/docs/addon-dns).
+Khi sử dụng Internal DNS Service để cấu hình thì dù cho object service có xóa đi triển khai lại thì Internal DNS Service vẫn không thay đổi và Courses service vẫn có thể gọi đến Students service mà không cần cấu hình lại.
+
+Trong seri này ta sử dụng MicroK8s để tạo cụm Kubernetes. Để tương tác được ứng dụng bằng ServiceName hãy đảm bảo rằng bạn đã enable DNS. Bạn có thể tham khảo [hướng dẫn này](https://microk8s.io/docs/addon-dns).
 
 ## 4. Truy cập ứng dụng từ bên ngoài cụm Kubernetes với NodePort Service
 
-Kubernetes hỗ trợ loại Service khác gọi là **NodePort Service**. Điểm giống và khác nhau giữa ClusterIP Service và NodePort Service là:
+![NodePort Service Kubernetes](/static/images/assets/nodePort-service.png)
 
-- Giống nhau: NodePort Service cũng sẽ có CLUSTER-IP, PORT và DNS giống như ClusterIP Service nên là với NodePort Service thì vẫn có thể truy cập ứng dụng từ bên trong cụm Kubernetes.
-- Khác nhau: NodePort Service có thêm một port nữa gọi là _NodePort_ và có thể truy cập ứng dụng từ bên ngoài cụm Kubernetes. NodePort này sẽ được random từ 30000-32767 (nếu không được chỉ định cụ thể).
+### NodePort Service là gì?
 
-### 4.1 Tạo NodePort Service bằng YAML file
+Kubernetes hỗ trợ loại Service khác gọi là **NodePort Service**, khi triển khai NodePort service thì có một số điểm như:
+
+- NodePort Service cũng sẽ có CLUSTER-IP, PORT và Internal DNS Service giống như ClusterIP Service nên khi triển khai NodePort Service thì ứng dụng vẫn có thể truy cập ứng dụng từ bên trong cụm Kubernetes.
+- NodePort Service có thêm một port nữa gọi là _NodePort_ và có thể truy cập ứng dụng từ bên ngoài cụm Kubernetes. NodePort này sẽ được random từ 30000-32767 (nếu không được chỉ định cụ thể) và NodePort sẽ được mở ở tất cả các Node trong cụm Kubernetes.
+
+### Tạo NodePort Service bằng YAML file
 
 ```yaml:k8s/student-nodeport-svc.yaml
 apiVersion: v1
@@ -304,48 +310,40 @@ Các thành phần của NodePort Service:
 | `spec.ports.targetPort` | Mô tả port của container ứng dụng sử dụng. Ở đây thì container ứng dụng đang chạy ở port 8080.                                                                                        |
 | `spec.ports.nodePort`   | Mô tả _NodePort_ mà Service expose để ứng dụng có thể truy cập từ bên ngoài. Ở đây `nodePort: 32000` thì Service sẽ expose port 32000 (nếu không mô tả thì sẽ random từ 30000-32767). |
 
-### 4.2 Triển khai NodePort Service trên Kubernetes
+### Triển khai NodePort Service và truy cập ứng dụng từ bên ngoài cụm Kubernetes
 
-Tạo Service sử dụng lệnh: `kubectl apply -f <Đường dẫn file cấu hình Service>`:
+Triển khai object Service sử dụng lệnh `kubectl apply -f <service-path-file>`:
 
 ```shell
-kubectl apply -f student-nodeport-svc.yaml
-service/student-management created
+kubectl apply -f k8s/student-nodeport-svc.yaml
+service/students-service created
 ```
 
-Lấy danh sách các service và pod trên namespace default:
+Lấy danh sách các services và pods:
 
 ```shell
 # Lấy danh sách pods:
-NAME                                      READY   STATUS    RESTARTS        AGE
-pod/student-management-5686b86f6d-94sqc   1/1     Running   0               70s
-pod/student-management-5686b86f6d-gzjdk   1/1     Running   0               70s
-pod/student-management-5686b86f6d-s86np   1/1     Running   0               70s
+kubectl get pods
+NAME                                    READY   STATUS    RESTARTS       AGE
+pod/students-service-68f7c496bd-h8s7m   1/1     Running   3 (105m ago)   17h
+pod/students-service-68f7c496bd-fcd7z   1/1     Running   3 (105m ago)   17h
+pod/students-service-68f7c496bd-fdht2   1/1     Running   3 (105m ago)   17h
 
 # Lấy danh sách Service:
-NAME                         TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)        AGE
-service/student-management   NodePort    10.152.183.70   <none>        80:32000/TCP   19s
+kubectl get svc
+NAME               TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)        AGE
+students-service   NodePort    10.152.183.40   <none>        80:32000/TCP   97s
 
 # Service Type: NodePort
 # PORT(S): 80:32000/TCP. Port 32000 sẽ expose ra bên ngoài cụm Kubernetes. Bên ngoài cụm Kubernetes có thể dùng port này để truy cập ứng dụng.
 ```
 
-**1. Truy cập ứng dụng từ bên trong cụm Kubernetes:**
-
-```shell
-# 1. Truy cập ứng dụng sử dụng ClusterIP và PORT của Service:
-/ $ curl --location --request GET '10.152.183.70:80/api/students'
-[{"id":"231e55db-3c97-4307-9780-2b1fc8692d99","fullName":"NGUYEN BA THANH","dateOfBirth":"29/04/1998","hometown":"DUONG NOI, HA DONG, HA NOI","gender":"MALE"},{"id":"890def03-6f74-4b5a-b534-c65802354d75","fullName":"HA QUANG MAU","dateOfBirth":"01/01/2006","hometown":"HA NOI","gender":"MALE"}]
-
-# 2. Truy cập ứng dụng sử dụng DNS của Service:
-/ $ curl --location --request GET 'student-management/api/students'
-[{"id":"231e55db-3c97-4307-9780-2b1fc8692d99","fullName":"NGUYEN BA THANH","dateOfBirth":"29/04/1998","hometown":"DUONG NOI, HA DONG, HA NOI","gender":"MALE"},{"id":"890def03-6f74-4b5a-b534-c65802354d75","fullName":"HA QUANG MAU","dateOfBirth":"01/01/2006","hometown":"HA NOI","gender":"MALE"}]
-```
-
-**2. Truy cập ứng dụng từ bên ngoài cụm Kubernetes sử dụng NodePort:**
+Truy cập ứng dụng từ bên ngoài cụm Kubernetes:
 
 ```shell
 curl --location --request GET 'localhost:32000/api/students'
 
-[{"id":"231e55db-3c97-4307-9780-2b1fc8692d99","fullName":"NGUYEN BA THANH","dateOfBirth":"29/04/1998","hometown":"DUONG NOI, HA DONG, HA NOI","gender":"MALE"},{"id":"890def03-6f74-4b5a-b534-c65802354d75","fullName":"HA QUANG MAU","dateOfBirth":"01/01/2006","hometown":"HA NOI","gender":"MALE"}]
+[{"id":1,"fullName":"NGUYEN BA THANH","dateOfBirth":"29/04/1998","hometown":"HA DONG, HA NOI","gender":"MALE"}]
 ```
+
+## 5. Truy cập ứng dụng từ bên ngoài cụm Kubernetes với LoadBalancer Service
