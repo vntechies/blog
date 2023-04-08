@@ -337,7 +337,7 @@ e05ee1586cf1   thanhnb1/courses-service:latest    "java -jar /workspac…"   49 
 
 Sử dụng một số công cụ để thực hiện gọi APIs ví dụ như: [postman](https://www.postman.com/downloads/), cURL,... Trong bài này mình sẽ sử dụng cURL:
 
-1. [Students Service] - _API tạo mới Student_: `/api/students` với method `POST` và Request body:
+1. [Students Service] - API tạo mới Student:
 
 ```shell
 # Tạo mới học sinh:
@@ -354,7 +354,7 @@ curl --location --request POST 'localhost:8080/api/students' \
 {"success":true,"msg":"Success","data":{"id":1,"name":"HOC LAM GIAU","desc":"NEU MUON CO 100 ti THI PHAI THAM GIA NGAY :D","author":"VNTechies"}}
 ```
 
-2. [Students Service] - _API lấy danh sách Student_: `/api/students` với method `GET`.
+2. [Students Service] - API lấy danh sách Student:
 
 ```shell
 # Danh sách học sinh:
@@ -364,7 +364,7 @@ curl --location --request GET 'localhost:8080/api/students'
 [{"id":1,"fullName":"NGUYEN BA THANH","dateOfBirth":"29/04/1998","hometown":"HA DONG, HA NOI","gender":"MALE"}]
 ```
 
-3. [Courses Service] - _API tạo mới Course_: `/api/courses/v1/createCourse` với method `POST` và Request body:
+3. [Courses Service] - API tạo mới Course:
 
 ```shell
 curl --location --request POST 'localhost:8081/api/courses/v1/createCourse' \
@@ -379,7 +379,7 @@ curl --location --request POST 'localhost:8081/api/courses/v1/createCourse' \
 {"success":true,"msg":"Success","data":{"id":1,"name":"HOC LAM GIAU","desc":"NEU MUON CO 100 ti THI PHAI THAM GIA NGAY :D","author":"VNTechies"}}
 ```
 
-4. [Courses Service] - _API Học sinh tham gia Khóa Học_: `/api/courses/v1/joinCourse` với method `POST` và Request body:
+4. [Courses Service] - API Học sinh tham gia Khóa Học:
 
 ```shell
 curl --location --request POST 'localhost:8081/api/courses/v1/joinCourse' \
@@ -393,7 +393,7 @@ curl --location --request POST 'localhost:8081/api/courses/v1/joinCourse' \
 {"success":true,"msg":"Success","data":{"id":1,"name":"HOC LAM GIAU","desc":"NEU MUON CO 100 ti THI PHAI THAM GIA NGAY :D","author":"VNTechies"}}
 ```
 
-5. [Courses Service] - _API Lấy chi tiết Khóa Học_: `/api/courses/v1/joinCourse` với method `GET`:
+5. [Courses Service] - API Lấy chi tiết Khóa Học:
 
 ```shell
 curl --location --request GET 'localhost:8081/api/courses/v1/getCourseDetailBy?courseId=1'
@@ -684,4 +684,4 @@ Các bạn có thể tham khảo thêm tại [trang web chính thức của Kube
 
 ## 6. Tổng kết
 
-Qua bài này thì chúng ta đã tìm hiểu được cách tạo `Pod`, cách đóng gói container với `Pod` cũng như tìm hiểu về vòng đời của `Pod`. Ở bài sau thì chúng ta cùng tìm hiểu cách quản lý `Pod` với `ReplicationController` hoặc `Deployment`.
+Qua bài này thì chúng ta đã tìm hiểu được cách tạo Pod và cách đóng gói container với Pod cũng như tìm hiểu về vòng đời của Pod. Ở bài sau thì chúng ta cùng tìm hiểu cách quản lý Pod với ReplicationController và Deployment.

@@ -347,3 +347,7 @@ curl --location --request GET 'localhost:32000/api/students'
 ```
 
 ## 5. Truy cập ứng dụng từ bên ngoài cụm Kubernetes với LoadBalancer Service
+
+## 6. Tổng kết
+
+Trong bài này chúng ta đã tìm hiểu cách để các ứng dụng bên trong cụm Kubernetes có thể liên lạc được với nhau cũng như có thể truy cập ứng dụng từ bên ngoài. Ở bài tiếp theo chúng ta sẽ tìm hiểu cách quản lý cấu hình của ứng dụng thông qua hai đối tượng ConfigMap và Secret trong Kubernetes.
