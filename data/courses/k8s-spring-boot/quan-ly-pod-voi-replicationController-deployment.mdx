@@ -41,39 +41,97 @@ Bạn có thể tham khảo thêm về ReplicationController ở [docs chính th
 
 **1. Tạo ReplicationController bằng file YAML**
 
-```yaml
+Tạo file `students-replicationController.yaml` để cấu hình ReplicationController cho Students service:
+
+```YAML:k8s/students-replicationController.yaml
 apiVersion: v1
 kind: ReplicationController
 metadata:
-  name: k8s-springboot-series # Tên của ReplicationController
+  name: students-service
 spec:
-  replicas: 3 # Số lượng Pod muốn chạy tại một thời điểm.
+  # Số lượng Pod muốn chạy tại một thời điểm.
+  replicas: 3
+  # selector sử dụng để tìm các pods có cùng labels "app: students-service" để quản lý.
   selector:
-    app: k8s-series # Label sử dụng để tim các pods để quản lý.
-  template: # Phần này định nghĩa podTemplate để ReplicationController tạo.
+    app: students-service
+  # Phần này định nghĩa podTemplate để ReplicationController tạo.
+  template:
     metadata:
-      name: k8s-springboot-series
+      name: students-service
+      # Labels của pod.
       labels:
-        app: k8s-series
+        app: students-service
     spec:
       containers:
-        - name: k8s-springboot-series
-          image: thanhnb1/k8s-springboot-series:latest
+        - name: students-service
+          image: thanhnb1/students-service:latest
+          # Định nghĩa các biến môi trường sẽ được thêm vào container
+          env:
+          - name: SERVER_PORT
+            value: "8080"
+          - name: MYSQL_URL
+            value: "jdbc:mysql://mysql:3306/students"
+          - name: MYSQL_USERNAME
+            value: "students"
+          - name: MYSQL_PASSWORD
+            value: "VNTechies2023"
+          ports:
+            - containerPort: 8080
+```
+
+Tạo file `courses-replicationController.yaml` để cấu hình ReplicationController cho Courses service:
+
+```YAML:k8s/courses-replicationController.yaml
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: courses-service
+spec:
+  # Số lượng Pod muốn chạy tại một thời điểm.
+  replicas: 3
+  # Label sử dụng để tìm các pods có cùng labels "app: courses-service" để quản lý.
+  selector:
+    app: courses-service
+  # Phần này định nghĩa podTemplate để ReplicationController tạo.
+  template:
+    metadata:
+      name: courses-service
+      # Labels của pod.
+      labels:
+        app: courses-service
+    spec:
+      containers:
+        - name: courses-service
+          image: thanhnb1/courses-service:latest
+          env:
+          - name: SERVER_PORT
+            value: "8080"
+          - name: MYSQL_URL
+            value: "jdbc:mysql://mysql:3306/courses"
+          - name: MYSQL_USERNAME
+            value: "courses"
+          - name: MYSQL_PASSWORD
+            value: "VNTechies2023"
+
+          # Cấu hình URI gọi đến Students service. Trong thực tế sẽ cấu hình đến Object Service trong Kubernetes
+          # nhưng vì chưa tìm hiểu đến object Service này (sẽ tìm hiểu trong bài sau) nên sẽ để IP và PORT của pod.
+          - name: STUDENTS_URI
+            value: http://10.1.28.78:8080
           ports:
             - containerPort: 8080
 ```
 
 Các thành phần trong ReplicationController:
 
-| Tên             | Định nghĩa                                                                                                                                                                   |
-| --------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `apiVersion`    | Version của Kubernetes API mà bạn sử dụng để tạo object/resource, ở đây là v1.                                                                                               |
-| `kind`          | Loại object/resource của Kubernetes, ở file trên là `ReplicationController`.                                                                                                 |
-| `metadata`      | Các thông tin như: name, labels, namespace và các thông tin khác của object/resource. Ở file trên, tên của ReplicationController là: `name: k8s-springboot-series`.          |
-| `spec`          | Mô tả các thành phần của ReplicationController như: replicas, selector, và podTemplate.                                                                                      |
-| `spec.replicas` | Mô tả số lượng pod sẽ được ReplicationController tạo và quản lý. Ở file trên là 3, lúc này ReplicationController sẽ đảm bảo số lượng pod luôn là 3 trên một thời điểm.       |
-| `spec.selector` | Mô tả các labels selector mà ReplicationController sẽ dùng để tìm và quản lý pod có cùng labels. Ở trên ReplicationController sẽ tìm các pod có labels là: `app: k8s-series` |
-| `spec.template` | Mô tả podTemplate mà ReplicationController sẽ tạo.                                                                                                                           |
+| Tên             | Định nghĩa                                                                                                                                                                                                                                                                                                                     |
+| --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `apiVersion`    | Version của Kubernetes API mà bạn sử dụng để tạo object/resource. Như file đây là v1.                                                                                                                                                                                                                                          |
+| `kind`          | Loại object/resource của Kubernetes. Như file trên là `ReplicationController`.                                                                                                                                                                                                                                                 |
+| `metadata`      | Các thông tin như: name, labels, namespace và các thông tin khác của object/resource.                                                                                                                                                                                                                                          |
+| `spec`          | Mô tả các thành phần của ReplicationController như: replicas, selector, và podTemplate.                                                                                                                                                                                                                                        |
+| `spec.replicas` | Mô tả số lượng pod sẽ được ReplicationController tạo và quản lý. Với cả hai file trên đều là 3, lúc này ReplicationController sẽ đảm bảo số lượng pod luôn là 3 trên một thời điểm.                                                                                                                                            |
+| `spec.selector` | Mô tả các labels selector mà ReplicationController sẽ dùng để tìm và quản lý pod có cùng labels. Với ReplicationController tên `students-service` thì sẽ tìm các pod có labels là: `app: students-service`. Tương tự với ReplicationController tên `courses-service` thì sẽ tìm các pod có labels là: `name: courses-service`. |
+| `spec.template` | Mô tả podTemplate mà ReplicationController sẽ tạo gồm tên container, image sẽ dùng là gì? và mô tả các port của container.                                                                                                                                                                                                     |
 
 **2. Triển khai ReplicationController trên Kubernetes**
 
@@ -84,23 +142,30 @@ kubectl get pods
 No resources found in default namespace.
 ```
 
-Triển khai ReplicationController trên Kubernetes thì sử dụng lệnh `kubectl apply -f <path-replication-controller-file>`.
+Triển khai ReplicationController trên Kubernetes bằng lệnh `kubectl apply -f <file-path>`
 
 ```shell
-kubectl apply -f k8s-springboot-ReplicationController.yaml
-replicationcontroller/k8s-springboot-series created
+kubectl apply -f students-replicationController.yaml
+replicationcontroller/students-service created
 
-# Lấy danh sách pod. Hiện tại thì đã có 3 pod mới được tạo vì `replicas: 3`.
+kubectl apply -f courses-replicationController.yaml
+replicationcontroller/courses-service created
+
+# Lấy danh sách pod. Hiện tại thì mỗi service đang có 3 pod vì các service đều định nghĩa `replicas: 3`.
 kubectl get po
-NAME                          READY   STATUS    RESTARTS   AGE
-k8s-springboot-series-5lwwg   1/1     Running   0          8s
-k8s-springboot-series-ff9v2   1/1     Running   0          8s
-k8s-springboot-series-qfgh8   1/1     Running   0          8s
+NAME                     READY   STATUS    RESTARTS       AGE
+students-service-hfzzz   1/1     Running   0              26s
+students-service-z6tmt   1/1     Running   0              26s
+students-service-lqnkr   1/1     Running   0              26s
+courses-service-9tk57    1/1     Running   0              13s
+courses-service-7nlc2    1/1     Running   0              13s
+courses-service-2dtc4    1/1     Running   0              13s
 
 # Lấy danh sách `ReplicationController`
 kubectl get rc
-NAME                    DESIRED   CURRENT   READY   AGE
-k8s-springboot-series   3         3         3       101s
+NAME               DESIRED   CURRENT   READY   AGE
+students-service   3         3         3       3m21s
+courses-service    3         3         3       3m7s
 
 # DESIRED=3. Trạng thái mong muốn trên Kubernetes có 3 pod trên cùng một thời điểm (`replicas=3`).
 # CURRENT=3. Trạng thái hiện tại trên Kubernetes, đang có 3 pod điều running trên cùng một thời điểm.
@@ -109,126 +174,185 @@ k8s-springboot-series   3         3         3       101s
 
 **3. Test ReplicationController trên Kubernetes**
 
-- Xóa Pod xem ReplicationController có tạo mới pod hay không?
+1. Thực hiện xóa Pod xem ReplicationController có tạo mới pod hay không?
 
-  Chúng ta tạo ra `ReplicationController` để giúp quản lý các pod có cùng labels. Phải đảm bảo rằng số lượng Pod chạy trên cùng một thời điểm là giống như định nghĩa. Giả sử khi có một hoặc nhiều pod bị crash hoặc bị xóa thì phải tạo một hoặc nhiều pod mới sao cho đủ số lượng pod chạy trên một thời điểm.
+Chúng ta tạo ra ReplicationController để giúp quản lý các pod có cùng labels. Phải đảm bảo rằng số lượng Pod chạy trên cùng một thời điểm là giống như định nghĩa. Giả sử khi có một hoặc nhiều pod bị crash hoặc bị xóa thì phải tạo một hoặc nhiều pod mới sao cho đủ số lượng pod chạy trên một thời điểm.
 
-  ```shell
-  # Xóa pod k8s-springboot-series-qfgh8 và k8s-springboot-series-ff9v2
+```shell
+# 1. Xóa pod "students-service-hfzzz" của students-service.
+kubectl delete po/students-service-hfzzz
+pod "students-service-hfzzz" deleted
 
-  kubectl delete po/k8s-springboot-series-qfgh8 po/k8s-springboot-series-ff9v2
-  pod "k8s-springboot-series-qfgh8" deleted
-  pod "k8s-springboot-series-ff9v2" deleted
+# 2. Xóa pod "courses-service-2dtc4" của courses-service.
+kubectl delete po/courses-service-2dtc4
+pod "courses-service-2dtc4" deleted
 
-  # Lấy danh sách pod
-  kubectl get po
-  NAME                          READY   STATUS    RESTARTS   AGE
-  k8s-springboot-series-5lwwg   1/1     Running   0          20m
-  k8s-springboot-series-hvn2k   1/1     Running   0          38s # Pod này được ReplicationController tạo mới.
-  k8s-springboot-series-9f9sl   1/1     Running   0          38s # Pod này được ReplicationController tạo mới.
-  ```
+# 3. Khi lấy danh sách ReplicationController
+kubectl get rc -w
+NAME               DESIRED   CURRENT   READY   AGE
+students-service   3         3         3       22m
+courses-service    3         3         3       22m
 
-- Thay đổi podTemplate
+# Chỗ này khi vừa xóa pod "students-service-hfzzz"
+# thì CURRENT(số pod hiện tại) = 2 vì DESIRED(số pod mong muốn) = 3
+# nên ReplicationController phải tạo thêm 1 pod nữa để CURRENT = DESIRED.
+students-service   3         2         2       22m
+students-service   3         3         2       22m
+students-service   3         3         3       22m
 
-  Thực hiện thay đổi image tag từ `latest` sang `v2`.
+# 4. Lấy danh sách pods
+kubectl get po
+NAME                     READY   STATUS    RESTARTS       AGE
+students-service-z6tmt   1/1     Running   0              9m27s
+students-service-lqnkr   1/1     Running   0              9m27s
+courses-service-9tk57    1/1     Running   0              9m14s
+courses-service-7nlc2    1/1     Running   0              9m14s
 
-  ```YAML
-  apiVersion: v1
-  kind: ReplicationController
-  metadata:
-    name: k8s-springboot-series     # Tên của ReplicationController
-  spec:
-    replicas: 3                     # Số lượng Pod muốn chạy trên một thời điểm.
-    selector:
-      app: k8s-series               # Label sử dụng để tim các pods để quản lý.
-    template:                       # Phần này định nghĩa podTemplate để ReplicationController tạo.
-      metadata:
-        name: k8s-springboot-series
-        labels:
-          app: k8s-series
-      spec:
-        containers:
-          - name: k8s-springboot-series
-            image: thanhnb1/k8s-springboot-series:v2 # thay đổi từ tag `latest` thành `v2`.
-            ports:
-              - containerPort: 8080
-  ```
+# Hai Pod dưới này được ReplicationController tạo mới.
+students-service-rjswf   1/1     Running   0              15s
+courses-service-tl44v    1/1     Running   0              5s
+```
 
-  Thực hiện triển khai `ReplicationController` mới được thay đổi contaimer image.
+2. Thay đổi podTemplate
 
-  ```shell
-  kubectl apply -f k8s-springboot-ReplicationController.yaml
-  replicationcontroller/k8s-springboot-series configured
+Thay đổi image tag của container từ `latest` sang `v2` của Students-service còn đối với Courses-service thì cũng tương tự.
 
-  # Lấy danh sách pod
+```YAML:k8s/students-replicationController.yaml
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: students-service
+spec:
+  # Số lượng Pod muốn chạy tại một thời điểm.
+  replicas: 3
+  # Label sử dụng để tìm các pods có cùng labels "app: students-service" để quản lý.
+  selector:
+    app: students-service
+  # Phần này định nghĩa podTemplate để ReplicationController tạo.
+  template:
+    metadata:
+      name: students-service
+      # Labels của pod.
+      labels:
+        app: students-service
+    spec:
+      containers:
+        - name: students-service
+          image: thanhnb1/students-service:v2 # Thay đổi từ latest sang v2.
+          env:
+          - name: SERVER_PORT
+            value: "8080"
+          - name: MYSQL_URL
+            value: "jdbc:mysql://mysql:3306/students"
+          - name: MYSQL_USERNAME
+            value: "students"
+          - name: MYSQL_PASSWORD
+            value: "VNTechies2023"
+          ports:
+            - containerPort: 8080
+```
 
-  kubectl get po
-  NAME                          READY   STATUS    RESTARTS   AGE
-  k8s-springboot-series-5lwwg   1/1     Running   0          37m
-  k8s-springboot-series-hvn2k   1/1     Running   0          17m
-  k8s-springboot-series-9f9sl   1/1     Running   0          17m
-  ```
+Thực hiện triển khai lại ReplicationController của Students-service đã được thay đổi contaimer image.
 
-  Khi thực hiện triển khai lại `ReplicationController` đã sửa container image tag từ `latest` sang `v2` thì khi lấy danh sách pod thì vẫn thấy những pod cũ và vẫn đang chạy container image tag `latest` không cập nhật lại image mới là `v2`. Để pod cập nhật image tag mới thì sẽ phải xóa pod cũ đi, lúc này `ReplicationController` sẽ tạo lại pod theo podTemplate mới với image tag là `v2`.
+```shell
+kubectl apply -f students-replicationController.yaml
+replicationcontroller/students-service configured
 
-  ![RC update podTemplate](/static/images/assets/2-rc-update-pod-template.png)
+# 1. Lấy danh sách pod
+kubectl get po
+NAME                     READY   STATUS    RESTARTS       AGE
+students-service-z6tmt   1/1     Running   0              37m
+students-service-lqnkr   1/1     Running   0              37m
+courses-service-9tk57    1/1     Running   0              36m
+courses-service-7nlc2    1/1     Running   0              36m
+courses-service-tl44v    1/1     Running   0              27m
+students-service-s4htf   1/1     Running   0              14m
 
-  ```shell
-  # Xóa pod k8s-springboot-series-9f9sl
-  kubectl delete pod/k8s-springboot-series-9f9sl
-  pod "k8s-springboot-series-9f9sl" deleted
+# 2. Describe pod cuả Students-service thì vẫn thấy container trong đó sử dụng image tag là: latest.
+kubectl describe po/students-service-z6tmt | grep Image
+    Image:          thanhnb1/students-service:latest
+    Image ID:       docker.io/thanhnb1/students-service@sha256:7512e73aa6da24b147b7b7297315c1
+```
 
-  # Lấy danh sách pods
-  kubectl get po
-  NAME                          READY   STATUS    RESTARTS   AGE
-  k8s-springboot-series-5lwwg   1/1     Running   0          37m
-  k8s-springboot-series-hvn2k   1/1     Running   0          17m
-  k8s-springboot-series-wlbps   1/1     Running   0          3s
+Khi thực hiện triển khai lại ReplicationController của Students-service đã sửa container image tag từ latest sang v2 thì khi lấy danh sách pod thì vẫn thấy những pod cũ và vẫn đang chạy container image tag latest không cập nhật lại image mới là v2. Để pod cập nhật image tag mới thì sẽ phải xóa pod cũ đi, lúc này ReplicationController sẽ tạo lại pod theo podTemplate mới với image tag là v2.
 
-  # Kiểm tra image tag của pod `k8s-springboot-series-wlbps` mới được tạo bởi ReplicationController.
-  kubectl get po/k8s-springboot-series-wlbps -o yaml| grep image:
-  - image: thanhnb1/k8s-springboot-series:v2
-    image: docker.io/thanhnb1/k8s-springboot-series:v2
-  ```
+![RC update podTemplate](/static/images/assets/2-rc-update-pod-template.png)
 
-- Tăng/giảm số lượng pods (Horizonetally scaling pods)
+_Credit: Internet_
 
-  `ReplicationController` sẽ đảm bảo số lượng pod chạy trên Kubernetes cluster trong cùng một thời điểm. Để định nghĩa số lượng pod mong muốn ta sử dụng `replicas`. Trong ví dụ trên, chúng ta đang định nghĩa `replicas: 3`. Để tăng/giảm số lượng pod, chúng ta có thể sửa trong `ReplicationController` YAML file tại trường `replicas`, hoặc sử dụng lệnh `kubectl scale rc <replicationController-name> --replicas=<pod-number>`.
+Thực hiện xóa pod "students-service-s4htf" thì lúc này ReplicationController của Students-service sẽ tạo pod theo podTemplate mới.
 
-  Tăng/giảm số lượng pod bằng cách sửa trường `spec.replicas` từ 3 lên 10 trong file YAML:
+```shell
+# 1. Xóa pod students-service-s4htf
+kubectl delete po/students-service-s4htf
+pod "students-service-s4htf" deleted
 
-  ```shell
-  kubectl apply -f k8s/k8s-springboot-ReplicationController.yaml
-  replicationcontroller/k8s-springboot-series configured
+# 2. Lấy danh sách pods
+kubectl get po
+NAME                     READY   STATUS    RESTARTS       AGE
+students-service-z6tmt   1/1     Running   0              45m
+students-service-lqnkr   1/1     Running   0              45m
+courses-service-9tk57    1/1     Running   0              45m
+courses-service-7nlc2    1/1     Running   0              45m
+courses-service-tl44v    1/1     Running   0              35m
+students-service-2fr8r   1/1     Running   0              10s # Pod được ReplicationController tạo mới.
 
-  # Lấy danh sách pod, những pod được tạo thêm thì sẽ sử dụng podTemplate mới image tag là `v2`.
-  kubectl get po
-  NAME                          READY   STATUS    RESTARTS    AGE
-  k8s-springboot-series-hvn2k   1/1     Running   0           37m
-  k8s-springboot-series-5lwwg   1/1     Running   0           17m
-  k8s-springboot-series-wlbps   1/1     Running   0           23m
-  k8s-springboot-series-cld6n   1/1     Running   0           15s # Pod mới tạo thêm, image tag là `v2`.
-  k8s-springboot-series-4dz77   1/1     Running   0           15s # Pod mới tạo thêm, image tag là `v2`.
-  k8s-springboot-series-zk5pq   1/1     Running   0           15s # Pod mới tạo thêm, image tag là `v2`.
-  k8s-springboot-series-cwwms   1/1     Running   0           15s # Pod mới tạo thêm, image tag là `v2`.
-  k8s-springboot-series-jcbnt   1/1     Running   0           15s # Pod mới tạo thêm, image tag là `v2`.
-  k8s-springboot-series-9bv5l   1/1     Running   0           15s # Pod mới tạo thêm, image tag là `v2`.
-  k8s-springboot-series-snmrz   1/1     Running   0           15s # Pod mới tạo thêm, image tag là `v2`.
-  ```
+# 3. Kiểm tra image tag của pod `students-service-2fr8r`mới được tạo bởi ReplicationController.
+# Thấy pod mới tạo đã đổi image tag từ latest sang v2.
+ kubectl describe po/students-service-2fr8r | grep Image
+    Image:          thanhnb1/students-service:v2
+    Image ID:       docker.io/thanhnb1/students-service@sha256:973f21b057444709e82821b686b32e2f37e7e8705a8994e3b19ee946b8616f57
 
-  Tăng/giảm số lượng pod bằng cách sử dụng lệnh:
+# 4. Còn các pod cũ thì vẫn image tag là latest không được cập nhật sang v2.
+ kubectl describe po/students-service-lqnkr | grep Image
+    Image:          thanhnb1/students-service:latest
+    Image ID:       docker.io/thanhnb1/students-service@sha256:7512e73aa6da24b147b7b7297315c1067156a0d1c0634ff4f776b5f7b0d0c8cc
+```
 
-  ```shell
-  kubectl scale rc k8s-springboot-series --replicas=3
-  replicationcontroller/k8s-springboot-series scaled
+3. Tăng/giảm số lượng pods (Horizonetally scaling pods)
 
-  # lấy danh sách pod.
-  kubectl get po
-  NAME                          READY   STATUS    RESTARTS  AGE
-  k8s-springboot-series-hvn2k   1/1     Running   0         4h44m
-  k8s-springboot-series-5lwwg   1/1     Running   0         5h4m
-  k8s-springboot-series-wlbps   1/1     Running   0         31m
-  ```
+ReplicationController sẽ đảm bảo số lượng pod chạy trên Kubernetes cluster trong cùng một thời điểm. Để định nghĩa số lượng pod mong muốn ta sử dụng `replicas: <pod-number>`. Trong ví dụ trên, chúng ta đang định nghĩa `replicas: 3`. Để tăng/giảm số lượng pod ta có thể sửa trong ReplicationController YAML file tại trường `replicas: <pod-number>`, hoặc sử dụng lệnh `kubectl scale rc <replicationController-name> --replicas=<pod-number>`.
+
+- Tăng/giảm số lượng pod bằng cách sửa trường `replicas: <pod-number>` từ 3 lên 10 trong file YAML:
+
+```shell
+kubectl apply -f students-replicationController.yaml
+replicationcontroller/students-service configured
+
+# Lấy danh sách pod, những pod được tạo thêm thì sẽ sử dụng podTemplate mới image tag là `v2`.
+kubectl get po
+NAME                     READY   STATUS    RESTARTS       AGE
+students-service-z6tmt   1/1     Running   0              65m
+students-service-lqnkr   1/1     Running   0              65m
+courses-service-9tk57    1/1     Running   0              65m
+courses-service-7nlc2    1/1     Running   0              65m
+courses-service-tl44v    1/1     Running   0              56m
+students-service-2fr8r   1/1     Running   0              20m
+students-service-4p6hs   1/1     Running   0              17s # pod mới tạo thêm, image tag mới là v2.
+students-service-xpd6b   1/1     Running   0              17s # pod mới tạo thêm, image tag mới là v2.
+students-service-ltvgl   1/1     Running   0              17s # pod mới tạo thêm, image tag mới là v2.
+students-service-6bkvh   1/1     Running   0              17s # pod mới tạo thêm, image tag mới là v2.
+students-service-9hd4w   1/1     Running   0              17s # pod mới tạo thêm, image tag mới là v2.
+students-service-twrxq   1/1     Running   0              17s # pod mới tạo thêm, image tag mới là v2.
+students-service-q6d5q   1/1     Running   0              17s # pod mới tạo thêm, image tag mới là v2.
+```
+
+- Tăng/giảm số lượng pod bằng cách sử dụng lệnh:
+
+```shell
+kubectl scale rc students-service --replicas=3
+replicationcontroller/students-service scaled
+
+# lấy danh sách pod.
+kubectl get po
+NAME                     READY   STATUS    RESTARTS       AGE
+students-service-z6tmt   1/1     Running   0              68m
+students-service-lqnkr   1/1     Running   0              68m
+courses-service-9tk57    1/1     Running   0              68m
+courses-service-7nlc2    1/1     Running   0              68m
+courses-service-tl44v    1/1     Running   0              58m
+students-service-2fr8r   1/1     Running   0              23m
+```
 
 ## 3. Triển khai ứng dụng với Deployment trong Kubernetes
 
@@ -250,17 +374,19 @@ Bạn có thể tham khảo thêm về Deployment ở [docs chính thức của 
 
 **1. Tạo Deployment bằng file YAML**
 
-```YAML:springboot-deployment.yaml
+Tạo file `students-deployment.yaml` để cấu hình Deployment cho Students service:
+
+```YAML:k8s/students-deployment.yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: k8s-springboot-series
+  name: students-service
   labels:
-    app: k8s-springboot-series
+    app: students-service
 spec:
   selector:
     matchLabels:
-      app: k8s-springboot-series
+      app: students-service
   replicas: 3
   strategy:
     rollingUpdate:
@@ -270,11 +396,66 @@ spec:
   template:
     metadata:
       labels:
-        app: k8s-springboot-series
+        app: students-service
     spec:
       containers:
-        - name: k8s-springboot-series
-          image: thanhnb1/k8s-springboot-series:latest
+        - name: students-service
+          image: thanhnb1/students-service:latest
+          env:
+          - name: SERVER_PORT
+            value: "8080"
+          - name: MYSQL_URL
+            value: "jdbc:mysql://mysql:3306/students"
+          - name: MYSQL_USERNAME
+            value: "students"
+          - name: MYSQL_PASSWORD
+            value: "VNTechies2023"
+          ports:
+            - containerPort: 8080
+      restartPolicy: Always
+```
+
+Tạo file `courses-deployment.yaml` để cấu hình Deployment cho Courses service:
+
+```YAML:k8s/courses-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: courses-service
+  labels:
+    app: courses-service
+spec:
+  selector:
+    matchLabels:
+      app: courses-service
+  replicas: 3
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: courses-service
+    spec:
+      containers:
+        - name: courses-service
+          image: thanhnb1/courses-service:latest
+          env:
+          - name: SERVER_PORT
+            value: "8080"
+          - name: MYSQL_URL
+            value: "jdbc:mysql://mysql:3306/courses"
+          - name: MYSQL_USERNAME
+            value: "courses"
+          - name: MYSQL_PASSWORD
+            value: "VNTechies2023"
+
+          # Cấu hình URI gọi đến Students service. Trong thực tế sẽ cấu hình đến Object Service trong Kubernetes
+          # nhưng vì chưa tìm hiểu đến object Service này (sẽ tìm hiểu trong bài sau) nên sẽ để IP và PORT của pod.
+          - name: STUDENTS_URI
+            value: http://10.1.28.78:8080
           ports:
             - containerPort: 8080
       restartPolicy: Always
@@ -282,141 +463,179 @@ spec:
 
 Các thành phần trong Deployment:
 
-| Tên             | Định nghĩa                                                                                                                                                                                                |
-| --------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `apiVersion`    | Version của Kubernetes API mà bạn sử dụng để tạo object/resource. Như file trên thì `apiVersion: apps/v1`.                                                                                                |
-| `kind`          | Loại object/resource của Kubernetes, Như file trên thì `kind: Deployment`.                                                                                                                                |
-| `metadata`      | Các thông tin như: name, labels, namespace và các thông tin khác của object/resource. Ở file trên, tên của ReplicationController là: `name: k8s-springboot-series`, labels: `app: k8s-springboot-series`. |
-| `spec`          | Mô tả các thành phần của Deployment như: selector, replicas, strategy và podTemplate.                                                                                                                     |
-| `spec.selector` | ReplicaSet sẽ dùng để tìm và quản lý pod có cùng labels. Ở trên ReplicaSet sẽ tìm các pod có labels là: `app: k8s-springboot-series`.                                                                     |
-| `spec.replicas` | Deployment sẽ sử dụng ReplicaSet để tạo và quản lý pod. Như file trên thì `replicas: 3` tức là ReplicaSet sẽ đảm bảo có 3 pod chạy trên một thời điểm.                                                    |
-| `spec.strategy` | Mô tả chiến lược khi thực hiện update ứng dụng. Deployment cung cấp nhiều chiến lược như: Recreate, RollingUpdate,... Trong trường hợp này là sử dụng chiến lược RollingUpdate.                           |
-| `spec.template` | Mô tả podTemplate mà ReplicaSet sẽ tạo và quản lý.                                                                                                                                                        |
+| Tên             | Định nghĩa                                                                                                                                                                                                                                                                                                             |
+| --------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `apiVersion`    | Version của Kubernetes API mà bạn sử dụng để tạo object/resource. Như file trên thì `apiVersion: apps/v1`.                                                                                                                                                                                                             |
+| `kind`          | Loại object/resource của Kubernetes, Như file trên thì `kind: Deployment`.                                                                                                                                                                                                                                             |
+| `metadata`      | Các thông tin như: name, labels, namespace và các thông tin khác của object/resource. Như file trên tên của Deployment Courses service là: `name: courses-service` và labels: `app: courses-service`. Tương tự với Deployment của Students Serivce sẽ là: `name: students-service` và labels: `app: students-service`. |
+| `spec`          | Mô tả các thành phần của Deployment như: selector, replicas, strategy và podTemplate.                                                                                                                                                                                                                                  |
+| `spec.selector` | ReplicaSet sẽ dùng để tìm và quản lý pod có cùng labels. Như file trên ReplicaSet của Courses service sẽ tìm các pod có labels là: `app: courses-service`. Tương tự ReplicaSet của Students service sẽ là: `app: students-service`.                                                                                    |
+| `spec.replicas` | Deployment sẽ sử dụng ReplicaSet để tạo và quản lý pod. Như file trên thì `replicas: 3` tức là ReplicaSet sẽ đảm bảo có 3 pod chạy trên một thời điểm.                                                                                                                                                                 |
+| `spec.strategy` | Mô tả chiến lược khi thực hiện update ứng dụng. Deployment cung cấp nhiều chiến lược như: Recreate, RollingUpdate,... Trong trường hợp này là sử dụng chiến lược RollingUpdate.                                                                                                                                        |
+| `spec.template` | Mô tả podTemplate mà ReplicaSet sẽ tạo và quản lý.                                                                                                                                                                                                                                                                     |
 
 **2. Triển khai Deployment trên Kubernetes**
 
+Triển khai Students Deployment bằng lệnh: `kubectl apply -f <path-deployment-file>`
+
 ```shell
-# Triển khai deployment bằng lệnh: kubectl apply -f <path-deployment-file>
-kubectl apply -f springboot-deployment.yaml
-deployment.apps/k8s-springboot-series created
+kubectl apply -f students-deployment.yaml
+deployment.apps/students-service created
 
 # Lấy danh sách pods
-kubectl get pods
-NAME                                     READY   STATUS    RESTARTS   AGE
-k8s-springboot-series-7cbfd878f6-rkc8w   1/1     Running   0          8s
-k8s-springboot-series-7cbfd878f6-s5nwt   1/1     Running   0          8s
-k8s-springboot-series-7cbfd878f6-phj58   1/1     Running   0          8s
+kubectl get po
+NAME                                READY   STATUS    RESTARTS        AGE
+students-service-5f4569998f-sqwhw   1/1     Running   0               36s
+students-service-5f4569998f-q8jwm   1/1     Running   0               36s
+students-service-5f4569998f-7qvgt   1/1     Running   0               36s
 
 # Lấy danh sách ReplicaSet
 kubectl get rs
-NAME                               DESIRED   CURRENT   READY   AGE
-k8s-springboot-series-7cbfd878f6   3         3         3       43s
+NAME                          DESIRED   CURRENT   READY   AGE
+students-service-5f4569998f   3         3         3       77s
 
-# Lấy danh sách deployment
+# Lấy danh sách Deployment
 kubectl get deployment
-NAME                    READY   UP-TO-DATE   AVAILABLE   AGE
-k8s-springboot-series   3/3     3            3           65s
+NAME               READY   UP-TO-DATE   AVAILABLE   AGE
+students-service   3/3     3            3           82s
+```
+
+Triển khai Courses Deployment bằng lệnh: `kubectl apply -f <path-deployment-file>`
+
+```shell
+kubectl apply -f courses-deployment.yaml
+deployment.apps/courses-service created
+
+# Lấy danh sách pods
+kubectl get po
+NAME                                READY   STATUS    RESTARTS        AGE
+courses-service-97f8d658d-cp6nm     1/1     Running   0               14s
+courses-service-97f8d658d-jfvxw     1/1     Running   0               14s
+courses-service-97f8d658d-jp498     1/1     Running   0               14s
+
+# Lấy danh sách ReplicaSet
+kubectl get rs
+NAME                          DESIRED   CURRENT   READY   AGE
+courses-service-97f8d658d     3         3         3       72s
+
+# Lấy danh sách Deployment
+kubectl get deployment
+NAME               READY   UP-TO-DATE   AVAILABLE   AGE
+courses-service    3/3     3            3           3m29s
 ```
 
 Khi triển khai Deployment trên Kubernetes thì sẽ tạo ra:
 
 - Pod: Các pod trên được tạo theo podTemplate được mô tả ở phần `spec.template` trong file Deployment.
-- ReplicaSet: `k8s-springboot-series-7cbfd878f6`. ReplicaSet sẽ giúp tạo và quản lý pod nhằm đảm bảo số lượng pod chạy trên cùng một thời điểm. Deployment có thể có nhiều ReplicaSet mỗi lần thay đổi podTemplate thì sẽ đều tạo ra một ReplicaSet mới.
+- ReplicaSet: ReplicaSet sẽ giúp tạo và quản lý pod nhằm đảm bảo số lượng pod chạy trên cùng một thời điểm. Deployment có thể có nhiều ReplicaSet mỗi lần thay đổi podTemplate thì sẽ đều tạo ra một ReplicaSet mới.
 
 **3. Test Deployment trên Kubernetes**
 
-- Thực hiện thay đổi podTemplate
+1. Thực hiện thay đổi podTemplate
 
-  Thực hiện cập nhật podTemplate, đổi image tag của container từ: `latest` sang `v2` rồi sau đó triển khai lại Deployment.
+Thực hiện cập nhật podTemplate của Deployment Students service, đổi image tag của container từ: `latest` sang `v2` rồi sau đó triển khai lại Deployment.
 
-  ```shell
-  # Thay đổi container image từ `latest` sang `v2` và triển khai lại deployment.
-  kubectl apply -f springboot-deployment.yaml
-  deployment.apps/k8s-springboot-series configured
+```shell
+# Thay đổi container image từ `latest` sang `v2` và triển khai lại deployment.
+kubectl apply -f students-deployment.yaml
+deployment.apps/students-service configured
 
-  # Lấy danh sách pods trong quá trình update.
-  kubectl get po -w
-  NAME                                     READY   STATUS    RESTARTS   AGE
-  k8s-springboot-series-7cbfd878f6-rkc8w   1/1     Running   0          4m32s
-  k8s-springboot-series-7cbfd878f6-s5nwt   1/1     Running   0          4m32s
-  k8s-springboot-series-7cbfd878f6-phj58   1/1     Running   0          4m32s
-  k8s-springboot-series-87d545bb5-7974m    0/1     Pending   0          0s
-  k8s-springboot-series-87d545bb5-7974m    0/1     ContainerCreating   0          0s
-  k8s-springboot-series-87d545bb5-7974m    1/1     Running             0          3s
-  k8s-springboot-series-7cbfd878f6-s5nwt   1/1     Terminating         0          4m51s
-  k8s-springboot-series-87d545bb5-wqp4j    0/1     Pending             0          0s
-  k8s-springboot-series-87d545bb5-wqp4j    0/1     ContainerCreating   0          0s
-  k8s-springboot-series-7cbfd878f6-s5nwt   1/1     Terminating         0          4m51s
-  ....
-  k8s-springboot-series-7cbfd878f6-rkc8w   1/1     Terminating         0          4m57s
-  k8s-springboot-series-7cbfd878f6-rkc8w   0/1     Terminating         0          4m58s
+# Lấy danh sách pods trong quá trình update.
+# Các pod cũ sẽ bị thay thế như thế nào tùy thuộc vào Deployment strategy được định nghĩa là gì?
+kubectl get po -w
+NAME                                READY   STATUS    RESTARTS        AGE
+students-service-5f4569998f-sqwhw   1/1     Running   0               22m
+students-service-5f4569998f-q8jwm   1/1     Running   0               22m           # pod cũ
+students-service-5f4569998f-7qvgt   1/1     Running   0               22m
+students-service-64cd4c84b6-bxchk   0/1     Pending   0               0s            # pod mới
+students-service-64cd4c84b6-bxchk   0/1     ContainerCreating   0               0s  # pod mới
+students-service-64cd4c84b6-bxchk   1/1     Running             0               2s  # pod mới (running).
+students-service-5f4569998f-q8jwm   1/1     Terminating         0               22m # pod cũ sẽ bị xóa đi (Terminating).
+students-service-64cd4c84b6-f5cts   0/1     Pending             0               0s
+students-service-64cd4c84b6-f5cts   0/1     ContainerCreating   0               0s
+students-service-5f4569998f-q8jwm   1/1     Terminating         0               22m # pod cũ sẽ bị xóa đi (Terminating).
+students-service-64cd4c84b6-f5cts   0/1     ContainerCreating   0               0s
+students-service-5f4569998f-q8jwm   0/1     Terminating         0               22m # pod cũ sẽ bị xóa đi (Terminating).
+students-service-5f4569998f-q8jwm   0/1     Terminating         0               22m # pod cũ sẽ bị xóa đi (Terminating).
+students-service-64cd4c84b6-f5cts   1/1     Running             0               2s
+students-service-5f4569998f-sqwhw   1/1     Terminating         0               22m
+students-service-64cd4c84b6-tgdjt   0/1     Pending             0               0s
+students-service-64cd4c84b6-tgdjt   0/1     ContainerCreating   0               0s
+students-service-5f4569998f-sqwhw   1/1     Terminating         0               22m
+students-service-64cd4c84b6-tgdjt   0/1     ContainerCreating   0               0s
+students-service-5f4569998f-sqwhw   0/1     Terminating         0               22m
+students-service-64cd4c84b6-tgdjt   1/1     Running             0               2s
+students-service-5f4569998f-7qvgt   1/1     Terminating         0               22m
+students-service-5f4569998f-7qvgt   0/1     Terminating         0               22m
 
-  # Lấy danh sách pods sau quá trình thay đổi podTemplate.
-  kubectl get po
-  NAME                                    READY   STATUS    RESTARTS   AGE
-  k8s-springboot-series-87d545bb5-7974m   1/1     Running   0          89s
-  k8s-springboot-series-87d545bb5-wqp4j   1/1     Running   0          86s
-  k8s-springboot-series-87d545bb5-z5zrg   1/1     Running   0          83s
+# Lấy danh sách pods sau quá trình thay đổi podTemplate.
+kubectl get po
+NAME                                READY   STATUS    RESTARTS        AGE
+students-service-64cd4c84b6-bxchk   1/1     Running   0               13m
+students-service-64cd4c84b6-f5cts   1/1     Running   0               13m
+students-service-64cd4c84b6-tgdjt   1/1     Running   0               13m
 
-  # Lấy danh sách ReplicaSet sau khi thay đổi podTemplate.
-  kubectl get rs
-  NAME                               DESIRED   CURRENT   READY   AGE
-  k8s-springboot-series-87d545bb5    3         3         3       6m16s
-  k8s-springboot-series-7cbfd878f6   0         0         0       11m
-  ```
+# Lấy danh sách ReplicaSet sau khi thay đổi podTemplate.
+ kubectl get rs
+NAME                          DESIRED   CURRENT   READY   AGE
+students-service-64cd4c84b6   3         3         3       14m
+students-service-5f4569998f   0         0         0       36m
+```
 
-  Khi thực hiện thay đổi podTemplate và triển khai lại Deployment thì thấy có replicaSet `k8s-springboot-series-87d545bb5` được tạo mới và replicaSet trước đó đã giảm số lượng pod về 0. Khi thay đổi podTemplate thì Deployment sẽ tạo một replicaSet mới. Các pod (phiên bản mới) sẽ thay thế dần dần các pod (phiên bản cũ) cho đến khi các pod (phiên bản cũ) đã được thay thế hết bằng các pod (phiên bản mới). Cách mà Deployment cập nhật phiên bản của ứng dụng đó gọi các các chiến lược Deployment (Deployment Strategy). Deployment sử dụng RollingUpdate là chiến lược mặc định.
+Khi thực hiện thay đổi podTemplate và triển khai lại Deployment thì thấy có replicaSet `students-service-64cd4c84b6` được tạo mới và replicaSet trước đó đã giảm số lượng pod về 0. Khi thay đổi podTemplate thì Deployment sẽ tạo một replicaSet mới. Các pod (phiên bản mới) sẽ thay thế dần dần các pod (phiên bản cũ) cho đến khi các pod (phiên bản cũ) đã được thay thế hết bằng các pod (phiên bản mới). Cách mà Deployment cập nhật phiên bản của ứng dụng đó gọi các các chiến lược Deployment (Deployment Strategy). Deployment sử dụng RollingUpdate là chiến lược mặc định.
 
-- Thực hiện rollback giữa các phiên bản của ứng dụng.
+2. Thực hiện rollback giữa các phiên bản của ứng dụng.
 
-  Khi triển khai ứng dụng bằng Deployment lần đầu thì sẽ là phiên bản đầu tiên nên REVISION = 1. Ở phần trên đã thay đổi podTemplate (từ `latest` sang `v2`) và triển khai lại Deployment nên sẽ có thêm một phiên bản mới của Deployment lúc này REVISION = 2. REVISION sẽ theo dõi những thay đổi được thực hiện trên Deployment và cho phép rollback giữa các phiên bản của deployment ứng dung nếu cần thiết.
+Khi triển khai ứng dụng bằng Deployment lần đầu thì sẽ là phiên bản đầu tiên nên REVISION = 1. Ở phần trên đã thay đổi podTemplate (từ `latest` sang `v2`) và triển khai lại Deployment nên sẽ có thêm một phiên bản mới của Deployment lúc này REVISION = 2. REVISION sẽ theo dõi những thay đổi được thực hiện trên Deployment và cho phép rollback giữa các phiên bản của deployment ứng dung nếu cần thiết.
 
-  ```shell
-  # 1. Lấy danh sách phiên bản của Deployment ứng dụng.
-  kubectl rollout history deployment k8s-springboot-series
-  deployment.apps/k8s-springboot-series
-  REVISION  CHANGE-CAUSE
-  1         <none>
-  2         <none>
+```shell
+# 1. Lấy danh sách phiên bản của Deployment ứng dụng.
+kubectl rollout history deployment/students-service
+deployment.apps/students-service
+REVISION  CHANGE-CAUSE
+1         <none>
+2         <none>
 
-  # 2. Có thể thêm CHANGE-CAUSE bằng lệnh dưới đây để dễ dàng rollback giữa các phiên bản hơn.
-  kubectl annotate deployment/<DEPLOYMENT_NAME> kubernetes.io/change-cause="thêm mô tả"
+# 2. Có thể thêm CHANGE-CAUSE bằng lệnh dưới đây để dễ dàng rollback giữa các phiên bản hơn.
+kubectl annotate deployment/<DEPLOYMENT_NAME> kubernetes.io/change-cause="thêm mô tả"
 
-  kubectl annotate deployment/k8s-springboot-series kubernetes.io/change-cause="change image tag from latest to v2"
-  deployment.apps/k8s-springboot-series annotated
+kubectl annotate deployment/students-service kubernetes.io/change-cause="change image tag from latest to v2"
+deployment.apps/students-service annotated
 
-  # Lấy lại danh sách phiên bản của Deployment ứng dụng.
-  kubectl rollout history deployment k8s-springboot-series
-  deployment.apps/k8s-springboot-series
-  REVISION  CHANGE-CAUSE
-  1         <none>
-  2         change image tag from latest to v2
+# Lấy danh sách phiên bản của Deployment ứng dụng.
+kubectl rollout history deployment/students-service
+deployment.apps/students-service
+REVISION  CHANGE-CAUSE
+1         <none>
+2         change image tag from latest to v2
 
-  # Kiểm tra phiên bản hiện tại của Deployment ứng dụng
-  kubectl get deployment/k8s-springboot-series -o yaml | grep deployment.kubernetes.io/revision:
-    deployment.kubernetes.io/revision: "2"
+# Kiểm tra phiên bản hiện tại của Deployment ứng dụng
+kubectl get deployment/students-service -o yaml | grep deployment.kubernetes.io/revision:
+  deployment.kubernetes.io/revision: "2"
 
-  # Thực hiện rollback về phiên bản cụ thể nào đó từ revision: "2" => revision: "1" (rollback lại image tag là latest).
-  kubectl rollout undo deployment/k8s-springboot-series --to-revision=1
-  deployment.apps/k8s-springboot-series rolled back
+# Thực hiện rollback về phiên bản cụ thể nào đó từ revision: "2" => revision: "1" (rollback lại image tag là latest).
+kubectl rollout undo deployment/students-service --to-revision=1
+deployment.apps/students-service rolled back
 
-  # Danh sách pod mới
-  kubectl get po
-  NAME                                     READY   STATUS    RESTARTS   AGE
-  k8s-springboot-series-7cbfd878f6-9bdl7   1/1     Running   0          41s
-  k8s-springboot-series-7cbfd878f6-lsc64   1/1     Running   0          36s
-  k8s-springboot-series-7cbfd878f6-84rxh   1/1     Running   0          29s
+# Danh sách pod mới
+kubectl get po
+NAME                                READY   STATUS    RESTARTS        AGE
+students-service-5f4569998f-jrlmc   1/1     Running   0               18s
+students-service-5f4569998f-dz9f8   1/1     Running   0               15s
+students-service-5f4569998f-5ppwq   1/1     Running   0               12s
 
-  # Kiểm tra phiên bản hiện tại ứng dụng.
-  kubectl describe po/k8s-springboot-series-7cbfd878f6-9bdl7 | grep Image
-    Image:          thanhnb1/k8s-springboot-series:latest
-  ```
+# Kiểm tra phiên bản hiện tại ứng dụng.
+ kubectl describe po/students-service-5f4569998f-jrlmc | grep Image
+    Image:          thanhnb1/students-service:latest
+    Image ID:       docker.io/thanhnb1/students-service@sha256:7512e73aa6da24b147b7b7297315c1067156a0d1c0634ff4f776b5f7b0d0c8cc
+```
 
 ## 4. Tổng kết
 
-Qua này này chúng ta đã tìm hiều về cách triển khai ứng dụng và quản lý pod của ứng dụng bằng các object trong Kubernetes như: ReplicationController và Deployment. Chúng ta đã thực hiện:
+Qua này này chúng ta đã tìm hiều về cách triển khai ứng dụng và quản lý pod của ứng dụng bằng các object trong Kubernetes như: ReplicationController và Deployment. Chúng ta đã tìm hiểu:
 
-- Tìm hiểu và triển khai ứng dụng với ReplicationController và Deployment.
+- Triển khai ứng dụng với ReplicationController và Deployment.
+- Thực hiện tăng/giảm số lượng pod của ứng dụng.
 - Thực hiện cập nhật podTemplate với ReplicationController và cập nhật podTemplate với Deployment.
 - Thực hiện rollback các phiên bản trước đó của ứng dụng khi triển khai ứng dụng với Deployment.
 
