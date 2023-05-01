@@ -30,39 +30,39 @@ Các phương pháp triển khai Rancher khác có tại [Rancher Quick-Start-Gu
 
 Như bạn có thể thấy trong Docker Desktop của chúng ta, có một Rancher container đang chạy.
 
-![](Images/Day53_Kubernetes1.png)
+![](/static/images/assets/Day53_Kubernetes1.png)
 
 ### Truy cập Rancher UI
 
 Với container ở trên đang chạy, chúng ta có thể điều hướng tới nó thông qua một trang web. `https://localhost` sẽ hiển thị trang đăng nhập như ở dưới.
 
-![](Images/Day53_Kubernetes2.png)
+![](/static/images/assets/Day53_Kubernetes2.png)
 
 Thực hiện theo các hướng dẫn dưới đây để có được mật khẩu cần thiết. Vì tôi đang sử dụng Windows nên tôi đã chọn bash vì chúng ta cần lệnh grep.
 
-![](Images/Day53_Kubernetes3.png)
+![](/static/images/assets/Day53_Kubernetes3.png)
 
 Sau đó, chúng ta có thể lấy mật khẩu ở trên và đăng nhập, trang tiếp theo là nơi chúng ta có thể xác định mật khẩu mới.
 
-![](Images/Day53_Kubernetes4.png)
+![](/static/images/assets/Day53_Kubernetes4.png)
 
 Khi chúng ta đã làm những điều trên, chúng ta sẽ đăng nhập và có thể thấy màn hình sau. Là một phần của triển khai Rancher, chúng ta cũng thấy một K3s cluster được tạo.
 
-![](Images/Day53_Kubernetes5.png)
+![](/static/images/assets/Day53_Kubernetes5.png)
 
 ### Sử dụng rancher
 
 Điều đầu tiên để chúng ta xem xét là K3S cluster được triển khai. Bạn có thể thấy như bên dưới để chúng ta có thể có được cái nhìn rõ ràng về những gì đang xảy ra bên trong cluster của chúng ta. Đây là triển khai mặc định và chúng ta chưa triển khai bất cứ thứ gì cho cluster này. Bạn có thể thấy nó được tạo thành từ 1 node và có 5 deployments. Sau đó, bạn cũng có thể thấy rằng có một số thông số về pods, cores và memory.
 
-![](Images/Day53_Kubernetes6.png)
+![](/static/images/assets/Day53_Kubernetes6.png)
 
 Trên menu bên trái, chúng ta cũng có tab "Apps & Marketplace", điều này cho phép chúng ta chọn các ứng dụng mà chúng ta muốn chạy trên các cluster của mình, như đã đề cập, Rancher cung cấp cho chúng ta khả năng chạy hoặc quản lý các clusters khác nhau. Với marketplace, chúng ta có thể triển khai các ứng dụng của mình rất dễ dàng.
 
-![](Images/Day53_Kubernetes7.png)
+![](/static/images/assets/Day53_Kubernetes7.png)
 
 Một điều khác cần đề cập tới là nếu bạn cần có quyền truy cập vào bất cứ cluster nào do Rancher quản lý, ở trên cùng bên phải, bạo có thể mở một kubectl shell tới cluster mà bạn chọn.
 
-![](Images/Day53_Kubernetes8.png)
+![](/static/images/assets/Day53_Kubernetes8.png)
 
 ### Tạo một cluster mới
 
@@ -72,19 +72,19 @@ Tuy nhiên, chúng ta muốn cài đặt docker và cập nhật hệ điều h�
 
 Chúng ta có thể điều hướng đến vị trì thư mục vagrant và chỉ cần chạy `vagrant up` và điều này sẽ bắt đầu quá trình tạo 3 máy ảo của chúng ta trong VirtualBox.
 
-![](Images/Day53_Kubernetes9.png)
+![](/static/images/assets/Day53_Kubernetes9.png)
 
 Bây giờ chúng ta đã có các nodes hoặc máy ảo sẵn sàng, sau đó chúng ta có thể sử dụng Rancher để tạo Kubernetes cluster mới của mình. Màn hình đầu tiên để tạo cluster của bạn cung cấp cho bạn một số tuỳ chọn về vị trí của cluster, ví dụ như các dịch vụ Kubernetes được quản lý trên đám mây công cộng, vSphere hoặc lựa chọn khác.
 
-![](Images/Day53_Kubernetes10.png)
+![](/static/images/assets/Day53_Kubernetes10.png)
 
 Chúng tôi sẽ chọn "custom" vì chúng ta không sử dụng một trong các nền tảng được tích hợp. Trang mở đầu là nơi bạn xác định tên cluster của mình (có ghi local ở dưới nhưng bạn không thể sử dụng local, cluster của chúng ta là vagrant). Bạn có thể xác định các phiên bản Kubernetes tại đây, nhà cung cấp mạng và một số tuỳ chọn cấu hình khác để khởi động và chạy cụm Kubernetes của bạn.
 
-![](Images/Day53_Kubernetes11.png)
+![](/static/images/assets/Day53_Kubernetes11.png)
 
 Trang tiếp theo sẽ cung cấp cho bạn mã đăng ký cần được chạy trên từng node của bạn với các dịch vụ phù hợp để được kích hoạt. etcd, control-plane và worker. Đối với master node, chúng ta muốn có etcd và control-plan nên có thể nhìn lệnh bên dưới.
 
-![](Images/Day53_Kubernetes12.png)
+![](/static/images/assets/Day53_Kubernetes12.png)
 
 ```
 sudo docker run -d --privileged --restart=unless-stopped --net=host -v /etc/kubernetes:/etc/kubernetes -v /var/run:/var/run  rancher/rancher-agent:v2.6.3 --server https://10.0.0.1 --token mpq8cbjjwrj88z4xmf7blqxcfmwdsmq92bmwjpphdkklfckk5hfwc2 --ca-checksum a81944423cbfeeb92be0784edebba1af799735ebc30ba8cbe5cc5f996094f30b --etcd --controlplane
@@ -92,7 +92,7 @@ sudo docker run -d --privileged --restart=unless-stopped --net=host -v /etc/kube
 
 Nếu mạng được định cấu hình chính xác thì bạn sẽ nhanh chóng thấy thông tin sau trong bảng điều khiển rancher của ình, cho biết rằng master node đầu tiên hiện đang được đăng ký và cluster đang được tạo.
 
-![](Images/Day53_Kubernetes13.png)
+![](/static/images/assets/Day53_Kubernetes13.png)
 
 Sau đó, chúng ta có thể lặp lại quy trình này với các worker nodes bằng lệnh sau và sau một lúc, bạn sẽ thiết lập và chạy các ứng dụng của mình và có khả năng tận dụng marketplace để triển khai các ứng dụng của mình.
 
@@ -100,7 +100,7 @@ Sau đó, chúng ta có thể lặp lại quy trình này với các worker node
 sudo docker run -d --privileged --restart=unless-stopped --net=host -v /etc/kubernetes:/etc/kubernetes -v /var/run:/var/run  rancher/rancher-agent:v2.6.3 --server https://10.0.0.1 --token mpq8cbjjwrj88z4xmf7blqxcfmwdsmq92bmwjpphdkklfckk5hfwc2 --ca-checksum a81944423cbfeeb92be0784edebba1af799735ebc30ba8cbe5cc5f996094f30b --worker
 ```
 
-![](Images/Day53_Kubernetes14.png)
+![](/static/images/assets/Day53_Kubernetes14.png)
 
 Trong 3 ngày vừa qua, chúng ta đã sử dụng một số cách khác nhau để thiết lập và chạy với Kubernetes cluster, trong những ngày còn lại, chúng tôi sẽ xem xét khía cạnh ứng dụng của nền tảng và nó được cho là phần quan trọng nhất. Chúng ta sẽ xem xét các dịch vụ và khả năng cung cấp cũng như sử dụng dịch vụ của chúng ta trong Kubernetes.
 
