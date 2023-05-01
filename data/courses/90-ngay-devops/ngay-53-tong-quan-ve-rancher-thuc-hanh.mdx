@@ -1,6 +1,6 @@
 ---
 title: 'Ngày 53 - Tổng quan về Rancher - Thực hành'
-images: ['/static/images/ogps/90daysofdevopsd52.png']
+images: ['/static/images/ogps/90daysofdevopsd53.png']
 summary: 'Trong bài viết này, chúng ta sẽ đề cập tới Rancher - công cụ quản lý cluster với giao diện người dùng để các nhóm vận hành có thể quản lý các cluster một cách tốt hơn.'
 tags: ['devops', '90daysofdevops', 'containers']
 date: '2023-04-24'
@@ -66,7 +66,7 @@ Một điều khác cần đề cập tới là nếu bạn cần có quyền tr
 
 ### Tạo một cluster mới
 
-Trong hai ngày vừa qua, chúng ta đã tạo một minikube cluster và đã sử dụng Vagrant với VirtualBox để tạo một Kubernetes cluster gồm 3 nodes. Với Rancher, chúng ta cũng có thể tạo cluster. Trong [thư mục Rancher](https://github.com/MichaelCade/90DaysOfDevOps/tree/main/2022/Days/Kubernetes/Rancher) you will find additional vagrant files that will build out the same 3 nodes but without the steps for creating our Kubernetes cluster (we want Rancher to do this for us)
+Trong hai ngày vừa qua, chúng ta đã tạo một minikube cluster và đã sử dụng Vagrant với VirtualBox để tạo một Kubernetes cluster gồm 3 nodes. Với Rancher, chúng ta cũng có thể tạo cluster. Trong [thư mục Rancher](https://github.com/MichaelCade/90DaysOfDevOps/tree/main/2022/Days/Kubernetes/Rancher) bạn sẽ thấy các tệp vagrant tạo ra 3 nodes giống nhau nhưng không có các bước tạo Kubernetes cluster của chúng ta (chúng ta muốn Rancher làm điều này cho chúng ta)
 
 Tuy nhiên, chúng ta muốn cài đặt docker và cập nhật hệ điều hành nên bạn vẫn sẽ thấy `common.sh` chạy trên các nodes của chúng ta. Nó cũng sẽ căif đặt Kubeadm, Kubectl,... Nhưng nó sẽ không chạy các lệnh Kubeadm để tạo và nối các nodes của chúng ta thành một cluster.
 
