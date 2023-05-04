@@ -26,7 +26,9 @@ Rancher cho phép chúng ta triển khai các cụm Kubernetes theo tiêu chuẩ
 
 Các phương pháp triển khai Rancher khác có tại [Rancher Quick-Start-Guide](https://rancher.com/docs/rancher/v2.6/en/quick-start-guide/deployment/)
 
-`sudo docker run -d --restart=unless-stopped -p 80:80 -p 443:443 --privileged rancher/rancher`
+```shell
+sudo docker run -d --restart=unless-stopped -p 80:80 -p 443:443 --privileged rancher/rancher
+```
 
 Như bạn có thể thấy trong Docker Desktop của chúng ta, có một Rancher container đang chạy.
 
@@ -86,7 +88,7 @@ Trang tiếp theo sẽ cung cấp cho bạn mã đăng ký cần được chạy
 
 ![](/static/images/assets/Day53_Kubernetes12.png)
 
-```
+```shell
 sudo docker run -d --privileged --restart=unless-stopped --net=host -v /etc/kubernetes:/etc/kubernetes -v /var/run:/var/run  rancher/rancher-agent:v2.6.3 --server https://10.0.0.1 --token mpq8cbjjwrj88z4xmf7blqxcfmwdsmq92bmwjpphdkklfckk5hfwc2 --ca-checksum a81944423cbfeeb92be0784edebba1af799735ebc30ba8cbe5cc5f996094f30b --etcd --controlplane
 ```
 
@@ -96,7 +98,7 @@ Nếu mạng được định cấu hình chính xác thì bạn sẽ nhanh chó
 
 Sau đó, chúng ta có thể lặp lại quy trình này với các worker nodes bằng lệnh sau và sau một lúc, bạn sẽ thiết lập và chạy các ứng dụng của mình và có khả năng tận dụng marketplace để triển khai các ứng dụng của mình.
 
-```
+```shell
 sudo docker run -d --privileged --restart=unless-stopped --net=host -v /etc/kubernetes:/etc/kubernetes -v /var/run:/var/run  rancher/rancher-agent:v2.6.3 --server https://10.0.0.1 --token mpq8cbjjwrj88z4xmf7blqxcfmwdsmq92bmwjpphdkklfckk5hfwc2 --ca-checksum a81944423cbfeeb92be0784edebba1af799735ebc30ba8cbe5cc5f996094f30b --worker
 ```
 

@@ -60,7 +60,7 @@ Tại thời điểm này, chúng ta có một cluster với 3 nodes đang chạ
 
 Nếu chúng ta xem tệp vagrantfile của mình, bạn sẽ thấy rằng chúng ta đang xác định một vài worker node, địa chỉ IP mạng cho mạng bắc cầu trong VirtualBox và sau đó là một số tên đặt. Một điều khác mà bạn cũng sẽ thấy là chúng ta đang gọi một số tập lệnh mà chúng ta muốn chạy trên các máy chủ cụ thể.
 
-```yaml:VAGRANTFILE
+```ruby:VAGRANTFILE
 NUM_WORKER_NODES=2
 IP_NW="10.0.0."
 IP_START=10
@@ -105,15 +105,21 @@ Vagrant.configure("2") do |config|
 
 Hãy chia nhỏ những tập lệnh đang được chạy. Chúng ta có ba tập lệnh được liệt kê trong VAGRANTFILE để chạy trên các node cụ thể.
 
-`master.vm.provision "shell", path: "scripts/common.sh"`
+```ruby
+master.vm.provision "shell", path: "scripts/common.sh"
+```
 
 Tập lệnh trên sẽ tập trung vào việc chuẩn bị cho các nodes sẵn sàng, nó sẽ chạy trên 3 nodes của chúng ta và nó sẽ xoá tất cả các thành phần của Docker đang có và cài đặt lại Docker và ContainerD cũng như kubeadm, kubelet và kubectl. Tập lệnh này cũng sẽ cập nhật các gói phần mềm hiện có trên hệ thống.
 
-`master.vm.provision "shell", path: "scripts/master.sh"`
+```ruby
+master.vm.provision "shell", path: "scripts/master.sh"
+```
 
 Tập lệnh `master.sh` sẽ chỉ chạy trên control plane node, tập lệnh này sẽ tạo Kubernetes cluster sử dụng các lệnh kubeadm. Nó cũng sẽ chuẩn bị config context để truy cập vào cluster này, chúng ta sẽ nói đến sau đây.
 
-`node.vm.provision "shell", path: "scripts/node.sh"`
+```ruby
+node.vm.provision "shell", path: "scripts/node.sh"
+```
 
 Tập lệnh này chỉ đơn giản là lấy cấu hình do master tạo và kết nối các nodes của chúng ta vào Kubernetes cluster, quá trình kết nối này lại sử dụng kubeadmn và một tập lệnh khác có thể tìm thấy trong thư mục config.
 

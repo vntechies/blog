@@ -34,7 +34,7 @@ Trong demo đầu tiên, chúng ta muốn xác định mọi thứ chứng ta mu
 
 Chúng ta có thể tạo các tệp sau dưới dạng một tệp YAML hoặc chúng ta có thể chia nhỏ tệp này cho từng phần của ứng dụng của mình, ví dụ: đây có thể là các tệp riêng biệt dành cho namespace, deployement và service nhưng trong file này, như bên dưới, chúng ta sử dụng `---` đề tách các phần trong một tệp. Bạn có thể tìm thấy tệp này ở [đây](https://github.com/vntechies/90DaysOfDevOps/tree/main/2022/Days/Kubernetes/nginx-stateless-demo.yaml)
 
-```Yaml
+```yaml:nginx-stateless-demo.yaml
 apiVersion: v1
 kind: Namespace
 metadata:
@@ -114,7 +114,11 @@ Cuối cùng, chúng ta có thể kiểm tra xem deployment ở đâu và làm t
 
 Bạn có thể nhận thấy như ở trên rằng chúng ta cũng có một replicaset, trong deployment của mình, chúng ta cấu hình số replicas của image mà chúng ta muốn triển khai. Ban đầu nó được đặt là 1, nhưng nếu muốn nhanh chóng mở rộng quy mô ứng dụng của mình thì chúng ta có thể làm theo những cách sau.
 
-Chúng ta có thể chỉnh sửa tệp của mình sử dụng `kubectl edit deployment nginx-deployment -n nginx` sẽ mở trình soạn thảo văn bản trong terminal của bạn và cho phép bạn chỉnh sửa deployment của mình.
+Chúng ta có thể chỉnh sửa tệp của mình sử dụng lệnh sau đẻ mở trình soạn thảo văn bản trong terminal của bạn và cho phép bạn chỉnh sửa deployment của mình.
+
+```shell
+kubectl edit deployment nginx-deployment -n nginx
+```
 
 ![](/static/images/assets/Day54_Kubernetes9.png)
 
@@ -122,7 +126,11 @@ Khi lưu thay đổi bằng trình soạn thảo của bạn trong terrminal, n�
 
 ![](/static/images/assets/Day54_Kubernetes10.png)
 
-Bạn cũng có thể thay đổi số lượng replicas sử dụng kubectl với câu lệnh `kubectl scale deployment nginx-deployment --replicas=10 -n nginx`
+Bạn cũng có thể thay đổi số lượng replicas sử dụng kubectl với câu lệnh
+
+```shell
+kubectl scale deployment nginx-deployment --replicas=10 -n nginx
+```
 
 ![](/static/images/assets/Day54_Kubernetes11.png)
 
@@ -150,7 +158,9 @@ Bây giờ chúng ta có một số lựa chọn dể chọn và Minikube có v�
 
 Chúng ta có thể chỉ cần chạy lệnh sau để chuyển tiếp cổng để truy cập ứng dụng từ máy trạm cục bộ của mình.
 
-`kubectl port-forward deployment/nginx-deployment -n nginx 8090:80`
+```shell
+kubectl port-forward deployment/nginx-deployment -n nginx 8090:80
+```
 
 ![](/static/images/assets/Day54_Kubernetes13.png)
 
@@ -162,11 +172,21 @@ Bây giờ chúng ta sẽ xem xét cụ thể với Minikube về cách chúng t
 
 Trước hết, chúng ta xoá service của mình bằng cách sử dụng `kubectl delete service nginx-service -n nginx`
 
-Tiếp theo, chúng ta sẽ tạo một service mới sử dụng `kubectl expose deployment nginx-deployment --name nginx-service --namespace nginx --port=80 --type=NodePort` lưu ý ở đây rằng chúng ta sẽ sử dụng Expose và thay đổi type thành NodePort.
+Tiếp theo, chúng ta sẽ tạo một service mới sử dụng lệnh
+
+```shell
+kubectl expose deployment nginx-deployment --name nginx-service --namespace nginx --port=80 --type=NodePort
+```
+
+lưu ý ở đây rằng chúng ta sẽ sử dụng Expose và thay đổi type thành NodePort.
 
 ![](/static/images/assets/Day54_Kubernetes15.png)
 
-Cuối cùng trong terminal mới chạy `minikube --profile='mc-demo' service nginx-service --URL -n nginx` để tạo một tunnel cho service của chúng ta.
+Cuối cùng trong terminal mới chạy lệnh dưới đây để tạo một tunnel cho service của chúng ta.
+
+```shell
+minikube --profile='mc-demo' service nginx-service --URL -n nginx
+```
 
 ![](/static/images/assets/Day54_Kubernetes16.png)
 

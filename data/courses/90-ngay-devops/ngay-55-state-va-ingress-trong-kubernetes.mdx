@@ -1,7 +1,7 @@
 ---
 title: 'Ngày 55 - State và Ingress trong Kubernetes'
 images: ['/static/images/ogps/90daysofdevopsd55.png']
-summary: 'Trong bài viết này, chúng ta sẽ đề cập tới Rancher - công cụ quản lý cluster với giao diện người dùng để các nhóm vận hành có thể quản lý các cluster một cách tốt hơn.'
+summary: 'Trong bài viết cuối cùng về Kubernetes, chúng ta sẽ xem xét State và Ingress và các ứng dụng có trạng thái'
 tags: ['devops', '90daysofdevops', 'containers']
 date: '2023-05-04'
 index: 55
@@ -12,7 +12,7 @@ chapter: 'Tuần 7'
 
 ## State và Ingress trong Kubernetes
 
-Trong bài viết cuối cùng của Kubernetes, chúng ta sẽ xem xét State và Ingress.
+Trong bài viết cuối cùng về Kubernetes, chúng ta sẽ xem xét State và Ingress.
 
 Mọi thứ chúng ta đã nói cho tới nay là về phi trạng thái (stateless), phi trạng thái có nghĩa rằng các ứng dụng của chúng ta không quan tâm tới mạng nào đang được sử dụng và không cần bất cứ bộ lưu trữ vĩnh viễn nào. Trong khi các ứng dụng có trạng thái ví dụ như cơ sở dữ liệu, để các ứng dụng như vậy hoạt động chính xác, bạn sẽ cần đảm bảo rằng các pods có thể liên lạc với nhau thông qua một định danh duy nhất không thay đổi (hostnames, IPs,...) Ví dụ về các ứng dụng có trạng thái bao gồm các MySQL clusters, Redis, Kafka, MongoDB và các ứng dụng khác. Về cơ bản, bất kỳ ứng dụng nào lưu trữ dữ liệu.
 
@@ -103,7 +103,11 @@ Cũng có 2 loại volumes khác mà chúng ta sẽ không đi vào chi tiết n
 
 Trong bài viết ngày hôm qua, chúng ta đã được hướng dẫn cách tạo ứng dụng phi trạng thái, ở đây chúng ta sẽ làm điều tương tự nhưng sẽ triển khai workload có trạng thái sử dụng minikube cluster của mình.
 
-Một bản tóm tắt về các lệnh minikube mà chúng ta sẽ sử dụng để có các chứ năng và các addons để sử dụng tính bền bỉ là `minikube start --addons volumesnapshots,csi-hostpath-driver --apiserver-port=6443 --container-runtime=containerd -p mc-demo --Kubernetes-version=1.21.2`
+Một bản tóm tắt về các lệnh minikube mà chúng ta sẽ sử dụng để có các chứ năng và các addons để sử dụng persistence là
+
+```shell
+minikube start --addons volumesnapshots,csi-hostpath-driver --apiserver-port=6443 --container-runtime=containerd -p mc-demo --Kubernetes-version=1.21.2
+```
 
 Lệnh này sử dụng CSI-hostpath-driver, thứ cung cấp cho chúng ta storageclass, thứ mà tôi sẽ trình bày sau.
 
@@ -111,7 +115,7 @@ Lệnh này sử dụng CSI-hostpath-driver, thứ cung cấp cho chúng ta stor
 
 ![](/static/images/assets/Day55_Kubernetes1.png)
 
-Bạn có thể tìm thấy tệp cấu hình YAML cho ứng dụng này tại [pacman-stateful-demo.yaml]https://github.com/vntechies/90DaysOfDevOps/tree/main/2022/Days/Kubernetes/pacman-stateful-demo.yaml)
+Bạn có thể tìm thấy tệp cấu hình YAML cho ứng dụng này tại [pacman-stateful-demo.yaml](https://github.com/vntechies/90DaysOfDevOps/tree/main/2022/Days/Kubernetes/pacman-stateful-demo.yaml)
 
 ### Cấu hình StorageClass
 
@@ -119,11 +123,15 @@ Tuy nhiên, còn một bước nữa mà chúng ta nên chạy trước khi bắ
 
 Lệnh đầu tiên này sẽ đặt CSI-hostpath-sc storageclass là mặc định.
 
-`kubectl patch storageclass csi-hostpath-sc -p '{"metadata": {"annotations":{"storageclass.kubernetes.io/is-default-class":"true"}}}'`
+```shell
+kubectl patch storageclass csi-hostpath-sc -p '{"metadata": {"annotations":{"storageclass.kubernetes.io/is-default-class":"true"}}}'
+```
 
 Lệnh này sẽ xoá chú thích mặc định khỏi standard StorageClass.
 
-`kubectl patch storageclass standard -p '{"metadata": {"annotations":{"storageclass.kubernetes.io/is-default-class":"false"}}}'`
+```shell
+kubectl patch storageclass standard -p '{"metadata": {"annotations":{"storageclass.kubernetes.io/is-default-class":"false"}}}'
+```
 
 ![](/static/images/assets/Day55_Kubernetes2.png)
 
@@ -159,7 +167,13 @@ Bây giờ chúng ta có thể chơi và ghi điểm số, sau đó nó sẽ đ�
 
 ![](/static/images/assets/Day55_Kubernetes9.png)
 
-OK, thât tuyệt nếu chúng ta có thể có một điểm số cao nhưng điều gì sẽ xảy ra nếu chúng ta xoá pod `mongo-0`? Bằng lệnh ``kubectl delete pod mongo-0 -n pacman` tôi có thể xoá nó và nếu bạn vẫn ở trong ứng dụng, bạn sẽ thấy điểm số sẽ không khả dụng ít nhất trong vài giây.
+OK, thât tuyệt nếu chúng ta có thể có một điểm số cao nhưng điều gì sẽ xảy ra nếu chúng ta xoá pod `mongo-0`? Bằng lệnh
+
+```shell
+kubectl delete pod mongo-0 -n pacman
+```
+
+tôi có thể xoá nó và nếu bạn vẫn ở trong ứng dụng, bạn sẽ thấy điểm số sẽ không khả dụng ít nhất trong vài giây.
 
 ![](/static/images/assets/Day55_Kubernetes10.png)
 
@@ -167,7 +181,11 @@ Bây giờ, nếu tôi quay trở lại trò chơi của mình, tôi có thể t
 
 ![](/static/images/assets/Day55_Kubernetes11.png)
 
-Với việc triển khai, chúng ta có thể mở rộng quy mô ứng dụng này bằng cách sử dụng các lệnh trong phần trước nhưng nếu bạn muốn tổ chức một bữa tiệc Pacman siêu to khổng lồ, bạn có thể mở rộng quy mô bằng cách sử dụng lệnh `kubectl scale deployment pacman --replicas=10 -n pacman`
+Với việc triển khai, chúng ta có thể mở rộng quy mô ứng dụng này bằng cách sử dụng các lệnh trong phần trước nhưng nếu bạn muốn tổ chức một bữa tiệc Pacman siêu to khổng lồ, bạn có thể mở rộng quy mô bằng cách sử dụng lệnh
+
+```shell
+kubectl scale deployment pacman --replicas=10 -n pacman
+```
 
 ![](/static/images/assets/Day55_Kubernetes12.png)
 
@@ -196,7 +214,9 @@ If you are running your cluster then you will need to configure an entrypoint.
 
 Trên clsuter đang chạy của tôi với tên gọi mc-demo, tôi có thể chạy lệnh sau để bật tính năng ingress trên cluster của mình.
 
-`minikube --profile='mc-demo' addons enable ingress`
+```shell
+minikube --profile='mc-demo' addons enable ingress
+```
 
 ![](/static/images/assets/Day55_Kubernetes13.png)
 
@@ -204,9 +224,13 @@ Nếu chúng ta kiểm tra các namespace bây giờ, bạn sẽ thấy rằng c
 
 ![](/static/images/assets/Day55_Kubernetes14.png)
 
-Bây giờ, chúng ta phải tạo cấu hình YAML cho ingress để truy cập dịch vụ pacman. Tôi đã thêm tệp này vào repository này [pacman-ingress.yaml]https://github.com/vntechies/90DaysOfDevOps/tree/main/2022/Days/Kubernetes/pacman-ingress.yaml)
+Bây giờ, chúng ta phải tạo cấu hình YAML cho ingress để truy cập dịch vụ pacman. Tôi đã thêm tệp này vào repository này [pacman-ingress.yaml](https://github.com/vntechies/90DaysOfDevOps/tree/main/2022/Days/Kubernetes/pacman-ingress.yaml)
 
-Sau đó, chúng ta có thể tạo nó trong ingress namespace của chúng ta với lệnh `kubectl create -f Pacman-ingress.yaml`
+Sau đó, chúng ta có thể tạo nó trong ingress namespace của chúng ta với lệnh
+
+```shell
+kubectl create -f Pacman-ingress.yaml
+```
 
 ![](/static/images/assets/Day55_Kubernetes15.png)
 
@@ -214,7 +238,11 @@ Sau đó, nếu chúng ta chạy `kubectl get ingress -n Pacman`
 
 ![](/static/images/assets/Day55_Kubernetes16.png)
 
-Sau đó, tôi được thông báo rằng vì chúng ta đang sử dụng minikube chạy trên WSL2 trong Windows nên chúng ta phải tạo minikube tunnel bằng cách sử dụng lệnh `minikube tunnel --profile=mc-demo`
+Sau đó, tôi được thông báo rằng vì chúng ta đang sử dụng minikube chạy trên WSL2 trong Windows nên chúng ta phải tạo minikube tunnel bằng cách sử dụng lệnh
+
+```shell
+minikube tunnel --profile=mc-demo
+```
 
 Nhưng tôi vẫn không thể truy cập vào 192.168.49.2 và chơi game Pacman của mình.
 
