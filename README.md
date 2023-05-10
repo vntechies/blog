@@ -68,4 +68,4 @@ Tất cả các bài viết trên [VNTechies Dev Blog](https://vntechies.dev/) v
 
 Template [Tailwind Nextjs Starter Blog](https://github.com/timlrx/tailwind-nextjs-starter-blog/) by [Timothy Lin](https://www.timlrx.com)
 
-Copyright (c) 2022 [VNTechies](https://vntechies.dev/)
+Copyright (c) 2023 [VNTechies](https://vntechies.dev/)
