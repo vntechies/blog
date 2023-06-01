@@ -130,7 +130,7 @@ def main(event, context):
     LOG.info(f"EVENT: + {json.dumps(event)}")
 
     query_string_params = event["queryStringParameters"]
-    if query_string_params is not None:
+    if query_string_params is not None and 'targetUrl' in query_string_params:
         target_url = query_string_params['targetUrl']
         if target_url is not None:
             return create_short_url(event)
