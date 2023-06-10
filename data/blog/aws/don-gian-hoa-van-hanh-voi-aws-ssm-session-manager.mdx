@@ -1,0 +1,76 @@
+---
+title: 'Đơn giản hoá vận hành với AWS SSM - Session Manager | AWS System Manager'
+date: '2023-06-03'
+tags: ['cloud', 'aws', 'systemmanager', 'devops']
+authors: ['default', 'mau']
+images: ['/static/images/ogps/awsssm.png']
+summary: 'Bài viết trình bày việc sử dụng AWS System Manager - Session Manager để đơn giản hoá việc quản lý, vận hành Instance (EC2 và non-EC2)'
+---
+
+https://www.youtube.com/watch?v=RE0ilRoqnPs
+
+## AWS System Manager
+
+Amazon Systems Manager là một dịch vụ giúp bạn tự động thu thập kho phần mềm, áp dụng các bản vá hệ điều hành, tạo các hình ảnh hệ thống và định cấu hình hệ điều hành Windows và Linux. Những khả năng này giúp bạn xác định và theo dõi cấu hình hệ thống, ngăn chặn các sự khác biệt (drift) và duy trì sự compliance của phần mềm và cấu hình EC2 instance và các instance on-premise của bạn. Bằng cách cung cấp phương pháp quản lý được thiết kế phục vụ cho quy mô lớn và tính linh hoạt của đám mây nhưng cũng có thể mở rộng sang trung tâm dữ liệu của bạn. System Manager giúp bạn dễ dàng kết nối cơ sở hạ tầng hiện có của mình với Amazon Web Services một cách dễ dàng.
+
+AWS System Manager rất dễ sử dụng. Chỉ cần truy cập từ Bảng điều khiển quản lý EC2, chọn instance bạn muốn quản lý và xác định các tác vụ quản lý bạn muốn thực hiện. Systems Manager được sử dụng miễn phí để quản lý cả EC2 và tài nguyên on-premise của bạn.
+
+## Session Manager
+
+Session Manager là một tính năng của AWS Systems Manager và được quản lý hoàn toàn. Với Session Manager, bạn có thể quản lý các Amazon Elastic Compute Cloud (Amazon EC2) instances, edge devices, máy chủ on-premise và máy ảo (VM). Bạn có thể sử dụng trình shell tương tác dựa trên trình duyệt với một cú nhấp chuột hoặc Giao diện dòng lệnh AWS (AWS CLI). Session Manager cung cấp khả năng quản lý nút an toàn và có thể được audit mà không cần mở bất kỳ port nào, duy trì các bastion host (jump box) hoặc quản lý khóa SSH. Session Manager cũng cho phép bạn tuân thủ các chính sách yêu cầu quyền truy cập có kiểm soát vào các node được quản lý, các nguyên tắc bảo mật nghiêm ngặt và logs có thể được kiểm tra đầy đủ với các chi tiết truy cập và các tác vụ thực hiện trên node đồng thời cung cấp cho người dùng cuối quyền truy cập đa nền tảng chỉ bằng một cú nhấp chuột vào các nodes được quản lý của bạn. Để bắt đầu với Session Manager, hãy mở AWS Console, AWS System Manager và chọn Session Manager trên side bar.
+
+### Lợi ích của Session Manager
+
+- Kiểm soát truy cập tập trung vào các nodes được quản lý bằng chính sách IAM
+- Không có có inbound port, không cần quản lý máy chủ bastion hoặc khóa SSH
+- Truy cập bằng một cú nhấp chuột vào các nút được quản lý từ bảng điều khiển và CLI
+- Kết nối với cả Amazon EC2 instance và non-EC2 instance trong môi trường hybrid và multicloud (đa đám mây)
+- Chuyển tiếp port
+- Hỗ trợ đa nền tảng cho Windows, Linux và macOS
+- Ghi logs và có thể audit
+- Khả năng ghi logs và audit được cung cấp thông qua tích hợp với các dịch vụ AWS sau:
+  - AWS CloudTrail
+  - Dịch vụ lưu trữ đơn giản của Amazon
+  - Nhật ký Amazon CloudWatch
+  - Amazon EventBridge và Dịch vụ thông báo đơn giản của Amazon
+
+## FAQs
+
+- AWS Systems Manager có quản lý instance chạy on prem không? Chi phí ra sao?
+
+Có hỗ trơ on-premise và các VM của các cloud providers khác, khi sử dụng session manager cho các non-EC2 instance chúng ta phải sử dụng Advanced tier với mức giá $0.00695/instance/giờ
+
+- Có thể sử dụng AWS Systems Manager APIs từ VPC mà không sử dụng public IP address được không?
+
+Được, hoàn toàn có thể truy cập và sử dụng các APIs của AWS System Manager - Session manager thông qua các mạng private, có thể truy cập an toàn thông qua các VPC endpoint từ các on-premise systems.
+
+- Trong trường hợp mất internet thì làm sau? AWS Systems Manager SLA đảm bảo như thế nào?
+
+  99.9% - khoảng 9 giờ downtime mỗi năm.
+
+- Tích hợp với các phần mềm cung cấp bới bên thứ 3 như thế nào? Làm thế nào để cài đặt một instance quản lý với SSM?
+
+Có thể sử dụng các APIs của AWS System Manager - Session Manager để tích hợp với các phần mềm bên thứ 3 và các module có sẵn.
+Để các instance được quản lý với System Manager chúng ta cần: - Với các EC2 instances: - Cài đặt SSM agent (thường được built-in với các official AMI) - Gắn roles với policy `AmazonSSMManagedInstanceCore` cho instances - Với các non-EC2 instances: - Tạo service role và hybrid activation cho môi trường hybrid hoặc multicloud - Cài đặt SSM agent theo các gói cài đặt của AWS - Đăng ký instance với AWS System Manager
+
+## Demo
+
+![Diagram demo của AWS SSM - Session Manager](/static/images/assets/ssm_demo.png)
+
+### EC2 instances
+
+- Chi tiết có tại [tài liệu chính thức của AWS](https://docs.aws.amazon.com/systems-manager/latest/userguide/systems-manager-setting-up-ec2.html)
+- Tạo EC2 instance với AMI Amazon Linux 2
+- Tạo IAM `ec2-ssm-role`với policy `AmazonSSMManagedInstanceCore`
+- Gắn role vừa tạo với EC2 Instance
+- Truy cập instance sử dụng Session Manager
+
+### Non-EC2 instances (on-premise or multi-cloud instances)
+
+Hướng dẫn chi tiết có tại [tài liệu chính thức của AWS](https://docs.aws.amazon.com/systems-manager/latest/userguide/sysman-service-role.html)
+
+- Tạo IAM service role `onprem-ssm-service-role`cho System Manager
+- Tạo một hybrid activation cho kết nối với các non-AWS system với service role vừa tạo
+- Cài đặt thủ công ssm agent trên instance
+- Đăng ký instance với AWS System manager
+- Truy cập instance với Session Manager thông qua AWS console
