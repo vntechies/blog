@@ -1,0 +1,407 @@
+---
+title: Cấu hình health check ứng dụng Spring Boot với Kubernetes Probes
+date: '2022-12-01'
+tags: ['api', 'rest-api', 'springboot']
+series: ['k8s-spring-boot']
+draft: false
+authors: ['thanhnb']
+images: ['/static/images/ogps/k8s-springboot.png']
+summary: 'Trong bài viết này, chúng ta sẽ tìm hiểu cách cấu hình health check với Liveness, Readiness và Startup Probes trong Kubernetes.'
+index: 6
+---
+
+<TOCInline toc={props.toc} asDisclosure />
+
+## 1. Giới thiệu chung
+
+Khi triển một khai ứng dụng ta luôn muốn ứng dụng hoạt động một cách trơn tru hoặc nếu có vấn đề thì được phát hiện và khắc phục sớm. Một trong những ưu điểm khi triển khai ứng dụng trên cụm Kubernetes là Kubernetes cung cấp cơ chế health check để giám sát các ứng dụng triển khai trên cụm Kubernetes có đang ở trạng thái tốt hay không?(trạng thái tốt ở đây không chỉ là Pod có running hay không mà còn là có khả năng nhận và phản hồi request hay không). Nếu Pod của ứng dụng nào đang lỗi hoặc chưa sẵn sàng để xử lý request thì Kubernetes sẽ điều hướng đến các Pod healthy khác của ứng dụng để tránh request bị lỗi.
+
+Trong bài viết này, chúng ta sẽ cùng tìm hiểu cơ chế health check trong Kubernetes và cách cấu hình với ứng dụng Spring Boot.
+
+## 2. Kubernetes Probe là gì?
+
+Để kiểm tra một container bên trong Pod có healthy và sẵn sàng để nhận request hay không thì Kubernetes có cung cấp một cơ chế health checks dùng để giám sát trạng thái của các container. Kubernetes Probes (health checks) cung cấp ba loại sau: Startup Probes, Readiness Probes và Liveness Probes. Bằng những kết quả của quá trình health check thì Kubernetes sẽ đưa ra các quyết định như: có nên restart container hay không? có nên ngừng hoặc tiếp tục nhận request hay không?. Cơ chế health checks trong Kubernetes hỗ trợ thực hiện bằng một số cách như: exec command, gRPC, httpGet, tcpSocket. Bài viết này mình sẽ sử dụng httpGet để thực hiện health checks cho ứng dụng Spring Boot.
+
+## 3. Một số cơ chế health check (Kubernetes Probes) trong Kubernetes
+
+### Kubernetes Readiness Probes là gì?
+
+Cấu hình sử dụng readiness probes để kiểm tra ứng dụng có đang sẵn sàng nhận và xử lý request hay không?. Khi kết quả readiness probes trả về KHÔNG thành công thì container chạy ứng dụng sẽ **KHÔNG** restart nhưng thông tin (IP và port) của Pod chứa container này sẽ bị xóa khỏi đối tượng [Endpoints](https://stackoverflow.com/questions/52857825/what-is-an-endpoint-in-kubernetes) nên lúc này Pod sẽ không nhận được request từ Service nữa cho đến khi kết quả readiness probes trả về thành công.
+
+Giả sử ứng dụng Spring Boot của ta khi khởi chạy cần xử lý một số tác vụ như: kết nối đến nhiều Database, khởi tạo dữ liệu cho cache,... nên sẽ cần một vài phút để ứng dụng khởi chạy thành công và sẵn sàng xử lý request (tạm gọi là healthy). Trong khoảng thời gian này thì ta không muốn nhận request vì ứng dụng chưa healthy đến lúc này sẽ bị lỗi. Ứng dụng có thể cấu hình sử dụng readiness probes để chỉ nhận request khi kết quả readiness probes của container chạy ứng dụng trả về thành công và lúc này thì ứng dụng cũng đã healthy.
+
+Bạn có thể tham khảo thêm về Readiness Probes tại [trang web chính thức của Kubernetes](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes).
+
+### Kubernetes Liveness Probes là gì?
+
+Thông thường nếu container bị crash thì Kubernetes sẽ tự động thực hiện restart container. Nếu trường hợp ứng dụng có bugs (Deadlock, Dead Loop,...) làm ứng dụng không phản hồi được request nhưng cũng không gây ra crash container thì lúc này Pod chứa container vẫn ở trạng thái running nên Kubernetes sẽ không tự động restart container. Việc restart container khi ứng dụng ở trạng trên có thể giúp ứng dụng trở lại trạng thái tốt hơn mặc dù bugs vẫn còn ở đó. Kubernetes sẽ sử dụng liveness probes để kiểm tra container ứng dụng có đang phản hồi bình thường hay không? Nếu kết quả liveness probes trả về mã lỗi khác 2xx hoặc 3xx thì sẽ thực hiện restart container.
+
+Giả sử ứng dụng Spring Boot của ta bị memory leak (rò rỉ bộ nhớ) thì nó sẽ quăng ra lỗi OutOfMemoryErrors làm ứng dụng không xử lý request được nữa, nhưng ứng dụng cũng không crash mà vẫn tiếp tục chạy. Trường hợp này việc restart container ứng dụng có thể giúp ứng dụng trở lại trạng thái tốt hơn mặc dù bugs memory leak vẫn ở đó. Nếu cấu hình sử dụng liveness probes để kiểm tra container ứng dụng có đang phản hồi bình thường hay không? sẽ hữu ích trong trường hợp này.
+
+Bạn có thể tham khảo thêm về Liveness Probes tại [trang web chính thức của Kubernetes](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes).
+
+### Kubernetes Startup Probes là gì?
+
+Cấu hình sử dụng Startup Probes để biết khi nào container ứng dụng khởi chạy thành công. Nếu sử dụng startup probes thì nó sẽ disable cả hai Readiness Probes và Liveness Probes cho đến khi kết quả của quá trình Startup Probes trả về thành công. Startup Probes sẽ chỉ chạy một lần duy nhất khi ứng dụng khởi chạy, không giống như Readiness Probes và Liveness Probes sẽ chạy định kỳ. Có thể xem xét cấu hình sử dụng Startup Probes với những ứng dụng có quá trình khởi chạy lâu để tránh khi ứng dụng đang khởi động lại bị restart bởi vì fail Liveness Probes.
+
+Bạn có thể tham khảo thêm về Startup Probes tại [trang web chính thức của Kubernetes](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes).
+
+## 4. Cấu hình sử dụng Kubernetes Probes với Spring Boot
+
+Đối với ứng dụng Spring Boot có thể xem xét sử dụng [Spring Boot Actuator](https://docs.spring.io/spring-boot/docs/current/reference/html/actuator.html) để giám sát ứng dụng. Spring Boot Actuator có một số đầu API để lấy thông tin trạng thái ứng dụng tại thời điểm gọi. Để sử dụng Spring Boot Actuator thì cần thêm spring-boot-actuator dependency vào file pom.xml của ứng dụng.
+
+```xml:students/pom.xml
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-actuator</artifactId>
+</dependency>
+```
+
+### Cấu hình Readiness Probes
+
+Cấu hình Readiness Probes được định nghĩa ở trường `readinessProbe` trong file deployment. Readiness Probes sẽ được thực hiện bên trong container students-service:
+
+```yaml:k8s/students-deployment-healthcheck.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: students-service
+  labels:
+    app: students-service
+spec:
+  selector:
+    matchLabels:
+      app: students-service
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: students-service
+    spec:
+      containers:
+        - name: students-service
+          image: thanhnb1/students-service:k8s-probe
+          envFrom:
+            - configMapRef:
+                name: students-cm
+          ports:
+            - containerPort: 8080
+
+          # Cấu hình readinessProbe.
+          readinessProbe:
+            httpGet:
+              path: /actuator/health/readiness
+              port: 8080
+            initialDelaySeconds: 15
+            periodSeconds: 5
+            timeoutSeconds: 30
+      restartPolicy: Always
+```
+
+Một số trường cấu hình Readiness Probes trong Kubernetes:
+
+| Tên                   | Định nghĩa                                                                                                                                                                                                                                         |
+| --------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `readinessProbe`      | Các tham số cấu hình readiness probe sẽ được định nghĩa ở trường `readinessProbe`.                                                                                                                                                                 |
+| `httpGet`             | Kubernetes có cung cấp một số cơ chế để thực hiện readiness probe như: HTTP request, TCP socket,.. File cấu hình trên sử dụng `httpGet`.                                                                                                           |
+| `httpGet.path`        | API sử dụng để thực hiện readiness probe. File cấu hình trên sử dụng API: `/actuator/health/readiness` của Spring Boot Actuator. Bạn cũng có thể tự viết một API để thực hiện readiness probe (chỉ cần trả về response code 2xx hoặc 3xx là được). |
+| `httpGet.port`        | Định nghĩa port của container chạy ứng dụng. File cấu hình trên container lắng nghe ở port 8080.                                                                                                                                                   |
+| `initialDelaySeconds` | Cấu hình sẽ đợi bao nhiêu lâu trước khi thực hiên readiness probe lần đầu tiên (mặc định là 0s). File cấu hình trên sẽ đợi 15s.                                                                                                                    |
+| `periodSeconds`       | Cấu hình sau mỗi bao lâu thì thực hiện lại readiness probe (mặc định là 10s). File cấu hình trên sẽ thực hiện readinessProbe sau mỗi 5s.                                                                                                           |
+| `timeoutSeconds`      | Cấu hình thời gian timeout khi thực hiện readiness probe (mặc định là 1s). File cấu hình trên thời gian timeout là 30s.                                                                                                                            |
+
+Các số tham số cấu hình cho Kubernetes Readiness Probes bạn có thể tham khảo tại [trang web chính thức của Kubernetes](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes).
+
+Triển khai ứng dụng Spring Boot trên Kubernetes:
+
+```shell
+kubectl apply -f k8s/students-deployment-readinessProbe.yaml
+deployment.apps/students-service created
+```
+
+Xem chi tiết Pod:
+
+```shell
+kubectl describe po/students-service-77bb86b5c4-grzgc
+...
+Controlled By:  ReplicaSet/students-service-6f84d655bc
+Containers:
+  students-service:
+    Container ID:   containerd://33c1ddb775c7bce29e9333798c5bddd3bc5d07da1e632d496ee0dea249deabe1
+    Image:          thanhnb1/students-service:k8s-probe
+    Image ID:       docker.io/thanhnb1/students-service@sha256:d5f7d605f1aed64393df490250f1c66e9147102cf22310835c4961f96184e58c
+    Port:           8080/TCP
+    Host Port:      0/TCP
+    State:          Running
+      Started:      Sun, 07 May 2023 00:27:19 +0700
+    Ready:          True
+    Restart Count:  0
+
+    # Phần cấu hình Readiness Probes.
+    # 1. Gửi HTTP request đên api: /actuator/health/readiness
+    # 2. Sẽ đợi 15s trước khi thực hiện Readiness Probes lần đầu tiên.
+    # 3. Timeout của request là 30s.
+    # 4. Thực hiện Readiness Probes sau mỗi 5s.
+    # 5. Ngưỡng thành công của Readiness Probes = 1 (gọi api thành công 1 lần thì Readiness Probes thành công).
+    # 6. Ngưỡng thất bại của Readiness Probes = 3 (sẽ thực hiên 3 lần, nếu sau 3 lần mà vẫn fail thì Readiness Probes fail).
+    Readiness:      http-get http://:8080/actuator/health/readiness delay=15s timeout=30s period=5s #success=1 #failure=3
+    Environment Variables from:
+      students-cm  ConfigMap  Optional: false
+    Environment:   <none>
+    Mounts:
+      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-jq67d (ro)
+...
+```
+
+Kiểm tra logs của ứng dụng thấy request đến API: `/actuator/health/readiness` mỗi 5s để thực hiện readiness probe.
+
+```logs
+2023-05-07 00:33:04.512  INFO 1 --- [nio-8080-exec-7] c.v.k.students.filter.CustomURLFilter    :
+LOGGING REQUEST-----------------------------------
+[REQUEST-ID]: f5a543c7-e66a-4945-a1ee-d1b2319c7cd9
+[PATH]: /actuator/health/readiness
+[QUERIES]: null
+[HEADERS]:
+---host : 10.1.28.83:8080
+---user-agent : kube-probe/1.25
+---accept : */*
+---connection : close
+
+2023-05-07 00:33:04.515  INFO 1 --- [nio-8080-exec-7] c.v.k.students.filter.LoggingService     :
+LOGGING RESPONSE-----------------------------------
+[REQUEST-ID]: f5a543c7-e66a-4945-a1ee-d1b2319c7cd9
+[BODY RESPONSE]:
+{"status":"UP"}
+LOGGING RESPONSE-----------------------------------
+```
+
+### Cấu hình Liveness Probes
+
+Cấu hình Liveness Probes được định nghĩa ở trường `livenessProbe` trong file deployment. Liveness Probes sẽ được thực hiện bên trong container students-service:
+
+```yaml:k8s/students-deployment-healthcheck.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: students-service
+  labels:
+    app: students-service
+spec:
+  selector:
+    matchLabels:
+      app: students-service
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: students-service
+    spec:
+      containers:
+        - name: students-service
+          image: thanhnb1/students-service:k8s-probe
+          envFrom:
+            - configMapRef:
+                name: students-cm
+          ports:
+            - containerPort: 8080
+          livenessProbe:
+            httpGet:
+              path: /actuator/health/liveness
+              port: 8080
+            initialDelaySeconds: 15
+            periodSeconds: 5
+            timeoutSeconds: 30
+      restartPolicy: Always
+```
+
+Một số trường cấu hình Liveness Probes trong Kubernetes:
+
+| Tên                   | Định nghĩa                                                                                                                                                                                                                                                                                         |
+| --------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `livenessProbe`       | Các tham số cấu hình liveness probe sẽ được định nghĩa ở trường `livenessProbe`.                                                                                                                                                                                                                   |
+| `httpGet`             | Kubernetes có cung cấp một số cơ chế để thực hiện liveness probe như: HTTP request, TCP socket,.. File cấu hình trên sẽ gửi HTTP GET request đến container chạy ứng dụng (port 8080) theo path: `/actuator/health/liveness`. Nếu response code trả về 200 là thực hiện readiness probe thành công. |
+| `httpGet.path`        | Đường dẫn API thực hiện liveness probe. File cấu hình trên sử dụng API `/actuator/health/liveness` của Spring Boot Actuator. Bạn cũng có thể tự viết một API để thực hiện liveness probe (chỉ cần trả về response code 2xx hoặc 3xx là được).                                                      |
+| `httpGet.port`        | Định nghĩa port của container chạy ứng dụng. File cấu hình trên container lắng nghe ở port 8080.                                                                                                                                                                                                   |
+| `initialDelaySeconds` | Cấu hình sẽ đợi bao nhiêu lâu trước khi thực hiên liveness probe lần đầu tiên (mặc định là 0s). File cấu hình trên sẽ đợi 15s.                                                                                                                                                                     |
+| `periodSeconds`       | Cấu hình sau mỗi bao lâu thì thực hiện lại liveness probe (mặc định là 10s). File cấu hình trên sẽ thực hiện readinessProbe sau mỗi 5s.                                                                                                                                                            |
+| `timeoutSeconds`      | Cấu hình thời gian timeout khi thực hiện liveness probe (mặc định là 1s). File cấu hình trên thời gian timeout là 30s.                                                                                                                                                                             |
+
+Một số option cấu hình cho Kubernetes Liveness Probes bạn có thể tham khảo tại [trang web chính thức của Kubernetes](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes).
+
+Triển khai ứng dụng Spring Boot trên Kubernetes:
+
+```shell
+kubectl apply -f k8s/students-deployment-livenessProbe.yaml
+deployment.apps/students-service created
+```
+
+Xem chi tiết Pod:
+
+```shell
+kubectl describe po/students-service-55b5d74ff5
+...
+Controlled By:  ReplicaSet/students-service-55b5d74ff5
+Containers:
+  students-service:
+    Container ID:   containerd://9f354decc375fe42793ac91eaea77d385278f6dff09d2158a0e317d271a714b2
+    Image:          thanhnb1/students-service:loop
+    Image ID:       docker.io/thanhnb1/students-service@sha256:e4959a294f3d1b08c1eac02b5d81ef2d82f5b650650579bdf694e490f521fe51
+    Port:           8080/TCP
+    Host Port:      0/TCP
+    State:          Running
+      Started:      Tue, 16 May 2023 00:28:42 +0700
+    Ready:          True
+    Restart Count:  0
+
+    # Phần cấu hình Liveness Probes.
+    # 1. Gửi HTTP request đên api: /actuator/health/liveness
+    # 2. Sẽ đợi 15s trước khi thực hiện Liveness Probes lần đầu tiên.
+    # 3. Timeout của request là 30s.
+    # 4. Thực hiện Liveness Probes sau mỗi 5s.
+    # 5. Ngưỡng thành công của Liveness Probes = 1 (gọi api thành công 1 lần thì Liveness Probes thành công).
+    # 6. Ngưỡng thất bại của Liveness Probes = 3 (sẽ thực hiên 3 lần, nếu sau 3 lần mà vẫn fail thì Liveness Probes fail).
+    Liveness:       http-get http://:8080/actuator/health/liveness delay=15s timeout=30s period=5s #success=1 #failure=3
+    Environment Variables from:
+      students-cm  ConfigMap  Optional: false
+    Environment:   <none>
+    Mounts:
+      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-n764x (ro)
+...
+```
+
+Kiểm tra logs của ứng dụng thấy request đến API: `/actuator/health/liveness` mỗi 5s để thực hiện Liveness Probes.
+
+```logs
+2023-05-16 00:57:51.677  INFO 1 --- [nio-8080-exec-7] c.v.k.students.filter.CustomURLFilter    :
+LOGGING REQUEST-----------------------------------
+[REQUEST-ID]: 78f9b6e6-a879-4a0a-b815-793f65c15303
+[PATH]: /actuator/health/liveness
+[QUERIES]: null
+[HEADERS]:
+---host : 10.1.28.106:8080
+---user-agent : kube-probe/1.25
+---accept : */*
+---connection : close
+
+2023-05-16 00:57:51.679  INFO 1 --- [nio-8080-exec-7] c.v.k.students.filter.LoggingService     :
+LOGGING RESPONSE-----------------------------------
+[REQUEST-ID]: 78f9b6e6-a879-4a0a-b815-793f65c15303
+[BODY RESPONSE]:
+{"status":"UP"}
+LOGGING RESPONSE-----------------------------------
+```
+
+### Cấu hình Startup Probes
+
+Cấu hình Startup Probes được định nghĩa ở trường `startupProbe` trong file deployment. Startup Probes sẽ được thực hiện bên trong container students-service:
+
+```yaml:k8s/students-deployment-startupProbe.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: students-service
+  labels:
+    app: students-service
+spec:
+  selector:
+    matchLabels:
+      app: students-service
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: students-service
+    spec:
+      containers:
+        - name: students-service
+          image: thanhnb1/students-service:k8s-probe
+          envFrom:
+            - configMapRef:
+                name: students-cm
+          ports:
+            - containerPort: 8080
+
+          # Cấu hình startupProbe.
+          startupProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8080
+            failureThreshold: 30
+            periodSeconds: 10
+      restartPolicy: Always
+```
+
+Một số trường cấu hình Startup Probes trong Kubernetes:
+
+| Tên                | Định nghĩa                                                                                                                                                                                                                                                                               |
+| ------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `startupProbe`     | Các tham số cấu hình Startup Probe sẽ được định nghĩa ở trường `startupProbe`.                                                                                                                                                                                                           |
+| `httpGet`          | Kubernetes có cung cấp một số cơ chế để thực hiện Startup Probe như: HTTP request, TCP socket,.. File cấu hình trên sẽ gửi HTTP GET request đến container chạy ứng dụng (port 8080) theo path: `/actuator/health`. Nếu response code trả về 200 là thực hiện readiness probe thành công. |
+| `httpGet.path`     | Đường dẫn API thực hiện Startup Probe. File cấu hình trên sử dụng API `/actuator/health` của Spring Boot Actuator. Bạn cũng có thể tự viết một API để thực hiện Startup Probe (chỉ cần trả về response code 2xx hoặc 3xx là được).                                                       |
+| `httpGet.port`     | Định nghĩa port của container chạy ứng dụng. File cấu hình trên container lắng nghe ở port 8080.                                                                                                                                                                                         |
+| `failureThreshold` | Cấu hình ngưỡng thất bại của Startup Probes = 30 (sẽ thực hiên 30 lần, nếu sau 30 lần mà vẫn fail thì Startup Probes fail).                                                                                                                                                              |
+| `periodSeconds`    | Cấu hình khoảng thời gian giữa các lần thực hiện gửi httpGet đến API `/actuator/health` trong quá trình Startup Probe.                                                                                                                                                                   |
+
+Triển khai ứng dụng Spring Boot trên Kubernetes:
+
+```shell
+kubectl apply -f k8s/students-deployment-startupProbe.yaml
+deployment.apps/students-service created
+```
+
+Xem chi tiết Pod:
+
+```shell
+Controlled By:  ReplicaSet/students-service-69698798c6
+Containers:
+  students-service:
+    Container ID:   containerd://8374c1e9ae4b70fadc24be6a95781b12830a78cd25b02dc0f0941e065f9b5c34
+    Image:          thanhnb1/students-service:k8s-probe
+    Image ID:       docker.io/thanhnb1/students-service@sha256:d5f7d605f1aed64393df490250f1c66e9147102cf22310835c4961f96184e58c
+    Port:           8080/TCP
+    Host Port:      0/TCP
+    State:          Running
+      Started:      Tue, 16 May 2023 01:16:38 +0700
+    Ready:          True
+    Restart Count:  0
+
+    # Phần cấu hình Startup Probes.
+    # 1. Gửi HTTP request đên api: /actuator/health
+    # 2. Sẽ đợi 0s trước khi thực hiện Startup Probes lần đầu tiên.
+    # 3. Timeout của request là 1s.
+    # 4. Thực hiện Startup Probes sau mỗi 10s.
+    # 5. Ngưỡng thành công của Startup Probes = 1 (gọi api thành công 1 lần thì Startup Probes thành công).
+    # 6. Ngưỡng thất bại của Startup Probes = 30 (sẽ thực hiên 3 lần, nếu sau 3 lần mà vẫn fail thì Startup Probes fail).
+    # => Ứng dụng sẽ có tối đa period(10) * failure(30) = 300s để khởi động ứng dụng trước khi container bị restart.
+    Startup:        http-get http://:8080/actuator/health delay=0s timeout=1s period=10s #success=1 #failure=30
+    Environment Variables from:
+      students-cm  ConfigMap  Optional: false
+    Environment:   <none>
+    Mounts:
+      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-p7bvp (ro)
+```
+
+Kiểm tra logs của ứng dụng thấy request đến API: `/actuator/health` một lần duy nhất khi ứng dụng khởi chạy để thực hiện Startup Probes.
+
+```logs
+LOGGING REQUEST-----------------------------------
+[REQUEST-ID]: 15b599bc-e499-4780-a429-2343f1996aed
+[PATH]: /actuator/health
+[QUERIES]: null
+[HEADERS]:
+---host : 10.1.28.126:8080
+---user-agent : kube-probe/1.25
+---accept : */*
+---connection : close
+
+2023-05-16 01:16:47.958  INFO 1 --- [nio-8080-exec-1] c.v.k.students.filter.LoggingService     :
+LOGGING RESPONSE-----------------------------------
+[REQUEST-ID]: 15b599bc-e499-4780-a429-2343f1996aed
+[BODY RESPONSE]:
+{"status":"UP","groups":["liveness","readiness"]}
+LOGGING RESPONSE-----------------------------------
+```
+
+## 5. Tổng kết
+
+Qua bài viết này chúng ta đã tìm hiểu và cấu hình health checks (Kubernetes probes) với ứng dụng Spring Boot. Cấu hình này cũng khá đơn giản nhưng cần xem xét ứng dụng và các tham số của Kubernetes Probes để cấu hình cho phù hợp. Ở bài viết sau chúng ta sẽ tìm hiểu về cách đóng gói ứng dụng cho Kubernetes sử dụng Helm Chart.
