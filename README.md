@@ -1,4 +1,4 @@
-## VNTechies Dev Blog
+## VNTechies Blog
 
 <a href="https://webuild.community">
 	<img src="https://raw.githubusercontent.com/webuild-community/badge/master/svg/made.svg" />
