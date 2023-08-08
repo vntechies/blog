@@ -12,7 +12,7 @@ chapter: 'Tuần 10'
 
 ## Ansible: Bắt đầu
 
-Chúng ta đã đề cập một chút về Ansible là gì trong [bài viết ngày hôm qua](https://vntechies.dev/courses/90-ngay-devops/ngay-63-buc-tranh-toan-canh-quan-ly-cau-hinh) Nhưng chúng ta sẽ có một số thông tin bổ sung ở đây. Thứ nhất, Ansible là sản phẩm của RedHat. Thứ hai, agentless , kết nối thông qua SSH và chạy các câu lệnh. Thứ ba, nó đa nền tảng (Linux & macOS, WSL2) và là mã nguồn mở (cũng có tùy chọn trả phí cho doanh nghiệp).
+Chúng ta đã đề cập một chút về Ansible là gì trong [bài viết ngày hôm qua](https://vntechies.dev/courses/90-ngay-devops/ngay-63-buc-tranh-toan-canh-quan-ly-cau-hinh) Nhưng chúng ta sẽ có một số thông tin bổ sung ở đây. Thứ nhất, Ansible là sản phẩm của RedHat. Thứ hai, agentless, kết nối thông qua SSH và chạy các câu lệnh. Thứ ba, nó đa nền tảng (Linux & macOS, WSL2) và là mã nguồn mở (cũng có tùy chọn trả phí cho doanh nghiệp).
 
 ### Cài đặt Ansible
 
@@ -47,7 +47,7 @@ Cách tôi sử dụng máy chủ cục bộ ở trên để chạy module ping 
 
 ![](/static/images/assets/Day64_config3.png)
 
-Để chúng ta chỉ định máy chủ của mình hoặc các node mà chúng ta muốn tự động hóa với các tác vụ này, chúng ttaôi cần xác định chúng. Chúng ta có thể xác định chúng bằng cách điều hướng đến thư mục /etc/ansible trên hệ thống của bạn.
+Để chúng ta chỉ định máy chủ của mình hoặc các node mà chúng ta muốn tự động hóa với các tác vụ này, chúng ta cần xác định chúng. Chúng ta có thể xác định chúng bằng cách điều hướng đến thư mục /etc/ansible trên hệ thống của bạn.
 
 ![](/static/images/assets/Day64_config4.png)
 
@@ -72,8 +72,6 @@ Sau đó, chúng ta có các yêu cầu về các nodes, đây là những hệ 
 ### Các câu lệnh Ansible
 
 Bạn đã thấy rằng chúng ta có thể chạy `ansible Linux -m ping` trên máy Linux của chúng ta và nhận được phản hồi, về cơ bản, với Ansible, chúng ta có thể chạy nhiều lệnh đặc biệt. [ad hoc commands](https://docs.ansible.com/ansible/latest/user_guide/intro_adhoc.html)
-
-You saw that we were able to run `ansible Linux -m ping` against our Linux machine and get a response, basically, with Ansible we can run many ad-hoc commands. Nhưng bạn có thể chạy chương trình này với một nhóm hệ thống và lấy lại thông tin đó. [ad hoc commands](https://docs.ansible.com/ansible/latest/user_guide/intro_adhoc.html)
 
 Nếu bạn thấy mình lặp lại các lệnh hoặc thậm chí tệ hơn là bạn phải đăng nhập vào các hệ thống riêng lẻ để chạy các lệnh này thì Ansible có thể trợ giúp. Ví dụ: lệnh đơn giản bên dưới sẽ cung cấp cho chúng ta đầu ra của tất cả các chi tiết hệ điều hành cho tất cả các hệ thống mà chúng ta thêm vào nhóm Linux của mình.
 `ansible linux -a "cat /etc/os-release"`
