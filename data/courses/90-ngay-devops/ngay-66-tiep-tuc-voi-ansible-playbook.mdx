@@ -14,7 +14,7 @@ chapter: 'Tuần 10'
 
 Trong bài viết trước, chúng ta đã bắt đầu với việc tạo bài lab nhỏ bằng cách sử dụng Vagrantfile để triển khai 4 máy ảo và chúng ta đã sử dụng máy chủ Linux đã được tạo trong bài viết liên quan tới chính chủ đề đó làm hệ thống điều khiển ansible của mình.
 
-Chúng ta cũng đã đi qua một số trường hợp sử dụng playbooks và cuối cùng, chúng ta đã có một playbooks giúp các máy chủ web01 và web02 trở thành các máy chủ riêng biệt.
+Chúng ta đã đi qua một số kịch bản của playbooks, và cuối cùng chúng ta đã có một playbook giúp máy chủ web01 và web02 trở thành các máy chủ web riêng biệt.
 
 ![](/static/images/assets/Day66_config1.png)
 
@@ -62,7 +62,7 @@ Bạn có thể kiểm tra điều này trong máy chủ điều khiển của m
 
 ![](/static/images/assets/Day66_config2.png)
 
-Hãy tìm hiểu xem tôi đã thực hiện thay đổi đơn giản nào. Sử dụng lệnh `curl web01:8000`
+Hãy xem tôi đã thực hiện thay đổi nào. Sử dụng lệnh `curl web01:8000`
 
 ![](/static/images/assets/Day66_config3.png)
 
@@ -76,7 +76,7 @@ Hiện tại, chúng ta đã triển khai 4 máy ảo và chúng ta đã định
 
 ![](/static/images/assets/Day66_config4.png)
 
-Chúng ta sẽ sử dụng `ansible-galaxy` để tạo một role cho apache2, đây là nơi chúng ta sẽ đặt các chi tiết cụ thể cho máy của web của mình.
+Chúng ta sẽ sử dụng `ansible-galaxy` để tạo một role cho apache2, đây là nơi chúng ta sẽ đặt các cấu hình cho các máy chủ web.
 
 ![](/static/images/assets/Day66_config5.png)
 
