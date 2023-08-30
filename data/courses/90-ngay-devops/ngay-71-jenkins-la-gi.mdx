@@ -1,7 +1,7 @@
 ---
 title: 'Ngày 71 - Jenkins là gì?'
 images: ['/static/images/ogps/90daysofdevopsd71.png']
-summary: 'Jenkins là gì?'
+summary: 'Giới thiệu về Jenkins, kiến trúc và đặc điểm của công cụ này'
 tags: ['devops', '90daysofdevops', 'CI/CD Pipelines']
 date: '2023-08-30'
 index: 71
@@ -11,13 +11,14 @@ chapter: 'Tuần 11'
 <TOCInline toc={props.toc} asDisclosure />
 
 ## Jenkins là gì?
+
 Jenkins là một công cụ triển khai liên lục cho phép việc phát triển, kiểm thử và triển khai liên tục của mã nguồn mới được tạo ra.
 
 Có hai cách chúng ta có thể đạt được điều này, thông qua việc xây dựng hàng đêm (Nightly builds) hoặc phát triển liên tục. Lựa chọn đầu tiên là các nhà phát triển phát triển mã nguồn cho các công việc vào ban ngày và đến cuối ngày làm việc, họ đẩy những thay đổi đó lên kho mã nguồn. Sau đó, vào ban đêm, chúng ta thực hiện các bài kiểm tra đơn vị và xây dựng phần mềm. Điều này được coi như cách cũ để tích hợp tất cả mã nguồn lại với nhau.
 
 ![](/static/images/assets/Day71_CICD1.png)
 
-Lựa chọn còn lại và cũng là cách được ưa thích hơn đó là các nhà phát triển vẫn tiếp tục thực hiện việc commit mã nguồn tới kho mã nguồn, sau khi commit mã nguồn đó được thực hiện quá trình xây dựng mã nguồn được khởi động liên tục.  
+Lựa chọn còn lại và cũng là cách được ưa thích hơn đó là các nhà phát triển vẫn tiếp tục thực hiện việc commit mã nguồn tới kho mã nguồn, sau khi commit mã nguồn đó được thực hiện quá trình xây dựng mã nguồn được khởi động liên tục.
 
 ![](/static/images/assets/Day71_CICD2.png)
 
@@ -69,9 +70,7 @@ Jenkins có thể được cài đặt trên nhiều hệ điều hành khác nh
 
 Chúng ta hãy phân tích hình ảnh dưới đây.
 
-
 Bước 1 - Nhà phát triển commit các thay đổi tới kho lưu trữ mã nguồn.
-
 
 Bước 2 - Jenkins kiểm tra kho mã nguồn theo các khoảng thời gian đều đặn và kéo mã nguồn mới.
 
@@ -81,15 +80,15 @@ Bước 4 - Nếu việc xây dựng thất bại thì phản hồi được g�
 
 Bước 5 - Jenkins sau đó chuyển giao ứng dụng đã xây dựng lên máy chủ kiểm thử, trong ví dụ này, chúng ta đang dùng selenium - một máy chủ kiểm thử phổ biến. Đây là cũng là một lĩnh vực khác cần bàn luận.
 
-Bước 6  - Nếu việc kiểm thử thất bại thì phản hồi được gửi trả về các nhà phát triển.
+Bước 6 - Nếu việc kiểm thử thất bại thì phản hồi được gửi trả về các nhà phát triển.
 
-Bước 7  - Nếu kiểm thử thành công thì chúng ta có thể phát hành tới môi trường sản phẩm.
+Bước 7 - Nếu kiểm thử thành công thì chúng ta có thể phát hành tới môi trường sản phẩm.
 
 Chu kỳ này diễn ra liên tục, điều này cho phép các ứng dụng được cập nhật trong vài phút thay vì hàng giờ, ngày, tháng, năm!
 
 ![](/static/images/assets/Day71_CICD5.png)
 
-Có rất nhiều khía cạnh khác về kiến trúc của Jenkins, ví dụ như nó có khả năng hoạt động theo kiến trúc master-slave, cho phép một master phân tán tới các slave của Jenkins. 
+Có rất nhiều khía cạnh khác về kiến trúc của Jenkins, ví dụ như nó có khả năng hoạt động theo kiến trúc master-slave, cho phép một master phân tán tới các slave của Jenkins.
 
 Để tham khảo thêm, Jenkins là mã nguồn mở, sẽ có nhiều doanh nghiệp cần được hỗ trợ, Cloudbees là phiên bản doanh nghiệp của Jenkins cung cấp hỗ trợ và các chức năng trả phí khác cho các khách hàng doanh nghiệp.
 
