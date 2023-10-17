@@ -30,29 +30,30 @@ kubectl create namespace argocd
 kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
 ```
 
-![](../../Days/Images/Day76_CICD1.png)
+![](/static/images/assets/Day76_CICD1.png)
 
 Đảm bảo tất cả pods của ArgoCD đang hoạt động với lệnh `kubectl get pods -n argocd`
 
-![](../../Days/Images/Day76_CICD2.png)
+![](/static/images/assets/Day76_CICD2.png)
 
 Cùng với đó, hãy kiểm tra mọi thứ chúng ta đã triển khai trong namespace `kubectl get all -n argocd`
 
-![](../../Days/Images/Day76_CICD3.png)
+![](/static/images/assets/Day76_CICD3.png)
 
 Khi mọi thử ở trên đều ổn, chúng ta có thể cân nhắc truy cập nó qua port foward. Sử dụng lệnh `kubectl port-forward svc/argocd-server -n argocd 8080:443`. Hãy thực hiện điều này ở một cửa sổ terminal mới.
 
 Sau đó mở một trình duyệt và truy cập `https://localhost:8080`
 
-![](../../Days/Images/Day76_CICD4.png)
+![](/static/images/assets/Day76_CICD4.png)
 
 Để đăng nhập bạn cần một username của admin và sau đó lấy secret đã được tạo để làm password, sử dụng câu lệnh `kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d && echo`
 
-![](../../Days/Images/Day76_CICD5.png)
+![](/static/images/assets/Day76_CICD5.png)
 
 Khi đăng nhập thành công bạn sẽ thấy giao diện CD đang trống.
 
-![](../../Days/Images/Day76_CICD6.png)
+![](/static/images/assets/Day76_CICD6.png)
+
 
 ### Triển khai ứng dụng
 
