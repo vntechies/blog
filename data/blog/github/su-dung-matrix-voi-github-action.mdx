@@ -1,0 +1,86 @@
+---
+authors: [hungran]
+title: Sử dụng Matrix/Matrices cho Github Actions
+date: '2023-12-14'
+tags: ['devops', 'github', 'cicd']
+draft: false
+images: ['/static/images/assets/github/github-action-matrix.png']
+summary: 'Tận Dụng tính năng Matrix/Matrices để đơn giản hóa số lượng steps, jobs cần thực hiện lặp lại trong luồng CI/CD ở Github Actions'
+---
+
+# Tận Dụng Tính Năng Matrices/Matrix cho Github Action Workflow
+
+Xin chào anh chị em Techies, liên quan đến Github hay Github Actions chắc hẳn anh chị em cũng không xa lạ gì, tuy nhiên hôm nay mình sẽ chia sẻ lại một tính năng khá hưu ích trong Actions Workflow đó là Matrix.
+
+😅 Gần đây mình có tình cờ đóng góp cho dự án [PipeCD - Sanbox CNCF (05/2023)](https://www.cncf.io/projects/pipecd/). Dự án đang sử dụng Github Actions Build and Push Dockerimage từ Docker Inc.
+Sẽ chẳng có vấn đề gì cho đến khi mình nhìn thấy số lượng images được build và workflow file trông như thế này 😅 😅 😓
+
+![REPEAT](/static/images/assets/github/REPEAT.png)
+
+### 😓 Vấn đề của workflow này là gì?
+
+1. Các job build image được lặp lại nhiều lần với cú pháp và sử dụng chung cùng một action template từ docker
+2. Khó maintain, khó cập nhật khi muốn thay đổi cả image base version bên trong Dockerfile
+
+### 💡 Giải Pháp
+
+Chỉ chờ có vậy, cộng với việc mình đang có thêm một vài dự định với phần CI build image cho chính project PipeCD (nghe rất con gà quả trứng...)
+
+Trước khi bắt tay vào tạo Pull Request, cùng nhau tìm hiểu trước Github Matrix/Matrices là gì nhé, mình đã google thần chưởng 123124821974 công lực và ra được một số thông tin như dưới
+
+Theo như document của Github, Github Actions Matrices là tính năng giúp cho người sử dụng có thể lặp lại tự động các job trong workflow dựa theo ma trận biến... (ảo).
+Hiểu một cách đơn giản là giảm số lượng `steps` lặp lại dựa trên các biến đầu vào.
+
+Nguồn: https://docs.github.com/en/actions/using-jobs/using-a-matrix-for-your-jobs
+
+Nghe đến từ `ma trận` thì rất gì và này nọ, tuy nhiên để bắt tay vào làm cũng không quá khó.
+
+📖 Về cú pháp, Github hướng dẫn như sau để khai `strategy` từ ma trận đa chiều
+
+Ví dụ
+
+```
+strategy:
+  matrix:
+    fruit: [apple, pear]
+    animal: [cat, dog]
+    include:
+      - color: green
+      - color: pink
+        animal: cat
+      - fruit: apple
+        shape: circle
+      - fruit: banana
+      - fruit: banana
+        animal: cat
+```
+
+ta được kết quả đầu ra là object có dạng như sau:
+
+- `{fruit: apple, animal: cat, color: pink, shape: circle}`
+- `{fruit: apple, animal: dog, color: green, shape: circle}`
+- `{fruit: pear, animal: cat, color: pink}`
+- `{fruit: pear, animal: dog, color: green}`
+- `{fruit: banana}`
+- `{fruit: banana, animal: cat}`
+
+👩‍🔬 Ok, sau khi đọc thêm hướng dẫn về việc mở rộng, lược bỏ ([include và exclude matrix configurations](https://docs.github.com/en/actions/using-jobs/using-a-matrix-for-your-jobs#expanding-or-adding-matrix-configurations)) cho giá trị trong ma trận mình tiến hành vào việc thôi
+
+👨‍💻 Kết quả cuối cùng là PR được approve, job chạy mượt https://github.com/pipe-cd/pipecd/pull/4721
+
+## VNTechies Dev Blog
+
+Kho tài nguyên mã nguồn mở với sứ mệnh đào tạo kiến thức, định hướng nghề nghiệp cho cộng đồng Cloud ☁️ DevOps 🚀
+
+[![Facebook page](https://i.imgur.com/YxfhUTS.png)](https://www.facebook.com/vntechies)
+
+Tham gia group [VNTechies - Cloud ☁️ / DevOps 🚀](https://www.facebook.com/groups/acevntechies) nếu bạn muốn giao lưu với cộng đồng và cập nhật các thông tin mới nhất về Cloud và DevOps.
+
+- Website: https://vntechies.dev
+- Github repository: https://github.com/vntechies
+- Facebook page: https://facebook.com/vntechies
+
+[![Discord banner](https://images.viblo.asia/c8c4a473-c08d-45a3-be57-821781c1c256.png)](https://discord.com/invite/k2uDgd7NZ4)
+[Link ảnh trong bài viết](https://collider.com/the-matrix-green-codes-explained/)
+
+Anh chị em hãy follow/ủng hộ VNTechies để cập nhật những thông tin mới nhất về Cloud và DevOps nhé!
