@@ -1,5 +1,5 @@
 ---
-name: Mầu
+name: Quang Mau
 avatar: /static/images/authors/mau.png
 occupation: Senior Technical Specialist
 company: Dominos Japan
