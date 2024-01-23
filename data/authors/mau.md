@@ -1,12 +1,12 @@
 ---
-name: Mầu
+name: Quang Mau
 avatar: /static/images/authors/mau.png
-occupation: Senior Technical Specialist
-company: Dominos Japan
+occupation: Solution Architect
+company: Cloud Kinetics
 email: mau@qmau.me
 twitter: https://twitter.com/qmau94
 facebook: https://fb.me/qmauvnt
-linkedin: https://www.linkedin.com/in/qmau94/
+linkedin: https://www.linkedin.com/in/qmauvnt/
 github: https://github.com/qmauvnt
 url: http://qmau.me/
 ---
