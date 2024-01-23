@@ -20,7 +20,7 @@ _Trong bài viết này, Scheduled Fargate Task sẽ được dịch là **tác 
 
 Để sử dụng các tác vụ Fargate được lập lịch, trước tiên, bạn cần thiết lập một Virtual Private Cloud (VPC). VPC là một mạng ảo được tách biệt cho phép bạn khởi tạo vào triển khai các tài nguyên AWS của mình, ví dụ như các tác vụ Fargate được lập lịch.
 
-Bạn có thể chỉ định dải địa chỉ IP cho VPC, thêm mạng con (subnet), liên kết nhóm bảo mật (security group)và định cấu hình bảng định tuyến (route tables). Đối với bài viết này, chúng tôi sẽ tạo một VPC với 9 mạng con được chia trên 3 AZs bằng AWS CDK.
+Bạn có thể chỉ định dải địa chỉ IP cho VPC, thêm mạng con (subnet), liên kết nhóm bảo mật (security group)và định cấu hình bảng định tuyến (route tables). Đối với bài viết này, chúng ta sẽ tạo một VPC với 9 mạng con được chia trên 3 AZs bằng AWS CDK.
 
 Dưới đây là một ví dụ về cách tạo VPC:
 
@@ -93,7 +93,7 @@ ecs_patterns.ScheduledFargateTask(
 ```
 
 - `ecs_patterns.ScheduledFargateTask`, tại đây chúng ta khởi tạo tài nguyên ScheduledFargateTask từ thư viện ecspatterns. Chúng ta tham chiếu đến cluster đã được tạo trong phần trước để AWS CDK biết vị trí cần để triển khai tác vụ Fargate được lập lịch.
-- Trong `ScheduleFargateTaskImageOptions`, chúng tôi định nghĩa cho container, ví dụ như image nào nên được sử dụng. Tại đây, chúng ta sẽ sử dụng image `amazonlinux:2` cho container. AWS CDK sẽ tự động lấy image Amazon Linux 2 từ Amazon ECR và sử dụng image đó để triển khai tác vụ Fargate được lập lịch.
+- Trong `ScheduleFargateTaskImageOptions`, chúng ta định nghĩa cho container, ví dụ như image nào nên được sử dụng. Tại đây, chúng ta sẽ sử dụng image `amazonlinux:2` cho container. AWS CDK sẽ tự động lấy image Amazon Linux 2 từ Amazon ECR và sử dụng image đó để triển khai tác vụ Fargate được lập lịch.
 - Bạn có thể chỉ định thời gian lưu giữ cho logs của tác vụ. Mặc định, AWS CDK không cài đặt thời gian lưu trữ cho các logs được tạo bởi các tác vụ của nó. Nếu bạn muốn có cài đặt thời gian lưu trữ log của mình, bạn cần định nghĩa với thuộc tính `log_retention` trên `log_driver`. Giá trị `aws_logs.RetentionDays.ONE_DAY`, có nghĩa là log sẽ bị xoá sau 1 ngày.
 - `command` chỉ định tác vụ bạn muốn chạy trên container. Sau khi lệnh kết thúc, tác vụ Fargate (Fargate task) sẽ ngừng chạy.
 - `environment` cho phép bạn import các biến môi trường vào container để sử dụng cho tác vụ Fargate.

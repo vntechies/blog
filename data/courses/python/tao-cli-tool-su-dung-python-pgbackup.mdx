@@ -176,7 +176,7 @@ git commit -m 'Initial commit'
 
 ### Xử lý đối số (argument handle)
 
-- Cho đến thời điểm này, pgbackup tồn tại dưới dạng một project chứ không phải là một package. Chúng ta sẽ tạo khá nhiều module khác nhau và muốn tất cả chúng có trong package pgbackup. Để tạo một package, chúng tôi cần có một thư mục với tên package của chúng ta và bao gồm một file `__init__.py`.
+- Cho đến thời điểm này, pgbackup tồn tại dưới dạng một project chứ không phải là một package. Chúng ta sẽ tạo khá nhiều module khác nhau và muốn tất cả chúng có trong package pgbackup. Để tạo một package, chúng ta cần có một thư mục với tên package của chúng ta và bao gồm một file `__init__.py`.
 
 ```shell
 mkdir src/pgbackup
@@ -185,7 +185,7 @@ vi src/pgbackup/cli.py
 ```
 
 - Bây giờ chúng ta có thể tạo phần còn lại của các module trong thư mục `src/pgbackup`
-- Khi nhắc tới việc tạo CLI tool bằng Python, thư viện tiêu chuẩn có một package tuyệt vời cho việc đó: argparse[^1]. Hãy tạo một file Python mới chứa logic liên quan đến CLI của chúng ta tại `src/pgbackup/cli.py`. Trong file này, chúng tôi sẽ viết một function để phân tích cú pháp các đối số mà người dùng truyền vào khi chạy.
+- Khi nhắc tới việc tạo CLI tool bằng Python, thư viện tiêu chuẩn có một package tuyệt vời cho việc đó: argparse[^1]. Hãy tạo một file Python mới chứa logic liên quan đến CLI của chúng ta tại `src/pgbackup/cli.py`. Trong file này, chúng ta sẽ viết một function để phân tích cú pháp các đối số mà người dùng truyền vào khi chạy.
 - Chúng ta cần:
   - Một đối số cho chuỗi kết nối (connection string) của database chúng ta kết nối đến.
   - Một đối số sử dụng flag (`--driver`) chứa 2 phần cho chúng ta biết driver name (local hay S3) và địa điểm mà chúng ta lưu file back up (với S3 là bucket name và với local là path)
@@ -311,7 +311,7 @@ pipenv install boto3
   - client: Một AWS client object có method `upload_fileobj`
   - infile: Một file object với dữ liệu từ bản backup PostgreSQL
   - bucket: Tên của bucket mà chúng ta sẽ upload bản sao lưu
-  - name: Tên của tệp chúng tôi muốn tạo trong S3 bucket
+  - name: Tên của tệp chúng ta muốn tạo trong S3 bucket
 
 - Lý do mà chúng ta inject client object là vì không muốn module storage phải phụ trách việc cấu hình cho client, chúng ta sẽ làm điều đó khi kết nối tất cả các phần lại với nhau.
 
@@ -407,9 +407,9 @@ pgbackup --driver s3 pyscripting-db-backups postgres://demo:password@54.245.63.9
 
 ### Phân phối/chia sẻ CLI tool
 
-- CLI tool của của chúng ta có thể sẽ chỉ được phân phối nội bộ. Để làm điều đó dễ dàng, chúng tôi sẽ muốn xây dựng một file `whell` dùng để cài đặt cho nó.
+- CLI tool của của chúng ta có thể sẽ chỉ được phân phối nội bộ. Để làm điều đó dễ dàng, chúng ta sẽ muốn xây dựng một file `whell` dùng để cài đặt cho nó.
   > Lưu ý: Việc này phù hợp cho cả các project mã nguồn mở
-- Trước khi tạo file `wheel`, chúng ta sẽ cấu hình setuptools để yêu cầu Python 3.6 hoặc mới hơn vì chúng tôi đã sử dụng cú pháp "f-string". Chúng ta sẽ sử dụng python_requires và phương thức setuptools.setup bên trong setup.py của để làm điều này
+- Trước khi tạo file `wheel`, chúng ta sẽ cấu hình setuptools để yêu cầu Python 3.6 hoặc mới hơn vì chúng ta đã sử dụng cú pháp "f-string". Chúng ta sẽ sử dụng python_requires và phương thức setuptools.setup bên trong setup.py của để làm điều này
 
 ```python:src/setup.py
 ...
