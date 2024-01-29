@@ -1,6 +1,6 @@
 ---
 name: Quang Mau
-avatar: /static/images/authors/mau.png
+avatar: /static/images/authors/mau.jpg
 occupation: Solution Architect
 company: Cloud Kinetics
 email: mau@qmau.me
