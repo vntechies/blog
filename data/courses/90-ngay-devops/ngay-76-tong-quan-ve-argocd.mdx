@@ -5,7 +5,7 @@ summary: 'Giới thiệu về ArgoCD và ví dụ thực hành với minikube'
 tags: ['devops', '90daysofdevops', 'CI/CD Pipelines']
 date: '2023-10-16'
 index: 76
-chapter: 'Tuần 16'
+chapter: 'Tuần 11'
 ---
 
 <TOCInline toc={props.toc} asDisclosure />
@@ -18,12 +18,11 @@ Việc kiểm soát phiên bản là điều quan trọng ở đây. Bạn có t
 
 Từ lĩnh vực Quản trị nhưng đã nghiên cứu rất nhiều về Cơ sở hạ tầng dưới dạng mã, đây là bước tiếp theo để đảm bảo rằng tất cả những điều tốt lành đó được chăm sóc thông qua các luồng công việc triển khai / phát hành liên tục.".
 
-
 [ArgoCD là gì](https://argo-cd.readthedocs.io/en/stable/)
 
 ### Triển khai ArgoCD
 
-Chúng ta sẽ sử dụng Kubernetes cluster với minikube cục bộ cho việc triển khai này. 
+Chúng ta sẽ sử dụng Kubernetes cluster với minikube cục bộ cho việc triển khai này.
 
 ```Shell
 kubectl create namespace argocd
@@ -53,7 +52,6 @@ Sau đó mở một trình duyệt và truy cập `https://localhost:8080`
 Khi đăng nhập thành công bạn sẽ thấy giao diện CD đang trống.
 
 ![](/static/images/assets/Day76_CICD6.png)
-
 
 ### Triển khai ứng dụng
 

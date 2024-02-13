@@ -5,7 +5,7 @@ summary: 'Xây dựng Jenkins pipeline'
 tags: ['devops', '90daysofdevops', 'CI/CD Pipelines']
 date: '2023-10-04'
 index: 73
-chapter: 'Tuần 13'
+chapter: 'Tuần 11'
 ---
 
 <TOCInline toc={props.toc} asDisclosure />
@@ -19,7 +19,7 @@ Bạn cũng có thể thấy rằng có một số kịch bản mẫu cho chúng
 ![](/static/images/assets/Day73_CICD1.png)
 
 Kịch bản demo đầu tiên là "Declarative (Kubernetes)" và bạn có thể thấy các giai đoạn bên dưới.
-  
+
 ```Yaml
 // Sử dụng cú pháp Declarative để chạy câu lệnh bên trong một container
 pipeline {
@@ -61,6 +61,7 @@ spec:
     }
 }
 ```
+
 Bạn có thể thấy kết quả của những gì đã xảy ra khi Pipeline này chạy ở bên dưới.
 
 ![](/static/images/assets/Day73_CICD2.png)
@@ -193,7 +194,7 @@ Chúng ta chỉ quan tâm đến thẻ Pipeline ở cuối.
 
 ![](/static/images/assets/Day73_CICD11.png)
 
-Trong phần Pipeline definition, chúng ta sẽ sao chép và dán kịch bản pipeline mà chúng ta có ở phía trên vào  phần Script và bấm lưu.
+Trong phần Pipeline definition, chúng ta sẽ sao chép và dán kịch bản pipeline mà chúng ta có ở phía trên vào phần Script và bấm lưu.
 
 ![](/static/images/assets/Day73_CICD12.png)
 
@@ -201,7 +202,7 @@ Tiếp theo, chúng ta sẽ chọn "Build Now" ở bên trái của trang.
 
 ![](/static/images/assets/Day73_CICD13.png)
 
-Hãy chờ một chút, và bạn sẽ thấy phía dưới status là các giai đoạn mà chúng ta đã định nghĩa phía trên ở kịch bản của chúng ta. 
+Hãy chờ một chút, và bạn sẽ thấy phía dưới status là các giai đoạn mà chúng ta đã định nghĩa phía trên ở kịch bản của chúng ta.
 
 ![](/static/images/assets/Day73_CICD14.png)
 
