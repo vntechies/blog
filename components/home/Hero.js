@@ -80,8 +80,8 @@ const Hero = () => {
         <div className="hidden min-h-full lg:col-span-5 lg:mt-0 lg:flex">
           <Image
             priority
-            height="400"
-            width="400"
+            height="400px"
+            width="400px"
             objectFit="contain"
             src="/static/images/cloud.png"
             alt="cloud"

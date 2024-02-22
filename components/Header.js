@@ -18,8 +18,8 @@ export default function Header() {
             <div className="mr-3">
               <Image
                 src={'/static/images/logo.webp'}
-                width="200"
-                height="40"
+                width="200px"
+                height="40px"
                 alt="avatar"
                 className="h-10 w-10 rounded-full"
               />
