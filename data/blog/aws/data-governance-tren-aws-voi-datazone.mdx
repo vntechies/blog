@@ -1,0 +1,90 @@
+---
+title: Data governance trên AWS với DataZone
+date: '2024-02-22'
+tags: ['aws', 'data', 'analytics']
+draft: false
+images: ['/static/images/ogps/aws_data_zone.png']
+summary: 'Vượt qua rào cản giữa các bộ phận trong tổ chức để khai thác dữ liệu với khả năng quản trị tích hợp'
+---
+
+https://www.youtube.com/watch?v=cKl5LXBywQk
+
+**Toàn bộ resources và video được sử dụng có bản quyền của AWS, được trình bày trong sự kiện AWS re:Invent 2023 re:Cap - Hanoi Edition do [Viet-AWS (AWSUG | Ho Chi Minh - Da Nang - Hanoi)](https://www.facebook.com/groups/vietawscommunity) tổ chức.**
+
+<TOCInline toc={props.toc} asDisclosure />
+
+## Data Governance
+
+![Datazone Business Catalog](/static/images/assets/aws/datazone/data-governance.png)
+
+Hiện nay, hầu hết các doanh nghiệp đều có chiến lược phát triển theo hướng data-driven, dùng dữ liệu để đưa ra các quyết định kinh doanh. Để làm được điều đó thì việc các nhóm, các cá nhân trong tổ chức có thể tiếp cận và sử dụng các nguồn dữ liệu một cách nhanh chóng là cần thiết, đó chính là khi những khó khăn trong việc triển khai, quản lý các nguồn dữ liệu xuất hiện:
+
+1. Làm thế nào để tìm được nguồn dữ liệu thích hợp
+2. Sau khi tìm được nguồn dữ liệu thích hợp, khó khăn tiếp theo là làm thế nào để tiếp cận và xác định độ chính xác của nguồn dữ liệu đó từ các data owner
+3. Sau khi tiếp cận được, mỗi một nhóm sẽ có những lựa chọn riêng cho các công cụ để phân tích dữ liệu: team AI ML với notebook, team phân tích dữ liệu query editor, team BI là các công cụ trực quan hoá dữ liệu. Việc các công cụ có thể sử dụng dễ dàng nguồn dữ liệu là một vấn đề lớn.
+4. Collaborate với các team trên nguồn dữ liệu đó, làm sao để có thể chia sẻ dữ liệu một cách an toàn và phù hợp
+5. Tuân thủ các policy của tổ chức và luật pháp quốc gia về quản lý dữ liệu
+
+## Amazon DataZone
+
+![Datazone Business Catalog](/static/images/assets/aws/datazone/datazone.png)
+
+Với một tổ chức có văn hoá customer obsession như Amazon, Amazon Web Service đã cho ra mắt một dịch vụ giúp khách hàng giải quyết những khó khăn đó. Đó là Datazone, bộ công cụ cho phép:
+
+1. Tạo Catalog, khám phá, chia sẻ, quản lý và phân tích dữ liệu
+2. Khả năng tự phục vụ qua một cổng tập trung
+3. Dễ dàng tích hợp với nhiều bộ công cụ phân tích dữ liệu và BI khác nhau
+4. Khả năng cộng tác với nhiều nhóm trên cùng một nguồn dữ liệu
+5. Cung cấp cơ chế quản lý dữ liệu tập trung cho tất cả các nguồn dữ liệu và các công cụ phân tích
+
+## Các thành phần của DataZone
+
+Có thể nói DataZone đã lấp đầy khoảng trống giữa các nhóm tạo ra dữ liệu và các nhóm sử dụng dữ liệu. Với các thành phần chính như sau:
+
+### Domain
+
+Ranh giới của một line of business (LOB) hoặc một lĩnh vực kinh doanh trong một tổ chức mà có thể quản lý dữ liệu của nó, bao gồm data assets của domain và định nghĩa riêng về dữ liệu hoặc thuật ngữ kinh doanh, đồng thời có thể có tiêu chuẩn quản lý riêng. Domains bao gồm tất cả các thành phần cốt lõi như Data portal, business data catalog, project và environment, governance và access control
+
+### Data portal (nằm ngoài aws console)
+
+Là một ứng dụng web nơi những người dùng khác nhau có thể truy cập danh mục, khám phá, quản lý, chia sẻ và phân tích dữ liệu theo hình thứ self-service. Nó xác thực người dùng bằng IAM hoặc thông tin xác thực hiện có từ identity provider thông qua IAM Identity Center.
+
+### Business Data Catalog
+
+![Datazone Business Catalog](/static/images/assets/aws/datazone/biz-catalog.png)
+
+Trong catalog của mình, bạn có thể xác định phân loại hoặc bảng thuật ngữ kinh doanh (business glossary). Bạn có thể sử dụng nó để lập data catalog cho toàn tổ chức của mình với bối cảnh kinh doanh và do đó cho phép mọi người trong tổ chức của bạn tìm và hiểu dữ liệu một cách nhanh chóng.
+
+### Projects & environment
+
+![Datazone Env](/static/images/assets/aws/datazone/env.png)
+
+Bạn có thể sử dụng project để đơn giản hóa quyền truy cập vào phân tích bằng cách tạo các nhóm, data assets và công cụ phân tích dựa trên business case. Các project cung cấp không gian nơi các thành viên dự án có thể cộng tác, trao đổi và chia sẻ dữ liệu. Trong các projects, bạn có thể tạo environment để cung cấp cơ sở hạ tầng cần thiết cho các thành viên dự án, chẳng hạn như công cụ phân tích và storage để các thành viên dự án có thể dễ dàng tạo dữ liệu mới hoặc sử dụng dữ liệu mà họ có quyền truy cập.
+
+### Governance và access control
+
+Bạn có thể sử dụng các workflow được tích hợp cho phép người dùng trong toàn tổ chức yêu cầu quyền truy cập vào dữ liệu trong catalog và data owners duyệt các yêu cầu đăng ký đó. Sau khi yêu cầu đăng ký được phê duyệt, DataZone có thể tự động cấp quyền truy cập bằng cách quản lý quyền tại các kho dữ liệu cơ bản như AWS Lake Formation và Amazon Redshift.
+Cuối cùng, tất cả những component trên đều có thể được sử dụng thông qua APIs. Chúng ta có thể đã có sẵn một giải pháp liên quan tới phân tích dữ liệu, quản lý dữ liệu và có thể dễ dàng tích hợp với DataZone thông qua các APIs này.
+
+## GenAI trong DataZone
+
+Tiếp theo sẽ là keyword rất hot của năm nay, Generative AI. Không nằm ngoài xu hướng, GenAI cũng sẽ được tích hợp trong DataZone để tự động hoá các quy trình trong việc tạo catalog cho dữ liệu. Có 3 chức năng chính mà GenAI sẽ giúp đỡ người dùng DataZone:
+
+1. Tự động sinh ra các business description cho các nguồn dữ liệu, giúp người dùng dễ dàng tiếp cận các nguồn dữ liệu thông qua chức năng tìm kiếm cũng như sinh ra các mô tả về các trường dữ liệu.
+2. Hướng dẫn trong việc làm thế nào để sử dụng được các nguồn dữ liệu, giúp việc sử dụng trở nên đơn giản và nhanh chóng hơn thông qua các tổng hợp, tài liệu của một data catalog
+3. Tự động hóa việc viết tài liệu cho nguồn dữ liệu, giảm thiểu thời gian làm việc thủ công khi tạo data catalog
+
+Điều này sẽ giảm thiểu thời gian tạo ra các business name, document, summary, description cho dữ liệu, các trường trong bộ dữ liệu từ hàng tiếng xuống vài phút.
+
+What's next với GenAI trên DataZone
+
+- Sử dụng Subscription cho các RAG applications
+- Áp dụng LLM cho việc tìm kiếm data catalog và gợi ý data để trả lời các câu hỏi cụ thể
+
+## Reference
+
+- [Amazon DataZone](https://aws.amazon.com/vi/datazone/)
+- [Amazon DataZone GA](https://aws.amazon.com/about-aws/whats-new/2023/10/amazon-datazone-generally-available/)
+- [Getting started with DataZone](https://aws.amazon.com/datazone/getting-started/)
+
+**Toàn bộ resources và video được sử dụng có bản quyền của AWS, được trình bày trong sự kiện AWS re:Invent 2023 re:Cap - Hanoi Edition do [Viet-AWS (AWSUG | Ho Chi Minh - Da Nang - Hanoi)](https://www.facebook.com/groups/vietawscommunity) tổ chức.**
