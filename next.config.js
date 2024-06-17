@@ -53,6 +53,7 @@ const securityHeaders = [
 ]
 
 module.exports = withBundleAnalyzer({
+  distDir: 'out',
   plugins: [
     'postcss-flexbugs-fixes',
     [
