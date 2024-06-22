@@ -1,0 +1,75 @@
+---
+title: 'ALB: Automatic Target Weight và mTLS'
+date: '2024-06-23'
+tags: ['aws', 'atw', 'alb', 'mtls']
+draft: false
+authors: ['mau']
+images: ['/static/images/ogps/aws-alb-atw-mtls.png']
+summary: 'Giới thiệu về 2 tính năng mới của ALB: Automatic Target Weight và mTLS'
+---
+
+https://www.youtube.com/watch?v=1bykZCSBQ7Q
+
+**Toàn bộ resources và video được sử dụng có bản quyền của AWS và Viet-AWS, được trình bày trong sự kiện AWS re:Invent 2023 re:Cap - Hanoi Edition do [Viet-AWS (AWSUG | Ho Chi Minh - Da Nang - Hanoi)](https://www.facebook.com/groups/vietawscommunity) tổ chức. Việc sử dụng lại với mục đích phi lợi nhuận và không chỉnh sửa đã được admin Viet-AWS đồng ý.**
+
+<TOCInline toc={props.toc} asDisclosure />
+
+# AWS ALB Automatic Target Weight và mTLS
+
+## Giới thiệu
+
+Trong bối cảnh các hệ thống phần mềm ngày càng phức tạp và yêu cầu độ tin cậy cao, việc quản lý và giám sát các target trở nên cực kỳ quan trọng để đảm bảo sự liên tục và hiệu suất của ứng dụng. Trong bài viết này, chúng ta sẽ tìm hiểu về tính năng **Automatic Target Weight (ATW)** của **AWS Application Load Balancer (ALB)**, cùng như việc triển khai **mutual TLS (mTLS)** để bảo vệ giao tiếp giữa các thành phần hệ thống.
+
+## AWS ALB Automatic Target Weight (ATW)
+
+### Vấn đề
+
+Trong một hệ thống phân tán, các lỗi xám (grey failure) là những vấn đề thường gặp mà các health checks truyền thống khó có thể phát hiện được. Đây có thể là do các tài nguyên không hoạt động đúng cách hoặc các vấn đề về mạng như mất gói tin. Những lỗi này có thể dẫn đến việc giảm hiệu suất hoặc sự không ổn định của hệ thống.
+
+### Giải pháp
+
+Để giải quyết vấn đề này, AWS đã giới thiệu tính năng ATW cho ALB. ATW giám sát và đánh giá phản hồi từ các target, đếm số lượng lỗi TCP và HTTP một cách tự động.
+
+- **Giảm thiểu lỗi tự động**: Khi phát hiện lỗi từ target, ALB sẽ giảm số lượng request tới target đó theo cấp số nhân để giảm thiểu tối đa các lỗi do target gây ra. Số lượng request sẽ được giảm xuống còn 0.1% để vẫn tiếp tục giám sát và kiểm tra lại target.
+
+- **Tự động phục hồi**: Khi nhận thấy sự phục hồi của target, ALB sẽ tăng dần số lượng request trở lại, đồng thời tiếp tục giám sát để đảm bảo target đã thực sự phục hồi.
+
+### Điều kiện sử dụng
+
+- ATW chỉ hoạt động trên các target group có từ 3 targets trở lên.
+- Khi bật cross-zone load balancing, ATW có thể giảm thiểu lỗi trên tối đa 50% tổng số target trong một group.
+- Khi cross-zone không được bật, ATW chỉ giảm thiểu lỗi trên tối đa 50% số target trong một Availability Zone (AZ).
+- ATW có thể không hoạt động nếu tỷ lệ request thấp hơn 2 request trên 1 giây.
+- Khi tất cả các target đều bị lỗi, ATW không thể xác định target để thực hiện giảm thiểu lỗi.
+
+### Metrics
+
+Tính năng này cung cấp thêm 2 metrics:
+
+- **AbnomalousHostCount**: Số lượng host có lỗi.
+- **MitigatedHostCount**: Số lượng host mà ATW đã giảm thiểu lỗi.
+
+### Chi phí
+
+Không có chi phí bổ sung khi sử dụng ATW để phát hiện và giảm thiểu các lỗi.
+
+## Triển khai mutual TLS (mTLS) cho AWS ALB
+
+### Mục đích
+
+Để bảo vệ giao tiếp giữa các thành phần trong hệ thống, chúng ta có thể triển khai mTLS cho ALB. mTLS sử dụng cả chứng chỉ server và client để xác thực và mã hóa dữ liệu trên đường truyền.
+
+### Bước triển khai
+
+1. **Sinh cặp chứng chỉ (certificate)**: Sử dụng dịch vụ ACM (AWS Certificate Manager) để tạo và quản lý các chứng chỉ SSL/TLS.
+2. **Thiết lập listener trên ALB**: Thiết lập HTTPS listener trên ALB và liên kết với các chứng chỉ đã được cấp phát từ ACM.
+
+3. **Cấu hình client authentication**: Cho phép yêu cầu xác thực từ client bằng cách yêu cầu và xác thực chứng chỉ từ client.
+
+4. **Bảo mật các giao tiếp**: Cấu hình ALB để yêu cầu và xác thực các chứng chỉ từ client, đảm bảo chỉ các client hợp lệ mới có thể truy cập vào ứng dụng.
+
+## Kết luận
+
+ATW là một tính năng mạnh mẽ giúp tự động phát hiện và giảm thiểu các lỗi trong các hệ thống phân tán sử dụng ALB của AWS. Đồng thời, việc triển khai mTLS giúp tăng cường bảo mật cho các giao tiếp giữa các thành phần trong hệ thống. Sử dụng kết hợp hai tính năng này giúp bạn xây dựng và duy trì các hệ thống ứng dụng an toàn và ổn định.
+
+Nếu bạn đang xem xét sử dụng ALB hoặc triển khai mTLS, hãy cân nhắc và áp dụng các giải pháp này để tối ưu hóa hiệu suất và bảo mật của hệ thống của bạn trên nền tảng AWS.
