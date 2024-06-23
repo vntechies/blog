@@ -42,6 +42,11 @@ class MyDocument extends Document {
           <meta name="theme-color" media="(prefers-color-scheme: light)" content="#fff" />
           <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000" />
           <link rel="alternate" type="application/rss+xml" href="/public/feed.xml" />
+          <script
+            async
+            src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6062406727970154"
+            crossOrigin="anonymous"
+          ></script>
         </Head>
         <body className="bg-white text-black antialiased dark:bg-gray-900 dark:text-white">
           <Main />
