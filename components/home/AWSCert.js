@@ -11,7 +11,7 @@ const AWSCert = () => {
         <div className="container py-12">
           <div className="-m-4 flex flex-wrap">
             <Card
-              title="Kinh nghiệm thi chứng chỉ AWS Certified Solutions Architect – Associate SAA-C03 (2022)"
+              title="Kinh nghiệm thi chứng chỉ AWS Certified Solutions Architect – Associate SAA-C03"
               description="Quá trình ôn tập cho kỳ thi AWSSA-A (Amazon AWS Certified Solutions Architect - Associate) - phiên bản SAA-C03 năm 2022"
               imgSrc="/static/images/ogps/saac03.png"
               href="/blog/aws-certs/kinh-nghiem-thi-chung-chi-aws-certified-solutions-architect-associate-saa-c03"
@@ -32,7 +32,7 @@ const AWSCert = () => {
               showMore={false}
             />
             <Card
-              title="Kinh nghiệm thi chứng chỉ AWS Certified Solutions Architect – Professional SAP-C01 (2022)"
+              title="Kinh nghiệm thi chứng chỉ AWS Certified Solutions Architect – Professional SAP-C01"
               description="Chia sẻ kinh nghiệm thi chứng chỉ Solutions Architect level Professional cho các kiến trúc sư giải pháp trên AWS"
               imgSrc="/static/images/ogps/sapc01.png"
               href="/blog/aws-certs/kinh-nghiem-thi-chung-chi-aws-certified-solutions-architect-professional-sap-c01"
