@@ -1,0 +1,141 @@
+---
+title: Bạn cần loại AI Chatbot nào?
+date: '2024-06-24'
+tags: ['aws', 'gcp', 'chatbot', 'ai']
+images: ['/static/images/ogps/genai.png']
+summary: 'So sánh các giải pháp chatbot AI (public API, custom model, và self-hosted) để chọn lựa phù hợp với nhu cầu và điều kiện cụ thể của tổ chức'
+---
+
+<TOCInline toc={props.toc} asDisclosure />
+
+Một AI chatbot là một Mô hình Ngôn ngữ Lớn (LLM) được điều chỉnh theo các hướng dẫn. Một chatbot như vậy có thể cung cấp câu trả lời nhanh chóng, chính xác và phù hợp cho các câu hỏi được đặt ra. Tuy nhiên, nó bị giới hạn bởi thông tin, giọng điệu văn bản, định dạng và phong cách mà nó đã được đào tạo.
+
+Kỹ thuật Retrieval-Augmented Generation (RAG-Chatbot) cho phép kết nối Chatbot AI với tài liệu nội bộ, riêng tư của tổ chức. Nó có khả năng trả lời câu hỏi dựa trên cơ sở tri thức được cung cấp. Người dùng có thể hỏi câu hỏi và nhận câu trả lời dựa trên tài liệu, mặc dù model chưa từng gặp nó trong quá trình đào tạo (điều này giúp tài liệu nội bộ của bạn vẫn giữ được tính riêng tư và an toàn!). Các tài liệu chính xác được truy xuất bởi AI, dựa trên truy vấn của người dùng, và được thêm vào truy vấn như một ngữ cảnh trước khi đưa vào Chatbot AI.
+
+Xây dựng RAG-Chatbot yêu cầu phân tích toàn bộ tài liệu của tổ chức thành định dạng đúng và đưa ra một vài lựa chọn thiết kế. Hình 1 trình bày tất cả các giải pháp có thể cho thiết kế và triển khai RAG-Chatbot.
+
+![](/static/images/assets/genai_publicvsselfhosted.png)
+
+Giải pháp nên được chọn tùy thuộc vào trường hợp sử dụng. Dưới đây, tôi sẽ xem xét từng cách tiếp cận và thảo luận về ưu và nhược điểm của chúng.
+
+## Các giải pháp RAG-Chatbot
+
+### Public API (LLM SaaS)
+
+Các giải pháp cloud API-based rất tốt về tốc độ phát triển, phù hợp cho Proof-of-Concept và lưu lượng sử dụng nhỏ. Chúng cũng cung cấp các bản cập nhật model thường xuyên miễn phí. Tuy nhiên, chúng đi kèm với nhiều hạn chế:
+
+- Hạn chế tuỳ chỉnh
+- Không hiệu quả về chi phí cho lưu lượng rất lớn.
+- Có thể không đủ an toàn cho dữ liệu cực kỳ bảo mật.
+- Foundation model
+
+Đây là cách tiếp cận tốt nhất trong hầu hết các trường hợp. Nó giúp triển khai nhanh chóng và hoạt động khá tốt. Bạn trả tiền khi sử dụng (on-demand) cộng với một khoản phí cố định nhỏ. Đây là lựa chọn rẻ nhất nếu lưu lượng không đều (high usage picks và trạng thái idle trong phần lớn thời gian) hoặc khá nhỏ (dưới 10.000 mỗi ngày). Nó cũng đảm bảo các bản cập nhật tự động cho các phiên bản model mới hơn, cải thiện chất lượng câu trả lời theo thời gian. Sử dụng Vertex AI từ Google Cloud hoặc các giải pháp Bedrock từ AWS đảm bảo tính riêng tư của dữ liệu của bạn. Đây là cách tiếp cận tốt nhất để tạo Proof-of-Concept cho RAG-Chatbot của tổ chức và xác nhận xem đây có phải là giải pháp phù hợp cho bạn hoặc chỉ tạo chatbot trò chuyện nếu bạn có lưu lượng vừa phải không yêu cầu tùy chỉnh nào.
+
+### Custom model (mô hình tuỳ chỉnh)
+
+Giải pháp này được mở rộng từ trường hợp ở trên nhưng cũng có thể được chọn làm giải pháp ngay từ đầu. Nó cho phép điều chỉnh model dựa trên dữ liệu của khách hàng và do đó đạt được hiệu suất RAG-Chatbot tốt hơn hoặc các chức năng mà nếu không có thì không thể đáp ứng được nhu cầu. Custom model là lựa chọn đúng nếu:
+
+- Bạn muốn model hoạt động theo một cách nhất định.
+- Sao chép một giọng điệu cụ thể.
+- Xuất dữ liệu theo định dạng cụ thể.
+- Cần tối ưu hóa hiệu suất model (triển khai RAG mà không có cơ sở tri thức).
+- Buộc model thực hiện điều mà nó chưa được đào tạo.
+- Quan trọng nhất, custom model nên được thực hiện nếu tùy chỉnh bằng prompt và cơ sở tri thức không đạt yêu cầu.
+
+Custom model đi kèm với chi phí lớn hơn. Chúng ta cần chuẩn bị tập dữ liệu ở định dạng đúng để đào tạo, xác thực và kiểm tra. Chi phí đào tạo khác nhau tùy thuộc vào loại model, kích thước tập dữ liệu và nhà cung cấp cơ sở hạ tầng nhưng có thể ước tính khoảng \$0.0008 cho mỗi 1.000 tokens hoặc ~20\$/h. Bạn có thể tìm thấy chi tiết về chi phí điều chỉnh LLM cho AWS tại [đây](https://aws.amazon.com/bedrock/pricing/) và tại [đây](https://cloud.google.com/vertex-ai/pricing#custom-trained_models) cho GCP.
+
+Sẽ phát sinh các chi phí bổ sung khi phục vụ model. Chúng ta không thể sử dụng giá on-demand nữa. Custom model có chi phí cơ bản hàng giờ khoảng ~\$7-20/h. Với giá này, chúng ta có model riêng tư hoàn toàn có sẵn cho chúng ta.
+
+Điều chỉnh model sử dụng API của nhà cung cấp đám mây tăng tốc thời gian phát triển nhưng đi kèm với hạn chế tối ưu hóa. Chỉ có một số model được chọn để điều chỉnh và các kỹ sư không thể thay đổi model thêm nữa. Thông tin chi tiết về điều chỉnh model sử dụng cloud API có thể được tìm thấy ở [đây](https://docs.aws.amazon.com/bedrock/latest/userguide/cm-hp-titan-text.html) với ví dụ về AWS Bedrock và Titan model.
+
+### Self-hosted
+
+Các RAG-Chatbot được self-hosted có nghĩa là chúng ta có toàn quyền kiểm soát model và quy trình suy luận. Chúng cung cấp khả năng tùy chỉnh cao và bảo mật dữ liệu. Chúng cho phép điều chỉnh dễ dàng cả LLM model và embedder model và tạo các thuật toán truy xuất nâng cao. Sau khi tạo custom RAG-Chatbot, câu hỏi là lưu trữ nó ở đâu? Chúng ta có hai lựa chọn: trên đám mây hoặc on-premise. Các ưu và nhược điểm của các cách tiếp cận này được trình bày dưới đây.
+
+#### Cloud self-hosted
+
+Giải pháp này dễ bảo trì, có khả năng mở rộng và đáng tin cậy. CSP sẽ lo việc bảo trì cơ sở hạ tầng. Tuy nhiên, nó đi kèm với chi phí lớn hơn so với các giải pháp on-premise. Thiết lập cơ bản tốn khoảng \$1.2/h và có thể lên đến \$12/h mỗi instance. Nó có thể phục vụ đến 50k yêu cầu mỗi ngày cho mỗi instance.
+
+#### On-premise
+
+Model tự lưu trữ tại chỗ cung cấp mức độ bảo mật dữ liệu cao nhất. Không có request nào gọi tới các API nằm bên ngoài và tất cả dữ liệu đều nằm trong mạng của tổ chức. Self-hosted model cung cấp toàn quyền kiểm soát RAG-Chatbot và cho phép mọi loại tùy chỉnh. Chi phí vận hành thấp, vì chúng ta chỉ cần trả tiền cho điện và phí duy trì. Bảo trì và khả năng mở rộng là những nhược điểm lớn nhất của giải pháp này.
+
+![](/static/images/assets/genAI_which_model_to_choose.png)
+
+<p align="center">
+  <small>Decision diagram cho việc triển khai RAG-Chatbot</small>
+</p>
+
+## Có cần một custom model không?
+
+Fine-tuning có thể nâng cao hiệu suất của model trên các tác vụ cụ thể. Bằng cho phép model tiếp cận dữ liệu của tác vụ trong quá trình điều chỉnh, nó học cách đưa ra các dự đoán chính xác hơn liên quan đến tác vụ đó. Ví dụ, điều chỉnh pre-trained model trên các văn bản y tế cho phép tạo ra một model chuyên biệt trong việc hiểu ngôn ngữ y tế. Fine-tuning cho phép model kết hợp kiến thức chuyên môn trong một lĩnh vực, cải thiện khả năng hiểu và tạo ra trong phạm vi đó. Tóm lại, Fine-tuning cho phép bạn tận dụng sức mạnh của các pre-trained model trong khi tùy chỉnh chúng cho nhu cầu cụ thể của bạn giúp tăng hiệu suất và hiệu quả cho các tác vụ cụ thể của bạn.
+
+![](/static/images/assets/genai_content_and_model_optimization.jpeg)
+
+<p align="center">
+  <small>Biểu đồ tối ưu hóa model</small>
+</p>
+
+Fine-tuning nên được quyết định một cách cẩn trọng. Thông thường, quá trình phát triển RAG-Chatbot theo flow được trình bày trong hình trên. Chúng ta bắt đầu với prompt engineering, đây là lựa chọn dễ dàng nhất. Chúng ta tận dụng tối đa kỹ thuật đó rồi chuyển sang RAG sử dụng cơ sở tri thức được kết nối. Hiện tại, chúng ta có các câu trả lời chất lượng tốt sử dụng kiến thức nội bộ của tổ chức. Sau đó, chúng ta sẽ quyết định cải thiện hiệu suất model thêm bằng cách điều chỉnh nó với dữ liệu của chúng ta và cuối cùng có giải pháp tốt nhất.
+
+#### Hạn chế của prompt engineering
+
+Prompt engineering luôn là lựa chọn đầu tiên của tùy chỉnh model vì nó rẻ và có thể nhanh chóng triển khai. Thường thì nó cũng đủ và không cần thêm gì khác. Nhược điểm của prompt engineering là nó làm tăng độ dài ngữ cảnh và bạn có thể đạt đến giới hạn ngữ cảnh của model. Nếu sau khi thử prompt engineering, hiệu suất model vẫn không đủ tốt, bạn nên xem xét fine-tune model. Fine-tuning đặc biệt tốt trong việc sao chép phong cách và giọng điệu, tuy nhiên nó đòi hỏi nhiều sự chuẩn bị hơn vì bạn phải chuẩn bị tập dữ liệu ở định dạng phù hợp và đào tạo model trên một thiết bị không rẻ chút nào.
+
+## So sánh chi phí vận hành
+
+|                       | Cloud API                                                      | Cloud, custom model           | Cloud, self-hosted model      | On-premise, self-hosted model |
+| --------------------- | -------------------------------------------------------------- | ----------------------------- | ----------------------------- | ----------------------------- |
+| **Throughput**        | Không giới hạn. Giá dựa trên yêu cầu và độ dài văn bản đầu ra. | 0.5 yêu cầu/giây mỗi instance | 0.5 yêu cầu/giây mỗi instance | 0.5 yêu cầu/giây mỗi instance |
+| **Fine-tuning**       | Không được hỗ trợ                                              | \$20/giờ                      | \$20/giờ                      | Giá phần cứng + tiền điện     |
+| **Chi phí inference** | \$0.0025/1.000 ký tự                                           | \$5-20/giờ                    | \$2+/giờ                      | Giá phần cứng + tiền điện     |
+| **Customization**     | Chỉ có prompt                                                  | Hạn chế                       | Đầy đủ                        | Đầy đủ                        |
+
+- Giá trên AWS: https://aws.amazon.com/bedrock/pricing/
+- Giá trên GCP: https://cloud.google.com/vertex-ai/pricing#custom-trained_models
+
+## Bảo mật dữ liệu
+
+Bảo mật dữ liệu phụ thuộc vào dịch vụ bạn sử dụng và nhà cung cấp cloud. Do đó, đọc kỹ các điều khoản của thỏa thuận trước khi sử dụng bất kỳ API của nhà cung cấp đám mây nào là điều rất quan trọng. Dưới đây, chúng tôi trình bày về ba nhà cung cấp giải pháp cloud hàng đầu.
+
+### Google Cloud
+
+- Dữ liệu được truyền trong các cuộc gọi API Gemini có thể được sử dụng để đào tạo và có thể được đọc bởi các human reviewer. Do đó, không nên gửi thông tin nhạy cảm, bí mật hoặc cá nhân cho dịch vụ. Điều khoản dịch vụ API Gemini nằm ngoài VertexAI có thể được tìm thấy tại [đây](https://ai.google.dev/gemini-api/terms)
+
+- Bên trong VertexAI, được thiết kế cho hỗ trợ ở enterprise level, bạn sẽ truy cập vào API Gemini của Vertex AI. Các [điều khoản dịch vụ](https://cloud.google.com/terms/service-terms) của nó cấm sử dụng dữ liệu của bạn để đào tạo các foundation model mới.
+
+### AWS
+
+- Theo [điều khoản dịch vụ](https://docs.aws.amazon.com/bedrock/latest/userguide/data-protection.html) của Bedrock, đầu vào và đầu ra cho Titan model không được sử dụng để đào tạo foundation model.
+
+> By default, AWS Chatbot stores and processes user data such as AWS Chatbot configurations, notifications, user inputs, AWS Chatbot-generated responses, and interaction data. This data helps AWS Chatbot continuously improve and develop both itself and Artificial Intelligence (AI) technologies. [(nguồn)](https://docs.aws.amazon.com/chatbot/latest/adminguide/security.html).
+
+### Azure
+
+- Azure OpenAI không lưu trữ và sử dụng dữ liệu của bạn. [(nguồn)](https://learn.microsoft.com/en-us/legal/cognitive-services/openai/data-privacy)
+- OpenAI có thể sử dụng dữ liệu của bạn để đào tạo các model mới. [(nguồn)](https://openai.com/policies/privacy-policy)
+
+Tóm lại, các giải pháp ở enterprise level không sử dụng dữ liệu đầu vào/đầu ra, còn các public API sử dụng dữ liệu đầu vào để đào tạo model và cải thiện AI. Đáng chú ý là tất cả các chính sách bảo mật dữ liệu trên luôn tuân thủ theo luật pháp địa phương. [Các công ty có nghĩa vụ chia sẻ dữ liệu của họ](https://aws.amazon.com/compliance/data-privacy-faq/) nếu được yêu cầu theo luật hoặc một lệnh bắt buộc của cơ quan chính phủ.
+
+## Tổng kết
+
+|                                       | Public API | Self-hosted Chatbot | Comment                                                                                                                                                                                                                                      |
+| ------------------------------------- | ---------- | ------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Dễ sử dụng**                        | 🙂         |                     | Các public API thường cung cấp cách tích hợp chức năng nâng cao vào ứng dụng của bạn một cách tiện lợi và dễ dàng mà không cần thiết lập hoặc đòi hỏi bảo trì phức tạp.                                                                      |
+| **Khả năng mở rộng**                  | 🙂         |                     | Các public API thường được lưu trữ trên các nền tảng cloud và có thể tự động mở rộng để đáp ứng các mức sử dụng khác nhau. Khả năng mở rộng này có thể có lợi nếu bạn dự đoán nhu cầu biến động cho chatbot của mình.                        |
+| **Bảo trì**                           | 🙂         |                     | Bằng cách sử dụng public API, bạn ủy thác trách nhiệm duy trì cơ sở hạ tầng và phần mềm cơ bản cho nhà cung cấp API, giải phóng bạn khỏi gánh nặng quản lý máy chủ, cập nhật và các bản vá bảo mật.                                          |
+| **Hỗ trợ cộng đồng**                  | 🙂         |                     | Các public API thường có cộng đồng nhà phát triển hoạt động tích cực, có thể có giá trị cho việc khắc phục sự cố, chia sẻ thực tiễn tốt nhất và truy cập tài nguyên bổ sung.                                                                 |
+| **Tùy chỉnh**                         |            | 🙂                  | Việc tạo self-hosted chatbot của riêng bạn cho phép bạn kiểm soát hoàn toàn chức năng, tùy chỉnh và tích hợp với các hệ thống khác. Mức độ linh hoạt này có thể cần thiết nếu bạn có các yêu cầu cụ thể mà public API không thể đáp ứng.     |
+| **Bảo mật và quyền riêng tư dữ liệu** |            | 🙂                  | Lưu trữ chatbot trên cơ sở hạ tầng của riêng bạn cho phép bạn kiểm soát tốt hơn về quyền riêng tư và bảo mật dữ liệu. Điều này có thể quan trọng nếu bạn xử lý thông tin nhạy cảm hoặc cần tuân thủ các yêu cầu quy định nghiêm ngặt.        |
+| **Hiệu suất**                         |            | 🙂                  | Self-hosted chatbot có thể cung cấp hiệu suất tốt hơn và độ trễ thấp hơn so với việc dựa vào các API bên ngoài, đặc biệt nếu ứng dụng của bạn yêu cầu tương tác thời gian thực hoặc xử lý lưu lượng cao.                                     |
+| **Chi phí**                           |            | 🙂                  | Mặc dù các public API có thể cung cấp mô hình định giá theo từng lần sử dụng, việc tự lưu trữ chatbot có thể tiết kiệm chi phí hơn trong dài hạn, đặc biệt nếu bạn dự đoán một lượng lớn yêu cầu hoặc nếu bạn đã có cơ sở hạ tầng cần thiết. |
+
+<p align="center">
+  <small>Ưu và nhược điểm của Cloud API so với self-hosted RAG-Chatbot</small>
+</p>
+
+## Reference
+
+- [The LLM Dilemma: Self-Hosted vs. Public API Solutions](https://medium.com/sarus/the-llm-dilemma-self-hosted-vs-public-api-solutions-7da831a25088)
+
+- [What kind of AI Chatbot do you need?](https://softwaremill.com/what-kind-of-ai-chatbot-do-you-need/)
