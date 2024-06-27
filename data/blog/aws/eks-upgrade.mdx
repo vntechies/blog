@@ -9,17 +9,17 @@ summary: 'This blog shows how to mitigate disruption during EKS cluster upgrade 
 
 ## Table of Contents
 
-- In-place and blue/green upgrade strategies
-- Upgrade cluster process
-  - Prerequisite
-  - Update manifests
-  - Bootstrap new cluster
-  - Re-deploy add-ons and third-party tools with compatible version
-  - Re-deploy workloads
-  - Verify workloads
-  - DNS switchover
-- Stateful workloads migration
-- Conclusion
+- [In-place and blue/green upgrade strategies](#inplaceandbluegreen)
+- [Upgrade cluster process](#upgrade)
+  - [Prerequisite](#prerequisite)
+  - [Update manifests](#updatemanifest)
+  - [Bootstrap new cluster](bootstrap)
+  - [Re-deploy add-ons and third-party tools with compatible version](#redeployaddson)
+  - [Re-deploy workloads](#redeployworkload)
+  - [Verify workloads](#verifyworkload)
+  - [DNS switchover](#dnsswitchover)
+- [Stateful workloads migration](#statefulworkload)
+- [Conclusion](#conclusion)
 
 ## Introduction
 
@@ -27,7 +27,7 @@ Upgrading your Amazon EKS cluster version is necessary for security, performance
 
 We’ll demonstrate this on an EKS cluster with EC2 instances as worker nodes. This strategy can be also applied the same for Fargate, and we'll leverage the popular AWS Retail Store sample application to demonstrate the steps. For the code, head over to the [AWS repository](https://github.com/aws-containers/retail-store-sample-app). By the end of this blog, you'll have a clear understanding of what an EKS upgrade entails and how to navigate it with confidence.
 
-## In-Place vs. Blue/Green upgrade strategies\*\*
+## In-Place vs. Blue/Green upgrade strategies\*\* <a name="inplaceandbluegreen"></a>
 
 Upgrading a cluster can be a balance between cost and risk. There are two common strategies that be widely used: in-place and blue/green upgrades.
 
@@ -36,9 +36,9 @@ Upgrading a cluster can be a balance between cost and risk. There are two common
 
 In-place upgrade method is ideal for cost-sensitive scenarios where downtime is less critical or where the two versions don’t have breaking changes. For situations demanding high availability or the ability to jump multiple versions, the blue/green strategy provides a safer solution but is also more resource-intensive and costly. Thoroughly consider your specific needs, resource constraints, and infra cost to determine the best suitable upgrade method for your cluster.
 
-## Upgrade cluster process
+## Upgrade cluster process <a name="upgrade"></a>
 
-### 1. Prerequisite
+### 1. Prerequisite <a name="prerequisite"></a>
 
 - **Explore your cluster**: Before diving into your cluster upgrade, system inventory is a mandatory step in order to have insight of what is running in your cluster. Note down your cluster version, add-on versions, and the number of services and applications running. This intel helps you choose the right upgrade strategy, identify potential compatibility issues, and plan a smooth migration for all your workloads. It's like gathering intel before a mission - the more you know, the smoother the upgrade!
 
@@ -79,7 +79,9 @@ In-place upgrade method is ideal for cost-sensitive scenarios where downtime is 
 ![Image description](/static/images/assets/eksupgrade07.png)
 
 <center> Deprecated APIs found by kubent </center>
-### 2. Update manifests When we have deprecated APIs in our hands. For next steps, we need to update
+### 2. Update manifests <a name="updatemanifest"></a>
+
+When we have deprecated APIs in our hands. For next steps, we need to update
 those API version by manually or tools such as “kubectl convert” that actually depends on number of deprecated
 APIs. We recommend you to update the API version manually to avoid any unforeseen error. For example,
 based on above kubent result, we see that our HPA apiVersion will be removed since version 1.26. This
@@ -93,7 +95,7 @@ is original HPA manifest in the current EKS cluster v1.24 and updated HPA manife
 
 <center> New version </center>
 
-### 3. Bootstrap new cluster
+### 3. Bootstrap new cluster <a name="bootstrap"></a>
 
 There are some typical options for a new Amazon EKS cluster deployment with your desired Kubernetes version such as AWS Management Console, [eksctl](https://eksctl.io/) tool, or Terraform. In this blog, we have deployed a new cluster, namely "green-eks", using version v1.29 and EC2 worker nodes.
 
@@ -105,7 +107,7 @@ There are some typical options for a new Amazon EKS cluster deployment with your
 
 <center>EC2 worker nodes</center>
 
-### 4. Re-deploy add-ons and third-party tools with compatible version
+### 4. Re-deploy add-ons and third-party tools with compatible version <a name="redeployaddson"></a>
 
 Once the "green-eks" cluster is ready, we've re-deployed required custom add-ons and third-party tools. It's crucial to ensure those adds-on and third-party tools version are compatible with new cluster. For instance, [this document](https://docs.aws.amazon.com/eks/latest/userguide/managing-vpc-cni.html) shows us the suggested version of the Amazon VPC CNI add-on to use for each cluster version.
 
@@ -113,7 +115,7 @@ Once the "green-eks" cluster is ready, we've re-deployed required custom add-ons
 
 <center>EKS adds-on in new cluster</center>
 
-### 5. Re-deploy workloads
+### 5. Re-deploy workloads <a name="redeployworkload"></a>
 
 Now that the foundation is laid, we can begin redeploying our workloads to the new "green-eks" cluster.
 
@@ -121,7 +123,7 @@ Now that the foundation is laid, we can begin redeploying our workloads to the n
 
 <center>Application deployment in new cluster</center>
 
-### 6. Verify workloads
+### 6. Verify workloads <a name="verifyworkload"></a>
 
 Once our workloads are deployed successfully in the "green-eks" cluster, it's verification time! The specific tests you run will depend on your application development process. You might opt for smoke test, integration test, manual test, or even a simple UI check like we did in this blog for demo purpose only. The key purpose is to ensure everything functions as intended in the new environment.
 
@@ -135,17 +137,17 @@ We also would check EKS adds-on operation. For example, Karpenter works well by 
 
 <center> Karpenter deployment logs </center>
 
-### 7. DNS Switchover
+### 7. DNS Switchover <a name="dnsswitchover"></a>
 
 When application is ready to serve the client requests, the final step is to switch traffic over to the "green-eks" cluster. We achieved this by updating our DNS records in DNS management such as Amazon Route 53 or any other DNS provider. Amazon Route 53 provides weighted routing policy, so we can initially direct a small percentage of users to the new cluster. This allows us perform a staged rollout and verify everything functions smoothly before migrating all traffic.
 
 ![Image description](/static/images/assets/eksupgrade16.png)<center> Weighted routing policy ([source](https://aws.amazon.com/blogs/containers/blue-green-or-canary-amazon-eks-clusters-migration-for-stateless-argocd-workloads/)) </center>
 
-## Stateful workloads migration
+## Stateful workloads migration <a name="statefulworkload"></a>
 
 During workload deployments to new Kubernetes clusters, specific considerations arise for stateful workloads. These workloads, such as Solr databases or monitoring stacks like Prometheus and Grafana, require data persistence and careful migration strategies. One proven and reliable migration approach for ensuring data integrity is the backup and restore method. We shared our experience in Solr database migration between EKS cluster in previous [blog](https://dev.to/haintkit/how-to-migrate-apache-solr-from-the-existing-cluster-to-amazon-eks-3b3l). The blog serves as a reference guide for migrating your stateful workloads.
 
-## Conclusion
+## Conclusion <a name="conclusion"></a>
 
 By leveraging the Blue/Green deployment strategy, we've successfully navigated our EKS upgrade with minimal disruption. This approach offers several benefits:
 
