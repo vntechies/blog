@@ -54,7 +54,7 @@ và update ảnh đại diện của bạn tại thư mục `public/static/image
 
 Dưới dây là mẫu thông tin tại `data/authors`
 
-```md:đẹpnhấtxóm.mdx
+```md:depnhatxom.mdx
 ---
 name: Đẹp nhất xóm
 avatar: /static/images/authors/depnhatxom.jpeg
@@ -71,8 +71,16 @@ github: https://github.com/depnhatxom
 
 ```
 
+Trong bài viết khi muốn public dưới author, anh chị em sử dụng đúng tên của file markdown trong header của bài viết
 
-  Ảnh bìa được bạn [Đức
-  Mạnh](https://unsplash.com/@duzmanh26?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText)
-  chụp và được upload trên
-  [Unsplash](https://unsplash.com/s/photos/vietnam-people?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText){' '}
+```md:post.mdx
+---
+title: 'Sample Post'
+authors: ['depnhatxom']
+---
+```
+
+Ảnh bìa được bạn [Đức
+Mạnh](https://unsplash.com/@duzmanh26?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText)
+chụp và được upload trên
+[Unsplash](https://unsplash.com/s/photos/vietnam-people?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText){' '}
