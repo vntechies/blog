@@ -1,0 +1,56 @@
+---
+title: 'Tăng thời gian tích hợp timeout cho Amazon API Gateway'
+date: '2024-07-21'
+tags: ['cloud', 'aws', 'apigateway']
+authors: ['hainguyen']
+images: ['/static/images/ogps/timeout_apigw.png']
+summary: 'Tăng thời gian tích hợp timeout khi sử dụng Amazon API Gateway'
+---
+
+## Giới thiệu
+
+[Amazon API Gateway](https://aws.amazon.com/vi/api-gateway/#:~:text=Amazon%20API%20Gateway%20l%C3%A0%20d%E1%BB%8Bch,d%E1%BB%8Bch%20v%E1%BB%A5%20backend%20c%E1%BB%A7a%20b%E1%BA%A1n.) là dịch vụ được quản lý bởi AWS, giúp các developer dễ dàng khởi tạo, phát hành (publish), quản lý, giám sát và bảo trì các API của hệ thống ứng dụng của mình ở mọi quy mô. API Gateway đóng vai trò là cánh cửa ngõ của các ứng dụng, cung cấp cách thức truy cập dữ diệu, logic nghiệp vụ, hoặc chức năng từ các dịch vụ backend của hệ thống. Hiện nay, AWS hỗ trợ 03 loại API Gateway:
+
+- REST API
+- HTTP API
+- WebSocket API
+
+Khi làm việc với Amazon API Gateway, một trong các thông số quan trọng là "integration timeout". Đây là thời gian mà API Gateway chờ phản hồi từ backend (ví dụ: Lambda functions) trước khi trả về lỗi cho client. Trước đây, thời gian integration timeout mặc định của API gateway tối thiểu là 50 mili giây và tối đa là 29 giây.
+
+Vậy nếu backend của chúng ta cần nhiều hơn 29 giây để xử lý logic và phản hồi kết quả cho API Gateway thì sao? Khi đó, API Gateway sẽ trả lỗi timeout tới client. Từ tháng 06/2024, nỗi đau này đã có thuốc chữa. Chúng ta có thể tăng thời gian integration timeout nhiều hơn 29s khi cần. [Đây](https://aws.amazon.com/about-aws/whats-new/2024/06/amazon-api-gateway-integration-timeout-limit-29-seconds/) là thông báo từ AWS. Tính đến thời điểm viết bài blog này, mới có 02 loại API gateway hỗ trợ là: Regional REST APIs và private REST APIs.
+
+Chú ý: Không có tình yêu nào là vô điều kiện, khi chúng ta tăng thời gian integration timeout, đổi lại "throttle quota" trên API Gateway của chúng ta sẽ bị giảm ở tầng "ACCOUNT". Tham khảo tại [đây](https://docs.aws.amazon.com/apigateway/latest/developerguide/limits.html) để biết về các quotas và note quan trọng của Amazon API Gateway.
+
+## Vậy làm thế nào để tăng integration timeout?
+
+- Bước 1: Tăng "maximum integration timeout in miliseconds" trong Service Quotas ở Management Console. Ví dụ, chúng ta tăng lên 40,000 mili giây. Việc request này sẽ được approved nhanh chóng:
+
+![Service Quotas](/static/images/assets/api_gateway_service_quotas.png)
+
+<center> API Gateway Service Quotas mặc định trước thay đổi </center>
+
+![Service Quotas](/static/images/assets/service_quotas_after_request.png)
+
+<center> API Gateway Service Quotas sau khi request thành công </center>
+
+- Bước 2: Cài đặt hoặc thay đổi tham giá integration timeout (trường hợp chúng ta đã có REST API trước đó):
+
+![Service Quotas](/static/images/assets/api_gateway_integration_integration_timeout.png)
+
+<center> Integration Timeout mặc định là 29 giây </center>
+
+![Service Quotas](/static/images/assets/api_gateway_integration_timeout_update.png)
+
+<center> Thay đổi giá trị lên thời gian timeout đã request increase thành công </center>
+
+![Service Quotas](/static/images/assets/api_gateway_integration_timeout_update.png)
+
+<center> Thay đổi giá trị lên thời gian timeout đã request increase thành công </center>
+
+![Service Quotas](/static/images/assets/api_gateway_integration_timeout_successful_update.png)
+
+<center> Giá trị integration timeout sau cập nhật </center>
+
+## Kết luận:
+
+Bài toán integration timeout đã có thuốc giải. Mong rằng trong tương lai gần, AWS sẽ hỗ trợ thêm các loại API Gateway còn lại.
