@@ -24,7 +24,6 @@ const Utterances = () => {
     script.async = true
 
     script.onload = (ev) => {
-      console.log(ev)
       const comments = document.getElementById(COMMENTS_ID)
       if (comments && comments.children[1]) {
         comments.children[1].style.display = 'none'

@@ -23,7 +23,6 @@ const NewsletterForm = ({ title = 'Nhận tin từ VNTechies 📮' }) => {
 
     const { error } = await res.json()
     if (error) {
-      console.log(error)
       setError(true)
       setMessage('Địa chỉ e-mail không hợp lệ hoặc bạn đã đăng ký nhận tin!')
       return
