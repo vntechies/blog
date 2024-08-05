@@ -12,10 +12,10 @@ export default function Footer() {
         <Link alt="Trang chủ" href="/" className="mb-4 flex items-center sm:mb-0">
           <Image
             src={'/static/images/logo.webp'}
-            width="200px"
-            height="40px"
+            width="200"
+            height="10"
             alt="avatar"
-            className="h-10 w-10 rounded-full grayscale hover:grayscale-0"
+            className="w-200 h-10 rounded-full grayscale hover:grayscale-0"
           />
         </Link>
         <ul className="mb-6 flex flex-wrap items-center text-sm text-gray-500 dark:text-gray-400 sm:mb-0">
@@ -32,7 +32,7 @@ export default function Footer() {
       <div className="sm:flex sm:items-center sm:justify-between">
         <span className="text-sm text-gray-500 dark:text-gray-400 sm:text-center">
           <Link alt="Trang chủ" href="/" className="">
-            <Image alt="made in Vietnam" width="129px" height="20px" src={made_in_vn_svg} />
+            <Image alt="made in Vietnam" width="129" height="20" src={made_in_vn_svg} />
           </Link>{' '}
         </span>
         <div className="mt-4 mb-4 flex space-x-6 sm:mt-0 sm:justify-center">

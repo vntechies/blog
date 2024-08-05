@@ -51,13 +51,10 @@ export default function Home({ posts }) {
       </div>
       {posts.length > MAX_DISPLAY && (
         <div className="flex justify-end text-base font-medium leading-6">
-          <Link
-            alt="Tất cả bài viết"
-            href="/blog"
-            className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
-            aria-label="all posts"
-          >
-            🗄️ Tất cả bài viết &rarr;
+          <Link alt="Tất cả bài viết" href="/blog" aria-label="all posts">
+            <button className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400">
+              🗄️ Tất cả bài viết &rarr;
+            </button>
           </Link>
         </div>
       )}

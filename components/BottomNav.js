@@ -11,7 +11,7 @@ const BottomNav = () => {
         <div className="mx-auto flex h-16 max-w-md items-center justify-around px-6">
           {links.map(({ href, label, icon }) => (
             <Link alt={label} key={label} href={href}>
-              <a
+              <button
                 className={`flex h-full w-full flex-col items-center justify-center space-y-1 ${
                   route === href
                     ? 'text-orange-500 dark:text-orange-400'
@@ -28,7 +28,7 @@ const BottomNav = () => {
                 >
                   {label}
                 </span>
-              </a>
+              </button>
             </Link>
           ))}
         </div>

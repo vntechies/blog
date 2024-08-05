@@ -26,13 +26,15 @@ const Card = ({ title, description, imgSrc, href, showMore = true, isFree }) => 
         <h2 className="mb-3 text-2xl font-bold leading-8 tracking-tight">
           {href ? (
             <Link alt={`Link tới ${title}`} href={href} aria-label={`Link tới ${title}`}>
-              {isFree && isFree === true && (
-                <span className="mr-2 rounded bg-red-100 px-2.5 py-0.5 text-sm font-medium text-red-800 dark:bg-red-900 dark:text-red-300">
-                  MIỄN PHÍ
-                </span>
-              )}
-              <br />
-              {title}
+              <button>
+                {isFree && isFree === true && (
+                  <span className="mr-2 rounded bg-red-100 px-2.5 py-0.5 text-sm font-medium text-red-800 dark:bg-red-900 dark:text-red-300">
+                    MIỄN PHÍ
+                  </span>
+                )}
+                <br />
+                {title}
+              </button>
             </Link>
           ) : (
             { title }
