@@ -1,11 +1,7 @@
-/* eslint-disable @next/next/no-img-element */
-import Image from 'next/image'
 import Link from '@/components/Link'
-import Tag from '@/components/Tag'
 import ArticleThumbnail from './ArticleThumbnail'
-import formatDate from '@/lib/utils/formatDate'
 
-const ArticleList = ({ slug, date, title, summary, tags, image }) => {
+const ArticleList = ({ slug, title, summary, tags, image }) => {
   return (
     <>
       <div className="group bg-day dark:bg-night w-full bg-opacity-50 dark:bg-opacity-50">
@@ -17,7 +13,7 @@ const ArticleList = ({ slug, date, title, summary, tags, image }) => {
               </span>
             </div>
             <div className="py-4">
-              <span className="inline-flex items-center justify-between gap-2">
+              <span className="flex flex-wrap justify-start gap-2">
                 {tags.slice(0, 3).map((tag) => (
                   <span
                     key={tag}
@@ -27,8 +23,10 @@ const ArticleList = ({ slug, date, title, summary, tags, image }) => {
                   </span>
                 ))}
               </span>
-              <h2 className="mt-2 mb-2 font-bold hover:underline md:text-xl">{title}</h2>
-              <p className="text-sm tracking-wider text-gray-600 dark:text-gray-300">{summary}</p>
+              <h2 className="mt-2 mb-2 text-left font-bold hover:underline md:text-xl">{title}</h2>
+              <p className="text-left text-sm tracking-wider text-gray-600 dark:text-gray-300">
+                {summary}
+              </p>
             </div>
           </button>
         </Link>
