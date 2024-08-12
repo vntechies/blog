@@ -28,3 +28,8 @@ input:-webkit-autofill:focus {
   text-decoration: none !important;
   border-bottom: 0.75px dotted;
 }
+
+/* Center all images in blog posts */
+.prose img {
+  @apply mx-auto;
+}

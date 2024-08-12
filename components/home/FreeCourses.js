@@ -26,28 +26,25 @@ const FreeCourses = () => {
             />
           </div>
         </div>
-        <Link
-          href="/courses"
-          className="mb-7 inline-flex items-center justify-between rounded-full bg-gray-100 py-1 px-1 pr-4 text-sm text-gray-700 hover:bg-gray-200 dark:bg-gray-800 dark:text-white dark:hover:bg-gray-700"
-          role="alert"
-          aria-label="Toàn bộ các khoá học miễn phí"
-        >
-          <span className="text-xs mr-3 rounded-full bg-primary-700 px-4 py-1.5 text-white">
-            FREE
-          </span>{' '}
-          <span className="text-sm font-medium">Toàn bộ các khoá học miễn phí</span>
-          <svg
-            className="ml-2 h-5 w-5"
-            fill="currentColor"
-            viewBox="0 0 20 20"
-            xmlns="https://www.w3.org/2000/svg"
-          >
-            <path
-              fillRule="evenodd"
-              d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-              clipRule="evenodd"
-            ></path>
-          </svg>
+        <Link href="/courses" role="alert" aria-label="Toàn bộ các khoá học miễn phí">
+          <button className="mb-7 inline-flex items-center justify-between rounded-full bg-gray-100 py-1 px-1 pr-4 text-sm text-gray-700 hover:bg-gray-200 dark:bg-gray-800 dark:text-white dark:hover:bg-gray-700">
+            <span className="text-xs mr-3 rounded-full bg-primary-700 px-4 py-1.5 text-white">
+              FREE
+            </span>{' '}
+            <span className="text-sm font-medium">Toàn bộ các khoá học miễn phí</span>
+            <svg
+              className="ml-2 h-5 w-5"
+              fill="currentColor"
+              viewBox="0 0 20 20"
+              xmlns="https://www.w3.org/2000/svg"
+            >
+              <path
+                fillRule="evenodd"
+                d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                clipRule="evenodd"
+              ></path>
+            </svg>
+          </button>
         </Link>
       </div>
     </section>

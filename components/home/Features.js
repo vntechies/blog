@@ -11,12 +11,10 @@ const Features = () => {
               <h3 className="mb-2 text-xl font-bold dark:text-white">{link.title}</h3>
               <p className="text-gray-500 dark:text-gray-400">{link.summary}</p>
               <div className="pt-3 text-base font-medium leading-6">
-                <Link
-                  href={link.url}
-                  className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
-                  aria-label={`Đọc thêm "${link.title}"`}
-                >
-                  Đọc thêm &rarr;
+                <Link href={link.url} aria-label={`Đọc thêm "${link.title}"`}>
+                  <button className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400">
+                    Đọc thêm &rarr;
+                  </button>
                 </Link>
               </div>
             </div>
