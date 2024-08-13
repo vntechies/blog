@@ -12,6 +12,7 @@ const Card = ({ title, description, imgSrc, href, showMore = true, isFree }) => 
             className="h-64 w-full object-cover object-center"
             width={544}
             height={306}
+            loading="lazy"
           />
         )}
         <div className="flex-grow p-6">

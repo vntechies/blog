@@ -188,6 +188,8 @@ export default function Course({ post, authorDetails, posts, otherCourses, prev,
                   layout="responsive"
                   width={640}
                   height={400}
+                  quality={75}
+                  loading="lazy"
                 />
               </div>
             </div>

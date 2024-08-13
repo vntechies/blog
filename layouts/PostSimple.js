@@ -42,6 +42,7 @@ export default function PostLayout({ frontMatter, authorDetails, next, prev, chi
               layout="responsive"
               width={640}
               height={400}
+              loading="lazy"
             />
           </div>
           <div

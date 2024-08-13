@@ -10,6 +10,7 @@ const ArticleThumbnail = ({ slug, title, image }) => {
       layout="fill"
       decoding="async"
       sizes="50vw"
+      loading="lazy"
     />
   )
 }

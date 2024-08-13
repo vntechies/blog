@@ -66,6 +66,8 @@ export default function PostLayout({ frontMatter, authorDetails, next, prev, chi
                             height="38"
                             alt="avatar"
                             className="h-38 w-38 rounded-full"
+                            quality={75}
+                            loading="lazy"
                           />
                         )}
                         <dl className="whitespace-nowrap text-sm font-medium leading-5">

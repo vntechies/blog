@@ -11,6 +11,8 @@ const HorizontalCard = ({ title, href, image }) => {
             className="rounded-tl-md rounded-bl-md object-cover"
             src={image}
             layout="fill"
+            quality={75}
+            loading="lazy"
           />
         </span>
         <p className="text-xs col-span-2 p-2 md:text-sm lg:p-4">{title}</p>
