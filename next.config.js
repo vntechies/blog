@@ -35,6 +35,7 @@ const ContentSecurityPolicy = `
     https://fundingchoicesmessages.google.com 
     giscus.app 
     https://utteranc.es;
+    https://giphy.com/;
   object-src 'none';
   base-uri 'self';
   form-action 'self';
