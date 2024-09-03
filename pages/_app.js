@@ -13,11 +13,16 @@ import LayoutWrapper from '@/components/LayoutWrapper'
 import { ClientReload } from '@/components/ClientReload'
 import { SWInstall } from '@/components/SWInstall'
 import { SessionProvider } from 'next-auth/react'
+import { AdblockDetector } from 'adblock-detector'
+import { Ads } from '@/components/Ads'
 
 const isDevelopment = process.env.NODE_ENV === 'development'
 const isSocket = process.env.SOCKET
 
 export default function App({ Component, pageProps: { session, ...pageProps } }) {
+  const adbDetector = new AdblockDetector()
+  const userHasAdblock = adbDetector.detect()
+
   return (
     <SessionProvider session={session}>
       <ThemeProvider attribute="class" defaultTheme={siteMetadata.theme}>
@@ -28,6 +33,7 @@ export default function App({ Component, pageProps: { session, ...pageProps } })
         {!isDevelopment && <SWInstall />}
         <Analytics />
         <LayoutWrapper>
+          {userHasAdblock ? <Ads /> : ''}
           <Component {...pageProps} />
         </LayoutWrapper>
       </ThemeProvider>

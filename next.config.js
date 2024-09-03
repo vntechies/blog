@@ -20,7 +20,8 @@ const ContentSecurityPolicy = `
     https://tpc.googlesyndication.com 
     https://www.googletagservices.com 
     giscus.app 
-    https://utteranc.es;
+    https://utteranc.es 
+    https://ep2.adtrafficquality.google/sodar/sodar2.js;
   style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://*.googlesyndication.com;
   img-src * data: blob:;
   media-src 'self' https://*.googlesyndication.com;
@@ -34,8 +35,8 @@ const ContentSecurityPolicy = `
     https://www.youtube.com 
     https://fundingchoicesmessages.google.com 
     giscus.app 
-    https://utteranc.es;
-    https://giphy.com/;
+    https://utteranc.es
+    https://giphy.com;
   object-src 'none';
   base-uri 'self';
   form-action 'self';
@@ -107,16 +108,28 @@ module.exports = withBundleAnalyzer({
     ],
   ],
   images: {
-    domains: [
-      'platform-lookaside.fbsbx.com',
-      'avatars.githubusercontent.com',
-      'raw.githubusercontent.com',
-      'images.unsplash.com',
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'platform-lookaside.fbsbx.com',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'avatars.githubusercontent.com',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'raw.githubusercontent.com',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'images.unsplash.com',
+        pathname: '/**',
+      },
     ],
-    deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
-    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
-    path: '/_next/image',
-    loader: 'default',
   },
   reactStrictMode: true,
   swcMinify: true,
