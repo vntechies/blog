@@ -157,9 +157,10 @@ pre[class*='language-'] {
   font-weight: 600;
   direction: ltr;
   text-align: left;
-  white-space: pre;
+  white-space: pre-wrap;
   word-spacing: normal;
-  word-break: normal;
+  word-break: break-word;
+  overflow-wrap: break-word;
   line-height: 1.5;
 
   -moz-tab-size: 4;

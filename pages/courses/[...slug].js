@@ -5,7 +5,6 @@ import { formatSlug, getAllFilesFrontMatter, getFileBySlug, getFiles } from '@/l
 import path from 'path'
 import { useRouter } from 'next/router'
 import Share from '@/components/Share'
-import Link from '@/components/Link'
 import Image from '@/components/Image'
 import formatDate from '@/lib/utils/formatDate'
 import { CourseSEO } from '@/components/SEO'
@@ -146,7 +145,16 @@ export default function Course({ post, authorDetails, posts, otherCourses, prev,
               <ul className="my-4">
                 {posts.map((post) => {
                   return (
-                    <li key={post}>
+                    <li
+                      key={post}
+                      ref={
+                        router.asPath === `/courses/${post.slug}`
+                          ? (el) => {
+                              if (el) el.scrollIntoView({ behavior: 'smooth' })
+                            }
+                          : null
+                      }
+                    >
                       <a
                         className={`my-2 block rounded-md py-4 px-2 text-sm text-gray-800 hover:bg-gray-200 dark:text-gray-300 hover:dark:bg-gray-800 ${
                           router.asPath === `/courses/${post.slug}`
@@ -165,7 +173,7 @@ export default function Course({ post, authorDetails, posts, otherCourses, prev,
                 <h3 className="dark:text-secondary-400 text-xl font-bold text-primary-600">
                   Khoá học khác
                 </h3>
-                <div className="my-4 hidden grid-cols-1 gap-4 dark:border-gray-800 md:grid">
+                <div className="flex flex-col gap-5 text-sm font-medium">
                   {otherCourses.map((course) => (
                     <HorizontalCard
                       key={course.title}
