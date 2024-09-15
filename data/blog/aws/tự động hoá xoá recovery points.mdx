@@ -1,56 +1,43 @@
 ---
-title: 'Khi bạn muốn xoá các recovery points trong AWS Backup'
+title: 'Tự động hoá xoá recovery points trong AWS Backup'
 date: '2024-09-15'
 tags: ['cloud', 'aws', 'awsbackup']
 authors: ['hainguyen']
-images: ['/static/images/ogps/timeout_apigw.png']
-summary: 'Khi bạn muốn xoá các recovery points trong AWS Backup'
+images: ['/static/images/ogps/awsbackupauto.jpg']
+summary: 'Tự động hoá xoá recovery points trong AWS Backup'
 ---
 
 ## Giới thiệu
 
-[Amazon API Gateway](https://aws.amazon.com/vi/api-gateway/#:~:text=Amazon%20API%20Gateway%20l%C3%A0%20d%E1%BB%8Bch,d%E1%BB%8Bch%20v%E1%BB%A5%20backend%20c%E1%BB%A7a%20b%E1%BA%A1n.) là dịch vụ được quản lý bởi AWS, giúp các developer dễ dàng khởi tạo, phát hành (publish), quản lý, giám sát và bảo trì các API của hệ thống ứng dụng của mình ở mọi quy mô. API Gateway đóng vai trò là cánh cửa ngõ của các ứng dụng, cung cấp cách thức truy cập dữ diệu, logic nghiệp vụ, hoặc chức năng từ các dịch vụ backend của hệ thống. Hiện nay, AWS hỗ trợ 03 loại API Gateway:
+Đối với bất kỳ hạ tầng CNTT nào thì việc backup và restore dữ liệu luôn là công việc thiết yếu cần phải có. Một ngày, khi chúng ta xây dựng ứng dụng trên môi trường AWS và sẽ cần xây dựng phương án sao lưu và khôi phục dữ liệu.
+Khi đó, [AWS Backup](https://aws.amazon.com/vi/backup/) là dịch vụ AWS managed giúp ta sao lưu tập trung dữ liệu của các tài nguyên, ứng dụng trên môi trường này. Một số các lợi ích tiêu biểu có thể kể đến như:
 
-- REST API
-- HTTP API
-- WebSocket API
+- Đơn giản hoá việc bảo vệ dữ liệu của các tài nguyên, ứng dụng trên môi trường AWS và môi trường hybrid cloud.
+- Là công cụ hữu ích khi thực hiện xây dựng phương án DR trên môi trường AWS.
+- Bảo vệ dữ liệu khỏi mã độc như ransomeware.
+- Quản lý việc tuân thủ quy định về bảo vệ dữ liệu.
 
-Khi làm việc với Amazon API Gateway, một trong các thông số quan trọng là "integration timeout". Đây là thời gian mà API Gateway chờ phản hồi từ backend (ví dụ: Lambda functions) trước khi trả về lỗi cho client. Trước đây, thời gian integration timeout mặc định của API gateway tối thiểu là 50 mili giây và tối đa là 29 giây.
+Các tính năng chính của AWS Backup là:
+- Quản lý dữ liệu sao lưu tập trung: Quản lý các bản sao lưu đến từ nhiều AWS region, AWS account. Rất hữu ích cho việc sao lưu và khôi phục dữ liệu trong mô hình AWS Landing Zone.
+- Lưu trữ tập trung: AWS backup sử dụng Backup Vault để lưu trữ các bản sao lưu.
+- Hỗ trợ sao lưu đa dạng các dịch vụ AWS: Có một danh sách các dịch vụ AWS mà AWS Backup hỗ trợ sao lưu dữ liệu như: EBS, EC2 instance, S3, FSx, RDS, DocumentDB, etc.
+- Tự động hoá sao lưu: Thông qua lập lịch định kỳ, chúng ta dễ dàng tự động hoá việc sao lưu dữ liệu trên môi trường AWS.
+- Quản lý truy cập dữ liệu và tính tuân thủ: Kiểm soát việc truy cập các Backup Vaults và các bản sao lưu trong Vault thông qua Access Policy. Đảm bảo tính tuân thủ theo nhu cầu doanh nghiệp bằng AWS Backup Audit Manager.
 
-Vậy nếu backend của chúng ta cần nhiều hơn 29 giây để xử lý logic và phản hồi kết quả cho API Gateway thì sao? Khi đó, API Gateway sẽ trả lỗi timeout tới client. Từ tháng 06/2024, nỗi đau này đã có thuốc chữa. Chúng ta có thể tăng thời gian integration timeout nhiều hơn 29s khi cần. [Đây](https://aws.amazon.com/about-aws/whats-new/2024/06/amazon-api-gateway-integration-timeout-limit-29-seconds/) là thông báo từ AWS. Tính đến thời điểm viết bài blog này, mới có 02 loại API gateway hỗ trợ là: Regional REST APIs và private REST APIs.
+Hình ảnh dưới đây mô tả chính các thành phần chính khi sử dụng dịch vụ AWS Backup:
 
-Chú ý: Không có tình yêu nào là vô điều kiện, khi chúng ta tăng thời gian integration timeout, đổi lại "throttle quota" trên API Gateway của chúng ta sẽ bị giảm ở tầng "ACCOUNT". Tham khảo tại [đây](https://docs.aws.amazon.com/apigateway/latest/developerguide/limits.html) để biết về các quotas và note quan trọng của Amazon API Gateway.
+![AWS backup diagram](/static/images/assets/aws/backup/aws_backup_diagram.png)
 
-## Vậy làm thế nào để tăng integration timeout?
+Trong phạm vi bài blog này, chúng ta sẽ tập trung vào 02 tài nguyên chính trong AWS Backup, đó là:
+- Backup Vault: là nơi lưu trữ (được mã hoá) các recovery points.
+- Recovery point: Chúng ta có thể hiểu "recovery point" là dữ liệu của tài nguyên được sao lưu ở tại một thời điểm nhất định.
+Recovery point bao gồm cả metadata cho ta biết về tài nguyên được sao lưu, các tham số khôi phục, và tags.
 
-- Bước 1: Tăng "maximum integration timeout in miliseconds" trong Service Quotas ở Management Console. Ví dụ, chúng ta tăng lên 40,000 mili giây. Việc request này sẽ được approved nhanh chóng:
+Bài toán đặt ra:
+- Một ngày nào đó ta cần dọn dẹp các backup vaults. Trong các backup vaults có chứa hàng trăm, hàng nghìn recovery points. Phức tạp hơn nữa khi có cả các composite recovery points.
+Hiểu nôm na "composite recovery point" là các recovery point được cấu thành từ 01 parent recovery point và nhiều child (nested) recovery points. Khi muốn xoá các composite recovery point này,
+chúng ta phải gỡ các child ra khỏi parent. Với kịch bản này, việc thực hiện thủ công là thuốc ngủ liều lương cao, mất rất nhiều thời gian và công sức.
 
-![Service Quotas](/static/images/assets/api_gateway_service_quotas.png)
-
-<center> API Gateway Service Quotas mặc định trước thay đổi </center>
-
-![Service Quotas](/static/images/assets/service_quotas_after_request.png)
-
-<center> API Gateway Service Quotas sau khi request thành công </center>
-
-- Bước 2: Cài đặt hoặc thay đổi tham giá integration timeout (trường hợp chúng ta đã có REST API trước đó):
-
-![Service Quotas](/static/images/assets/api_gateway_integration_integration_timeout.png)
-
-<center> Integration Timeout mặc định là 29 giây </center>
-
-![Service Quotas](/static/images/assets/api_gateway_integration_timeout_update.png)
-
-<center> Thay đổi giá trị lên thời gian timeout đã request increase thành công </center>
-
-![Service Quotas](/static/images/assets/api_gateway_integration_timeout_update.png)
-
-<center> Thay đổi giá trị lên thời gian timeout đã request increase thành công </center>
-
-![Service Quotas](/static/images/assets/api_gateway_integration_timeout_successful_update.png)
-
-<center> Giá trị integration timeout sau cập nhật </center>
-
-## Kết luận:
-
-Bài toán integration timeout đã có thuốc giải. Mong rằng trong tương lai gần, AWS sẽ hỗ trợ thêm các loại API Gateway còn lại.
+Giải pháp:
+- VNTechies viết một đoạn script nhỏ giúp anh/chị/em tự động xoá các recovery points với tham số đầu vào tên của backup vault. Anh/chị/em tham khảo script ở [đây](https://github.com/vntechies/toolbox/blob/main/aws/aws_backup/delete_recovery_points.py).
+Script này có thể có một số điểm cần cải tiến. Rất mong nhận được đóng góp (ví dụ: Pull Request) từ cộng đồng VNTechies. Xin cảm ơn Anh/chị/em!
