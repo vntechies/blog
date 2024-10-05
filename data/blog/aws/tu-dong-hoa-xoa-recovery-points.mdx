@@ -1,0 +1,47 @@
+---
+title: 'Tự động hoá xoá recovery points trong AWS Backup'
+date: '2024-09-15'
+tags: ['cloud', 'aws', 'awsbackup']
+authors: ['hainguyen']
+images: ['/static/images/ogps/awsbackupauto.jpg']
+summary: 'Tự động hoá xoá recovery points trong AWS Backup'
+---
+
+## Giới thiệu
+
+Đối với bất kỳ hạ tầng CNTT nào thì việc backup và restore dữ liệu luôn là công việc thiết yếu cần phải có. Một ngày, khi chúng ta xây dựng ứng dụng trên môi trường AWS và sẽ cần xây dựng phương án sao lưu và khôi phục dữ liệu.
+Khi đó, [AWS Backup](https://aws.amazon.com/vi/backup/) là dịch vụ AWS managed giúp ta sao lưu tập trung dữ liệu của các tài nguyên, ứng dụng trên môi trường này. Một số các lợi ích tiêu biểu có thể kể đến như:
+
+- Đơn giản hoá việc bảo vệ dữ liệu của các tài nguyên, ứng dụng trên môi trường AWS và môi trường hybrid cloud.
+- Là công cụ hữu ích khi thực hiện xây dựng phương án DR trên môi trường AWS.
+- Bảo vệ dữ liệu khỏi mã độc như ransomeware.
+- Quản lý việc tuân thủ quy định về bảo vệ dữ liệu.
+
+Các tính năng chính của AWS Backup là:
+
+- Quản lý dữ liệu sao lưu tập trung: Quản lý các bản sao lưu đến từ nhiều AWS region, AWS account. Rất hữu ích cho việc sao lưu và khôi phục dữ liệu trong mô hình AWS Landing Zone.
+- Lưu trữ tập trung: AWS backup sử dụng Backup Vault để lưu trữ các bản sao lưu.
+- Hỗ trợ sao lưu đa dạng các dịch vụ AWS: Có một danh sách các dịch vụ AWS mà AWS Backup hỗ trợ sao lưu dữ liệu như: EBS, EC2 instance, S3, FSx, RDS, DocumentDB, etc.
+- Tự động hoá sao lưu: Thông qua lập lịch định kỳ, chúng ta dễ dàng tự động hoá việc sao lưu dữ liệu trên môi trường AWS.
+- Quản lý truy cập dữ liệu và tính tuân thủ: Kiểm soát việc truy cập các Backup Vaults và các bản sao lưu trong Vault thông qua Access Policy. Đảm bảo tính tuân thủ theo nhu cầu doanh nghiệp bằng AWS Backup Audit Manager.
+
+Hình ảnh dưới đây mô tả chính các thành phần chính khi sử dụng dịch vụ AWS Backup:
+
+![AWS backup diagram](/static/images/assets/aws/backup/aws_backup_diagram.png)
+
+Trong phạm vi bài blog này, chúng ta sẽ tập trung vào 02 tài nguyên chính trong AWS Backup, đó là:
+
+- Backup Vault: là nơi lưu trữ (được mã hoá) các recovery points.
+- Recovery point: Chúng ta có thể hiểu "recovery point" là dữ liệu của tài nguyên được sao lưu ở tại một thời điểm nhất định.
+  Recovery point bao gồm cả metadata cho ta biết về tài nguyên được sao lưu, các tham số khôi phục, và tags.
+
+Bài toán đặt ra:
+
+- Một ngày nào đó ta cần dọn dẹp các backup vaults. Trong các backup vaults có chứa hàng trăm, hàng nghìn recovery points. Phức tạp hơn nữa khi có cả các composite recovery points.
+  Hiểu nôm na "composite recovery point" là các recovery point được cấu thành từ 01 parent recovery point và nhiều child (nested) recovery points. Khi muốn xoá các composite recovery point này,
+  chúng ta phải gỡ các child ra khỏi parent. Với kịch bản này, việc thực hiện thủ công là thuốc ngủ liều lương cao, mất rất nhiều thời gian và công sức.
+
+Giải pháp:
+
+- VNTechies viết một đoạn script nhỏ giúp anh/chị/em tự động xoá các recovery points với tham số đầu vào tên của backup vault. Anh/chị/em tham khảo script ở [đây](https://github.com/vntechies/toolbox/blob/main/aws/aws_backup/delete_recovery_points.py).
+  Script này có thể có một số điểm cần cải tiến. Rất mong nhận được đóng góp (ví dụ: Pull Request) từ cộng đồng VNTechies. Xin cảm ơn Anh/chị/em!

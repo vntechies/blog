@@ -1,0 +1,128 @@
+---
+title: 'Kinh nghiệm thi chứng chỉ AWS certified AI Practitioner'
+date: '2024-09-29'
+tags: ['cloud', 'aws', 'certificate', 'ai', 'practitioner']
+series: ['chung-chi-aws']
+draft: false
+layout: PostSimple
+images: ['/static/images/ogps/aws-ai-practitioner.png']
+summary: 'Hướng dẫn ôn thi chứng chỉ AWS certified AI Practitioner'
+---
+
+<TOCInline toc={props.toc} asDisclosure />
+
+Với sự phát triển của trí tuệ nhân tạo (AI) đang phát triển mạnh mẽ và ảnh hưởng sâu rộng đến nhiều lĩnh vực, việc nắm vững kiến thức về AI và ứng dụng của nó trên nền tảng điện toán đám mây trở nên vô cùng quan trọng. Chứng chỉ AWS Certified AI Practitioner là một chứng chỉ tốt cho những bạn muốn bắt đầu với AI và mở rộng cơ hội nghề nghiệp trong lĩnh vực AI trên nền tảng AWS.
+
+Theo một [nghiên cứu của AWS vào tháng 11 năm 2023](https://assets.aboutamazon.com/e1/a0/17842ee148e8af9d55d10d75a213/aws-accelerating-ai-skills-us-en.pdf), các nhà tuyển dụng sẵn sàng trả lương cao hơn 43% để thuê nhân viên có kỹ năng AI trong lĩnh vực bán hàng, tiếp thị, cao hơn 42% cho những người trong lĩnh vực tài chính, cao hơn 41% cho hoạt động kinh doanh, và cao hơn 47% cho các chuyên gia IT 😎
+
+Bài viết này sẽ chia sẻ kinh nghiệm trong quá trình chuẩn bị và thi chứng chỉ AWS Certified AI Practitioner. Mình sẽ đề cập tới phạm vi kiến thức cần nắm vững, các tài liệu học tập và cách đăng ký thi. Cho dù bạn là người mới bắt đầu với AI hay đã có kinh nghiệm trong lĩnh vực này, những chia sẻ trong bài viết sẽ giúp bạn có cái nhìn tổng quan và lộ trình chuẩn bị phù hợp.
+
+## AIF-C01
+
+![AWS AI Certification Paths](/static/images/assets/aws-ai-paths.png)
+
+AWS cung cấp nhiều chứng chỉ liên quan đến AI và Machine Learning, được chia thành các cấp độ khác nhau. Chứng chỉ AWS Certified AI Practitioner (AIF-C01) nằm ở cấp độ Foundational, cùng với AWS Certified Cloud Practitioner. Đây là chứng chỉ phù hợp cho những người mới bắt đầu tìm hiểu về AI trên nền tảng AWS. Nếu bạn đã có kinh nghiệm với AI và các dịch vụ AI trên AWS, bạn nên skip chứng chỉ này để tiết kiệm thời gian và tiền bạc 💰
+
+Sau khi đạt được chứng chỉ AI Practitioner, bạn có thể tiếp tục học theo các path khác nhau và lấy thêm các chứng chỉ khác theo path phù hợp.
+
+### Thông tin cơ bản
+
+| Mã kỳ thi     | AIF-C01                                                                                       |
+| ------------- | --------------------------------------------------------------------------------------------- |
+| Số câu hỏi    | **85 câu** <small>50 câu tính điểm, 15 câu không tính điểm sử dụng để kiểm tra độ khó</small> |
+| Chi phí       | 75 USD (cho kỳ thi beta)                                                                      |
+| Điểm đỗ       | 700/1000                                                                                      |
+| Thời gian thi | 120 phút                                                                                      |
+| Dạng câu hỏi  | Trắc nghiệm đơn hoặc đa lựa chọn                                                              |
+| Hình thức thi | Thi trực tuyến có giám thị hoặc tại trung tâm                                                 |
+
+Phần số lượng câu hỏi được tham khảo theo [exam guide](https://d1.awsstatic.com/training-and-certification/docs-ai-practitioner/AWS-Certified-AI-Practitioner_Exam-Guide.pdf), tôi cũng không biết là do cộng nhầm hay AWS nhầm 😅 Khả năng cao là kỳ thi vẫn trong thời gian beta nên số lượng câu hỏi không tính điểm và tính điểm sẽ khác so với kỳ thi thật đôi chút.
+
+### Domain
+
+| Domain   | Description                                           | Percentage of Scored Content |
+| -------- | ----------------------------------------------------- | ---------------------------- |
+| Domain 1 | Fundamentals of AI and ML                             | 20%                          |
+| Domain 2 | Fundamentals of Generative AI                         | 24%                          |
+| Domain 3 | Applications of Foundation Models                     | 28%                          |
+| Domain 4 | Guidelines for Responsible AI                         | 14%                          |
+| Domain 5 | Security, Compliance, and Governance for AI Solutions | 14%                          |
+
+- Điểm đỗ là **700/1000 (70%)** → để đảm bảo đỗ, bạn nên hướng tới mục tiêu đạt khoảng **80% trở lên** trong quá trình ôn tập.
+
+Ngoài ra, các bạn nên chủ động nhận nhiều task liên quan đến AI/genAI trên AWS với mục đích tiếp xúc với các dịch vụ hằng ngày.
+
+1. Nếu bạn đã có chứng chỉ AWS Solution Architect level Associate hoặc đã quen với các core services của AWS và cách triển khai các giải pháp AI/genAI thì chỉ cần **khoảng ~4-8 tiếng** để chuẩn bị.
+
+2. Nếu các bạn có background về về Data & AI/ML hoặc đã thi qua các chứng chỉ: DEA-C01, MLS-C01. Các bạn chỉ cần tìm hiểu thêm về GenAI (Foundation Models, Amazon Q và Bedrock) là có thể thi luôn, thời gian chuẩn bị **tầm 1-2 tiếng**.
+
+## Chuẩn bị
+
+### Scope của kỳ thi
+
+Các bạn tham khảo tại [đây](https://yummy-hosta-137.notion.site/AWS-AI-Practitioner-Scope-1153555450ba80c48674f0487035eee4)
+
+### Khoá học
+
+#### Lý thuyết - Ultimate AWS Certified AI Practitioner AIF-C01 by Stephane Maarek
+
+[![Ultimate AWS Certified AI Practitioner AIF-C01](https://img-b.udemycdn.com/course/480x270/6082775_2db5_3.jpg)](https://go.vntechies.com/udmgenai)
+
+- Link khoá học [tại đây](https://go.vntechies.com/udmgenai)
+- Note:
+  - Khoá học mất phí (399,000VND nếu apply code và free nếu anh chị em có Udemy Business)
+  - Cover toàn bộ kiến thức trong kỳ thi, sẽ có về genAI, các kỹ thuật prompt, AI/ML foundation, AWS AI services, securities và phần deep dive (thực ra là giới thiệu qua) về các components của SageMaker
+  - Có thể skips phần các dịch vụ trên AWS nếu bạn đã có basic knowledge và handons experience trên AWS, tăng speed lên 1.25 để tiết kiệm thời gian nghe giảng viên nói
+  - Các tools sẽ có video hand-ons để học viên nắm được chức năng các dịch vụ
+  - Notes chuẩn bị có tại [đây](https://yummy-hosta-137.notion.site/AWS-AI-Practitioner-Notes-1153555450ba8083aaa4f4227294641f?pvs=74)
+
+#### Thi thử - [Practice Exams] AWS Certified AI Practitioner - AIF-C01 by Stephane Maarek, Abhishek Singh
+
+[![AWS Certified AI Practitioner Practice Exams](https://img-c.udemycdn.com/course/480x270/6093727_daed_2.jpg)](https://go.vntechies.com/udmgaipt)
+
+- Link khoá học [tại đây](https://go.vntechies.com/udmgaipt)
+- Note:
+  - Khoá học mất phí (399,000VND nếu apply code và free nếu anh chị em có Udemy Business)
+  - Có 3 bộ đề thi thử, mỗi bộ đề gồm 85 câu
+  - Cover đủ kiến thức được dạy ở khoá trên, độ khó tương đương với đề thi thật, thậm chí có một vài câu giống đề thi thật =))
+  - Các bạn có thể dùng để validate lại kiến thức đã học và đọc kỹ hơn những phần bị sai
+
+Do đây là kỳ thi foundation level nên mình nghĩ chỉ cần 2 khoá học trên là đủ, nếu các bạn còn chưa chắc chắn, có thể tham khảo bài viết của anh Phạm Anh Vũ - AWS Senior Tech Instructor Team Lead trên group AWS Study Group tại [đây](https://www.facebook.com/photo?fbid=7895274190569720&set=gm.1689493268482305&idorvanity=660548818043427&locale=vi_VN)
+
+> "Tái bút: Trước khi quyết định thi các bạn hãy tự vấn là mục đích của mình là gì? Và nên nhớ, chứng chỉ là để Validate kiến thức mình đã học, nên hãy dành thời gian nghiêm túc học thật kỹ, thực hành nhiều. Bằng cấp làm đẹp profile, nhưng kiến thức thật mới giúp mình trụ lại và thăng tiến trong nghề nghiệp! Chúc các bạn có kết quả thi tốt." - Anh Vũ
+
+## Đăng ký
+
+- Đây là lần đầu tiên mình thi tại Việt Nam, vì ~~ngại đi đường~~ đã quen với việc thi online nên quyết định đăng ký thi online qua VUE. Chỉ cần vào AWS Training portal, làm theo hướng dẫn của VUE là xong. Tuy đơn giản nhưng phần này khá mất thời gian vì mình phải dọn lại phòng 🤣
+
+- Thời gian thi là 120 phút, bạn có thể đăng ký thêm 30 phút cho Non English Speaker tuy nhiên theo kinh nghiệm cá nhân thì chỉ cần 50-60 phút để hoàn thành bài thi do các câu hỏi khá ngắn và nếu biết thì sẽ biết, không biết thì sẽ không biết 🤣 Dù sao thì các bạn cũng nên check lại đáp án thật kỹ và **đừng ngại đặt flag với những câu mình chưa chắc chắn**
+
+![](/static/images/assets/els30vi.png)
+
+## Kết quả
+
+- Kết quả PASS/FAIL sẽ **không được báo sau khi hoàn thành bài thi và survey**, điểm số cụ thể sẽ được gửi sau tối đa 5 ngày làm việc qua mail. Với mình là **khoảng 4 tiếng**.
+
+- **Nếu có thể hãy share kết quả và quá trình chuẩn bị của bản thân, nó có thể giúp ích cho những người cũng có ý định đăng ký kỳ thi này**
+
+![AWS Certified AI Practitioner MHQ](/static/images/assets/qmau-ai-practitioner.jpg)
+
+Nếu có bất kỳ khó khăn nào trong việc ôn thi cũng như thắc mắc về AWS, [hãy liên hệ với VNTechies để được trợ giúp](https://m.me/vntechies)
+
+## VNTechies Dev Blog
+
+Kho tài nguyên mã nguồn mở với sứ mệnh đào tạo kiến thức, định hướng nghề nghiệp cho cộng đồng Cloud ☁️ DevOps 🚀
+
+[![Facebook page](/static/images/default-ogp.png)](https://www.facebook.com/vntechies)
+
+Tham gia group [VNTechies - Cloud ☁️ / DevOps 🚀](https://www.facebook.com/groups/acevntechies) nếu bạn muốn giao lưu với cộng đồng và cập nhật các thông tin mới nhất về Cloud và DevOps.
+
+- Website: https://vntechies.dev
+- Github repository: https://github.com/vntechies
+- Facebook page: https://facebook.com/vntechies
+
+[![Discord banner](https://images.viblo.asia/c8c4a473-c08d-45a3-be57-821781c1c256.png)](https://discord.com/invite/k2uDgd7NZ4)
+
+Anh chị em hãy follow/ủng hộ VNTechies để cập nhật những thông tin mới nhất về Cloud và DevOps nhé!
+
+OGP by <a href="https://unsplash.com/@caserole?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Casey Nguyen</a> on <a href="https://unsplash.com/photos/man-wearing-green-and-beige-camouflage-suit-holding-bike-pwu99B2pdd0?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Unsplash</a>
