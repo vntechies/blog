@@ -1,0 +1,150 @@
+---
+title: 'Kinh nghiệm thi chứng chỉ AWS Certified Machine Learning Engineer Associate'
+date: '2024-10-29'
+tags: ['cloud', 'aws', 'certificate', 'ai', 'machine learning', 'associate']
+series: ['chung-chi-aws']
+draft: false
+layout: PostSimple
+images: ['/static/images/ogps/aws-mle-a.png']
+summary: 'Hướng dẫn ôn thi chứng chỉ AWS Certified Machine Learning Engineer Associate'
+---
+
+<TOCInline toc={props.toc} asDisclosure />
+
+Sau chứng chỉ [AWS Certified AI Practitioner](https://www.vntechies.dev/blog/aws-certs/kinh-nghiem-thi-chung-chi-aws-certified-ai-practitioner), chứng chỉ AWS Certified Machine Learning Engineer Associate (MLA-C01) là một lựa chọn tốt để nâng cao kiến thức và kỹ năng trong lĩnh vực AI/ML. Đây cũng là một trong những kỳ thi mà mình đánh giá là kiến thức rất hữu ích và có thể áp dụng được rất nhiều trong công việc hàng ngày.
+
+Còn đây là lý do mình thi :D
+
+![AWS Certified Machine Learning Engineer Associate](/static/images/assets/aws-mle-ly-do.png)
+
+Bài viết này sẽ chia sẻ kinh nghiệm cá nhân về quá trình chuẩn bị và thi chứng chỉ AWS Certified Machine Learning Engineer Associate, giúp các bạn có cái nhìn tổng quan và kế hoạch ôn tập phù hợp để tự tin vượt qua kỳ thi.
+
+## MLA-C01
+
+![AWS AI Certification Paths](/static/images/assets/aws-ml-path.png)
+
+Kỳ thi chứng chỉ MLA-C01 không chỉ đánh giá lý thuyết mà còn giúp bạn hiểu cách triển khai các giải pháp học máy trong thực tế, đặc biệt trên nền tảng AWS. Chứng chỉ này chứng minh khả năng của bạn trong thiết kế, xây dựng, triển khai và duy trì các mô hình học máy từ cơ bản đến nâng cao. Khi tham gia kỳ thi, bạn sẽ trải nghiệm toàn bộ quá trình từ chuẩn bị dữ liệu, phân tích dữ liệu đến xây dựng, triển khai và giám sát các mô hình học máy.
+
+Chứng chỉ này yêu cầu bạn hiểu quy trình học máy, từ việc chuẩn bị dữ liệu, xây dựng và huấn luyện mô hình, đến việc triển khai và quản lý chúng. Bạn sẽ được đánh giá về khả năng chọn lựa các phương pháp và thuật toán phù hợp cho từng loại bài toán. Kỳ thi cũng bao gồm các câu hỏi tình huống thực tế (case study), yêu cầu bạn hiểu rõ bối cảnh và đưa ra giải pháp phù hợp, từ đó giúp bạn rèn luyện khả năng phân tích và áp dụng kiến thức vào thực tế.
+
+Chính vì vậy nó là một chứng chỉ không thể thiếu với tất cả các path làm việc với AI/ML trên AWS.
+
+### Thông tin cơ bản
+
+| Mã kỳ thi     | MLA-C01                                                                                                                      |
+| ------------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| Số câu hỏi    | **85 câu (beta)** <small>50 câu tính điểm, 15 câu không tính điểm sử dụng để kiểm tra độ khó</small>                         |
+| Chi phí       | 75 USD (beta)                                                                                                                |
+| Điểm đỗ       | 700/1000                                                                                                                     |
+| Thời gian thi | 170 phút (beta)                                                                                                              |
+| Dạng câu hỏi  | 1. Trắc nghiệm đơn hoặc đa lựa chọn <br/> 2. Sắp xếp thứ tự <br/> 3. Ghép các term/action phù hợp <br/>4. Câu hỏi tình huống |
+| Hình thức thi | Thi trực tuyến có giám thị hoặc tại trung tâm                                                                                |
+
+Phần số lượng câu hỏi được tham khảo theo [exam guide](https://d1.awsstatic.com/training-and-certification/docs-machine-learning-engineer-associate/AWS-Certified-Machine-Learning-Engineer-Associate_Exam-Guide.pdf), vì kỳ thi vẫn trong thời gian beta nên số lượng câu hỏi không tính điểm và tính điểm sẽ khác so với kỳ thi thật đôi chút.
+
+### Domain
+
+| Domain   | Description                                       | Percentage of Scored Content |
+| -------- | ------------------------------------------------- | ---------------------------- |
+| Domain 1 | Data Preparation for Machine Learning (ML)        | 28%                          |
+| Domain 2 | ML Model Development                              | 26%                          |
+| Domain 3 | Deployment and Orchestration of ML Workflows      | 22%                          |
+| Domain 4 | ML Solution Monitoring, Maintenance, and Security | 24%                          |
+
+- Điểm đỗ là **700/1000 (70%)** → để đảm bảo đỗ, bạn nên hướng tới mục tiêu đạt khoảng **80% trở lên** trong quá trình ôn tập.
+
+Ngoài ra, bạn nên tích cực tham gia vào các dự án hoặc bài tập liên quan đến học máy trên AWS để có kinh nghiệm thực tế. Kinh nghiệm thực tế sẽ giúp bạn không chỉ nắm vững lý thuyết mà còn hiểu cách áp dụng vào các tình huống cụ thể, nâng cao khả năng làm việc với các mô hình học máy một cách hiệu quả và tự tin hơn. Điều này sẽ giúp bạn dễ dàng giải quyết các câu hỏi khó về triển khai và tối ưu hóa mô hình trong kỳ thi.
+
+1. Nếu bạn đã có chứng chỉ AWS Solution Architect level Associate hoặc đã quen với các core services của AWS và cách triển khai các giải pháp AI/genAI thì cần **khoảng ~2-3 tuần** để chuẩn bị.
+
+2. Nếu các bạn có background về về Data & AI/ML hoặc đã thi qua các chứng chỉ: AIF-C01, DEA-C01, MLS-C01, thời gian chuẩn bị **tầm 1 tuần**.
+
+## Chuẩn bị
+
+### Note chuẩn bị
+
+Các bạn nên tham khảo video của anh [Việt Trần](https://www.youtube.com/@viet100), mình thấy video khá đầy đủ và ngắn gọn, cung cấp đủ insight cho các bạn chuẩn bị thi.
+
+https://www.youtube.com/watch?v=SBBumFldWF0
+
+Các bạn nên tập trung vào các dịch vụ chính của AWS như SageMaker, Bedrock, Data ingestion/transformation services, vì đây là những dịch vụ quan trọng và xuất hiện nhiều trong kỳ thi. Nên làm ít nhất 1 bài lab full workflow với SageMaker. Mình sau dưới đây sau khi ôn 2 tiếng lý thuyết đã chuyển qua làm lab và thấy hiệu quả hơn rất nhiều.
+
+[Workshop cho SageMaker full workflow](https://catalog.us-east-1.prod.workshops.aws/workshops/63069e26-921c-4ce1-9cc7-dd882ff62575/en-US)
+
+![ML Process](/static/images/assets/mlprocess.webp)
+
+### Khoá học
+
+#### Lý thuyết - AWS Certified Machine Learning Engineer Associate: Hands On!
+
+[![AWS Certified Machine Learning Engineer Associate: Hands On!](https://img-b.udemycdn.com/course/480x270/6125705_2219.jpg)](https://go.vntechies.com/udmmle)
+
+- Link khoá học [tại đây](https://go.vntechies.com/udmmle)
+- Note:
+  - Khoá học mất phí (849,000VND và free nếu anh chị em có Udemy Business)
+  - Khóa học bao gồm toàn bộ kiến thức cho kỳ thi, gồm các dịch vụ xử lý dữ liệu, dịch vụ học máy trên AWS như SageMaker, kỹ thuật huấn luyện mô hình và triển khai mô hình. Khóa học còn giúp bạn hiểu qua về các kỹ thuật như điều chỉnh tham số (hyperparameter tuning), xử lý dữ liệu và các vấn đề bảo mật khi triển khai học máy trên AWS, MLOPs.
+  - Có thể skips phần các dịch vụ trên AWS nếu bạn đã có basic knowledge và handons experience trên AWS, tăng speed lên 1.25 để tiết kiệm thời gian nghe giảng viên nói
+  - Notes chuẩn bị có tại [đây](https://yummy-hosta-137.notion.site/AWS-Certified-Machine-Learning-Engineer-Associate-12d3555450ba804da91cf4b85ee09fc3)
+
+#### Thi thử - Practice Exams: AWS Machine Learning Engineer Associate Cert
+
+[![Practice Exams: AWS Machine Learning Engineer Associate Cert](https://img-b.udemycdn.com/course/480x270/6139021_a896.jpg)](https://go.vntechies.com/udmmlet)
+
+- Link khoá học [tại đây](https://go.vntechies.com/udmmlet)
+- Note:
+  - Khoá học mất phí (849,000VND nếu apply code và free nếu anh chị em có Udemy Business)
+  - Có 2 bộ đề thi thử, mỗi bộ đề có tương ứng 35, 65 câu.
+  - Cover đủ kiến thức được dạy ở khoá trên, độ khó tương đương với đề thi thật.
+  - Các bạn có thể dùng để validate lại kiến thức đã học và đọc kỹ hơn những phần bị sai
+
+#### (Optional) AWS Skill Builder
+
+- Mình nghĩ đây là lựa chọn tốt với các bạn đã có nền tảng về AWS
+- Link khoá học **miễn phí** [Exam Prep Standard Course: AWS Certified Machine Learning Engineer - Associate (MLA-C01 - English)](https://explore.skillbuilder.aws/learn/course/external/view/elearning/20365/exam-prep-standard-course-aws-certified-machine-learning-engineer-associate-mla-c01-english)
+- Cover các domain sau trong 7 tiếng
+
+| Domain   | Description                                       |
+| -------- | ------------------------------------------------- |
+| Domain 1 | Data Preparation for Machine Learning (ML)        |
+| Domain 2 | ML Model Development                              |
+| Domain 3 | Deployment and Orchestration of ML Workflows      |
+| Domain 4 | ML Solution Monitoring, Maintenance, and Security |
+
+- Link đề thi thử **miễn phí** [Exam Prep Official Practice Question Set: AWS Certified Machine Learning Engineer - Associate (MLA-C01 - English)](https://explore.skillbuilder.aws/learn/course/external/view/elearning/19688/exam-prep-official-practice-question-set-aws-certified-machine-learning-engineer-associate-mla-c01-english)
+- Sẽ có 20 câu hỏi mẫu để các bạn tham khảo, cover đủ các dạng câu hỏi trong kỳ thi thật.
+
+Các bạn cũng có thể tham khảo note chuẩn bị của cô em - KOL [Yến Trịnh](https://www.facebook.com/haiyentrinh07.09) tại [đây](https://yentrinh.hashnode.dev/chia-se-kinh-nghiem-hoc-va-thi-2-chung-chi-aws-ai-practioner-va-aws-machine-learning-associate)
+
+## Đăng ký
+
+- Đây là lần đầu thứ hai mình thi tại Việt Nam và lại qua VUE. Vào AWS Training portal, làm theo hướng dẫn của VUE là xong. Do mình mới tậu cái giá sách trong phòng làm việc nên lựa chọn đơn giản hơn là sang phòng khác ngồi, không mất nhiều thời gian dọn dẹp lắm 🤣
+
+- Thời gian thi là 170 phút, bạn có thể đăng ký thêm 30 phút cho Non English Speaker tuy nhiên theo kinh nghiệm cá nhân thì chỉ cần 80-100 phút để hoàn thành bài thi do các câu hỏi không quá dài. Với các kỳ thi Associate level mình thấy thời gian chưa bao giờ là vấn đề. Các bạn cũng nên check lại đáp án thật kỹ và **đừng ngại đặt flag với những câu mình chưa chắc chắn**
+
+## Kết quả
+
+- Kết quả PASS/FAIL sẽ **không được báo sau khi hoàn thành bài thi và survey**, điểm số cụ thể sẽ được gửi sau tối đa 5 ngày làm việc qua mail. Với mình là **khoảng 8 tiếng**.
+
+- **Nếu có thể hãy share kết quả và quá trình chuẩn bị của bản thân, nó có thể giúp ích cho những người cũng có ý định đăng ký kỳ thi này**
+
+![AWS Certified AI Practitioner MHQ](/static/images/assets/qmau-mle.png)
+
+Nếu có bất kỳ khó khăn nào trong việc ôn thi cũng như thắc mắc về AWS, [hãy liên hệ với VNTechies để được trợ giúp](https://m.me/vntechies)
+
+## VNTechies Dev Blog
+
+Kho tài nguyên mã nguồn mở với sứ mệnh đào tạo kiến thức, định hướng nghề nghiệp cho cộng đồng Cloud ☁️ DevOps 🚀
+
+[![Facebook page](/static/images/default-ogp.png)](https://www.facebook.com/vntechies)
+
+Tham gia group [VNTechies - Cloud ☁️ / DevOps 🚀](https://www.facebook.com/groups/acevntechies) nếu bạn muốn giao lưu với cộng đồng và cập nhật các thông tin mới nhất về Cloud và DevOps.
+
+- Website: https://vntechies.dev
+- Github repository: https://github.com/vntechies
+- Facebook page: https://facebook.com/vntechies
+
+[![Discord banner](https://images.viblo.asia/c8c4a473-c08d-45a3-be57-821781c1c256.png)](https://discord.com/invite/k2uDgd7NZ4)
+
+Anh chị em hãy follow/ủng hộ VNTechies để cập nhật những thông tin mới nhất về Cloud và DevOps nhé!
+
+OGP by <a href="https://unsplash.com/@nathan_cima?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Nathan Cima</a> on <a href="https://unsplash.com/photos/a-group-of-men-standing-around-a-pool-table-CiVuPxerdAA?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Unsplash</a>
