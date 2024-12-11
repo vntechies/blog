@@ -1,0 +1,76 @@
+---
+title: Đóng gói ứng dụng spring boot với Helm
+date: '2022-12-01'
+tags: ['api', 'rest-api', 'springboot']
+series: ['k8s-spring-boot']
+draft: false
+authors: ['thanhnb']
+images: ['/static/images/ogps/k8s-springboot.png']
+summary: 'Trong bài viết này, chúng ta sẽ tìm hiểu cách đóng gói và triển khai ứng dụng spring boot với Helm.'
+index: 7
+---
+
+<TOCInline toc={props.toc} asDisclosure />
+
+## 1. Giới thiệu chung
+
+Trong những bài trước, chúng ta đã tìm hiểu các khái niệm cơ bản về Kubernetes và cách triển khai ứng dụng Spring Boot bằng các file cấu hình YAML như: Deployment, Service, ConfigMap, Secret,.. Tuy nhiên cách triển khai này chưa hiệu quả vì:
+
+- **Quản lý phức tạp**: Phải quản lý nhiều file cấu hình riêng lẻ, có thể gây nhầm lẫn sai sót.
+- **Khó tái sử dụng**: Tính tái sử dụng chưa tốt khi phải triển khai ứng dụng trên nhiều môi trường khác nhau như Development, staging hay production.
+
+Trong bài viết này, chúng ta sẽ cùng nhau tìm hiểu về Helm để đóng gói, quản lý và triển khai ứng dụng trên Kubernetes hiệu quả và dễ dàng hơn.
+
+## 2. Tìm hiểu về Helm
+
+### 2.1. Helm là gì?
+
+Helm là một **package manager** (công cụ triển khai - CLI tool) mã nguồn mở giúp đơn giản hoá quá trình triển khai, quản lý vòng đời của ứng dung trên cụm Kubernetes. Helm sẽ giúp bạn đóng gói các file cấu hình như: Deployment, Service, ConfigMap, Secret,... thành một đơn vị triển khai được gọi là "Chart".
+
+### 2.2. Chart là gì?
+
+Chart là một đơn vị triển khai mà helm sử dụng. Một Chart sẽ chứa tất cả file cấu hình như: Deployments, Services, ConfigMap, Secret... cần thiết để triển khai ứng dụng trên cụm Kuberentes. Chart thường chứa các file cấu hình dạng template thay vì hardcode. Khi triển khai Helm sẽ lấy giá trị cấu hình định nghĩa trong file values.yaml kết hợp với file template để tạo thành file cấu hình hoàn chỉnh. Việc này giúp cấu hình ứng dụng linh động hơn và có thể tái sử dụng Helm chart khi triển khai ứng dụng trên nhiều môi trường khác nhau.
+
+Bạn có thể tham khảo thêm về Helm tại [trang web chính thức của Helm](https://helm.sh/docs/).
+
+### 2.3. Cấu trúc Helm Chart
+
+Một Helm Chart khi mới tạo sẽ có cấu trúc như sau:
+
+```shell
+student-service/
+├── charts
+├── Chart.yaml
+├── templates
+│   ├── deployment.yaml
+│   ├── _helpers.tpl
+│   ├── hpa.yaml
+│   ├── ingress.yaml
+│   ├── NOTES.txt
+│   ├── serviceaccount.yaml
+│   ├── service.yaml
+│   └── tests
+│       └── test-connection.yaml
+└── values.yaml
+```
+
+- **charts**: Mặc định thư mục này sẽ trống (empty), có thể thêm các chart vào bên trong thư mục này nếu triển khai chart chính cần phụ thuộc vào chúng.
+- **Chart.yaml**: Chứa thông tin về chart như: version, tên, mô tả,...
+- **templates**: Chứa các file template cấu hình Kubernetes resources (như deployments, services,...) cần thiết để trển khai ứng dụng trên cụm Kubernetes. Các file template này thường chứa các biến, hàm để khi triển khai Helm sẽ lấy các tham số được định nghĩa trong file values.yaml tạo ra các cấu hình hoàn chỉnh.
+- **values.yaml**: Chứa giá trị cho các tham số cấu hình cho các template trong thư mục "templates" như: imageName, imageTag, replicas,.. Chúng ta có thể tạo ra nhiều file values.yaml cho các môi trường khác nhau ví dụ: `dev-values.yaml`, `uat-values.yaml`, `prod-values.yaml`,.. Khi triển khai Helm Chart thì sẽ chỉ định file tương ứng với môi trường đang triển khai.
+
+## 3. Triển khai ứng dụng Spring Boot với Helm
+
+### 3.1. Cài đặt Helm
+
+Trước khi triển khai, bạn cần cài đặt Helm trên máy tính của mình. Bạn có thể làm theo hướng dẫn trên [website chính thức của Helm](https://helm.sh/docs/intro/install/).
+
+```shell
+curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
+chmod 700 get_helm.sh
+./get_helm.sh
+
+# Kiểm tra phiên bản Helm
+helm version
+version.BuildInfo{Version:"v3.14.0", GitCommit:"3fc9f4b2638e76f26739cd77c7017139be81d0ea", GitTreeState:"clean", GoVersion:"go1.21.5"}
+```
