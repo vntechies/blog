@@ -1,0 +1,414 @@
+---
+title: Triển khai và quản lý ứng dụng Spring Boot với Helm
+date: '2022-12-01'
+tags: ['api', 'rest-api', 'springboot']
+series: ['k8s-spring-boot']
+draft: false
+authors: ['thanhnb']
+images: ['/static/images/ogps/k8s-springboot.png']
+summary: 'Trong bài viết này, chúng ta sẽ tìm hiểu cách đóng gói, triển khai và quản lý ứng dụng spring boot với Helm.'
+index: 7
+---
+
+<TOCInline toc={props.toc} asDisclosure />
+
+## 1. Giới thiệu chung
+
+Trong những bài trước, chúng ta đã tìm hiểu các khái niệm cơ bản về Kubernetes và cách triển khai ứng dụng Spring Boot bằng các file cấu hình YAML như: Deployment, Service, ConfigMap, Secret,.. Tuy nhiên cách triển khai này chưa hiệu quả vì:
+
+- **Quản lý phức tạp**: Phải quản lý nhiều file cấu hình riêng lẻ, có thể gây nhầm lẫn sai sót.
+- **Khó tái sử dụng**: Tính tái sử dụng chưa tốt khi phải triển khai ứng dụng trên nhiều môi trường khác nhau như Development, staging hay production.
+
+Trong bài viết này, chúng ta sẽ cùng nhau tìm hiểu về Helm để đóng gói, quản lý và triển khai ứng dụng trên Kubernetes hiệu quả và dễ dàng hơn.
+
+## 2. Tìm hiểu về Helm
+
+### Helm là gì?
+
+Helm là một **package manager** (công cụ triển khai - CLI tool) mã nguồn mở giúp đơn giản hoá quá trình triển khai, quản lý vòng đời của ứng dung trên cụm Kubernetes. Helm sẽ giúp bạn đóng gói các file cấu hình như: Deployment, Service, ConfigMap, Secret,... thành một đơn vị triển khai được gọi là "Chart".
+
+### Chart là gì?
+
+Chart là một đơn vị triển khai mà Helm sử dụng. Một Chart sẽ chứa tất cả file cấu hình như: Deployments, Services, ConfigMap, Secret... cần thiết để triển khai ứng dụng trên cụm Kuberentes. Chart thường chứa các file cấu hình dạng template thay vì hardcode. Khi triển khai Helm sử dụng các giá trị từ file values.yaml (default) để thay thế vào các vị trí trong file template, từ đó tạo ra các file YAML hoàn chỉnh để triển khai trên Kubernetes. Việc này giúp cấu hình ứng dụng linh động hơn và có thể tái sử dụng Helm chart khi triển khai ứng dụng trên nhiều môi trường khác nhau.
+
+Bạn có thể tham khảo thêm về Helm tại [trang web chính thức của Helm](https://helm.sh/docs/).
+
+## 3. Đóng gói và triển khai ứng dụng Spring Boot với Helm
+
+### Cài đặt Helm
+
+Trước khi triển khai, bạn cần cài đặt Helm trên máy tính của mình. Bạn có thể làm theo hướng dẫn trên [website chính thức của Helm](https://helm.sh/docs/intro/install/).
+
+```shell
+curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
+chmod 700 get_helm.sh
+./get_helm.sh
+
+# Kiểm tra phiên bản Helm
+helm version
+version.BuildInfo{Version:"v3.14.0", GitCommit:"3fc9f4b2638e76f26739cd77c7017139be81d0ea", GitTreeState:"clean", GoVersion:"go1.21.5"}
+```
+
+### Cấu trúc Helm Chart
+
+Tạo mới 1 Helm Chart sử dụng lệnh: `helm create <name_chart>`:
+
+```sh
+helm create <name_chart>
+```
+
+Mặc định Helm Chart khi mới tạo sẽ có cấu trúc như sau:
+
+```shell
+student-service/
+├── charts
+├── Chart.yaml
+├── templates
+│   ├── deployment.yaml
+│   ├── _helpers.tpl
+│   ├── hpa.yaml
+│   ├── ingress.yaml
+│   ├── NOTES.txt
+│   ├── serviceaccount.yaml
+│   ├── service.yaml
+│   └── tests
+│       └── test-connection.yaml
+└── values.yaml
+```
+
+- **charts**: Mặc định thư mục này sẽ trống (empty), có thể thêm các chart vào bên trong thư mục này nếu triển khai chart chính cần phụ thuộc vào chúng.
+- **Chart.yaml**: Chứa thông tin về chart như: version, tên, mô tả,...
+- **templates**: Chứa các file template cấu hình Kubernetes resources (như deployments, services,...) cần thiết để trển khai ứng dụng trên cụm Kubernetes. Các file template này thường chứa các biến, hàm để khi triển khai Helm sẽ lấy các tham số được định nghĩa trong file values.yaml tạo ra các cấu hình hoàn chỉnh.
+- **values.yaml**: Chứa giá trị cho các tham số cấu hình cho các template trong thư mục "templates" như: imageName, imageTag, replicas,.. Chúng ta có thể tạo ra nhiều file values.yaml cho các môi trường khác nhau. Ví dụ: `dev-values.yaml`, `uat-values.yaml`, `prod-values.yaml`,.. Khi triển khai Helm Chart thì sẽ chỉ định file tương ứng với môi trường đang triển khai.
+
+### Cấu hình ứng dụng Spring Boot
+
+**1. Giới thiệu về các file cấu hình trong Helm**:
+
+- File `values.yaml`: Chứa cấu hình mặc định của Helm chart, chứa các tham số cấu hình chung cho ứng dụng.
+- File `dev-values.yaml`: Được tạo mới để chứa các tham số cấu hình dành riêng cho môi trường phát triển (develop). Trong file này ta sẽ ghi đè các tham số trong file `values.yaml` để phù hợp với môi trường cụ thể, ở đây là môi trường phát triển (develop).
+
+Khi cài đặt ứng dụng bằng Helm ta sẽ chỉ định file chứa tham số cấu hình mong muốn. Trong bài viết này khi cài đặt ứng dụng ta sẽ chỉ định file `dev-values.yaml`, những tham số không được ghi đè ở file `dev-values.yaml` thì Helm sẽ lấy giá trị ở file `values.yaml`.
+
+**2. Cấu hình thông tin chung ứng dụng**:
+
+```yaml:k8s/helm-chart/student-service/dev-values.yaml
+replicaCount: 1
+
+image:
+  repository: thanhnb1/students-service
+  pullPolicy: IfNotPresent
+  tag: "k8s-probe"
+
+service:
+  type: ClusterIP
+  port: 8080
+
+livenessProbe:
+  httpGet:
+    path: /actuator/health/liveness
+    port: 8080
+  initialDelaySeconds: 15
+  periodSeconds: 5
+  timeoutSeconds: 30
+
+readinessProbe:
+    httpGet:
+      path: /actuator/health/readiness
+      port: 8080
+    initialDelaySeconds: 15
+    periodSeconds: 5
+    timeoutSeconds: 30
+```
+
+```yaml:k8s/helm-chart/student-service/templates/deployment.yaml
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.service.port }}
+              protocol: TCP
+          livenessProbe:
+            {{- toYaml .Values.livenessProbe | nindent 12 }}
+          readinessProbe:
+            {{- toYaml .Values.readinessProbe | nindent 12 }}
+```
+
+**Giải thích:**
+
+| File deployment.yaml                                   | Cách hoạt động                                                                                                                                                                                           |
+| ------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `{{ .Values.image.repository }}`                       | Helm sẽ thay bằng tham số `image.repository` trong file `dev-values.yaml`. Giá trị được thay vào bằng `thanhnb1/students-service`.                                                                       |
+| `{{ .Values.image.tag \| default .Chart.AppVersion }}` | Helm sẽ thay bằng tham số `image.tag` trong file `dev-values.yaml`. Giá trị được thay vào bằng `k8s-probe`. Nếu `image.tag` không được chỉ định thì Helm sẽ lấy giá trị mặc định là `.Chart.AppVersion`. |
+| `{{ .Values.service.port }}`                           | Helm sẽ thay thế bằng tham số `service.port` trong file `dev-values.yaml`. Giá trị được thay vào bằng `8080`.                                                                                            |
+| `{{- toYaml .Values.livenessProbe \| nindent 12 }}`    | Hàm `toYaml` chuyển đổi đối tượng thành định dạng YAML, dùng `nindent 12` để đảm bảo đúng định dạng file cấu hình với 12 dấu cách.                                                                       |
+| `{{- toYaml .Values.readinessProbe \| nindent 12 }}`   | Hàm `toYaml` chuyển đổi đối tượng thành định dạng YAML, dùng `nindent 12` để đảm bảo đúng định dạng file cấu hình với 12 dấu cách.                                                                       |
+
+**3. Thêm cấu hình biến môi trường ConfigMaps và Secrets**:
+
+Để cấu hình biến môi trường, chúng ta sẽ sử dụng `ConfigMaps` để lưu trữ các biến môi trường không nhạy cảm, còn sử dụng `Secrets` cho dữ liệu nhạy cảm. Phần này ta sẽ tạo hai file template đó là `configmap.yaml` và `secret.yaml` để cấu hình biến môi trường.
+
+Bạn có thể tìm hiểu thêm về `ConfigMaps` và `Secrets` [tại đây](https://www.vntechies.dev/courses/k8s-spring-boot/quan-ly-cau-hinh-ung-dung-voi-configmap-va-secret).
+
+- **Thêm cấu hình ConfigMaps và Secrets tại file dev-values.yaml**:
+
+```yaml:k8s/helm-chart/student-service/dev-values.yaml
+env:
+  configMap:
+    enabled: true
+    name: student-cm
+    data:
+      SERVER_PORT: "8080"
+      MYSQL_URL: "jdbc:mysql://mysql:3306/students"
+
+  configSecret:
+    enabled: true
+    name: student-sc
+    data:
+      MYSQL_USERNAME: c3R1ZGVudHM=
+      MYSQL_PASSWORD: Vk5UZWNoaWVzMjAyMw==
+```
+
+- **Tạo file template cấu hình cho ConfigMaps**:
+
+```yaml:k8s/helm-chart/student-service/templates/configmap.yaml
+{{- if .Values.env.configMap.enabled }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Values.env.configMap.name }}
+  labels:
+    app: {{ include "student-service.name" . }}
+data:
+  {{- range $key, $value := .Values.env.configMap.data }}
+  {{ $key }}: {{ $value | quote }}
+  {{- end }}
+{{- end }}
+```
+
+_Giải thích:_
+
+| File configmap.yaml                                       | Cách hoạt động                                                                                                                                                                                                                       |
+| --------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `{{- if .Values.env.configMap.enabled }}`                 | Kiểm tra xem giá trị `env.configMap.enabled` trong file `dev-values.yaml` có bằng `true` không. Nếu bằng `true` thì Helm sẽ sử dụng template `configmap.yaml` để tạo `ConfigMaps`.                                                   |
+| `{{ .Values.env.configMap.name }}`                        | Thay thế bằng giá trị của `env.configMap.name` được định nghĩa trong file `dev-values.yaml`. Trường hợp này là `student-cm`.                                                                                                         |
+| `{{- range $key, $value := .Values.env.configMap.data }}` | Sử dụng `range` để lặp qua các cặp key-value được định nghĩa trong `env.configMap.data` ở file `dev-values.yaml`.                                                                                                                    |
+| `{{ $key }}: {{ $value \| quote }}`                       | Trong mỗi vòng lặp, `$key` đại diện cho tên của tham số, `$value` đại diện cho giá trị của tham số, và `quote` được sử dụng để bao giá trị trong dấu ngoặc kép. Ví dụ: `SERVER_PORT: "8080"`: key = `SERVER_PORT`, value = `"8080"`. |
+
+- **Tạo file template cấu hình cho Secrets**:
+
+```yaml:k8s/helm-chart/student-service/templates/secret.yaml
+{{- if .Values.env.configSecret.enabled }}
+apiVersion: v1
+kind: Secret
+metadata:
+  name: {{ .Values.env.configSecret.name }}
+  labels:
+    app: {{ include "student-service.name" . }}
+type: Opaque
+data:
+  {{- range $key, $value := .Values.env.configSecret.data }}
+  {{ $key }}: {{ $value }}
+  {{- end }}
+{{- end }}
+```
+
+_Giải thích:_
+
+| File secret.yaml                                             | Cách hoạt động                                                                                                                                                                                                     |
+| ------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `{{- if .env.configSecret.enabled }}`                        | Kiểm tra xem giá trị `env.configSecret.enabled` trong file `dev-values.yaml` có bằng `true` không. Nếu bằng true thì Helm sẽ sử dụng template `secret.yaml` để tạo `Secret`.                                       |
+| `{{ .Values.env.configSecret.name }}`                        | Thay thế bằng giá trị của `env.configSecret.name` được định nghĩa trong file `dev-values.yaml`. Trường hợp này là `student-sc`.                                                                                    |
+| `{{- range $key, $value := .Values.env.configSecret.data }}` | Sử dụng `range` để lặp qua các cặp key-value được định nghĩa trong `env.configSecret.data` ở file `dev-values.yaml`.                                                                                               |
+| `{{ $key }}: {{ $value }}`                                   | Trong mỗi vòng lặp, `$key` đại diện cho tên của tham số, `$value` đại diện cho giá trị của tham số đã được mã hoá base64. Ví dụ: `MYSQL_USERNAME: c3R1ZGVudHM=`, key = `MYSQL_USERNAME` và value = `c3R1ZGVudHM=`. |
+
+- **Sử dụng ConfigMaps và Secrets trong file deployment.yaml template**:
+
+```yaml:k8s/helm-chart/student-service/templates/deployment.yaml
+.........
+spec:
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - containerPort: {{ .Values.service.port }}
+
+          # Nếu giá trị "env.configMap.enabled" hoặc "env.configSecret.enabled" bằng true thì sẽ inject ConfigMaps hoặc Secrets vào container ứng dụng.
+          {{- if or .Values.env.configMap.enabled .Values.env.configSecret.enabled }}
+          envFrom:
+            # Nếu giá trị "env.configMap.enabled" bằng true thì sẽ inject các tham số của ConfigMaps tên "env.configMap.name".
+            # Trong trường hợp này thì "env.configMap.enabled" bằng true (tức có sử dụng ConfigMaps) và lấy các tham số ở ConfigMaps tên "student-cm".
+            {{- if .Values.env.configMap.enabled }}
+            - configMapRef:
+                name: {{ .Values.env.configMap.name }}
+            {{- end }}
+
+            # Nếu giá trị "env.configSecret.enabled" bằng true thì sẽ inject các tham số của Secrets tên "env.configSecret.name".
+            # Trong trường hợp này thì "env.configSecret.enabled" bằng true (tức có sử dụng Secrets) và lấy các tham số ở Secrets tên "student-sc".
+            {{- if .Values.env.configSecret.enabled }}
+            - secretRef:
+                name: {{ .Values.env.configSecret.name }}
+            {{- end }}
+          {{- end }}
+```
+
+### Triển khai ứng dụng với Helm
+
+**1. Cài đặt ứng dụng**
+
+Để sử dụng Helm triển khai ứng dụng lên Kubernetes lệnh sau: `helm install <release-name> -f <values-file> <chart-path>`.
+
+```shell
+helm install student-service -f student-service/dev-values.yaml ./student-service
+```
+
+_Giải thích các tham số:_
+
+- `student-service`: Tên của ứng dụng.
+- `-f student-service/dev-values.yaml`: Đường dẫn đến file cấu hình tham số cho ứng dụng (values file). Trong trường hợp trên ta sử dụng file "dev-values.yaml" để ghi đè các tham số trong file cấu hình mặc định "values.yaml".
+- `./student-service`: Đường dẫn tới thư mục chứa Helm chart của ứng dụng.
+
+_Output:_
+
+```shell
+NAME: student-service # Tên ứng dụng.
+LAST DEPLOYED: Sun Dec 15 17:38:53 2024
+NAMESPACE: default # Tên namespace.
+STATUS: deployed # Trạng thái triển khai.
+REVISION: 1 # Phiên bản của ứng dụng.
+NOTES:
+1. Get the application URL by running these commands:
+  export POD_NAME=$(kubectl get pods --namespace default -l "app.kubernetes.io/name=student-service,app.kubernetes.io/instance=student-service" -o jsonpath="{.items[0].metadata.name}")
+  export CONTAINER_PORT=$(kubectl get pod --namespace default $POD_NAME -o jsonpath="{.spec.containers[0].ports[0].containerPort}")
+  echo "Visit http://127.0.0.1:8080 to use your application"
+  kubectl --namespace default port-forward $POD_NAME 8080:$CONTAINER_PORT
+```
+
+_Kiểm tra ứng dụng:_
+
+```shell
+# Kiểm tra pod ứng dụng:
+kubectl get pods
+NAME                               READY   STATUS    RESTARTS   AGE
+student-service-6f7b6d958c-2dsn2   1/1     Running   0          15s
+
+# Kiểm tra trạng thái ứng dụng. Thấy started tức ứng dụng Spring Boot đã khởi chạy thành công.
+kubectl  logs -f student-service-6f7b6d958c-2dsn2
+....
+2024-12-16 00:39:01.283  INFO 1 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+```
+
+Như vậy là ta đã sử dụng Helm để triển khai ứng dụng thành công.
+
+**2. Cập nhật ứng dụng**
+
+Nếu ta thay đổi tham số cấu hình (file values) và muốn áp dụng cho ứng dụng hiện tại đang triển khai triển Kubernetes. Có thể sử dụng lệnh: `helm upgrade my-app -f values.yaml ./my-chart`.
+
+Thay đổi image tag `tag: "k8s-probe"` sang `tag: latest`. Thay đổi trong file "dev-values.yaml":
+
+```yaml:k8s/helm-chart/student-service/dev-values.yaml
+image:
+  repository: thanhnb1/students-service
+  pullPolicy: IfNotPresent
+  tag: latest
+```
+
+Thực hiện cập nhật ứng dụng:
+
+```shell
+helm upgrade student-service -f student-service/dev-values.yaml ./student-service
+```
+
+_Output:_
+
+```shell
+Release "student-service" has been upgraded. Happy Helming!  # "student-service" đã được cập nhật.
+NAME: student-service
+LAST DEPLOYED: Sun Dec 15 18:22:09 2024
+NAMESPACE: default
+STATUS: deployed
+REVISION: 2  # Phiên bản ứng dụng đã từ 1 lên thành 2.
+NOTES:
+1. Get the application URL by running these commands:
+  export POD_NAME=$(kubectl get pods --namespace default -l "app.kubernetes.io/name=student-service,app.kubernetes.io/instance=student-service" -o jsonpath="{.items[0].metadata.name}")
+  export CONTAINER_PORT=$(kubectl get pod --namespace default $POD_NAME -o jsonpath="{.spec.containers[0].ports[0].containerPort}")
+  echo "Visit http://127.0.0.1:8080 to use your application"
+  kubectl --namespace default port-forward $POD_NAME 8080:$CONTAINER_PORT
+```
+
+_Kiểm tra ứng dụng:_
+
+```shell
+# Kiểm tra pod ứng dụng thì thấy bản cập nhật "student-service-69cb66d9bf-vf4wf" không running thành công.
+kubectl  get po
+NAME                               READY   STATUS             RESTARTS      AGE
+student-service-69cb66d9bf-vf4wf   0/1     CrashLoopBackOff   7 (95s ago)   8m41s
+student-service-6f7b6d958c-2dsn2   1/1     Running            0             51m
+
+# Kiểm tra pod lỗi thì thấy image tag đã đổi từ `k8s-probe` sang `latest`  và không running do healthcheck bị lỗi.
+kubectl describe po/student-service-69cb66d9bf-vf4wf
+----
+----
+Events:
+  Type     Reason     Age                From               Message
+  ----     ------     ----               ----               -------
+  Normal   Scheduled  84s                default-scheduler  Successfully assigned default/student-service-69cb66d9bf-vf4wf to ip-10-0-10-179.ec2.internal
+  Normal   Pulling    84s                kubelet            Pulling image "thanhnb1/students-service:latest"
+  Normal   Pulled     83s                kubelet            Successfully pulled image "thanhnb1/students-service:latest" in 1.45s (1.45s including waiting). Image size: 274206864 bytes.
+  Normal   Started    54s (x2 over 83s)  kubelet            Started container student-service
+  Normal   Created    29s (x3 over 83s)  kubelet            Created container student-service
+  Warning  Unhealthy  29s (x6 over 64s)  kubelet            Liveness probe failed: HTTP probe failed with statuscode: 404
+  Warning  Unhealthy  29s (x8 over 64s)  kubelet            Readiness probe failed: HTTP probe failed with statuscode: 404
+```
+
+Như vậy là ta đã cập nhật (upgrade) ứng dụng tuy nhiên đã xảy ra lỗi bên trong ứng dụng khi Kuberentes thực hiện healthcheck. Chúng ta sẽ tìm hiểu cách để rollback về một phiên bản của ứng dụng.
+
+**3. Rollback về một phiên bản trước của ứng dụng**
+
+- Danh sách các phiên bản của ứng dụng, sử dụng lệnh `helm history <release-name>`:
+
+```shell
+helm history student-service
+REVISION        UPDATED                         STATUS          CHART                   APP VERSION     DESCRIPTION
+1               Sun Dec 15 17:38:53 2024        superseded      student-service-0.1.0   1.16.0          Install complete
+2               Sun Dec 15 18:22:09 2024        deployed        student-service-0.1.0   1.16.0          Upgrade complete
+```
+
+Có thể nhìn thấy ứng dụng đang có hai phiên bản tương ứng REVISION là 1 và 2. REVISION=1 đang có trạng thái `superseded` tức là đã bị thay thế bởi một phiên bản khác, điều này xảy ra khi cập nhật ứng dụng (helm upgrade ...).
+
+- Rollback về một phiên bản của ứng dụng sử dụng lệnh: `helm rollback <release-name> <revision>`.
+
+```shell
+# Rollback ứng dụng về phiên bản REVISION = 1.
+helm rollback student-service 1
+Rollback was a success! Happy Helming!
+```
+
+_Kiểm tra ứng dụng sau khi rollback:_
+
+```shell
+# Danh sách pod ứng dụng đã xoá pod "student-service-69cb66d9bf-vf4wf" và chỉ còn lại pod của phiên bản 1.
+kubectl  get po
+NAME                               READY   STATUS    RESTARTS   AGE
+student-service-6f7b6d958c-2dsn2   1/1     Running   0          69m
+```
+
+**4. Gỡ cài đạt ứng dụng**
+
+Để gỡ cài đặt (uninstall) ứng dụng ta sử dụng lệnh: `helm uninstall <release-name>`:
+
+```shell
+helm uninstall student-service
+release "student-service" uninstalled
+```
+
+Lệnh trên sẽ xoá tất cả các cấu hình liên quan đến ứng dụng được quản lý bởi Helm ra khỏi cụm Kubernetes.
+
+## 4. Tổng kết
+
+Qua bài viết này, chúng ta đã tìm hiểu cách sử dụng Helm để triển khai và quản lý ứng dụng Spring Boot trên Kubernetes. Việc sử dụng Helm không chỉ giúp ta đơn giản hoá trong quá trình triển khai (install, upgrade, rollback) ứng dụng mà còn tăng tính tái sử dụng và linh hoạt trong việc cấu hình.
