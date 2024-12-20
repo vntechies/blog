@@ -4,7 +4,6 @@ import Image from './Image'
 import { headerNavLinks } from '@/data/Links'
 import { useRouter } from 'next/router'
 import ThemeSwitch from './ThemeSwitch'
-// import LoginButton from './LoginButton'
 
 export default function Header() {
   const router = useRouter()
@@ -44,7 +43,6 @@ export default function Header() {
             </Link>
           ))}
         </div>
-        {/* <LoginButton /> */}
         <ThemeSwitch />
       </div>
     </header>

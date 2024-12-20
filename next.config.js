@@ -82,32 +82,17 @@ const securityHeaders = [
   },
 ]
 
-module.exports = withBundleAnalyzer({
+const nextConfig = {
+  output: 'export',
   distDir: 'out',
-  plugins: [
-    'postcss-flexbugs-fixes',
-    [
-      'postcss-preset-env',
-      {
-        autoprefixer: {
-          flexbox: 'no-2009',
-        },
-        stage: 3,
-        features: {
-          'custom-properties': false,
-        },
-      },
-    ],
-    [
-      '@fullhuman/postcss-purgecss',
-      {
-        content: ['./pages/**/*.{js,jsx,ts,tsx}', './components/**/*.{js,jsx,ts,tsx}'],
-        defaultExtractor: (content) => content.match(/[\w-/:]+(?<!:)/g) || [],
-        safelist: ['html', 'body'],
-      },
-    ],
-  ],
+  reactStrictMode: true,
+  swcMinify: true,
+  pageExtensions: ['js', 'jsx', 'md', 'mdx'],
+  eslint: {
+    dirs: ['pages', 'components', 'lib', 'layouts', 'scripts'],
+  },
   images: {
+    unoptimized: true,
     remotePatterns: [
       {
         protocol: 'https',
@@ -130,12 +115,6 @@ module.exports = withBundleAnalyzer({
         pathname: '/**',
       },
     ],
-  },
-  reactStrictMode: true,
-  swcMinify: true,
-  pageExtensions: ['js', 'jsx', 'md', 'mdx'],
-  eslint: {
-    dirs: ['pages', 'components', 'lib', 'layouts', 'scripts'],
   },
   async headers() {
     return [
@@ -163,4 +142,6 @@ module.exports = withBundleAnalyzer({
 
     return config
   },
-})
+}
+
+module.exports = withBundleAnalyzer(nextConfig)
