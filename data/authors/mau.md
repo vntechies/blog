@@ -11,7 +11,7 @@ github: https://github.com/qmauvnt
 url: http://qmau.me/
 ---
 
-Cựu sinh viên K57 Bách Khoa Hà Nội, đang làm việc tại Tokyo. Hiện tại mình đang là Senior Application Engineer của Dominos Pizza Japan - A Tech Company That Happens To Make Pizza 🍕
+Cựu sinh viên K57 Bách Khoa Hà Nội, đang làm việc tại Hà Nội. Hiện tại mình đang là Cloud Solution Architect của Cloud Kinetics Vietnam.
 
 Khi nhập học Bách Khoa, mình đăng ký hệ tiếng Anh nhưng vì không đủ chỉ tiêu nên được offer qua hệ tiếng Nhật. Bằng một cái tặc lưỡi và sau 5 năm chơi bời vất vả thì hôm nay mình đang ngồi trong một căn phòng nhỏ đầy nắng ở Tokyo 🗼
 
@@ -22,7 +22,8 @@ Ngoài ra mình cũng là founder của [VNTechies Dev Blog](https://vntechies.d
 
 ## Work
 
-- 06/2021 - 09/2021 Dominos Pizza Japan - Senior Technical Specialist
+- 09/2021 - Now Cloud Kinetics - Senior Solution Architect
+- 06/2021 - 09/2023 Dominos Pizza Japan - Senior Technical Specialist
 - 11/2017 - 05/2021 HOT-FACTORY.,LTD - System Engineer
 - 05/2016 - 10/2016 FRAMGIA VIETNAM - Engineer Trainee
 
