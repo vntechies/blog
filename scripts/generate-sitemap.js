@@ -71,6 +71,8 @@ const siteMetadata = require('../data/siteMetadata')
     parser: 'html',
   })
 
+  console.log('Site map generated!!!')
+
   // eslint-disable-next-line no-sync
-  fs.writeFileSync('public/sitemap.xml', formatted)
+  fs.writeFileSync('out/sitemap.xml', formatted)
 })()
