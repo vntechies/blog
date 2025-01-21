@@ -53,7 +53,7 @@ pip install -r requirements.txt
 
 Cấu trúc file sau khi project được tạo
 
-```shell:tree {3,15} showLineNumbers
+```shell:tree {3,15}
 ./
 ├── README.md
 ├── app.py
@@ -75,7 +75,7 @@ Cấu trúc file sau khi project được tạo
 
 ### Tiến hành tạo bảng `mapping-table` với partition_key là `id`
 
-```python:url_shortener/url_shortener_stack.py {3,13} showLineNumbers
+```python:url_shortener/url_shortener_stack.py {3,13}
 from aws_cdk import (
     Stack,
     aws_dynamodb as dynamodb,
@@ -204,7 +204,7 @@ def read_short_url(event):
 
 ### Thêm hàm Lambda, APIGateway vào stack và phân quyền phù hợp
 
-```python:url_shortener_stack.py {4-5,21-33} showLineNumbers
+```python:url_shortener_stack.py {4-5,21-33}
 from aws_cdk import (
     Stack,
     aws_dynamodb as dynamodb,
@@ -288,7 +288,7 @@ Resources
 
 - Deloy stack lên AWS Cloud
 
-```shell:shell {10} showLineNumbers
+```shell:shell {10}
 cdk deploy
 
 # 👇 output
@@ -307,7 +307,7 @@ arn:aws:cloudformation:ap-southeast-1:xxx:stack/UrlShortenerStack/xxxx
 
 - Bạn có thể thử sử dụng ứng dụng này với URL trong phần output
 
-```shell:shell {3, 8, 11} showLineNumbers
+```shell:shell {3, 8, 11}
 curl https://xxx.execute-api.ap-southeast-1.amazonaws.com/prod/\?targetUrl\=https://vntechies.dev/
 # 👇 output
 Created URL: https://xxx.execute-api.ap-southeast-1.amazonaws.com/prod/7deb07cb
@@ -346,7 +346,7 @@ export CDK_DEFAULT_ACCOUNT='xxx'
 export CDK_DEFAULT_REGION='ap-southeast-1'
 ```
 
-```python:python:url_shortener_stack.py {6-8,38-71} showLineNumbers
+```python:python:url_shortener_stack.py {6-8,38-71}
 from aws_cdk import (
     Stack,
     aws_dynamodb as dynamodb,
