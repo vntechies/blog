@@ -45,6 +45,13 @@ const AWSCert = () => {
               href="/blog/aws-certs/kinh-nghiem-thi-chung-chi-aws-certified-ai-practitioner"
               showMore={false}
             />
+            <Card
+              title="Kinh nghiệm thi chứng chỉ AWS Certified Machine Learning Engineer Associate"
+              description="Hướng dẫn ôn thi chứng chỉ AWS Certified Machine Learning Engineer Associate"
+              imgSrc="/static/images/ogps/aws-mle-a.png"
+              href="/blog/aws-certs/kinh-nghiem-thi-chung-chi-aws-certified-machine-learning-engineer-associate"
+              showMore={false}
+            />
           </div>
         </div>
         <Link href="/series/chung-chi-aws" aria-label="Tất cả hướng dẫn cho các kỳ thi năm 2024">
