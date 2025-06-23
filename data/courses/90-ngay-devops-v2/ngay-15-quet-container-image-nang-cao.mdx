@@ -1,0 +1,242 @@
+---
+title: 'Ngày 15: Quét container image nâng cao'
+images: ['/static/images/ogps/90daysofdevopsv2d15.png']
+summary: 'Hướng dẫn về SBOM, cơ sở dữ liệu lỗ hổng bảo mật và CVSS, giúp nâng cao bảo mật container image.'
+date: '2025-06-23'
+index: 15
+chapter: 'Tuần 3'
+---
+
+<TOCInline toc={props.toc} asDisclosure />
+
+## SBOM
+
+**SBOM** là viết tắt của **S**oftware **B**ill **O**f **M**aterials (Danh mục thành phần phần mềm).
+
+Đây là danh sách tất cả các thành phần cấu thành nên một ứng dụng hoặc hệ thống phần mềm.
+Nó bao gồm thông tin về các thư viện bên thứ ba, framework, và các thành phần mã nguồn mở hoặc độc quyền được sử dụng để xây dựng phần mềm.
+SBOM cũng có thể bao gồm chi tiết về phiên bản của các thành phần này, thông tin về giấy phép, và bất kỳ lỗ hổng bảo mật hoặc vấn đề an ninh nào đã biết.
+
+Mục tiêu của SBOM là liệt kê các thành phần này, cung cấp cho người dùng phần mềm cái nhìn rõ ràng về những gì có trong sản phẩm phần mềm, và giúp họ tránh các thành phần có thể gây hại về mặt bảo mật hoặc pháp lý.
+
+Việc sử dụng SBOM trở nên phổ biến hơn trong những năm gần đây, sau một số vụ tấn công chuỗi cung ứng lớn như [này](https://www.immuniweb.com/blog/5-biggest-supply-chain-attacks-in-2022-so-far.html) và [năm ngoái](https://cyolo.io/blog/top-5-supply-chain-attacks-of-2021/).
+
+Trong bối cảnh container image, một SBOM cho container image sẽ chứa:
+
+- Các gói và thư viện Linux được cài đặt trong container
+- Các gói ngôn ngữ lập trình được cài đặt cho ứng dụng chạy trong container (ví dụ: Python packages, Go packages, v.v.)
+
+Có các công cụ giúp bạn trích xuất SBOM từ container image.
+
+Một công cụ như vậy là [syft](https://github.com/anchore/syft).
+
+Ví dụ, chúng ta có thể dùng syft để tạo SBOM cho container image `ubuntu:latest`:
+
+```console
+$ syft ubuntu
+ ✔ Parsed image
+ ✔ Cataloged packages      [101 packages]
+NAME                 VERSION                                  TYPE
+adduser              3.118ubuntu5                             deb
+apt                  2.4.8                                    deb
+base-files           12ubuntu4.2                              deb
+base-passwd          3.5.52build1                             deb
+bash                 5.1-6ubuntu1                             deb
+bsdutils             1:2.37.2-4ubuntu3                        deb
+coreutils            8.32-4.1ubuntu1                          deb
+dash                 0.5.11+git20210903+057cd650a4ed-3build1  deb
+debconf              1.5.79ubuntu1                            deb
+debianutils          5.5-1ubuntu2                             deb
+diffutils            1:3.8-0ubuntu2                           deb
+dpkg                 1.21.1ubuntu2.1                          deb
+e2fsprogs            1.46.5-2ubuntu1.1                        deb
+findutils            4.8.0-1ubuntu3                           deb
+gcc-12-base          12.1.0-2ubuntu1~22.04                    deb
+gpgv                 2.2.27-3ubuntu2.1                        deb
+grep                 3.7-1build1                              deb
+gzip                 1.10-4ubuntu4.1                          deb
+hostname             3.23ubuntu2                              deb
+init-system-helpers  1.62                                     deb
+libacl1              2.3.1-1                                  deb
+libapt-pkg6.0        2.4.8                                    deb
+libattr1             1:2.5.1-1build1                          deb
+libaudit-common      1:3.0.7-1build1                          deb
+libaudit1            1:3.0.7-1build1                          deb
+libblkid1            2.37.2-4ubuntu3                          deb
+libbz2-1.0           1.0.8-5build1                            deb
+libc-bin             2.35-0ubuntu3.1                          deb
+libc6                2.35-0ubuntu3.1                          deb
+libcap-ng0           0.7.9-2.2build3                          deb
+libcap2              1:2.44-1build3                           deb
+libcom-err2          1.46.5-2ubuntu1.1                        deb
+libcrypt1            1:4.4.27-1                               deb
+libdb5.3             5.3.28+dfsg1-0.8ubuntu3                  deb
+libdebconfclient0    0.261ubuntu1                             deb
+libext2fs2           1.46.5-2ubuntu1.1                        deb
+libffi8              3.4.2-4                                  deb
+libgcc-s1            12.1.0-2ubuntu1~22.04                    deb
+libgcrypt20          1.9.4-3ubuntu3                           deb
+libgmp10             2:6.2.1+dfsg-3ubuntu1                    deb
+libgnutls30          3.7.3-4ubuntu1.1                         deb
+libgpg-error0        1.43-3                                   deb
+libgssapi-krb5-2     1.19.2-2                                 deb
+libhogweed6          3.7.3-1build2                            deb
+libidn2-0            2.3.2-2build1                            deb
+libk5crypto3         1.19.2-2                                 deb
+libkeyutils1         1.6.1-2ubuntu3                           deb
+libkrb5-3            1.19.2-2                                 deb
+libkrb5support0      1.19.2-2                                 deb
+liblz4-1             1.9.3-2build2                            deb
+liblzma5             5.2.5-2ubuntu1                           deb
+libmount1            2.37.2-4ubuntu3                          deb
+libncurses6          6.3-2                                    deb
+libncursesw6         6.3-2                                    deb
+libnettle8           3.7.3-1build2                            deb
+libnsl2              1.3.0-2build2                            deb
+libp11-kit0          0.24.0-6build1                           deb
+libpam-modules       1.4.0-11ubuntu2                          deb
+libpam-modules-bin   1.4.0-11ubuntu2                          deb
+libpam-runtime       1.4.0-11ubuntu2                          deb
+libpam0g             1.4.0-11ubuntu2                          deb
+libpcre2-8-0         10.39-3ubuntu0.1                         deb
+libpcre3             2:8.39-13ubuntu0.22.04.1                 deb
+libprocps8           2:3.3.17-6ubuntu2                        deb
+libseccomp2          2.5.3-2ubuntu2                           deb
+libselinux1          3.3-1build2                              deb
+libsemanage-common   3.3-1build2                              deb
+libsemanage2         3.3-1build2                              deb
+libsepol2            3.3-1build1                              deb
+libsmartcols1        2.37.2-4ubuntu3                          deb
+libss2               1.46.5-2ubuntu1.1                        deb
+libssl3              3.0.2-0ubuntu1.7                         deb
+libstdc++6           12.1.0-2ubuntu1~22.04                    deb
+libsystemd0          249.11-0ubuntu3.6                        deb
+libtasn1-6           4.18.0-4build1                           deb
+libtinfo6            6.3-2                                    deb
+libtirpc-common      1.3.2-2ubuntu0.1                         deb
+libtirpc3            1.3.2-2ubuntu0.1                         deb
+libudev1             249.11-0ubuntu3.6                        deb
+libunistring2        1.0-1                                    deb
+libuuid1             2.37.2-4ubuntu3                          deb
+libxxhash0           0.8.1-1                                  deb
+libzstd1             1.4.8+dfsg-3build1                       deb
+login                1:4.8.1-2ubuntu2                         deb
+logsave              1.46.5-2ubuntu1.1                        deb
+lsb-base             11.1.0ubuntu4                            deb
+mawk                 1.3.4.20200120-3                         deb
+mount                2.37.2-4ubuntu3                          deb
+ncurses-base         6.3-2                                    deb
+ncurses-bin          6.3-2                                    deb
+passwd               1:4.8.1-2ubuntu2                         deb
+perl-base            5.34.0-3ubuntu1.1                        deb
+procps               2:3.3.17-6ubuntu2                        deb
+sed                  4.8-1ubuntu2                             deb
+sensible-utils       0.0.17                                   deb
+sysvinit-utils       3.01-1ubuntu1                            deb
+tar                  1.34+dfsg-1build3                        deb
+ubuntu-keyring       2021.03.26                               deb
+usrmerge             25ubuntu2                                deb
+util-linux           2.37.2-4ubuntu3                          deb
+zlib1g               1:1.2.11.dfsg-2ubuntu9.2                 deb
+```
+
+Ta thấy rằng SBOM không chỉ chứa các gói và thư viện được cài đặt bên trong container image,
+mà còn liệt kê loại và phiên bản của chúng.
+Chúng ta có thể dùng danh sách này để đối chiếu với cơ sở dữ liệu lỗ hổng bảo mật nhằm kiểm tra xem container có lỗ hổng nào không.
+
+Vậy **Cơ sở dữ liệu lỗ hổng bảo mật** là gì?
+
+## Cơ sở dữ liệu lỗ hổng bảo mật
+
+Cơ sở dữ liệu lỗ hổng bảo mật là tập hợp thông tin về các lỗ hổng đã biết trong phần mềm, phần cứng và các hệ thống khác.
+Nó thường bao gồm chi tiết về bản chất của lỗ hổng, như loại lỗ hổng, mức độ nghiêm trọng và tác động tiềm tàng.
+Cơ sở dữ liệu này cũng có thể cung cấp thông tin về cách khai thác lỗ hổng, cũng như các bản vá hoặc giải pháp khắc phục.
+
+Một số cơ sở dữ liệu lỗ hổng bảo mật là [vuldb.com](https://vuldb.com/), [NIST](https://nvd.nist.gov/vuln), [cvedetails.com](https://www.cvedetails.com/) và [Snyk Vulnerability Database](https://security.snyk.io/).
+
+Chúng cung cấp API hoặc dữ liệu raw để bạn tải về, và đối chiếu các package trong SBOM với thông tin lỗ hổng.
+Nhờ đó, bạn có thể phát hiện package nào có lỗ hổng cần quan tâm.
+
+Thông thường, bạn cũng có thể tìm thấy thông tin về phiên bản thư viện mà lỗ hổng xuất hiện và liệu nó đã được sửa ở phiên bản mới hơn chưa.
+Dựa vào đó, bạn có thể quyết định cập nhật hoặc hạ cấp phụ thuộc để giảm thiểu rủi ro.
+Như đã đề cập ở [Day 14](./day14.md), việc cập nhật phụ thuộc không phải lúc nào cũng đơn giản, vì có thể thay đổi hành vi hoặc API.
+
+Một thông tin quan trọng khác về lỗ hổng là **CVSS Score**.
+
+## CVSS
+
+**CVSS** là viết tắt của **C**ommon **V**ulnerability **S**coring **S**ystem (Hệ thống chấm điểm lỗ hổng chung).
+
+CVSS cung cấp cách ghi nhận các đặc điểm chính của một lỗ hổng và tạo ra điểm số phản ánh mức độ nghiêm trọng.
+Điểm số này có thể được chuyển thành mức định tính (như thấp, trung bình, cao, nghiêm trọng) để giúp tổ chức đánh giá và ưu tiên xử lý lỗ hổng.
+
+Nói đơn giản, một lỗ hổng có thể nghiêm trọng hơn lỗ hổng khác.
+Chúng ta cần một hệ thống khách quan để xếp hạng lỗ hổng dựa trên mức độ dễ khai thác và mức độ thiệt hại.
+
+Đó là lý do CVSS ra đời.
+
+CVSS v3 định nghĩa 8 tiêu chí để tính điểm CVSS:
+
+### Attack Vector
+
+Phản ánh bối cảnh mà lỗ hổng có thể bị khai thác.
+
+Giá trị: **Network(N)**, **Adjacent(A)**, **Local(L)**, **Physical(P)**
+
+### Attack Complexity
+
+Mô tả các điều kiện ngoài tầm kiểm soát của kẻ tấn công cần tồn tại để khai thác lỗ hổng.
+
+Giá trị: **Low(L)**, **High(H)**
+
+### Privileges Required
+
+Mô tả mức độ quyền mà kẻ tấn công cần có trước khi khai thác thành công lỗ hổng.
+
+Giá trị: **None(N)**, **Low(L)**, **High(H)**
+
+### User Interaction
+
+Yêu cầu sự tham gia của người dùng (không phải kẻ tấn công) để khai thác thành công lỗ hổng.
+
+Giá trị: **None(N)**, **Required(R)**
+
+### Scope
+
+Khả năng lỗ hổng ở một thành phần phần mềm ảnh hưởng đến tài nguyên ngoài phạm vi hoặc quyền hạn của nó.
+
+Giá trị: **Unchanged(U)**, **Changed(C)**
+
+### Confidentiality
+
+Tác động đến tính bảo mật của thông tin do thành phần phần mềm quản lý khi lỗ hổng bị khai thác.
+
+Giá trị: **None(N)**, **Low(L)**, **High(H)**
+
+### Integrity
+
+Tác động đến tính toàn vẹn khi lỗ hổng bị khai thác.
+
+Giá trị: **None(N)**, **Low(L)**, **High(H)**
+
+### Availability
+
+Tác động đến tính sẵn sàng của thành phần bị ảnh hưởng khi lỗ hổng bị khai thác.
+
+Giá trị: **None(N)**, **Low(L)**, **High(H)**
+
+Sự kết hợp của 8 tiêu chí này xác định điểm CVSS.
+Điểm số nằm trong khoảng từ 0 đến 10.
+0 là thấp nhất, 10 là nghiêm trọng nhất.
+
+[Bạn có thể dùng công cụ này](https://www.first.org/cvss/calculator/3.0) để tính điểm CVSS cho từng lỗ hổng.
+
+## Tài liệu tham khảo
+
+https://www.nist.gov/itl/executive-order-improving-nations-cybersecurity
+
+https://www.aquasec.com/cloud-native-academy/supply-chain-security/sbom/
+
+Vào ngày 16 chúng ta sẽ tìm hiểu về "Fuzzing" và kiểm thử Fuzzing.
+
+> Các bài viết là bản tiếng Việt của tài liệu [90DaysOfDevOps](https://github.com/MichaelCade/90DaysOfDevOps/tree/main/2023/Days) của [Micheal Cade](https://twitter.com/MichaelCade1) và có qua sửa đổi, bổ sung. Tất cả đều có license [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License][cc-by-nc-sa].
