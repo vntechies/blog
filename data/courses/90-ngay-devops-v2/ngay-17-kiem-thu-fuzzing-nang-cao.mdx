@@ -1,0 +1,254 @@
+---
+title: 'Ngày 17: Kiểm thử Fuzzing nâng cao'
+images: ['/static/images/ogps/90daysofdevopsv2d17.png']
+summary: 'Hướng dẫn về kiểm thử fuzzing nâng cao cho ứng dụng web.'
+date: '2025-06-23'
+index: 17
+chapter: 'Tuần 3'
+---
+
+<TOCInline toc={props.toc} asDisclosure />
+
+Hôm qua chúng ta đã tìm hiểu fuzzing là gì và cách viết fuzz test (unit test với dữ liệu đầu vào ngẫu nhiên).
+Tuy nhiên, fuzz testing không chỉ dừng lại ở unit testing.
+Chúng ta có thể áp dụng phương pháp này để kiểm thử ứng dụng web bằng cách fuzz các request gửi đến server.
+
+Hôm nay, chúng ta sẽ thực hành kiểm thử fuzz cho một web server.
+
+Có nhiều công cụ hỗ trợ việc này.
+
+Một số công cụ như [Burp Intruder](https://portswigger.net/burp/documentation/desktop/tools/intruder) và [SmartBear](https://smartbear.com/).
+Tuy nhiên, đây là các công cụ thương mại và cần mua bản quyền để sử dụng.
+
+Vì vậy, trong bài hôm nay, chúng ta sẽ sử dụng một CLI mã nguồn mở đơn giản viết bằng Go, lấy cảm hứng từ Burp Intruder và cung cấp chức năng tương tự.
+Công cụ này tên là [httpfuzz](https://github.com/JonCooperWorks/httpfuzz).
+
+## Bắt đầu
+
+Công cụ này khá đơn giản.
+Chúng ta cung cấp cho nó một template request (trong đó có các placeholder cho dữ liệu fuzz), một wordlist (dữ liệu fuzz) và `httpfuzz` sẽ render các request rồi gửi đến server.
+
+Đầu tiên, hãy tạo một template cho request.
+Tạo file `request.txt` với nội dung sau:
+
+```text
+POST / HTTP/1.1
+Content-Type: application/json
+User-Agent: PostmanRuntime/7.26.3
+Accept: */*
+Cache-Control: no-cache
+Host: localhost:8000
+Accept-Encoding: gzip, deflate
+Connection: close
+Content-Length: 35
+
+{
+    "name": "`S9`",
+}
+```
+
+Đây là một HTTP `POST` hợp lệ đến route `/` với body dạng JSON.
+Ký tự "\`" trong body là placeholder sẽ được thay thế bằng dữ liệu chúng ta cung cấp.
+
+`httpfuzz` cũng có thể fuzz các header, path và URL params.
+
+Tiếp theo, cần cung cấp wordlist các input sẽ được chèn vào request.
+Tạo file `data.txt` với nội dung:
+
+```text
+SOME_NAME
+Mozilla/5.0 (Linux; Android 7.0; SM-G930VC Build/NRD90M; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/58.0.3029.83 Mobile Safari/537.36
+```
+
+Trong file này, chúng ta định nghĩa hai input sẽ được thay thế vào body.
+Trong thực tế, bạn nên đưa nhiều dữ liệu hơn để kiểm thử fuzz hiệu quả.
+
+Sau khi đã có template và input, hãy chạy công cụ.
+Hiện tại tool này chưa có binary sẵn, nên cần build từ source.
+Clone repo và chạy:
+
+```shell
+go build -o httpfuzz cmd/httpfuzz.go
+```
+
+(yêu cầu đã cài Go phiên bản mới trên máy).
+
+Sau khi có file binary, chạy lệnh:
+
+```shell
+./httpfuzz \
+   --wordlist data.txt \
+   --seed-request request.txt \
+   --target-header User-Agent \
+   --target-param fuzz \
+   --delay-ms 50 \
+   --skip-cert-verify \
+   --proxy-url http://localhost:8080 \
+```
+
+- `httpfuzz` là binary chúng ta chạy.
+- `--wordlist data.txt` là file chứa input.
+- `--seed-request requests.txt` là template request.
+- `--target-header User-Agent` yêu cầu `httpfuzz` dùng input thay cho header `User-Agent`.
+- `--target-param fuzz` dùng input làm giá trị cho tham số URL `fuzz`.
+- `--delay-ms 50` yêu cầu chờ 50 ms giữa các request.
+- `--skip-cert-verify` bỏ qua xác thực TLS.
+- `--proxy-url http://localhost:8080` là địa chỉ server HTTP.
+
+Chúng ta có 2 input và 3 vị trí để thêm (body, header `User-Agent`, và param `fuzz`).
+Như vậy, `httpfuzz` sẽ tạo 6 request và gửi đến server.
+
+Chạy thử và xem kết quả.
+Tôi đã viết một web server đơn giản để log lại các request nhận được:
+
+```shell
+$ ./httpfuzz \
+   --wordlist data.txt \
+   --seed-request request.txt \
+   --target-header User-Agent \
+   --target-param fuzz \
+   --delay-ms 50 \
+   --skip-cert-verify \
+   --proxy-url http://localhost:8080 \
+
+httpfuzz: httpfuzz.go:164: Sending 6 requests
+```
+
+và log của server:
+
+```text
+-----
+Got request to http://localhost:8000/
+User-Agent header = [SOME_NAME]
+Name = S9
+-----
+Got request to http://localhost:8000/?fuzz=SOME_NAME
+User-Agent header = [PostmanRuntime/7.26.3]
+Name = S9
+-----
+Got request to http://localhost:8000/
+User-Agent header = [PostmanRuntime/7.26.3]
+Name = SOME_NAME
+-----
+Got request to http://localhost:8000/
+User-Agent header = [Mozilla/5.0 (Linux; Android 7.0; SM-G930VC Build/NRD90M; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/58.0.3029.83 Mobile Safari/537.36]
+Name = S9
+-----
+Got request to http://localhost:8000/?fuzz=Mozilla%2F5.0+%28Linux%3B+Android+7.0%3B+SM-G930VC+Build%2FNRD90M%3B+wv%29+AppleWebKit%2F537.36+%28KHTML%2C+like+Gecko%29+Version%2F4.083+Mobile+Safari%2F537.36
+User-Agent header = [PostmanRuntime/7.26.3]
+Name = S9
+-----
+Got request to http://localhost:8000/
+User-Agent header = [PostmanRuntime/7.26.3]
+Name = Mozilla/5.0 (Linux; Android 7.0; SM-G930VC Build/NRD90M; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/58.0.3029.83 Mobile Safari/537.36
+```
+
+Chúng ta thấy server nhận được 6 HTTP request.
+
+Hai request có giá trị từ file input cho header `User-Agent`, 4 request còn lại dùng header mặc định từ template.
+Hai request có giá trị từ file input cho param `fuzz`, 4 request còn lại dùng header mặc định.
+Hai request có giá trị từ file input cho trường `Name` trong body, 4 request còn lại dùng header mặc định.
+
+Một cải tiến nhỏ cho tool là có thể tạo các permutation khác nhau (ví dụ, một request vừa có `?fuzz=` vừa có `User-Agent` lấy từ input).
+
+Lưu ý là `httpfuzz` không cung cấp thông tin về kết quả của các request.
+Để biết được, chúng ta cần thiết lập monitoring cho server hoặc viết plugin cho `httpfuzz` để xử lý kết quả theo ý muốn.
+Hãy thử viết plugin.
+
+Để viết plugin, cần implement interface [`Listener`](https://github.com/JonCooperWorks/httpfuzz/blob/master/plugin.go#L13):
+
+```go
+// Listener must be implemented by a plugin to users to hook the request - response transaction.
+// The Listen method will be run in its own goroutine, so plugins cannot block the rest of the program, however panics can take down the entire process.
+type Listener interface {
+    Listen(results <-chan *Result)
+}
+```
+
+```go
+package main
+
+import (
+    "bytes"
+    "io/ioutil"
+    "log"
+
+    "github.com/joncooperworks/httpfuzz"
+)
+
+type logResponseCodePlugin struct {
+    logger *log.Logger
+}
+
+func (b *logResponseCodePlugin) Listen(results <-chan *httpfuzz.Result) {
+    for result := range results {
+        b.logger.Printf("Got %d response from the server\n", result.Response.StatusCode)
+    }
+}
+
+// New returns a logResponseCodePlugin plugin that simple logs the response code of the response.
+func New(logger *log.Logger) (httpfuzz.Listener, error) {
+    return &logResponseCodePlugin{logger: logger}, nil
+}
+```
+
+Build plugin:
+
+```shell
+go build -buildmode=plugin -o log exampleplugins/log/log.go
+```
+
+và plug vào `httpfuzz` qua flag `--post-request`:
+
+```shell
+$ ./httpfuzz \
+   --wordlist data.txt \
+   --seed-request request.txt \
+   --target-header User-Agent \
+   --target-param fuzz \
+   --delay-ms 50 \
+   --skip-cert-verify \
+   --proxy-url http://localhost:8080 \
+   --post-request log
+
+httpfuzz: httpfuzz.go:164: Sending 6 requests
+httpfuzz: log.go:15: Got 200 response from the server
+httpfuzz: log.go:15: Got 200 response from the server
+httpfuzz: log.go:15: Got 200 response from the server
+httpfuzz: log.go:15: Got 200 response from the server
+httpfuzz: log.go:15: Got 200 response from the server
+httpfuzz: log.go:15: Got 200 response from the server
+```
+
+Vậy là xong!
+Giờ chúng ta đã thấy được response code trả về từ server.
+
+Tất nhiên, bạn có thể viết plugin phức tạp hơn để xuất nhiều thông tin hơn, nhưng với mục đích bài này, như vậy là đủ.
+
+## Tổng kết
+
+Fuzzing là kỹ thuật kiểm thử mạnh mẽ, vượt xa unit testing.
+
+Fuzzing rất hữu ích khi kiểm thử HTTP server bằng cách thay thế các phần của request hợp lệ bằng dữ liệu có thể giúp phát hiện lỗ hổng hoặc điểm yếu của server.
+
+Có rất nhiều công cụ hỗ trợ fuzzy testing cho web application, cả miễn phí lẫn trả phí.
+
+## Tài liệu tham khảo
+
+[OWASP: Fuzzing](https://owasp.org/www-community/Fuzzing)
+
+[OWASP: Fuzz Vectors](https://owasp.org/www-project-web-security-testing-guide/v41/6-Appendix/C-Fuzz_Vectors)
+
+[Hacking HTTP with HTTPfuzz](https://medium.com/swlh/hacking-http-with-httpfuzz-67cfd061b616)
+
+[Fuzzing the Stack for Fun and Profit at DefCamp 2019](https://www.youtube.com/watch?v=qCMfrbpuCBk&list=PLnwq8gv9MEKiUOgrM7wble1YRsrqRzHKq&index=33)
+
+[HTTP Fuzzing Scan with SmartBear](https://support.smartbear.com/readyapi/docs/security/scans/types/fuzzing-http.html)
+
+[Fuzzing Session: Finding Bugs and Vulnerabilities Automatically](https://youtu.be/DSJePjhBN5E)
+
+[Fuzzing the CNCF Landscape](https://youtu.be/zIyIZxAZLzo)
+
+Hẹn gặp lại ở [ngày 18](https://vntechies.dev/courses/90-ngay-devops-v2/ngay-18-dast).
+
+> Các bài viết là bản tiếng Việt của tài liệu [90DaysOfDevOps](https://github.com/MichaelCade/90DaysOfDevOps/tree/main/2023/Days) của [Micheal Cade](https://twitter.com/MichaelCade1) và có qua sửa đổi, bổ sung. Tất cả đều có license [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License][cc-by-nc-sa].

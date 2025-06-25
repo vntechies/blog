@@ -1,0 +1,166 @@
+---
+title: 'Ngày 20: Thực hành với IAST và DAST'
+images: ['/static/images/ogps/90daysofdevopsv2d20.png']
+summary: 'Thực hành kiểm thử bảo mật ứng dụng với IAST (Contrast CE), DAST (ZAP Proxy) và quét lỗ hổng container bằng grype.'
+date: '2025-06-23'
+index: 20
+chapter: 'Tuần 3'
+---
+
+<TOCInline toc={props.toc} asDisclosure />
+
+Sau khi tìm hiểu IAST và DAST là gì, đã đến lúc chúng ta thực hành và thực hiện một bài tập sử dụng các quy trình này để tìm lỗ hổng trong ứng dụng thực tế.
+
+**LƯU Ý:** Hiện không có giải pháp IAST mã nguồn mở, vì vậy chúng ta sẽ phải sử dụng một giải pháp thương mại.
+Đừng lo, có gói miễn phí nên bạn có thể làm lab mà không cần trả phí.
+
+Lab này dựa trên [repo này](https://github.com/rstatsinger/contrast-java-webgoat-docker).
+
+Repo này chứa một ứng dụng Java có lỗ hổng để kiểm thử và khai thác, Docker và Docker Compose để thiết lập dễ dàng, cùng [Contrast Community Edition](https://www.contrastsecurity.com/contrast-community-edition?utm_campaign=ContrastCommunityEdition&utm_source=GitHub&utm_medium=WebGoatLab) làm giải pháp IAST.
+
+## Yêu cầu chuẩn bị
+
+- [Docker](https://www.docker.com/products/docker-desktop/)
+- [Docker Compose](https://docs.docker.com/compose/)
+- Tài khoản Contrast CE. Đăng ký miễn phí [tại đây](https://www.contrastsecurity.com/contrast-community-edition?utm_campaign=ContrastCommunityEdition&utm_source=GitHub&utm_medium=WebGoatLab).
+
+**LƯU Ý:** Tác giả bài viết này và chương trình 90 Days of DevOps không liên quan hay hợp tác với Contrast Security.
+Chúng tôi sử dụng giải pháp thương mại này vì không có giải pháp mã nguồn mở, và vì nó có gói miễn phí không yêu cầu trả phí hay cung cấp thẻ tín dụng.
+
+1. Vì không có giải pháp IAST mã nguồn mở, chúng ta sẽ dùng giải pháp thương mại với một số license miễn phí. Bạn cần 2 thành phần:
+   Giải pháp IAST từ đây - https://github.com/rstatsinger/contrast-java-webgoat-docker. Bạn cần cài docker và docker-compose trên môi trường mac hoặc linux (lab này test trên Mint). Làm theo README để tạo tài khoản Contrast.
+
+## Bắt đầu
+
+Đầu tiên, clone [repository](https://github.com/rstatsinger/contrast-java-webgoat-docker).
+
+Lấy thông tin đăng nhập từ Contrast Security.
+Nhấn vào tên bạn ở góc trên bên phải -> `Organization Settings` -> `Agent`.
+Lấy các giá trị `Agent Username`, `Agent Service Key` và `API Key`.
+
+Thay các giá trị này vào file `.env.template` trong repo vừa clone.
+
+**LƯU Ý:** Đây là thông tin bí mật.
+Không commit lên Git.
+Tốt nhất nên thêm `.env.template` vào `.gitignore` để tránh commit nhầm.
+
+## Chạy ứng dụng có lỗ hổng
+
+Để chạy ứng dụng, chạy lệnh:
+
+```sh
+./run.sh
+```
+
+hoặc
+
+```sh
+docker compose up
+```
+
+Khi sẵn sàng, giao diện ứng dụng sẽ truy cập được tại http://localhost:8080/WebGoat.
+
+## Thực hành khai thác
+
+Giờ chúng ta có ứng dụng có lỗ hổng, hãy thử khai thác nó.
+
+1. Cài ZAP Proxy từ [đây](https://www.zaproxy.org/download/)
+
+   Một cách đơn giản là dùng DAST scanner.
+   Một scanner như vậy là [ZAP Proxy](https://www.zaproxy.org/).
+   Đây là công cụ quét web app miễn phí và mã nguồn mở.
+
+2. Cài `zap-cli` từ [đây](https://github.com/Grunny/zap-cli)
+
+   Tiếp theo, cài `zap-cli`.
+   `zap-cli` là CLI mã nguồn mở cho ZAP Proxy.
+
+3. Chạy ZAP proxy
+
+   Chạy ZAP Proxy từ nơi đã cài đặt.
+   Trên Linux Mint mặc định ở `/opt/zaproxy`.
+   Trên MacOS ở `Applications`.
+
+4. Thiết lập biến môi trường `ZAP_API_KEY` và `ZAP_PORT`
+
+   Lấy các giá trị này từ ZAP Proxy.
+   Vào `Options...` -> `API` để lấy API Key.
+
+   Vào `Options...` -> `Network` -> `Local Servers/Proxies` để cấu hình và lấy port.
+
+5. Chạy các lệnh với `zap-cli`
+
+   Ví dụ:
+
+   ```sh
+   zap-cli quick-scan -s all --ajax-spider -r http://127.0.0.1:8080/WebGoat/login.mvc
+   ```
+
+   Hoặc bạn có thể làm theo hướng dẫn trong [repo](https://github.com/rstatsinger/contrast-java-webgoat-docker/blob/master/Lab-WebGoat.pdf)
+   để khai thác ứng dụng.
+
+6. Quan sát kết quả trên Contrast
+
+   Dù làm cách nào, nếu vào tab **Vulnerabilities** của ứng dụng trên Contrast bạn sẽ thấy Contrast phát hiện ra các lỗ hổng
+   và cảnh báo bạn cần xử lý.
+
+## Bonus: Quét lỗ hổng image
+
+Chúng ta đã thấy IAST giúp phát hiện tấn công bằng cách quan sát hành vi ứng dụng.
+Giờ hãy xem liệu chúng ta có thể phòng tránh các tấn công này từ đầu không.
+
+Ứng dụng có lỗ hổng này được đóng gói dưới dạng container.
+Hãy quét container này bằng công cụ `grype` mà chúng ta đã học ở Ngày [14](day14.md) và [15](day15.md) để xem kết quả.
+
+```sh
+$ grype contrast-java-webgoat-docker-webgoat
+ ✔ Vulnerability DB        [no update available]
+ ✔ Loaded image
+ ✔ Parsed image
+ ✔ Cataloged packages      [316 packages]
+ ✔ Scanned image           [374 vulnerabilities]
+NAME                 INSTALLED               FIXED-IN                TYPE          VULNERABILITY        SEVERITY
+apt                  1.8.2.3                                         deb           CVE-2011-3374        Negligible
+axis                 1.4                                             java-archive  GHSA-55w9-c3g2-4rrh  Medium
+axis                 1.4                                             java-archive  GHSA-96jq-75wh-2658  Medium
+bash                 5.0-4                                           deb           CVE-2019-18276       Negligible
+bash                 5.0-4                   (won't fix)             deb           CVE-2022-3715        High
+bsdutils             1:2.33.1-0.1                                    deb           CVE-2022-0563        Negligible
+bsdutils             1:2.33.1-0.1            (won't fix)             deb           CVE-2021-37600       Low
+commons-beanutils    1.8.3                                           java-archive  CVE-2014-0114        High
+commons-beanutils    1.8.3                                           java-archive  CVE-2019-10086       High
+commons-beanutils    1.8.3                   1.9.2                   java-archive  GHSA-p66x-2cv9-qq3v  High
+commons-beanutils    1.8.3                   1.9.4                   java-archive  GHSA-6phf-73q6-gh87  High
+commons-collections  3.2.1                                           java-archive  CVE-2015-6420        High
+commons-collections  3.2.1                   3.2.2                   java-archive  GHSA-6hgm-866r-3cjv  High
+commons-collections  3.2.1                   3.2.2                   java-archive  GHSA-fjq5-5j5f-mvxh  Critical
+commons-fileupload   1.3.1                                           java-archive  CVE-2016-1000031     Critical
+commons-fileupload   1.3.1                                           java-archive  CVE-2016-3092        High
+commons-fileupload   1.3.1                   1.3.2                   java-archive  GHSA-fvm3-cfvj-gxqq  High
+commons-fileupload   1.3.1                   1.3.3                   java-archive  GHSA-7x9j-7223-rg5m  Critical
+commons-io           2.4                                             java-archive  CVE-2021-29425       Medium
+commons-io           2.4                     2.7                     java-archive  GHSA-gwrp-pvrq-jmwv  Medium
+coreutils            8.30-3                                          deb           CVE-2017-18018       Negligible
+coreutils            8.30-3                  (won't fix)             deb           CVE-2016-2781        Low
+curl                 7.64.0-4+deb10u3                                deb           CVE-2021-22922       Negligible
+curl                 7.64.0-4+deb10u3                                deb           CVE-2021-22923       Negligible
+<truncated>
+```
+
+Như bạn thấy, image này có rất nhiều lỗ hổng.
+
+Nếu xem chi tiết từng lỗ hổng, bạn sẽ thấy có các lỗ hổng như RCE (Remote Code Execution), SQL Injection, XML External Entity Vulnerability, v.v.
+
+## Tổng kết tuần
+
+IAST và DAST là các phương pháp quan trọng giúp phát hiện lỗ hổng trong ứng dụng bằng cách giám sát hành vi của nó.
+Điều này thực hiện khi ứng dụng đã được triển khai.
+
+Container Image Scanning giúp phát hiện lỗ hổng dựa trên các thư viện có trong container.
+
+Image Scanning và IAST/DAST không loại trừ lẫn nhau.
+Chúng đều có vai trò trong Secure SDLC và giúp phát hiện các vấn đề khác nhau trước khi bị tấn công.
+
+Hẹn gặp lại ở ngày 21.
+
+> Các bài viết là bản tiếng Việt của tài liệu [90DaysOfDevOps](https://github.com/MichaelCade/90DaysOfDevOps/tree/main/2023/Days) của [Micheal Cade](https://twitter.com/MichaelCade1) và có qua sửa đổi, bổ sung. Tất cả đều có license [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License][cc-by-nc-sa].

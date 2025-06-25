@@ -1,0 +1,107 @@
+---
+title: 'Ngày 16: Kiểm thử Fuzzing'
+images: ['/static/images/ogps/90daysofdevopsv2d16.png']
+summary: 'Giới thiệu kỹ thuật kiểm thử Fuzzing, cách hoạt động, ví dụ Go, ưu nhược điểm và tài liệu tham khảo.'
+date: '2025-06-23'
+index: 16
+chapter: 'Tuần 3'
+---
+
+<TOCInline toc={props.toc} asDisclosure />
+
+Fuzzing, hay còn gọi là "fuzz testing", là một kỹ thuật kiểm thử phần mềm bằng cách cung cấp dữ liệu không hợp lệ, bất ngờ hoặc ngẫu nhiên làm đầu vào cho một chương trình máy tính.
+Mục tiêu của fuzzing là xác định các lỗ hổng bảo mật và các lỗi khác trong chương trình bằng cách khiến nó bị crash hoặc thể hiện hành vi không mong muốn.
+
+Fuzzing có thể được thực hiện thủ công hoặc sử dụng thư viện/framework kiểm thử để tạo ra các đầu vào cho chúng ta.
+
+Để hiểu rõ hơn về fuzzing, hãy xem ví dụ sau, giả sử có đoạn code này:
+
+```go
+func DontPanic(s string) {
+    if len(s) == 4 {
+        if s[0] == 'f' {
+            if s[1] == 'u' {
+                if s[2] == 'z' {
+                    if s[3] == 'z' {
+                        panic("error: wrong input")
+                    }
+                }
+            }
+        }
+    }
+}
+```
+
+Đây là một hàm Go nhận một đối số duy nhất là `string`.
+
+Nhìn vào hàm này, có thể thấy nó sẽ `panic` (tức là crash) chỉ trong một trường hợp duy nhất - nếu đầu vào là từ `fuzz`.
+
+Rõ ràng, hàm này rất đơn giản và chỉ cần nhìn vào là có thể hiểu được hành vi của nó.
+Tuy nhiên, trong các hệ thống phức tạp hơn, những điểm lỗi như vậy có thể không rõ ràng và có thể bị bỏ sót bởi người kiểm thử hoặc viết unit test.
+
+Đây là lúc fuzzing trở nên hữu ích.
+
+Thư viện Go Fuzzing (là một phần của thư viện chuẩn từ Go 1.18) sẽ sinh ra rất nhiều đầu vào cho một test case, sau đó dựa vào coverage và kết quả để xác định đầu vào nào là "interesting".
+
+Nếu chúng ta viết một fuzz test cho hàm này, quá trình sẽ diễn ra như sau:
+
+1. Thư viện fuzzing sẽ bắt đầu cung cấp các chuỗi ngẫu nhiên, bắt đầu từ chuỗi ngắn và tăng dần độ dài.
+2. Khi thư viện cung cấp một chuỗi có độ dài 4, nó sẽ nhận thấy sự thay đổi trong test-coverage (`if (len(s) == 4)` trở thành `true`) và tiếp tục sinh các đầu vào có độ dài này.
+3. Khi thư viện cung cấp một chuỗi độ dài 4 bắt đầu bằng `f`, nó lại nhận thấy sự thay đổi coverage (`if s[0] == "f"` thành `true`) và tiếp tục sinh các đầu vào bắt đầu bằng `f`.
+4. Quá trình tương tự lặp lại với `u` và hai ký tự `z`.
+5. Khi đầu vào là `fuzz`, hàm sẽ panic và test sẽ fail.
+6. Chúng ta đã _fuzzed_ thành công!
+
+Một thực hành tốt khi fuzzing là lưu lại các đầu vào đã khiến code bị crash và chạy lại chúng mỗi lần để đảm bảo lỗi đã phát hiện qua fuzzing sẽ không bao giờ xuất hiện lại trong code.
+
+Điều này cũng có thể là một tính năng của framework fuzzing.
+
+Hầu hết các thư viện fuzzing cho phép chúng ta thêm các giá trị cụ thể muốn kiểm thử.
+Điều này cũng giúp thư viện vì nó biết được các giá trị "interesting" để mô phỏng các giá trị sinh ra dựa trên chúng.
+
+## Khi fuzzing là chưa đủ
+
+Fuzzing là một kỹ thuật hữu ích, nhưng có những trường hợp nó không giúp ích được.
+
+Ví dụ, nếu đầu vào gây lỗi cho code quá đặc biệt và không có gợi ý nào, thư viện fuzzing có thể không đoán ra được.
+
+Nếu chúng ta thay đổi code ví dụ ở trên thành như sau:
+
+```go
+func DontPanic(s input) {
+    if (len(s) == 4) && s[0] == 'f' && s[1] == 'u' && s[2] == 'z' && s[3] == 'z' {
+        panic("error")
+    }
+}
+```
+
+hoặc chỉ đơn giản là:
+
+```go
+func DontPanic(s input) {
+    if s == "fuzz" {
+        panic("error")
+    }
+}
+```
+
+thì fuzzing sẽ không giúp ích, vì xác suất sinh ra đúng chuỗi `fuzz` là rất nhỏ nếu không có gợi ý,
+và không có đầu vào nào kích hoạt thay đổi code-coverage như ví dụ trước (chuỗi độ dài 4, chuỗi độ dài 4 bắt đầu bằng `z`, v.v.) sẽ kích hoạt coverage ở đây (vì chỉ có một điều kiện `if`, thay vì 5 điều kiện như trước).
+
+Vì vậy, cần hiểu rằng dù fuzzing là một cách tốt để phát hiện các trường hợp bất thường và góc cạnh trong code, nó không phải là giải pháp hoàn hảo cho code 100% đúng.
+
+## Ví dụ thực tế
+
+Nếu bạn muốn thực hành fuzzing với Go, hãy xem [repo của mình với các ví dụ về chủ đề này](https://github.com/asankov/go-fuzzing-101/tree/v1).
+
+Repo này chứa ví dụ mình đã dùng trong bài viết + một fuzz test sẽ kích hoạt lỗi, và hướng dẫn cách chạy test.
+
+## Tài liệu tham khảo
+
+- https://en.wikipedia.org/wiki/Fuzzing
+- [Fuzzing in Go by Valentin Deleplace, Devoxx Belgium 2022](https://www.youtube.com/watch?v=Zlf3s4EjnFU)
+- [Write applications faster and securely with Go by Cody Oss, Go Day 2022](https://www.youtube.com/watch?v=aw7lFSFGKZs)
+
+Hẹn gặp lại ở [ngày 17](https://vntechies.dev/courses/90-ngay-devops-v2/ngay-17-kiem-thu-fuzzing-nang-cao).
+
+> Các bài viết là bản tiếng Việt của tài liệu [90DaysOfDevOps](https://github.com/MichaelCade/90DaysOfDevOps/tree/main/2023/Days) của [Micheal Cade](https://twitter.com/MichaelCade1) và có qua sửa đổi, bổ sung. Tất cả đều có license [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License][cc-by-nc-sa].

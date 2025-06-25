@@ -1,0 +1,51 @@
+---
+title: 'Ngày 19: IAST'
+images: ['/static/images/ogps/90daysofdevopsv2d19.png']
+summary: 'Giới thiệu IAST - kiểm thử bảo mật ứng dụng theo thời gian thực bằng agent, ưu nhược điểm, điều kiện sử dụng, ví dụ công cụ.'
+date: '2025-06-23'
+index: 19
+chapter: 'Tuần 3'
+---
+
+<TOCInline toc={props.toc} asDisclosure />
+
+IAST là một loại công cụ kiểm thử bảo mật được thiết kế để xác định các lỗ hổng trong ứng dụng web và giúp lập trình viên khắc phục chúng. Nó hoạt động bằng cách chèn một agent nhỏ vào môi trường runtime của ứng dụng và giám sát hành vi của ứng dụng theo thời gian thực. Điều này cho phép các công cụ IAST phát hiện lỗ hổng khi chúng xảy ra, thay vì chỉ dựa vào phân tích tĩnh hoặc các cuộc tấn công mô phỏng.
+
+IAST hoạt động thông qua software instrumentation, tức là sử dụng các công cụ để giám sát ứng dụng khi nó chạy và thu thập thông tin về những gì nó thực hiện và cách nó hoạt động. Các giải pháp IAST instrument ứng dụng bằng cách triển khai các agent và sensor vào ứng dụng đang chạy và liên tục phân tích tất cả các tương tác của ứng dụng được khởi tạo bởi các bài test thủ công, tự động, hoặc kết hợp cả hai để xác định lỗ hổng theo thời gian thực. Agent IAST chạy bên trong ứng dụng và giám sát các mẫu tấn công đã biết. Vì là một phần của ứng dụng, nó có thể giám sát lưu lượng giữa các thành phần khác nhau (cả trong mô hình triển khai MVC truyền thống và microservices).
+
+## Để sử dụng IAST, cần có một số điều kiện tiên quyết
+
+- Ứng dụng cần được instrument (chèn agent vào).
+- Cần tạo ra traffic - thông qua test thủ công hoặc tự động. Một cách khác là sử dụng các công cụ DAST (ví dụ có thể dùng OWASP ZAP).
+
+## Ưu điểm
+
+Một trong những ưu điểm chính của công cụ IAST là chúng có thể cung cấp thông tin chi tiết và chính xác về các lỗ hổng cũng như cách khắc phục. Điều này giúp lập trình viên tiết kiệm nhiều thời gian và công sức, vì không phải tự tìm kiếm lỗ hổng hoặc cố gắng tái hiện chúng trong môi trường test. IAST cũng có thể phát hiện các lỗ hổng mà các phương pháp kiểm thử khác có thể bỏ sót, ví dụ các lỗ hổng cần tương tác người dùng hoặc chỉ xuất hiện trong một số điều kiện nhất định. Thời gian kiểm thử phụ thuộc vào các bài test sử dụng (vì IAST không phải là hệ thống độc lập) và với các bài test nhanh (test tự động) có thể tích hợp vào CI/CD pipeline. IAST có thể phát hiện nhiều loại lỗ hổng khác nhau và do đặc thù chỉ kiểm tra “real traffic”, số lượng false positive/negative thường ít hơn so với các loại kiểm thử khác.
+IAST có thể sử dụng theo hai kiểu - như một công cụ kiểm thử thông thường và như một giải pháp bảo vệ thời gian thực (gọi là RAST). Cả hai đều dựa trên nguyên tắc giống nhau và có thể dùng kết hợp.
+
+## Một số nhược điểm của công nghệ này
+
+- Đây là công nghệ khá mới nên chưa có nhiều kiến thức và kinh nghiệm cả từ phía đội ngũ bảo mật lẫn nhà phát triển công cụ (open-source hoặc thương mại).
+- Không thể sử dụng độc lập - cần có thứ gì đó (hoặc ai đó) tạo ra traffic. Quan trọng là phải kiểm thử tất cả các endpoint có thể có.
+- Kết quả phát hiện dựa trên traffic. Đặc biệt nếu chỉ dùng để kiểm thử - nếu không có traffic tới một phần của app/site thì phần đó sẽ không được kiểm thử và không có phát hiện nào.
+- Do cần instrument ứng dụng, việc triển khai có thể khá phức tạp, đặc biệt so với các công cụ quét mã nguồn (SAST hoặc SCA).
+
+Hiện có một số công cụ IAST khác nhau, mỗi công cụ có tính năng và khả năng riêng.
+
+## Một số tính năng phổ biến của công cụ IAST
+
+- Real-time monitoring: IAST giám sát hành vi ứng dụng theo thời gian thực, cho phép phát hiện lỗ hổng ngay khi chúng xảy ra.
+- Vulnerability identification: IAST có thể phát hiện nhiều loại lỗ hổng, bao gồm injection attacks, cross-site scripting (XSS), và cross-site request forgery (CSRF).
+- Remediation guidance: IAST thường cung cấp thông tin chi tiết về cách khắc phục lỗ hổng, bao gồm code snippet và khuyến nghị về secure coding practices.
+- Integration with other tools: IAST thường có thể tích hợp với các công cụ kiểm thử bảo mật khác như static code analysis hoặc penetration testing để cung cấp cái nhìn tổng thể hơn về bảo mật ứng dụng.
+
+IAST có thể là một bổ sung giá trị cho bộ công cụ của lập trình viên, giúp phát hiện và khắc phục lỗ hổng theo thời gian thực, tiết kiệm thời gian và công sức. Nếu bạn là lập trình viên và quan tâm đến việc sử dụng IAST, có nhiều lựa chọn trên thị trường, nên cần nghiên cứu và so sánh để chọn công cụ phù hợp nhất với nhu cầu.
+
+## Ví dụ về công cụ
+
+Gần như không có công cụ open-source trên thị trường. Ví dụ là công cụ thương mại: Contrast Community Edition (CE) - Phiên bản đầy đủ cho 1 ứng dụng và tối đa 5 người dùng (một số tính năng Enterprise bị giới hạn). Contrast CE chỉ hỗ trợ Java và .NET.
+Có thể tham khảo tại: https://www.contrastsecurity.com/contrast-community-edition
+
+Hẹn gặp lại ở [ngày 20](https://vntechies.dev/courses/90-ngay-devops-v2/ngay-20-thuc-hanh-voi-iast-dast).
+
+> Các bài viết là bản tiếng Việt của tài liệu [90DaysOfDevOps](https://github.com/MichaelCade/90DaysOfDevOps/tree/main/2023/Days) của [Micheal Cade](https://twitter.com/MichaelCade1) và có qua sửa đổi, bổ sung. Tất cả đều có license [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License][cc-by-nc-sa].

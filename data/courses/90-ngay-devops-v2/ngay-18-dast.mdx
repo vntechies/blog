@@ -1,0 +1,44 @@
+---
+title: 'Ngày 18: DAST'
+images: ['/static/images/ogps/90daysofdevopsv2d18.png']
+description: 'Giới thiệu DAST (Dynamic Application Security Testing), vai trò trong SSDLC, công cụ mã nguồn mở phổ biến, lưu ý sử dụng và tầm quan trọng trong DevSecOps pipeline.'
+date: '2025-06-23'
+index: 18
+chapter: 'Tuần 3'
+---
+
+<TOCInline toc={props.toc} asDisclosure />
+
+DAST, hay Dynamic Application Security Testing, là một kỹ thuật được sử dụng để đánh giá bảo mật của một ứng dụng bằng cách mô phỏng các cuộc tấn công từ bên ngoài. Ý tưởng là tự động hóa càng nhiều càng tốt các bài penetration testing kiểu black-box. Nó có thể được dùng để phát hiện các lỗ hổng dễ khai thác (low-hanging fruits) nhằm tiết kiệm thời gian cho các chuyên gia bảo mật thực thụ, đồng thời tạo ra lưu lượng truy cập cho các công cụ bảo mật khác (ví dụ: IAST).
+
+Tuy nhiên, DAST là một thành phần thiết yếu của SSDLC, vì nó giúp tổ chức phát hiện các lỗ hổng tiềm ẩn sớm trong quá trình phát triển, trước khi ứng dụng được triển khai lên môi trường production. Bằng cách thực hiện kiểm thử DAST, tổ chức có thể ngăn chặn các sự cố bảo mật và bảo vệ dữ liệu, tài sản khỏi bị tấn công.
+
+## Công cụ
+
+Có nhiều công cụ mã nguồn mở hỗ trợ DAST, như ZAP, Burp Suite và Arachni. Các công cụ này có thể mô phỏng nhiều loại tấn công khác nhau lên ứng dụng, ví dụ như SQL injection, cross-site scripting và các lỗ hổng phổ biến khác. Ví dụ, nếu một ứng dụng dễ bị tấn công SQL injection, một công cụ DAST có thể gửi truy vấn SQL độc hại như ' OR 1=1 -- và đánh giá phản hồi để xác định xem ứng dụng có bị lỗ hổng hay không. Nếu ứng dụng bị lỗ hổng, nó có thể trả về toàn bộ dữ liệu từ database, cho thấy cuộc tấn công đã thành công.
+
+Vì một số bài kiểm tra có thể khá nguy hiểm (ví dụ có thể bao gồm lệnh ‘DROP TABLE’ hoặc tương tự) hoặc ít nhất là đưa nhiều dữ liệu kiểm thử vào database, thậm chí gây DOS cho ứng dụng, **DAST tools không bao giờ nên chạy trên môi trường production!!!** Tất cả các công cụ đều có khả năng đăng nhập vào ứng dụng và điều này có thể dẫn đến rò rỉ thông tin đăng nhập production. Khi chạy các bài kiểm tra đã xác thực trên môi trường testing, hãy sử dụng các role phù hợp (nếu ứng dụng có mô hình RBAC), ví dụ DAST không nên dùng role có quyền xóa hoặc chỉnh sửa người dùng khác vì có thể làm hỏng toàn bộ môi trường kiểm thử.
+
+Như các phương pháp kiểm thử khác, cần phân tích phạm vi để tránh quét các mục tiêu không cần thiết.
+
+## Cách sử dụng
+
+Lỗi phổ biến là quét các biện pháp kiểm soát bảo mật bổ sung (ví dụ WAF) thay vì ứng dụng thực tế. DAST về bản chất là công cụ kiểm thử bảo mật ứng dụng và nên được sử dụng với ứng dụng thực, không phải các biện pháp bảo vệ. Vì sử dụng các kiểu tấn công tiêu chuẩn, các biện pháp bảo vệ bên ngoài có thể chặn lưu lượng tấn công và che giấu các lỗ hổng có thể khai thác (vì kẻ tấn công thực sự có thể vượt qua các biện pháp này).
+
+Các bài quét thực tế thường khá chậm, nên đôi khi nên chạy ngoài pipeline DevOps, ví dụ chạy vào ban đêm hoặc cuối tuần. Một số công cụ đơn giản (như zap, arachni, ...) có thể tích hợp vào pipeline nhưng thường, do tính chất của bài quét, có thể làm chậm quá trình phát triển.
+
+Sau khi kiểm thử DAST hoàn thành, kết quả sẽ được phân tích để xác định các lỗ hổng. Tổ chức có thể thực hiện các bước khắc phục phù hợp để xử lý lỗ hổng và cải thiện bảo mật tổng thể của ứng dụng. Điều này có thể bao gồm sửa mã nguồn, bổ sung các biện pháp kiểm soát bảo mật như kiểm tra và lọc dữ liệu đầu vào, hoặc kết hợp cả hai.
+
+Tóm lại, việc sử dụng DAST trong SSDLC là rất quan trọng để đảm bảo an toàn cho ứng dụng. Bằng cách kiểm thử DAST và phát hiện lỗ hổng sớm, tổ chức có thể ngăn chặn sự cố bảo mật và bảo vệ tài sản khỏi các mối đe dọa. Các công cụ mã nguồn mở như ZAP, Burp Suite và Arachni có thể được sử dụng để kiểm thử DAST và giúp tổ chức nâng cao mức độ bảo mật.
+
+Như các công cụ khác trong DevSecOps pipeline, DAST không nên là công cụ duy nhất và cũng không thể thay thế cho penetration test và các thực hành phát triển tốt.
+
+## Một số liên kết và công cụ mã nguồn mở hữu ích:
+
+- https://github.com/zaproxy/zaproxy
+- https://www.arachni-scanner.com/
+- https://owasp.org/www-project-devsecops-guideline/latest/02b-Dynamic-Application-Security-Testing
+
+Hẹn gặp lại ở [ngày 19](https://vntechies.dev/courses/90-ngay-devops-v2/ngay-19-iast).
+
+> Các bài viết là bản tiếng Việt của tài liệu [90DaysOfDevOps](https://github.com/MichaelCade/90DaysOfDevOps/tree/main/2023/Days) của [Micheal Cade](https://twitter.com/MichaelCade1) và có qua sửa đổi, bổ sung. Tất cả đều có license [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License][cc-by-nc-sa].
