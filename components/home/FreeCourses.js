@@ -11,6 +11,13 @@ const FreeCourses = () => {
         <div className="container py-12">
           <div className="-m-4 flex flex-wrap">
             <Card
+              title="90 Ngày DevOps v2 ♾️"
+              description="Tập trung vào DevSecOps với các kiến thức bảo mật và chuyên sâu trong SDLC"
+              imgSrc="/static/images/ogps/90daysdevopsv2.png"
+              href="/courses/90-ngay-devops-v2/gioi-thieu"
+              showMore={false}
+            />
+            <Card
               title="90 Ngày DevOps 🚀"
               description='Hành trình học tập, tìm hiểu các kiến thức nền tảng về "DevOps" trong 90 ngày'
               imgSrc="/static/images/90daysdevop.png"
@@ -22,6 +29,13 @@ const FreeCourses = () => {
               description="Hướng dẫn sử dụng AWS CDK 💪"
               imgSrc="/static/images/awscdk.png"
               href="/courses/aws/cdk/gioi-thieu"
+              showMore={false}
+            />
+            <Card
+              title="K8S Springboot 🕸️"
+              description="Triển khai ứng dụng Spring boot trên Kubernetes 🚀🕸️"
+              imgSrc="/static/images/ogps/k8s-springboot.png"
+              href="/courses/k8s-spring-boot/gioi-thieu"
               showMore={false}
             />
           </div>

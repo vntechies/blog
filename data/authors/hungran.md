@@ -1,8 +1,8 @@
 ---
-name: Thợ Đụng
+name: Hung Tran
 avatar: /static/images/authors/hungran.png
-occupation: Thợ Đụng
-company: VNTechies Dev blog
+occupation: Senior DevOps Engineer
+company: PlayStudios
 email: hung@vntechies.dev
 linkedin: https://www.linkedin.com/in/hungran91
 facebook: https://fb.me/hungran91
