@@ -401,6 +401,7 @@ export default function CourseSpecial({ children, frontMatter, mentorDetails }) 
                   <div className="ml-2 space-y-1">
                     <div>Tự động hoá hạ tầng (CloudFormation)</div>
                     <div>Containers (ECS, EKS)</div>
+                    <div>Lập trình với AI Assistant (Amazon Q)</div>
                     <div className="font-semibold text-indigo-700 dark:text-indigo-300">
                       🔧 Lab 7 & 8: IaC và triển khai container
                     </div>
