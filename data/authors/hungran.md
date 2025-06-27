@@ -1,5 +1,5 @@
 ---
-name: Hung Tran
+name: Hung Vu
 avatar: /static/images/authors/hungran.png
 occupation: Senior DevOps Engineer
 company: PlayStudios
