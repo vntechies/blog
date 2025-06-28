@@ -38,7 +38,7 @@ export default function Header() {
                     route === href && title === 'Khoá học'
                       ? 'bg-orange-500 font-bold text-white shadow-lg dark:bg-orange-600 dark:text-white'
                       : title === 'Khoá học'
-                      ? 'bg-orange-400 font-bold text-white shadow-lg hover:bg-orange-500 dark:bg-orange-600 dark:text-white'
+                      ? 'bg-orange-400/80 font-bold text-white shadow-lg hover:bg-orange-500 dark:bg-orange-700/80 dark:text-white'
                       : route === href
                       ? 'bg-gray-200 font-bold text-orange-500 dark:bg-gray-700 dark:text-orange-500'
                       : 'font-medium text-zinc-600 hover:bg-gray-200 dark:text-zinc-400 dark:hover:bg-gray-700'

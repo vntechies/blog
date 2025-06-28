@@ -19,7 +19,7 @@ export const footerNavLinks = [
 export const featuredLinks = [
   {
     title: 'Khoá học',
-    summary: 'Tập trung vào DevOps, CI/CD, tự động hoá, CDK và vận hành trên Cloud',
+    summary: 'Tập trung vào DevOps, CI/CD, tự động hoá, CDK, AI và vận hành trên Cloud',
     url: '/courses',
   },
   {
