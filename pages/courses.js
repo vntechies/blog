@@ -21,7 +21,6 @@ export default function Courses({ courses }) {
           <h1 className="md:text-6xl text-3xl font-extrabold leading-9 tracking-tight text-gray-900 dark:text-gray-100 sm:text-4xl sm:leading-10 md:leading-14">
             📚 Khoá học
           </h1>
-          <p className="text-lg leading-7 text-gray-500 dark:text-gray-400">{/* Các khoá học */}</p>
         </div>
         <div className="container py-12">
           <div className="-m-4 flex flex-wrap">

@@ -1,8 +1,8 @@
 import siteMetadata from './siteMetadata'
 
 export const headerNavLinks = [
-  { href: '/blog', title: 'Blog' },
   { href: '/courses', title: 'Khoá học' },
+  { href: '/blog', title: 'Blog' },
   { href: '/series', title: 'Series' },
   { href: '/tags', title: 'Tags' },
   { href: 'https://github.com/vntechies/toolbox', title: 'Toolbox' },
