@@ -94,18 +94,6 @@ export default function AuthorLayout({ children, frontMatter, authorPosts = [], 
                   </p>
                 )}
               </div>
-
-              {/* Contact CTAs */}
-              {isMentor && (
-                <div className="flex flex-col gap-3">
-                  <button className="rounded-lg bg-white px-6 py-3 font-semibold text-gray-800 transition-colors hover:bg-gray-50">
-                    Nhận Mentorship
-                  </button>
-                  <button className="rounded-lg border-2 border-white px-6 py-3 font-semibold text-white transition-colors hover:bg-white hover:text-gray-800">
-                    Xem Portfolio
-                  </button>
-                </div>
-              )}
             </div>
           </div>
 

@@ -140,13 +140,13 @@ export default function CourseSpecial({ children, frontMatter, mentorDetails }) 
         </div>
       </section>
 
-      <section className="mb-12 rounded-xl border border-gray-200 p-6 shadow-sm dark:border-gray-600">
+      <section className="mb-12 rounded-xl p-6 shadow-sm">
         <h2 className="mb-8 text-center text-3xl font-bold text-gray-900 dark:text-gray-100">
           Tại sao nên học khoá AWS SAA-C03 tại{' '}
           <span className="font-bold text-orange-500">VNTechies</span>?
         </h2>
         <div className="flex flex-col gap-8 md:flex-row md:items-stretch">
-          <div className="flex flex-1 flex-col items-center justify-center rounded-lg border border-gray-100 p-4 dark:border-gray-600">
+          <div className="dark: flex flex-1 flex-col items-center justify-center  rounded-lg p-4">
             <Image
               src="/static/images/andyquote.png"
               alt="Andy Jassy Quote"
@@ -160,9 +160,9 @@ export default function CourseSpecial({ children, frontMatter, mentorDetails }) 
             </div>
           </div>
           {/* Right: 4 value props and highlight */}
-          <div className="flex flex-1 flex-col gap-6 rounded-lg border border-gray-100 p-4 dark:border-gray-600 md:w-1/2">
+          <div className="flex flex-1 flex-col gap-6 rounded-lg  p-4  md:w-1/2">
             <div className="grid grid-cols-1 gap-6">
-              <div className="flex items-start gap-4 rounded-xl border border-gray-200 bg-indigo-50 p-4 shadow-sm dark:border-gray-600 dark:bg-indigo-900/30">
+              <div className="flex items-start gap-4 rounded-xl  bg-indigo-50 p-4 shadow-sm  dark:bg-indigo-900/30">
                 <FaChalkboardTeacher className="mt-1 h-8 w-8 text-indigo-700 dark:text-indigo-300" />
                 <div>
                   <div className="text-xl font-bold text-indigo-800 dark:text-indigo-200">
@@ -316,7 +316,7 @@ export default function CourseSpecial({ children, frontMatter, mentorDetails }) 
         </div>
       </section>
 
-      <section className="mt-16 mb-8 rounded-xl border border-gray-200 p-6 shadow-sm dark:border-gray-600">
+      <section className="mt-16 mb-8 rounded-xl p-6 shadow-sm">
         <h2 className="mb-12 text-center text-3xl font-bold text-gray-900 dark:text-gray-100">
           Nội dung khoá học
         </h2>
@@ -401,9 +401,9 @@ export default function CourseSpecial({ children, frontMatter, mentorDetails }) 
                   <div className="ml-2 space-y-1">
                     <div>Tự động hoá hạ tầng (CloudFormation)</div>
                     <div>Containers (ECS, EKS)</div>
-                    <div>Lập trình với AI Assistant (Amazon Q)</div>
+                    <div>AI Services (Amazon Q, Bedrock)</div>
                     <div className="font-semibold text-indigo-700 dark:text-indigo-300">
-                      🔧 Lab 7 & 8: IaC và triển khai container
+                      🔧 Lab 7 & 8: IaC và triển khai container với AI Assistant (Amazon Q)
                     </div>
                   </div>
                 </td>
