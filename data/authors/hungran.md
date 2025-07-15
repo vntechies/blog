@@ -12,6 +12,7 @@ linkedin: https://www.linkedin.com/in/hungran91
 facebook: https://fb.me/hungran91
 github: https://github.com/hungran
 url: https://vntechies.dev/
+testimonials: ['5 | Kiến thức của thầy đóng góp cho công việc của mình theo thời gian thực | Le Thanh Tung - AI Engineer']
 ---
 
 **Giới thiệu**
