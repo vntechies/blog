@@ -245,7 +245,8 @@ export default function CourseSpecial({ children, frontMatter, mentorDetails }) 
               Thực hành triển khai dịch vụ AWS
             </div>
             <div className="text-base text-gray-600 dark:text-gray-400">
-              Làm lab thực tế, xây dựng giải pháp trên AWS, áp dụng kiến thức vào dự án thật.
+              Làm lab thực tế, xây dựng giải pháp trên AWS, áp dụng kiến thức{' '}
+              <strong>sử dụng AI trong việc triển khai</strong> dự án thật.
             </div>
           </div>
           <div className="flex flex-col items-start rounded-xl bg-indigo-50 p-6 shadow-sm dark:bg-indigo-900/30">
@@ -578,7 +579,7 @@ export default function CourseSpecial({ children, frontMatter, mentorDetails }) 
             Sau khóa học, bạn được gì?
           </h2>
           <p className="mx-auto mb-12 max-w-3xl text-center text-xl text-gray-600 dark:text-gray-300">
-            Khóa học không chỉ giúp bạn pass chứng chỉ mà còn cung cấp nền tảng vững chắc cho sự
+            Khóa học không chỉ giúp bạn đỗ chứng chỉ mà còn cung cấp nền tảng vững chắc cho Sự
             nghiệp Cloud
           </p>
 
