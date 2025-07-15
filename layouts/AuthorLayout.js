@@ -1,6 +1,6 @@
 import SocialIcon from '@/components/social-icons'
 import Image from '@/components/Image'
-import HorizontalCard from '@/components/HorizontalCard'
+import Link from 'next/link'
 
 export default function AuthorLayout({ children, frontMatter, authorPosts = [], totalPostsCount }) {
   const {
@@ -94,18 +94,6 @@ export default function AuthorLayout({ children, frontMatter, authorPosts = [], 
                   </p>
                 )}
               </div>
-
-              {/* Contact CTAs */}
-              {isMentor && (
-                <div className="flex flex-col gap-3">
-                  <button className="rounded-lg bg-white px-6 py-3 font-semibold text-gray-800 transition-colors hover:bg-gray-50">
-                    Nhận Mentorship
-                  </button>
-                  <button className="rounded-lg border-2 border-white px-6 py-3 font-semibold text-white transition-colors hover:bg-white hover:text-gray-800">
-                    Xem Portfolio
-                  </button>
-                </div>
-              )}
             </div>
           </div>
 
@@ -178,15 +166,42 @@ export default function AuthorLayout({ children, frontMatter, authorPosts = [], 
                     <h3 className="mb-4 text-xl font-semibold text-gray-800 dark:text-gray-200">
                       Bài viết gần đây
                     </h3>
-                    <div className="space-y-3">
-                      {authorPosts.map((post) => (
-                        <HorizontalCard
-                          key={post.slug}
-                          title={post.title}
-                          href={`/blog/${post.slug}`}
-                          image={post.images?.[0] || '/static/images/default-blog.jpg'}
-                        />
-                      ))}
+                    <div className="overflow-x-auto">
+                      <table className="border-spacing-2 min-w-full border-separate">
+                        <tbody>
+                          {authorPosts.map((post) => (
+                            <tr
+                              key={post.slug}
+                              className="transition-colors hover:bg-gray-50 dark:hover:bg-gray-800/50"
+                            >
+                              <td className="px-4 py-3">
+                                <Link href={`/blog/${post.slug}`}>
+                                  <div className="h-16 w-24 overflow-hidden rounded-lg">
+                                    <Image
+                                      src={post.images?.[0] || '/static/images/default-blog.jpg'}
+                                      alt={post.title}
+                                      width={96}
+                                      height={64}
+                                      className="h-full w-full object-cover transition-transform hover:scale-105"
+                                      loading="lazy"
+                                    />
+                                  </div>
+                                </Link>
+                              </td>
+                              <td className="px-4 py-3">
+                                <Link
+                                  href={`/blog/${post.slug}`}
+                                  className="text-gray-800 transition-colors hover:text-blue-600 dark:text-gray-200 dark:hover:text-blue-400"
+                                >
+                                  <p className="text-sm font-medium leading-relaxed md:text-base">
+                                    {post.title}
+                                  </p>
+                                </Link>
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
                     </div>
                   </div>
                 )}

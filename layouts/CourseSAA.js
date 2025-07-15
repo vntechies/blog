@@ -140,13 +140,13 @@ export default function CourseSpecial({ children, frontMatter, mentorDetails }) 
         </div>
       </section>
 
-      <section className="mb-12">
+      <section className="mb-12 rounded-xl p-6 shadow-sm">
         <h2 className="mb-8 text-center text-3xl font-bold text-gray-900 dark:text-gray-100">
           Tại sao nên học khoá AWS SAA-C03 tại{' '}
           <span className="font-bold text-orange-500">VNTechies</span>?
         </h2>
         <div className="flex flex-col gap-8 md:flex-row md:items-stretch">
-          <div className="flex flex-1 flex-col items-center justify-center">
+          <div className="dark: flex flex-1 flex-col items-center justify-center  rounded-lg p-4">
             <Image
               src="/static/images/andyquote.png"
               alt="Andy Jassy Quote"
@@ -160,9 +160,9 @@ export default function CourseSpecial({ children, frontMatter, mentorDetails }) 
             </div>
           </div>
           {/* Right: 4 value props and highlight */}
-          <div className="flex flex-1 flex-col gap-6 md:w-1/2">
+          <div className="flex flex-1 flex-col gap-6 rounded-lg  p-4  md:w-1/2">
             <div className="grid grid-cols-1 gap-6">
-              <div className="flex items-start gap-4 rounded-xl bg-indigo-50 p-4 shadow-sm dark:bg-indigo-900/30">
+              <div className="flex items-start gap-4 rounded-xl  bg-indigo-50 p-4 shadow-sm  dark:bg-indigo-900/30">
                 <FaChalkboardTeacher className="mt-1 h-8 w-8 text-indigo-700 dark:text-indigo-300" />
                 <div>
                   <div className="text-xl font-bold text-indigo-800 dark:text-indigo-200">
@@ -174,7 +174,7 @@ export default function CourseSpecial({ children, frontMatter, mentorDetails }) 
                   </div>
                 </div>
               </div>
-              <div className="flex items-start gap-4">
+              <div className="flex items-start gap-4 rounded-xl border border-gray-200 p-4 dark:border-gray-600">
                 <FaUserTie className="mt-1 h-8 w-8 text-indigo-600 dark:text-indigo-300" />
                 <div>
                   <div className="text-xl font-bold text-indigo-800 dark:text-indigo-200">
@@ -186,7 +186,7 @@ export default function CourseSpecial({ children, frontMatter, mentorDetails }) 
                   </div>
                 </div>
               </div>
-              <div className="flex items-start gap-4">
+              <div className="flex items-start gap-4 rounded-xl border border-gray-200 p-4 dark:border-gray-600">
                 <FaHandshake className="mt-1 h-8 w-8 text-indigo-600 dark:text-indigo-300" />
                 <div>
                   <div className="text-xl font-bold text-indigo-800 dark:text-indigo-200">
@@ -198,7 +198,7 @@ export default function CourseSpecial({ children, frontMatter, mentorDetails }) 
                   </div>
                 </div>
               </div>
-              <div className="flex items-start gap-4">
+              <div className="flex items-start gap-4 rounded-xl border border-gray-200 p-4 dark:border-gray-600">
                 <FaUsers className="mt-1 h-8 w-8 text-indigo-600 dark:text-indigo-300" />
                 <div>
                   <div className="text-xl font-bold text-indigo-800 dark:text-indigo-200">
@@ -211,7 +211,7 @@ export default function CourseSpecial({ children, frontMatter, mentorDetails }) 
                 </div>
               </div>
             </div>
-            <div className="mt-6 rounded-lg border-l-4 border-yellow-400 bg-yellow-50 p-5 shadow-sm dark:border-yellow-500 dark:bg-yellow-900/30">
+            <div className="mt-6 rounded-lg border border-l-4 border-yellow-400 border-gray-200 bg-yellow-50 p-5 shadow-sm dark:border-yellow-500 dark:border-gray-600 dark:bg-yellow-900/30">
               <div className="mb-2 flex items-center gap-3">
                 <FaCheckCircle className="h-6 w-6 text-yellow-500" />
                 <span className="text-lg font-bold text-yellow-700 dark:text-yellow-300">
@@ -316,18 +316,18 @@ export default function CourseSpecial({ children, frontMatter, mentorDetails }) 
         </div>
       </section>
 
-      <section className="mt-16 mb-8">
+      <section className="mt-16 mb-8 rounded-xl p-6 shadow-sm">
         <h2 className="mb-12 text-center text-3xl font-bold text-gray-900 dark:text-gray-100">
           Nội dung khoá học
         </h2>
         <div className="overflow-x-auto">
-          <table className="border-spacing-y-2 min-w-full border-separate text-sm md:text-base">
+          <table className="border-spacing-y-2 min-w-full border-separate rounded-lg border border-gray-300 text-sm dark:rounded-lg dark:border dark:border-gray-600 md:text-base">
             <thead>
               <tr className="bg-indigo-100 dark:bg-indigo-900/30">
-                <th className="w-16 px-3 py-2 text-center font-bold text-indigo-700 dark:text-indigo-300">
+                <th className="w-16 border border-gray-200 px-3 py-2 text-center font-bold text-indigo-700 dark:border dark:border-gray-600 dark:text-indigo-300">
                   Buổi
                 </th>
-                <th className="w-1/2 px-3 py-2 text-center font-bold text-indigo-700 dark:text-indigo-300">
+                <th className="w-1/2 border border-gray-200 px-3 py-2 text-center font-bold text-indigo-700 dark:border dark:border-gray-600 dark:text-indigo-300">
                   Nội dung
                 </th>
               </tr>
@@ -335,8 +335,10 @@ export default function CourseSpecial({ children, frontMatter, mentorDetails }) 
             <tbody>
               {/* Buổi 1 */}
               <tr className="align-top">
-                <td className="px-3 py-2 text-center font-bold">1</td>
-                <td className="px-3 py-2">
+                <td className="border border-gray-200 px-3 py-2 text-center font-bold dark:border dark:border-gray-600">
+                  1
+                </td>
+                <td className="border border-gray-200 px-3 py-2 dark:border dark:border-gray-600">
                   <div className="ml-2 space-y-1">
                     <div>Kiến thức nền tảng kiến trúc AWS</div>
                     <div>Quản lý tài khoản và bảo mật (IAM, MFA)</div>
@@ -348,8 +350,10 @@ export default function CourseSpecial({ children, frontMatter, mentorDetails }) 
               </tr>
               {/* Buổi 2–3 */}
               <tr className="align-top">
-                <td className="px-3 py-2 text-center font-bold">2–3</td>
-                <td className="px-3 py-2">
+                <td className="border border-gray-200 px-3 py-2 text-center font-bold dark:border dark:border-gray-600">
+                  2–3
+                </td>
+                <td className="border border-gray-200 px-3 py-2 dark:border dark:border-gray-600">
                   <div className="ml-2 space-y-1">
                     <div>Networking cơ bản và nâng cao (VPC, Subnet, Route Table)</div>
                     <div className="font-semibold text-indigo-700 dark:text-indigo-300">
@@ -360,8 +364,10 @@ export default function CourseSpecial({ children, frontMatter, mentorDetails }) 
               </tr>
               {/* Buổi 4–5 */}
               <tr className="align-top">
-                <td className="px-3 py-2 text-center font-bold">4–5</td>
-                <td className="px-3 py-2">
+                <td className="border border-gray-200 px-3 py-2 text-center font-bold dark:border dark:border-gray-600">
+                  4–5
+                </td>
+                <td className="border border-gray-200 px-3 py-2 dark:border dark:border-gray-600">
                   <div className="ml-2 space-y-1">
                     <div>Dịch vụ tính toán (EC2, Auto Scaling)</div>
                     <div>Lưu trữ (S3, EBS, EFS)</div>
@@ -373,8 +379,10 @@ export default function CourseSpecial({ children, frontMatter, mentorDetails }) 
               </tr>
               {/* Buổi 6–7 */}
               <tr className="align-top">
-                <td className="px-3 py-2 text-center font-bold">6–7</td>
-                <td className="px-3 py-2">
+                <td className="border border-gray-200 px-3 py-2 text-center font-bold dark:border dark:border-gray-600">
+                  6–7
+                </td>
+                <td className="border border-gray-200 px-3 py-2 dark:border dark:border-gray-600">
                   <div className="ml-2 space-y-1">
                     <div>Cơ sở dữ liệu (RDS, DynamoDB)</div>
                     <div>Giám sát & mở rộng (CloudWatch, Load Balancer)</div>
@@ -386,21 +394,26 @@ export default function CourseSpecial({ children, frontMatter, mentorDetails }) 
               </tr>
               {/* Buổi 8–9 */}
               <tr className="align-top">
-                <td className="px-3 py-2 text-center font-bold">8–9</td>
-                <td className="px-3 py-2">
+                <td className="border border-gray-200 px-3 py-2 text-center font-bold dark:border dark:border-gray-600">
+                  8–9
+                </td>
+                <td className="border border-gray-200 px-3 py-2 dark:border dark:border-gray-600">
                   <div className="ml-2 space-y-1">
                     <div>Tự động hoá hạ tầng (CloudFormation)</div>
                     <div>Containers (ECS, EKS)</div>
+                    <div>AI Services (Amazon Q, Bedrock)</div>
                     <div className="font-semibold text-indigo-700 dark:text-indigo-300">
-                      🔧 Lab 7 & 8: IaC và triển khai container
+                      🔧 Lab 7 & 8: IaC và triển khai container với AI Assistant (Amazon Q)
                     </div>
                   </div>
                 </td>
               </tr>
               {/* Buổi 10–11 */}
               <tr className="align-top">
-                <td className="px-3 py-2 text-center font-bold">10–11</td>
-                <td className="px-3 py-2">
+                <td className="border border-gray-200 px-3 py-2 text-center font-bold dark:border dark:border-gray-600">
+                  10–11
+                </td>
+                <td className="border border-gray-200 px-3 py-2 dark:border dark:border-gray-600">
                   <div className="ml-2 space-y-1">
                     <div>Serverless (Lambda, API Gateway)</div>
                     <div>Dịch vụ Edge (CloudFront, S3 Static Hosting)</div>
@@ -412,8 +425,10 @@ export default function CourseSpecial({ children, frontMatter, mentorDetails }) 
               </tr>
               {/* Buổi 12 */}
               <tr className="align-top">
-                <td className="px-3 py-2 text-center font-bold">12</td>
-                <td className="px-3 py-2">
+                <td className="border border-gray-200 px-3 py-2 text-center font-bold dark:border dark:border-gray-600">
+                  12
+                </td>
+                <td className="border border-gray-200 px-3 py-2 dark:border dark:border-gray-600">
                   <div className="ml-2 space-y-1">
                     <div>Backup & Recovery (S3 Lifecycle, DR)</div>
                     <div>Dịch vụ AI/ML (Textract, Translate)</div>
@@ -422,8 +437,10 @@ export default function CourseSpecial({ children, frontMatter, mentorDetails }) 
               </tr>
               {/* Buổi 13 */}
               <tr className="align-top">
-                <td className="px-3 py-2 text-center font-bold">13</td>
-                <td className="px-3 py-2">
+                <td className="border border-gray-200 px-3 py-2 text-center font-bold dark:border dark:border-gray-600">
+                  13
+                </td>
+                <td className="border border-gray-200 px-3 py-2 dark:border dark:border-gray-600">
                   <div className="ml-2 space-y-1">
                     <div className="font-semibold text-indigo-700 dark:text-indigo-300">
                       🏗 Capstone Lab: Xây dựng kiến trúc nhiều tầng trên AWS
@@ -434,8 +451,10 @@ export default function CourseSpecial({ children, frontMatter, mentorDetails }) 
               </tr>
               {/* Buổi 14–15 */}
               <tr className="align-top">
-                <td className="px-3 py-2 text-center font-bold">14–15</td>
-                <td className="px-3 py-2">
+                <td className="border border-gray-200 px-3 py-2 text-center font-bold dark:border dark:border-gray-600">
+                  14–15
+                </td>
+                <td className="border border-gray-200 px-3 py-2 dark:border dark:border-gray-600">
                   <div className="ml-2 space-y-1">
                     <div>Ôn tập toàn bộ nội dung</div>
                     <div>Thi thử với bộ đề chuẩn SAA-C03</div>
@@ -444,8 +463,10 @@ export default function CourseSpecial({ children, frontMatter, mentorDetails }) 
               </tr>
               {/* Buổi 16 */}
               <tr className="align-top">
-                <td className="px-3 py-2 text-center font-bold">16</td>
-                <td className="px-3 py-2">
+                <td className="border border-gray-200 px-3 py-2 text-center font-bold dark:border dark:border-gray-600">
+                  16
+                </td>
+                <td className="border border-gray-200 px-3 py-2 dark:border dark:border-gray-600">
                   <div className="ml-2 space-y-1">
                     <div className="font-semibold text-indigo-700 dark:text-indigo-300">
                       🎯 Seminar hướng nghiệp: Tips viết CV, phỏng vấn, định hướng vị trí
