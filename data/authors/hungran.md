@@ -4,6 +4,7 @@ avatar: /static/images/authors/hungran.png
 occupation: Senior DevOps Engineer & AWS Authorized Instructor
 company: PlayStudios
 email: hung@vntechies.dev
+startYear: 2015
 linkedin: https://www.linkedin.com/in/hungran91
 facebook: https://fb.me/hungran91
 github: https://github.com/hungran
