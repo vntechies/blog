@@ -12,7 +12,10 @@ linkedin: https://www.linkedin.com/in/hungran91
 facebook: https://fb.me/hungran91
 github: https://github.com/hungran
 url: https://vntechies.dev/
-testimonials: ['5 | Kiến thức của thầy đóng góp cho công việc của mình theo thời gian thực | Le Thanh Tung - AI Engineer']
+testimonials:
+  [
+    '5 | Kiến thức của thầy đóng góp cho công việc của mình theo thời gian thực | Le Thanh Tung - AI Engineer',
+  ]
 ---
 
 **Giới thiệu**
@@ -23,11 +26,34 @@ testimonials: ['5 | Kiến thức của thầy đóng góp cho công việc củ
 
 **Chứng chỉ AWS**
 
-- AWS Authorized Instructor
-- AWS Certified Solutions Architect – Professional
-- AWS Security Specialty
-- AWS Certified Developer – Associate
-- AWS Certified Solutions Architect – Associate
+<div className="cert-grid">
+  <div className="cert-row" style={{display: "flex", justifyContent: "center", flexWrap: "wrap", gap: "5px", margin: "5px 0"}}>
+    <div style={{width: "160px", textAlign: "center"}}>
+      <img src="/static/images/authors/certs/hungrancerts/AAI.png" alt="AWS Authorized Instructor" style={{width: "100%", border: "1px solid #eaeaea", borderRadius: "8px", padding: "5px"}}/>
+      <p style={{fontSize: "0.8rem", marginTop: "5px"}}>AWS Authorized Instructor</p>
+    </div>
+  </div>
+  <div className="cert-row" style={{display: "flex", justifyContent: "center", flexWrap: "wrap", gap: "20px", margin: "5px 0"}}>
+    <div style={{width: "160px", textAlign: "center"}}>
+      <img src="/static/images/authors/certs/hungrancerts/SCS.png" alt="Security Specialty" style={{width: "100%", border: "1px solid #eaeaea", borderRadius: "8px", padding: "5px"}}/>
+      <p style={{fontSize: "0.8rem", marginTop: "1px"}}>AWS Certified Security Specialty</p>
+    </div>
+    <div style={{width: "160px", textAlign: "center"}}>
+      <img src="/static/images/authors/certs/hungrancerts/SAA.png" alt="AWS Certified Solutions Architect - Associate" style={{width: "100%", border: "1px solid #eaeaea", borderRadius: "8px", padding: "5px"}}/>
+      <p style={{fontSize: "0.8rem", marginTop: "1px"}}>AWS Certified Solutions Architect - Associate</p>
+    </div>
+  </div>
+  <div className="cert-row" style={{display: "flex", justifyContent: "center", flexWrap: "wrap", gap: "20px", margin: "10px 0"}}>
+    <div style={{width: "160px", textAlign: "center"}}>
+      <img src="/static/images/authors/certs/hungrancerts/SAP.png" alt="AWS Certified Solutions Architect - Professional" style={{width: "100%", border: "1px solid #eaeaea", borderRadius: "8px", padding: "5px"}}/>
+      <p style={{fontSize: "0.8rem", marginTop: "1px"}}>AWS Certified Solutions Architect - Professional</p>
+    </div>
+    <div style={{width: "160px", textAlign: "center"}}>
+      <img src="/static/images/authors/certs/hungrancerts/DVA.png" alt="AWS Certified Developer - Associate" style={{width: "100%", border: "1px solid #eaeaea", borderRadius: "8px", padding: "5px"}}/>
+      <p style={{fontSize: "0.8rem", marginTop: "1px"}}>AWS Certified Developer - Associate</p>
+    </div>
+  </div>
+</div>
 
 **Hệ sinh thái VNTechies**
 
