@@ -1,16 +1,6 @@
 import React from 'react'
 import Image from '../components/Image'
-import {
-  FaCheckCircle,
-  FaStar,
-  FaUsers,
-  FaGraduationCap,
-  FaAward,
-  FaClock,
-  FaChalkboardTeacher,
-  FaUserTie,
-  FaHandshake,
-} from 'react-icons/fa'
+import { FaCheckCircle, FaStar, FaUsers, FaGraduationCap, FaAward, FaClock } from 'react-icons/fa'
 import Link from 'next/link'
 
 const testimonials = [
@@ -65,23 +55,40 @@ const testimonials = [
 ]
 
 const courseInfo = {
-  title: 'Khoá học AWS Certified Solutions Architect – Associate (SAA-C03)',
-  subtitle: 'Luyện thi & thực chiến AWS cùng chuyên gia',
-  image: '/static/images/courses/awssaac03.png',
-  startDate: '15/07/2025',
-  duration: '8 tuần (16 buổi, 32h)',
-  schedule: 'Tối Thứ 3 & Thứ 6 (20:00 - 22:00)',
-  location: 'Online qua Zoom',
-  price: '8.000.000 VNĐ',
-  earlyBird: '7.200.000 VNĐ (giảm 10%)',
+  title: '🤖 AWS AI Practitioner - Professional AI Foundations',
+  subtitle: 'Kiến thức nền tảng cho AI trên AWS - Giáo trình chuẩn toàn cầu',
+  image: '/static/images/courses/awsaifc01.png',
+  startDate: '15/08/2025',
+  duration: '4 tuần (8 modules, 24h)',
+  schedule: 'Thứ 3, 5, 7 (19:00 - 22:00)',
+  location: '💻 Online qua Zoom',
   registrationLink: 'https://m.me/vntechies',
+  hotline: '0983.666.126',
+  objectives: [
+    '🎯 Master AI, ML, Deep Learning và Generative AI concepts',
+    '🛠️ Expert-level prompt engineering và foundation models',
+    '🤖 Build production-ready GenAI applications với Amazon Bedrock & SageMaker',
+    '⚖️ Implement enterprise-grade responsible AI và security practices',
+    '📊 Evaluate và monitor foundation models với industry standards',
+    '🎓 Achieve AWS AI Practitioner AIF-C01 certification với confidence',
+    '💼 Apply GenAI strategies to real-world business scenarios',
+  ],
+  forWho: [
+    '🎓 Fresh graduates muốn bước chân vào AI',
+    '💻 Developers/IT muốn học AI/ML',
+    '📊 Data analysts quan tâm đến AI',
+    '🚀 Product managers làm việc với AI products',
+    '💼 Business professionals muốn hiểu AI',
+    '🔄 Career switchers chuyển sang AI',
+    '☁️ AWS practitioners muốn expand sang AI',
+  ],
 }
 
 // Statistics data
 const stats = [
-  { number: '20+', label: 'Học viên đã tham gia' },
-  { number: '90%', label: 'Tỷ lệ pass chứng chỉ' },
-  { number: '11', label: 'Buổi học thực hành' },
+  { number: '10+', label: 'Học viên đã tham gia' },
+  { number: '100%', label: 'Tỷ lệ pass chứng chỉ' },
+  { number: '5', label: 'Domain chủ đề' },
   { number: '4+', label: 'Mentor kinh nghiệm' },
 ]
 
@@ -141,95 +148,75 @@ export default function CourseSpecial({ frontMatter, mentorDetails }) {
             href={info.registrationLink}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-lg inline-block rounded-lg bg-indigo-600 px-8 py-4 font-semibold text-white shadow-lg transition hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-400"
+            className="text-lg inline-block rounded-lg bg-gradient-to-r from-purple-600 to-pink-600 px-8 py-4 font-semibold text-white shadow-lg transition hover:from-purple-700 hover:to-pink-700 hover:shadow-xl"
           >
-            Đăng ký ngay
+            Đăng ký ngay 🚀
           </a>
         </div>
       </section>
 
       <section className="mb-12 rounded-xl p-6 shadow-sm">
         <h2 className="mb-8 text-center text-3xl font-bold text-gray-900 dark:text-gray-100">
-          Tại sao nên học khoá AWS SAA-C03 tại{' '}
-          <span className="font-bold text-orange-500">VNTechies</span>?
+          Vì sao nên chọn <span className="font-bold text-orange-500">VNTechies</span> để bắt đầu
+          hành trình AI?
         </h2>
-        <div className="flex flex-col gap-8 md:flex-row md:items-stretch">
-          <div className="dark: flex flex-1 flex-col items-center justify-center  rounded-lg p-4">
-            <Image
-              src="/static/images/andyquote.png"
-              alt="Andy Jassy Quote"
-              width={420}
-              height={140}
-              className="mb-4 rounded-xl shadow-lg"
-            />
-            <div className="mt-2 text-center text-base font-bold text-orange-700 dark:text-orange-300">
-              Không có con đường tắt để thành công, chỉ có trải nghiệm thực tế mới giúp bạn vững
-              vàng trên hành trình Cloud!
+        <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
+          <div className="flex flex-col items-start gap-4 rounded-xl bg-indigo-50 p-6 shadow-sm dark:bg-indigo-900/30">
+            <div className="text-3xl">🎯</div>
+            <div>
+              <div className="text-xl font-bold text-indigo-800 dark:text-indigo-200">
+                Giáo trình chuẩn quốc tế
+              </div>
+              <div className="text-base text-gray-600 dark:text-gray-400">
+                Học theo giáo trình theo tiêu chuẩn của AWS, cập nhật mới nhất, sát thực tế với
+                nhiều bài tập thực hành.
+              </div>
             </div>
           </div>
-          {/* Right: 4 value props and highlight */}
-          <div className="flex flex-1 flex-col gap-6 rounded-lg  p-4  md:w-1/2">
-            <div className="grid grid-cols-1 gap-6">
-              <div className="flex items-start gap-4 rounded-xl  bg-indigo-50 p-4 shadow-sm  dark:bg-indigo-900/30">
-                <FaChalkboardTeacher className="mt-1 h-8 w-8 text-indigo-700 dark:text-indigo-300" />
-                <div>
-                  <div className="text-xl font-bold text-indigo-800 dark:text-indigo-200">
-                    Học để làm
-                  </div>
-                  <div className="text-base text-gray-600 dark:text-gray-400">
-                    35% thời lượng là thực hành, lab, usecase thực tế, mục tiêu khoá học không chỉ
-                    học lý thuyết.
-                  </div>
-                </div>
+          <div className="flex flex-col items-start gap-4 rounded-xl bg-indigo-50 p-6 shadow-sm dark:bg-indigo-900/30">
+            <div className="text-3xl">🚀</div>
+            <div>
+              <div className="text-xl font-bold text-indigo-800 dark:text-indigo-200">
+                Mentor thực chiến
               </div>
-              <div className="flex items-start gap-4 rounded-xl border border-gray-200 p-4 dark:border-gray-600">
-                <FaUserTie className="mt-1 h-8 w-8 text-indigo-600 dark:text-indigo-300" />
-                <div>
-                  <div className="text-xl font-bold text-indigo-800 dark:text-indigo-200">
-                    Mentor thực chiến
-                  </div>
-                  <div className="text-base text-gray-600 dark:text-gray-300">
-                    100% là chuyên gia AWS tại các công ty nước ngoài, giàu kinh nghiệm dự án thực
-                    tế.
-                  </div>
-                </div>
-              </div>
-              <div className="flex items-start gap-4 rounded-xl border border-gray-200 p-4 dark:border-gray-600">
-                <FaHandshake className="mt-1 h-8 w-8 text-indigo-600 dark:text-indigo-300" />
-                <div>
-                  <div className="text-xl font-bold text-indigo-800 dark:text-indigo-200">
-                    Cam kết đồng hành
-                  </div>
-                  <div className="text-base text-gray-600 dark:text-gray-300">
-                    Hỗ trợ học viên đến khi pass chứng chỉ, giải đáp hỗ trợ cả trong và sau khoá
-                    học.
-                  </div>
-                </div>
-              </div>
-              <div className="flex items-start gap-4 rounded-xl border border-gray-200 p-4 dark:border-gray-600">
-                <FaUsers className="mt-1 h-8 w-8 text-indigo-600 dark:text-indigo-300" />
-                <div>
-                  <div className="text-xl font-bold text-indigo-800 dark:text-indigo-200">
-                    Network chất lượng
-                  </div>
-                  <div className="text-base text-gray-600 dark:text-gray-300">
-                    Tham gia cộng đồng VNTechies, kết nối với hàng ngàn học viên, mentor, cơ hội
-                    việc làm.
-                  </div>
-                </div>
+              <div className="text-base text-gray-600 dark:text-gray-400">
+                100% là chuyên gia AWS tại các công ty nước ngoài, giàu kinh nghiệm dự án thực tế.
               </div>
             </div>
-            <div className="mt-6 rounded-lg border border-l-4 border-yellow-400 border-gray-200 bg-yellow-50 p-5 shadow-sm dark:border-yellow-500 dark:border-gray-600 dark:bg-yellow-900/30">
-              <div className="mb-2 flex items-center gap-3">
-                <FaCheckCircle className="h-6 w-6 text-yellow-500" />
-                <span className="text-lg font-bold text-yellow-700 dark:text-yellow-300">
-                  Giá trị vượt trội
-                </span>
+          </div>
+          <div className="flex flex-col items-start gap-4 rounded-xl bg-indigo-50 p-6 shadow-sm dark:bg-indigo-900/30">
+            <div className="text-3xl">🤝</div>
+            <div>
+              <div className="text-xl font-bold text-indigo-800 dark:text-indigo-200">
+                Cam kết đồng hành
               </div>
-              <div className="text-base text-gray-700 dark:text-gray-200">
-                Định hướng nghề nghiệp, tips viết CV, phỏng vấn cho các vị trí Cloud/DevOps thông
-                qua seminar cuối khoá học.
+              <div className="text-base text-gray-600 dark:text-gray-400">
+                Hỗ trợ học viên đến khi pass chứng chỉ, giải đáp hỗ trợ cả trong và sau khoá học.
               </div>
+            </div>
+          </div>
+          <div className="flex flex-col items-start gap-4 rounded-xl bg-indigo-50 p-6 shadow-sm dark:bg-indigo-900/30">
+            <div className="text-3xl">🌟</div>
+            <div>
+              <div className="text-xl font-bold text-indigo-800 dark:text-indigo-200">
+                Network chất lượng
+              </div>
+              <div className="text-base text-gray-600 dark:text-gray-400">
+                Tham gia cộng đồng VNTechies, kết nối với hàng ngàn học viên, mentor, cơ hội việc
+                làm.
+              </div>
+            </div>
+          </div>
+          <div className="col-span-4 flex flex-col items-start gap-4 rounded-xl border-l-4 border-yellow-400 border-gray-200 bg-yellow-50 p-5 shadow-sm dark:border-yellow-500 dark:border-gray-600 dark:bg-yellow-900/30">
+            <div className="mb-2 flex items-center gap-3">
+              <FaCheckCircle className="h-6 w-6 text-yellow-500" />
+              <span className="text-lg font-bold text-yellow-700 dark:text-yellow-300">
+                Giá trị vượt trội
+              </span>
+            </div>
+            <div className="text-base text-gray-700 dark:text-gray-200">
+              Định hướng nghề nghiệp, tips viết CV, phỏng vấn cho các vị trí Cloud/DevOps thông qua
+              seminar cuối khoá học.
             </div>
           </div>
         </div>
@@ -237,243 +224,310 @@ export default function CourseSpecial({ frontMatter, mentorDetails }) {
 
       <section className="mb-8">
         <h2 className="mb-12 text-center text-3xl font-bold text-gray-900 dark:text-gray-100">
-          Mục tiêu khoá học
+          Học xong, bạn sẽ làm được gì? 🎯
         </h2>
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
           <div className="flex flex-col items-start rounded-xl bg-indigo-50 p-6 shadow-sm dark:bg-indigo-900/30">
             <div className="mb-2 text-xl font-bold text-indigo-800 dark:text-indigo-200">
-              Nắm vững kiến thức AWS SAA-C03 mới nhất
+              AI/GenAI không còn khó tiếp cận nữa 🧠
             </div>
             <div className="text-base text-gray-600 dark:text-gray-400">
-              Hiểu rõ các dịch vụ cốt lõi, kiến trúc tổng quan và các chủ đề trọng tâm trong kỳ thi.
+              Hiểu cách AI hoạt động "behind the scenes". Phân biệt được ML vs GenAI, Foundation
+              Models, LLMs. Có thể trao đổi với team AI.
             </div>
           </div>
           <div className="flex flex-col items-start rounded-xl bg-indigo-50 p-6 shadow-sm dark:bg-indigo-900/30">
             <div className="mb-2 text-xl font-bold text-indigo-800 dark:text-indigo-200">
-              Thực hành triển khai dịch vụ AWS
+              Xây dựng được các ứng dụng AI 🛠️
             </div>
             <div className="text-base text-gray-600 dark:text-gray-400">
-              Làm lab thực tế, xây dựng giải pháp trên AWS, áp dụng kiến thức{' '}
-              <strong>sử dụng AI trong việc triển khai</strong> dự án thật.
+              Hands-on với Bedrock, SageMaker, AI services (Rekognition, Comprehend). Tự tạo
+              chatbot, AI image recognition app. Portfolio projects để chứng minh năng lực thực tế!
             </div>
           </div>
           <div className="flex flex-col items-start rounded-xl bg-indigo-50 p-6 shadow-sm dark:bg-indigo-900/30">
             <div className="mb-2 text-xl font-bold text-indigo-800 dark:text-indigo-200">
-              Kỹ năng giải đề & tips pass chứng chỉ
+              Hiểu về AI Ethics & Responsible AI ⚖️
             </div>
             <div className="text-base text-gray-600 dark:text-gray-400">
-              Luyện đề, phân tích đáp án, chia sẻ kinh nghiệm thi thực tế từ mentor.
+              Hiểu bias trong AI, fairness, explainable AI. Hot topics trong interviews AI! Biết
+              cách xây dựng hệ thống AI an toàn và có trách nhiệm.
             </div>
           </div>
           <div className="flex flex-col items-start rounded-xl bg-indigo-50 p-6 shadow-sm dark:bg-indigo-900/30">
             <div className="mb-2 text-xl font-bold text-indigo-800 dark:text-indigo-200">
-              Định hướng nghề nghiệp Cloud/DevOps
+              Thi đỗ chứng chỉ AIF-C01 và bắt đầu hành trình AI 🎓
             </div>
             <div className="text-base text-gray-600 dark:text-gray-400">
-              Tư vấn lộ trình, hỗ trợ CV, phỏng vấn, kết nối cộng đồng và mentor sau khoá học.
+              Chứng chỉ AWS AIF-C01 + hướng dẫn bổ sung CV + portfolio projects. Sẵn sàng cho các
+              công việc liên quan tới AI hoặc bắt đầu tìm hiểu về AI.
             </div>
           </div>
         </div>
       </section>
-
       <section className="bg-gray-50 px-4 py-16 dark:bg-gray-900">
         <div className="mx-auto max-w-6xl">
           <h2 className="mb-12 text-center text-3xl font-bold text-gray-900 dark:text-gray-100">
-            Khóa học dành cho ai?
+            "AI" nên tham gia khoá học này? 🤔
           </h2>
-
           <div className="grid gap-8 md:grid-cols-3">
             <div className="rounded-xl bg-white p-8 shadow-lg dark:bg-gray-800">
               <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-blue-100 dark:bg-blue-900">
                 <FaGraduationCap className="h-8 w-8 text-blue-600 dark:text-blue-400" />
               </div>
               <h3 className="mb-4 text-xl font-bold text-gray-900 dark:text-gray-100">
-                Sinh viên yêu thích AWS
+                Sinh viên mới ra trường, người mới bắt đầu với AI
               </h3>
               <p className="text-gray-600 dark:text-gray-300">
-                Sinh viên muốn theo ngành Cloud/DevOps nhưng chưa biết bắt đầu từ đâu, hoặc đã tìm
-                hiểu về AWS nhưng kiến thức rời rạc, chưa được hệ thống.
+                Phù hợp cho những ai chưa có kinh nghiệm về AI/ML, muốn xây dựng nền tảng vững chắc
+                và tiếp cận công nghệ mới nhất.
               </p>
             </div>
-
             <div className="rounded-xl bg-white p-8 shadow-lg dark:bg-gray-800">
               <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-green-100 dark:bg-green-900">
                 <FaUsers className="h-8 w-8 text-green-600 dark:text-green-400" />
               </div>
               <h3 className="mb-4 text-xl font-bold text-gray-900 dark:text-gray-100">
-                Người muốn chuyển ngành
+                Người đi làm muốn ứng dụng AI vào công việc
               </h3>
               <p className="text-gray-600 dark:text-gray-300">
-                Các bạn muốn chuyển ngành Cloud/DevOps, nhưng cảm thấy kiến thức chưa đủ, muốn được
-                cái nhìn tổng quan để lựa chọn vị trí phù hợp trong ngành.
+                Dành cho các bạn làm Marketing, Sales, PM, Business Analyst... muốn hiểu và ứng dụng
+                AI vào quy trình, sản phẩm, dự án thực tế.
               </p>
             </div>
-
             <div className="rounded-xl bg-white p-8 shadow-lg dark:bg-gray-800">
               <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-purple-100 dark:bg-purple-900">
                 <FaAward className="h-8 w-8 text-purple-600 dark:text-purple-400" />
               </div>
               <h3 className="mb-4 text-xl font-bold text-gray-900 dark:text-gray-100">
-                Engineers muốn thăng tiến
+                Kỹ sư, lập trình viên muốn nâng cấp kỹ năng AI/ML
               </h3>
               <p className="text-gray-600 dark:text-gray-300">
-                Engineers đã làm việc trong ngành, muốn hệ thống hoá kiến thức AWS và tạo cơ hội mới
-                tiến trong sự nghiệp.
+                Phù hợp cho DevOps, Data Engineer, Software Engineer... muốn bổ sung kiến thức
+                AI/ML, GenAI để phát triển sự nghiệp trong lĩnh vực công nghệ mới.
               </p>
             </div>
           </div>
         </div>
       </section>
-
       <section className="mt-16 mb-8 rounded-xl p-6 shadow-sm">
         <h2 className="mb-12 text-center text-3xl font-bold text-gray-900 dark:text-gray-100">
-          Nội dung khoá học
+          Nội dung khoá học & Các chủ đề
         </h2>
         <div className="overflow-x-auto">
           <table className="border-spacing-y-2 min-w-full border-separate rounded-lg border border-gray-300 text-sm dark:rounded-lg dark:border dark:border-gray-600 md:text-base">
             <thead>
               <tr className="bg-indigo-100 dark:bg-indigo-900/30">
-                <th className="text-xs w-12 border border-gray-200 px-1 py-2 text-center font-bold text-indigo-700 dark:border dark:border-gray-600 dark:text-indigo-300 sm:w-16 sm:px-3 sm:text-sm md:text-base">
-                  Buổi
+                <th className="w-16 border border-gray-200 px-3 py-2 text-center font-bold text-indigo-700 dark:border dark:border-gray-600 dark:text-indigo-300">
+                  Module
                 </th>
-                <th className="text-xs border border-gray-200 px-2 py-2 text-center font-bold text-indigo-700 dark:border dark:border-gray-600 dark:text-indigo-300 sm:px-3 sm:text-sm md:text-base">
+                <th className="w-1/2 border border-gray-200 px-3 py-2 text-center font-bold text-indigo-700 dark:border dark:border-gray-600 dark:text-indigo-300">
                   Nội dung
+                </th>
+                <th className="w-1/4 border border-gray-200 px-3 py-2 text-center font-bold text-indigo-700 dark:border dark:border-gray-600 dark:text-indigo-300">
+                  Chủ đề AIF-C01
                 </th>
               </tr>
             </thead>
             <tbody>
-              {/* Buổi 1 */}
+              {/* Module 1-2: Giới thiệu AI & Dịch vụ AWS AI */}
               <tr className="align-top">
                 <td className="border border-gray-200 px-3 py-2 text-center font-bold dark:border dark:border-gray-600">
-                  1
+                  1-2
                 </td>
                 <td className="border border-gray-200 px-3 py-2 dark:border dark:border-gray-600">
                   <div className="ml-2 space-y-1">
-                    <div>Kiến thức nền tảng kiến trúc AWS</div>
-                    <div>Quản lý tài khoản và bảo mật (IAM, MFA)</div>
+                    <div>
+                      <strong>Giới thiệu AI & Dịch vụ AWS AI</strong>
+                    </div>
+                    <div>• Tổng quan về AI</div>
+                    <div>• Khái niệm Machine Learning</div>
+                    <div>• Machine Learning, Deep Learning và Generative AI</div>
+                    <div>• Các dịch vụ AI của AWS</div>
+                    <div>• Kiểm tra kiến thức</div>
                     <div className="font-semibold text-indigo-700 dark:text-indigo-300">
-                      🔧 Lab 1: Làm quen Console và CLI
+                      • Demo: Sử dụng AWS AI Services
                     </div>
                   </div>
                 </td>
+                <td className="border border-gray-200 px-3 py-2 text-center dark:border dark:border-gray-600">
+                  Domain 1
+                </td>
               </tr>
-              {/* Buổi 2–3 */}
+              {/* Module 3: Giới thiệu Generative AI */}
               <tr className="align-top">
                 <td className="border border-gray-200 px-3 py-2 text-center font-bold dark:border dark:border-gray-600">
-                  2–3
+                  3
                 </td>
                 <td className="border border-gray-200 px-3 py-2 dark:border dark:border-gray-600">
                   <div className="ml-2 space-y-1">
-                    <div>Networking cơ bản và nâng cao (VPC, Subnet, Route Table)</div>
+                    <div>
+                      <strong>Giới thiệu Generative AI</strong>
+                    </div>
+                    <div>• Foundation models (Mô hình nền tảng)</div>
+                    <div>• Cách hoạt động của foundation models</div>
+                    <div>• Dịch vụ Generative AI của AWS</div>
+                    <div>• Demo: Sử dụng Amazon Q Developer</div>
+                    <div>• Ứng dụng thực tế của Generative AI</div>
+                    <div>• PartyRock, playground của Amazon Bedrock</div>
+                    <div>• Kiểm tra kiến thức</div>
                     <div className="font-semibold text-indigo-700 dark:text-indigo-300">
-                      🔧 Lab 2 & 3: Thiết lập hạ tầng mạng riêng trên AWS
+                      • Demo: Giới thiệu PartyRock
                     </div>
                   </div>
                 </td>
+                <td className="border border-gray-200 px-3 py-2 text-center dark:border dark:border-gray-600">
+                  Domain 2
+                </td>
               </tr>
-              {/* Buổi 4–5 */}
+              {/* Module 4: Prompt Engineering */}
               <tr className="align-top">
                 <td className="border border-gray-200 px-3 py-2 text-center font-bold dark:border dark:border-gray-600">
-                  4–5
+                  4
                 </td>
                 <td className="border border-gray-200 px-3 py-2 dark:border dark:border-gray-600">
                   <div className="ml-2 space-y-1">
-                    <div>Dịch vụ tính toán (EC2, Auto Scaling)</div>
-                    <div>Lưu trữ (S3, EBS, EFS)</div>
-                    <div className="font-semibold text-indigo-700 dark:text-indigo-300">
-                      🔧 Lab 4: Cấu hình EC2, lưu trữ
+                    <div>
+                      <strong>Prompt Engineering và Kỹ thuật tạo prompt</strong>
                     </div>
-                  </div>
-                </td>
-              </tr>
-              {/* Buổi 6–7 */}
-              <tr className="align-top">
-                <td className="border border-gray-200 px-3 py-2 text-center font-bold dark:border dark:border-gray-600">
-                  6–7
-                </td>
-                <td className="border border-gray-200 px-3 py-2 dark:border dark:border-gray-600">
-                  <div className="ml-2 space-y-1">
-                    <div>Cơ sở dữ liệu (RDS, DynamoDB)</div>
-                    <div>Giám sát & mở rộng (CloudWatch, Load Balancer)</div>
+                    <div>• Giá trị của prompt engineering</div>
+                    <div>• Cách cấu trúc prompt cho mô hình ngôn ngữ lớn</div>
                     <div className="font-semibold text-indigo-700 dark:text-indigo-300">
-                      🔧 Lab 5 & 6: Tạo DB layer & High Availability
+                      • Demo: Cấu trúc prompt hiệu quả
                     </div>
-                  </div>
-                </td>
-              </tr>
-              {/* Buổi 8–9 */}
-              <tr className="align-top">
-                <td className="border border-gray-200 px-3 py-2 text-center font-bold dark:border dark:border-gray-600">
-                  8–9
-                </td>
-                <td className="border border-gray-200 px-3 py-2 dark:border dark:border-gray-600">
-                  <div className="ml-2 space-y-1">
-                    <div>Tự động hoá hạ tầng (CloudFormation)</div>
-                    <div>Containers (ECS, EKS)</div>
-                    <div>AI Services (Amazon Q, Bedrock)</div>
+                    <div>• Kỹ thuật tạo prompt</div>
                     <div className="font-semibold text-indigo-700 dark:text-indigo-300">
-                      🔧 Lab 7 & 8: IaC và triển khai container với AI Assistant (Amazon Q)
+                      • Demo: Áp dụng kỹ thuật tạo prompt
                     </div>
+                    <div>• Rủi ro khi tạo prompt không phù hợp</div>
+                    <div>• Tính năng của Amazon Bedrock cho prompt engineering</div>
+                    <div>• Kiểm tra kiến thức</div>
                   </div>
                 </td>
+                <td className="border border-gray-200 px-3 py-2 text-center dark:border dark:border-gray-600">
+                  Domain 2, 3
+                </td>
               </tr>
-              {/* Buổi 10–11 */}
+              {/* Module 5: Làm việc với Foundation Models */}
               <tr className="align-top">
                 <td className="border border-gray-200 px-3 py-2 text-center font-bold dark:border dark:border-gray-600">
-                  10–11
+                  5
                 </td>
                 <td className="border border-gray-200 px-3 py-2 dark:border dark:border-gray-600">
                   <div className="ml-2 space-y-1">
-                    <div>Serverless (Lambda, API Gateway)</div>
-                    <div>Dịch vụ Edge (CloudFront, S3 Static Hosting)</div>
+                    <div>
+                      <strong>Làm việc với Foundation Models</strong>
+                    </div>
+                    <div>• Tiêu chí lựa chọn và tuỳ chỉnh mô hình nền tảng</div>
+                    <div>• Chọn mô hình phù hợp</div>
+                    <div>• Đánh giá và giám sát mô hình</div>
+                    <div>• Cấu hình tham số suy luận</div>
                     <div className="font-semibold text-indigo-700 dark:text-indigo-300">
-                      🔧 Lab 9 & 10: Xây dựng kiến trúc serverless & CDN
+                      • Demo: Tuỳ chỉnh tham số suy luận
                     </div>
-                  </div>
-                </td>
-              </tr>
-              {/* Buổi 12 */}
-              <tr className="align-top">
-                <td className="border border-gray-200 px-3 py-2 text-center font-bold dark:border dark:border-gray-600">
-                  12
-                </td>
-                <td className="border border-gray-200 px-3 py-2 dark:border dark:border-gray-600">
-                  <div className="ml-2 space-y-1">
-                    <div>Backup & Recovery (S3 Lifecycle, DR)</div>
-                    <div>Dịch vụ AI/ML (Textract, Translate)</div>
-                  </div>
-                </td>
-              </tr>
-              {/* Buổi 13 */}
-              <tr className="align-top">
-                <td className="border border-gray-200 px-3 py-2 text-center font-bold dark:border dark:border-gray-600">
-                  13
-                </td>
-                <td className="border border-gray-200 px-3 py-2 dark:border dark:border-gray-600">
-                  <div className="ml-2 space-y-1">
+                    <div>• Retrieval-Augmented Generation (RAG)</div>
+                    <div>• Kỹ thuật tuỳ chỉnh mô hình nền tảng</div>
+                    <div>• Làm việc với foundation models trên AWS</div>
                     <div className="font-semibold text-indigo-700 dark:text-indigo-300">
-                      🏗 Capstone Lab: Xây dựng kiến trúc nhiều tầng trên AWS
+                      • Demo: Làm việc với mô hình trên Amazon Bedrock
                     </div>
-                    <div>Q&A, chia sẻ kinh nghiệm thực chiến</div>
+                    <div>• Kiểm tra kiến thức</div>
                   </div>
                 </td>
+                <td className="border border-gray-200 px-3 py-2 text-center dark:border dark:border-gray-600">
+                  Domain 3
+                </td>
               </tr>
-              {/* Buổi 14–15 */}
+              {/* Module 6: AI có trách nhiệm */}
               <tr className="align-top">
                 <td className="border border-gray-200 px-3 py-2 text-center font-bold dark:border dark:border-gray-600">
-                  14–15
+                  6
                 </td>
                 <td className="border border-gray-200 px-3 py-2 dark:border dark:border-gray-600">
                   <div className="ml-2 space-y-1">
-                    <div>Ôn tập toàn bộ nội dung</div>
-                    <div>Thi thử với bộ đề chuẩn SAA-C03</div>
+                    <div>
+                      <strong>Thực hành AI có trách nhiệm</strong>
+                    </div>
+                    <div>• Định nghĩa AI có trách nhiệm</div>
+                    <div>• Các yếu tố cần cân nhắc khi triển khai Generative AI</div>
+                    <div>• Triển khai các biện pháp bảo vệ</div>
+                    <div>• AWS hỗ trợ AI có trách nhiệm như thế nào</div>
+                    <div className="font-semibold text-indigo-700 dark:text-indigo-300">
+                      • Demo: Sử dụng Amazon Bedrock Guardrails
+                    </div>
+                    <div>• Kiểm tra kiến thức</div>
                   </div>
                 </td>
+                <td className="border border-gray-200 px-3 py-2 text-center dark:border dark:border-gray-600">
+                  Domain 4
+                </td>
               </tr>
-              {/* Buổi 16 */}
+              {/* Module 7: Bảo mật, Quản trị, Tuân thủ */}
               <tr className="align-top">
                 <td className="border border-gray-200 px-3 py-2 text-center font-bold dark:border dark:border-gray-600">
-                  16
+                  7
+                </td>
+                <td className="border border-gray-200 px-3 py-2 dark:border dark:border-gray-600">
+                  <div className="ml-2 space-y-1">
+                    <div>
+                      <strong>Bảo mật, Quản trị và Tuân thủ</strong>
+                    </div>
+                    <div>• Định nghĩa bảo mật, quản trị và tuân thủ cho Generative AI</div>
+                    <div>• Bảo mật hệ thống AI trên AWS</div>
+                    <div>• Quản trị hệ thống AI trên AWS</div>
+                    <div>• Tuân thủ hệ thống AI trên AWS</div>
+                    <div className="font-semibold text-indigo-700 dark:text-indigo-300">
+                      • Demo: Sử dụng AWS Audit Manager Frameworks
+                    </div>
+                    <div>• Kiểm tra kiến thức</div>
+                  </div>
+                </td>
+                <td className="border border-gray-200 px-3 py-2 text-center dark:border dark:border-gray-600">
+                  Domain 5
+                </td>
+              </tr>
+              {/* Module 8: Triển khai ứng dụng GenAI */}
+              <tr className="align-top">
+                <td className="border border-gray-200 px-3 py-2 text-center font-bold dark:border dark:border-gray-600">
+                  8
+                </td>
+                <td className="border border-gray-200 px-3 py-2 dark:border dark:border-gray-600">
+                  <div className="ml-2 space-y-1">
+                    <div>
+                      <strong>Triển khai ứng dụng Generative AI</strong>
+                    </div>
+                    <div>• Quy trình phát triển ứng dụng Generative AI</div>
+                    <div>• Sử dụng AI agents trong Amazon Bedrock</div>
+                    <div>• Lựa chọn dịch vụ AWS phù hợp</div>
+                    <div>• Kiểm tra kiến thức</div>
+                  </div>
+                </td>
+                <td className="border border-gray-200 px-3 py-2 text-center dark:border dark:border-gray-600">
+                  Domain 3
+                </td>
+              </tr>
+              {/* Module 9: Ôn tập & Chuẩn bị thi */}
+              <tr className="align-top">
+                <td className="border border-gray-200 px-3 py-2 text-center font-bold dark:border dark:border-gray-600">
+                  9
+                </td>
+                <td className="border border-gray-200 px-3 py-2 dark:border dark:border-gray-600">
+                  <div className="ml-2 space-y-1">
+                    <div>
+                      <strong>Ôn tập & Chuẩn bị thi chứng chỉ</strong>
+                    </div>
+                    <div>• Thông tin về kỳ thi AWS Certified AI Practitioner</div>
+                    <div>• Tài liệu ôn tập & lộ trình chuẩn bị</div>
+                    <div>• Luyện đề & chiến lược làm bài</div>
+                  </div>
+                </td>
+                <td className="border border-gray-200 px-3 py-2 text-center dark:border dark:border-gray-600">
+                  Tất cả chủ đề
+                </td>
+              </tr>
+              <tr className="align-top">
+                <td className="border border-gray-200 px-3 py-2 text-center font-bold dark:border dark:border-gray-600">
+                  10
                 </td>
                 <td className="border border-gray-200 px-3 py-2 dark:border dark:border-gray-600">
                   <div className="ml-2 space-y-1">
@@ -483,9 +537,35 @@ export default function CourseSpecial({ frontMatter, mentorDetails }) {
                     </div>
                   </div>
                 </td>
+                <td className="border border-gray-200 px-3 py-2 text-center dark:border dark:border-gray-600">
+                  Tất cả chủ đề
+                </td>
               </tr>
             </tbody>
           </table>
+        </div>
+        <div className="mt-8">
+          <h3 className="mb-4 text-xl font-bold text-indigo-700 dark:text-indigo-300">
+            Tỷ trọng các domain trong đề thi AIF-C01
+          </h3>
+          <ul className="mb-4 list-disc pl-6 text-base text-gray-700 dark:text-gray-200">
+            <li>
+              <strong>Domain 1:</strong> Fundamentals of AI and ML (20%) - 13 câu
+            </li>
+            <li>
+              <strong>Domain 2:</strong> Fundamentals of Generative AI (24%) - 16 câu
+            </li>
+            <li>
+              <strong>Domain 3:</strong> Applications of Foundation Models (28%) - 18 câu
+            </li>
+            <li>
+              <strong>Domain 4:</strong> Guidelines for Responsible AI (14%) - 9 câu
+            </li>
+            <li>
+              <strong>Domain 5:</strong> Security, Compliance, and Governance for AI Solutions (14%)
+              - 9 câu
+            </li>
+          </ul>
         </div>
       </section>
 
@@ -588,7 +668,7 @@ export default function CourseSpecial({ frontMatter, mentorDetails }) {
           </h2>
           <p className="mx-auto mb-12 max-w-3xl text-center text-xl text-gray-600 dark:text-gray-300">
             Khóa học không chỉ giúp bạn đỗ chứng chỉ mà còn cung cấp nền tảng vững chắc cho Sự
-            nghiệp Cloud
+            nghiệp AI/ML/GenAI
           </p>
 
           <div className="grid gap-8 md:grid-cols-2">
@@ -598,12 +678,11 @@ export default function CourseSpecial({ frontMatter, mentorDetails }) {
               </div>
               <div>
                 <h3 className="mb-2 text-xl font-bold text-gray-900 dark:text-gray-100">
-                  Nắm vững kiến thức AWS nền tảng
+                  Nắm vững kiến thức AI/ML/GenAI nền tảng
                 </h3>
                 <p className="text-gray-600 dark:text-gray-300">
-                  Nắm vững hệ thống kiến thức nền tảng nhất mà bất kỳ Cloud Engineer nào cũng cần
-                  trang bị. Hệ thống kiến thức này là nền móng cho việc làm việc với AWS trong mọi
-                  dự án thực tế.
+                  Hiểu rõ các khái niệm AI, ML, GenAI, Foundation Models, biết cách áp dụng vào các
+                  bài toán thực tế và lựa chọn AWS AI services phù hợp cho từng use case.
                 </p>
               </div>
             </div>
@@ -614,12 +693,12 @@ export default function CourseSpecial({ frontMatter, mentorDetails }) {
               </div>
               <div>
                 <h3 className="mb-2 text-xl font-bold text-gray-900 dark:text-gray-100">
-                  Thực hành & xây dựng dự án thực tế
+                  Thực hành với AWS AI/ML Services
                 </h3>
                 <p className="text-gray-600 dark:text-gray-300">
-                  Xuyên suốt khóa học là hệ thống lab và dự án thực tế: Xây dựng kiến trúc
-                  multi-tier, triển khai serverless, container orchestration. Kết quả khóa học, học
-                  viên có portfolio mạnh mẽ.
+                  Hands-on experience với Amazon Bedrock, SageMaker, AI services như Rekognition,
+                  Comprehend, Textract. Biết cách build GenAI applications và implement AI
+                  solutions.
                 </p>
               </div>
             </div>
@@ -630,12 +709,11 @@ export default function CourseSpecial({ frontMatter, mentorDetails }) {
               </div>
               <div>
                 <h3 className="mb-2 text-xl font-bold text-gray-900 dark:text-gray-100">
-                  Định hướng nghề nghiệp rõ ràng
+                  Định hướng nghề nghiệp AI/ML rõ ràng
                 </h3>
                 <p className="text-gray-600 dark:text-gray-300">
-                  Hiểu rõ bản chất làm Cloud/DevOps là làm gì - trong ngành Cloud gồm có những lĩnh
-                  vực nào, cơ hội nghề nghiệp của từng lĩnh vực và mối liên hệ giữa các mảng công
-                  việc đó với nhau.
+                  Hiểu rõ các vai trò trong ngành AI/ML: AI Engineer, ML Engineer, Data Scientist,
+                  AI Product Manager, GenAI Developer và lộ trình phát triển cho từng hướng.
                 </p>
               </div>
             </div>
@@ -646,12 +724,11 @@ export default function CourseSpecial({ frontMatter, mentorDetails }) {
               </div>
               <div>
                 <h3 className="mb-2 text-xl font-bold text-gray-900 dark:text-gray-100">
-                  Network cùng chuyên gia trong nghề
+                  Network cùng professionals
                 </h3>
                 <p className="text-gray-600 dark:text-gray-300">
-                  Tiếp cận với mạng lưới mentor là các chuyên gia AWS tại các công ty nước ngoài, và
-                  cộng đồng VNTechies với hàng ngàn thành viên - hứa hẹn khởi đầu vững chắc cho sự
-                  nghiệp Cloud.
+                  Kết nối với network trong cộng đồng VNTechies và cơ hội career development trong
+                  lĩnh vực AI/GenAI.
                 </p>
               </div>
             </div>
@@ -661,7 +738,7 @@ export default function CourseSpecial({ frontMatter, mentorDetails }) {
 
       <section className="mb-12">
         <h2 className="mb-8 text-center text-3xl font-bold text-gray-900 dark:text-gray-100">
-          Học phí và ưu đãi
+          Đầu tư cho tương lai AI của bạn 💰
         </h2>
 
         {/* Pricing Cards */}
@@ -676,12 +753,12 @@ export default function CourseSpecial({ frontMatter, mentorDetails }) {
 
               <div className="mb-4 rounded-lg bg-gradient-to-r from-indigo-500 to-indigo-700 p-6 text-white">
                 <div className="mb-1 text-sm font-semibold">Người đi làm</div>
-                <div className="text-3xl font-bold">8.000.000</div>
+                <div className="text-3xl font-bold">6.000.000</div>
               </div>
 
               <div className="mb-4 rounded-lg bg-indigo-100 p-4 text-indigo-800 dark:bg-indigo-800/30 dark:text-indigo-200">
                 <div className="mb-1 text-sm font-semibold">Sinh viên</div>
-                <div className="text-2xl font-bold">7.500.000</div>
+                <div className="text-2xl font-bold">5.500.000</div>
               </div>
 
               <button className="w-full rounded-lg bg-gradient-to-r from-indigo-500 to-indigo-700 px-6 py-3 font-bold text-white transition duration-200 hover:from-indigo-600 hover:to-indigo-800">
@@ -694,20 +771,20 @@ export default function CourseSpecial({ frontMatter, mentorDetails }) {
           <div className="overflow-hidden rounded-lg border border-emerald-200 bg-white shadow-lg dark:border-emerald-700 dark:bg-gray-800">
             <div className="p-6 text-center">
               <h4 className="mb-2 text-2xl font-bold text-emerald-600 dark:text-emerald-400">
-                Early bird
+                Early Bird
               </h4>
               <p className="mb-6 text-gray-600 dark:text-gray-400">
-                Học phí áp dụng khi đăng ký sớm
+                Học phí áp dụng khi đăng ký sớm ⏰
               </p>
 
               <div className="mb-4 rounded-lg bg-gradient-to-r from-emerald-500 to-emerald-600 p-6 text-white">
                 <div className="mb-1 text-sm font-semibold">Người đi làm</div>
-                <div className="text-3xl font-bold">7.200.000</div>
+                <div className="text-3xl font-bold">5.400.000</div>
               </div>
 
               <div className="mb-4 rounded-lg bg-emerald-100 p-4 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-200">
                 <div className="mb-1 text-sm font-semibold">Sinh viên</div>
-                <div className="text-2xl font-bold">6.700.000</div>
+                <div className="text-2xl font-bold">4.900.000</div>
               </div>
 
               <button className="w-full rounded-lg bg-gradient-to-r from-emerald-500 to-emerald-600 px-6 py-3 font-bold text-white transition duration-200 hover:from-emerald-600 hover:to-emerald-700">
@@ -725,17 +802,17 @@ export default function CourseSpecial({ frontMatter, mentorDetails }) {
             <div className="p-6 text-center">
               <h4 className="mb-2 text-2xl font-bold text-pink-600 dark:text-pink-400">Group</h4>
               <p className="mb-6 text-gray-600 dark:text-gray-400">
-                Ưu đãi giá áp dụng với nhóm 2 người+
+                Ưu đãi giá áp dụng với nhóm 2 người+ 👥
               </p>
 
               <div className="mb-4 rounded-lg bg-gradient-to-r from-pink-500 to-purple-600 p-6 text-white shadow-lg">
                 <div className="mb-1 text-sm font-semibold">Người đi làm</div>
-                <div className="text-3xl font-bold">6.800.000</div>
+                <div className="text-3xl font-bold">5.000.000</div>
               </div>
 
               <div className="mb-4 rounded-lg bg-gradient-to-r from-pink-100 to-purple-100 p-4 text-pink-800 dark:bg-gradient-to-r dark:from-pink-900/30 dark:to-purple-900/30 dark:text-pink-200">
                 <div className="mb-1 text-sm font-semibold">Sinh viên</div>
-                <div className="text-2xl font-bold">6.300.000</div>
+                <div className="text-2xl font-bold">4.500.000</div>
               </div>
 
               <button className="w-full rounded-lg bg-gradient-to-r from-pink-500 to-purple-600 px-6 py-3 font-bold text-white shadow-lg transition duration-200 hover:from-pink-600 hover:to-purple-700 hover:shadow-xl">
@@ -772,13 +849,13 @@ export default function CourseSpecial({ frontMatter, mentorDetails }) {
       <section className="bg-gray-50 px-4 py-16 dark:bg-gray-900">
         <div className="mx-auto max-w-4xl">
           <h2 className="mb-12 text-center text-3xl font-bold text-gray-900 dark:text-gray-100">
-            Đăng ký & hỗ trợ
+            Bạn đã sẵn sàng tham gia cuộc cách mạng AI chưa? 🚀
           </h2>
 
           <div className="rounded-xl bg-gradient-to-r from-blue-50 to-indigo-50 p-8 dark:from-blue-900/20 dark:to-indigo-900/20">
             <div className="text-center">
               <h3 className="mb-4 text-xl font-bold text-gray-900 dark:text-gray-100">
-                Đăng ký ngay để nhận ưu đãi học phí và bộ tài liệu luyện thi AWS SAA-C03!
+                Đăng ký ngay để nhận ưu đãi học phí và bộ tài liệu luyện thi AWS AIF-C01!
               </h3>
 
               <div className="flex flex-col gap-4 md:flex-row md:justify-center">
@@ -786,9 +863,9 @@ export default function CourseSpecial({ frontMatter, mentorDetails }) {
                   href={info.registrationLink}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-lg inline-flex items-center justify-center rounded-lg bg-gradient-to-r from-blue-600 to-indigo-600 px-8 py-4 font-semibold text-white shadow-lg transition hover:from-blue-700 hover:to-indigo-700"
+                  className="text-lg inline-flex items-center justify-center rounded-lg bg-gradient-to-r from-purple-600 to-pink-600 px-8 py-4 font-semibold text-white shadow-lg transition hover:from-purple-700 hover:to-pink-700 hover:shadow-xl"
                 >
-                  Đăng ký khóa học
+                  ĐĂNG KÝ NGAY! 🤖
                 </a>
               </div>
             </div>
@@ -800,7 +877,7 @@ export default function CourseSpecial({ frontMatter, mentorDetails }) {
       <section className="bg-gray-50 px-4 py-16 dark:bg-gray-900">
         <div className="mx-auto max-w-6xl">
           <h2 className="mb-12 text-center text-3xl font-bold text-gray-900 dark:text-gray-100">
-            Quyền lợi của học viên
+            Quyền lợi của học viên 🎁
           </h2>
 
           <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
@@ -808,10 +885,12 @@ export default function CourseSpecial({ frontMatter, mentorDetails }) {
               <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-blue-100 dark:bg-blue-900">
                 <FaClock className="h-8 w-8 text-blue-600 dark:text-blue-400" />
               </div>
-              <h3 className="mb-4 text-xl font-bold text-gray-900 dark:text-gray-100">TRỌN ĐỜI</h3>
+              <h3 className="mb-4 text-xl font-bold text-gray-900 dark:text-gray-100">
+                LIFETIME ACCESS ♾️
+              </h3>
               <p className="text-gray-600 dark:text-gray-300">
-                Truy cập vào hệ thống thư viện nội bộ của VNTechies, tài liệu khóa học và video
-                record
+                Truy cập vĩnh viễn vào AI knowledge base của VNTechies: video recordings, notes,
+                updates. One-time payment, lifetime learning!
               </p>
             </div>
 
@@ -820,7 +899,7 @@ export default function CourseSpecial({ frontMatter, mentorDetails }) {
                 <FaUsers className="h-8 w-8 text-green-600 dark:text-green-400" />
               </div>
               <h3 className="mb-4 text-xl font-bold text-gray-900 dark:text-gray-100">
-                Cộng đồng hỗ trợ học viên
+                Cộng đồng hỗ trợ học viên 🤝
               </h3>
               <div className="space-y-3 text-sm text-gray-600 dark:text-gray-300">
                 <div className="flex items-start space-x-2">
@@ -849,7 +928,7 @@ export default function CourseSpecial({ frontMatter, mentorDetails }) {
                 <FaAward className="h-8 w-8 text-purple-600 dark:text-purple-400" />
               </div>
               <h3 className="mb-4 text-xl font-bold text-gray-900 dark:text-gray-100">
-                Sự kiện độc quyền
+                Sự kiện độc quyền 🎉
               </h3>
               <div className="space-y-3 text-sm text-gray-600 dark:text-gray-300">
                 <div className="flex items-start space-x-2">
