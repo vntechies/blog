@@ -160,8 +160,9 @@ export default function CourseSpecial({ frontMatter, mentorDetails }) {
           Vì sao nên chọn <span className="font-bold text-orange-500">VNTechies</span> để bắt đầu
           hành trình AI?
         </h2>
-        <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
-          <div className="flex flex-col items-start gap-4 rounded-xl bg-indigo-50 p-6 shadow-sm dark:bg-indigo-900/30">
+        <div className="flex flex-col gap-8 lg:grid lg:grid-cols-4 lg:gap-8">
+          {/* Cards: stack vertically on mobile, grid on desktop */}
+          <div className="flex flex-1 flex-col items-start gap-4 rounded-xl bg-indigo-50 p-6 shadow-sm dark:bg-indigo-900/30">
             <div className="text-3xl">🎯</div>
             <div>
               <div className="text-xl font-bold text-indigo-800 dark:text-indigo-200">
@@ -173,7 +174,7 @@ export default function CourseSpecial({ frontMatter, mentorDetails }) {
               </div>
             </div>
           </div>
-          <div className="flex flex-col items-start gap-4 rounded-xl bg-indigo-50 p-6 shadow-sm dark:bg-indigo-900/30">
+          <div className="flex flex-1 flex-col items-start gap-4 rounded-xl bg-indigo-50 p-6 shadow-sm dark:bg-indigo-900/30">
             <div className="text-3xl">🚀</div>
             <div>
               <div className="text-xl font-bold text-indigo-800 dark:text-indigo-200">
@@ -184,7 +185,7 @@ export default function CourseSpecial({ frontMatter, mentorDetails }) {
               </div>
             </div>
           </div>
-          <div className="flex flex-col items-start gap-4 rounded-xl bg-indigo-50 p-6 shadow-sm dark:bg-indigo-900/30">
+          <div className="flex flex-1 flex-col items-start gap-4 rounded-xl bg-indigo-50 p-6 shadow-sm dark:bg-indigo-900/30">
             <div className="text-3xl">🤝</div>
             <div>
               <div className="text-xl font-bold text-indigo-800 dark:text-indigo-200">
@@ -195,7 +196,7 @@ export default function CourseSpecial({ frontMatter, mentorDetails }) {
               </div>
             </div>
           </div>
-          <div className="flex flex-col items-start gap-4 rounded-xl bg-indigo-50 p-6 shadow-sm dark:bg-indigo-900/30">
+          <div className="flex flex-1 flex-col items-start gap-4 rounded-xl bg-indigo-50 p-6 shadow-sm dark:bg-indigo-900/30">
             <div className="text-3xl">🌟</div>
             <div>
               <div className="text-xl font-bold text-indigo-800 dark:text-indigo-200">
@@ -207,7 +208,9 @@ export default function CourseSpecial({ frontMatter, mentorDetails }) {
               </div>
             </div>
           </div>
-          <div className="col-span-4 flex flex-col items-start gap-4 rounded-xl border-l-4 border-yellow-400 border-gray-200 bg-yellow-50 p-5 shadow-sm dark:border-yellow-500 dark:border-gray-600 dark:bg-yellow-900/30">
+        </div>
+        <div className="mt-8 flex flex-col lg:col-span-4">
+          <div className="flex flex-col items-start gap-4 rounded-xl border-l-4 border-yellow-400 border-gray-200 bg-yellow-50 p-5 shadow-sm dark:border-yellow-500 dark:border-gray-600 dark:bg-yellow-900/30">
             <div className="mb-2 flex items-center gap-3">
               <FaCheckCircle className="h-6 w-6 text-yellow-500" />
               <span className="text-lg font-bold text-yellow-700 dark:text-yellow-300">
@@ -325,7 +328,7 @@ export default function CourseSpecial({ frontMatter, mentorDetails }) {
                   Nội dung
                 </th>
                 <th className="w-1/4 border border-gray-200 px-3 py-2 text-center font-bold text-indigo-700 dark:border dark:border-gray-600 dark:text-indigo-300">
-                  Chủ đề AIF-C01
+                  Domain AIF-C01
                 </th>
               </tr>
             </thead>
@@ -350,8 +353,10 @@ export default function CourseSpecial({ frontMatter, mentorDetails }) {
                     </div>
                   </div>
                 </td>
-                <td className="border border-gray-200 px-3 py-2 text-center dark:border dark:border-gray-600">
-                  Domain 1
+                <td className="border border-gray-200 px-3 py-2 text-left text-center dark:border dark:border-gray-600">
+                  <div>
+                    <strong>Domain 1</strong> (20%)
+                  </div>
                 </td>
               </tr>
               {/* Module 3: Giới thiệu Generative AI */}
@@ -376,8 +381,10 @@ export default function CourseSpecial({ frontMatter, mentorDetails }) {
                     </div>
                   </div>
                 </td>
-                <td className="border border-gray-200 px-3 py-2 text-center dark:border dark:border-gray-600">
-                  Domain 2
+                <td className="border border-gray-200 px-3 py-2 text-left text-center dark:border dark:border-gray-600">
+                  <div>
+                    <strong>Domain 2</strong> (24%)
+                  </div>
                 </td>
               </tr>
               {/* Module 4: Prompt Engineering */}
@@ -404,8 +411,13 @@ export default function CourseSpecial({ frontMatter, mentorDetails }) {
                     <div>• Kiểm tra kiến thức</div>
                   </div>
                 </td>
-                <td className="border border-gray-200 px-3 py-2 text-center dark:border dark:border-gray-600">
-                  Domain 2, 3
+                <td className="border border-gray-200 px-3 py-2 text-left text-center dark:border dark:border-gray-600">
+                  <div>
+                    <strong>Domain 2</strong> (24%)
+                  </div>
+                  <div>
+                    <strong>Domain 3</strong> (28%)
+                  </div>
                 </td>
               </tr>
               {/* Module 5: Làm việc với Foundation Models */}
@@ -434,8 +446,10 @@ export default function CourseSpecial({ frontMatter, mentorDetails }) {
                     <div>• Kiểm tra kiến thức</div>
                   </div>
                 </td>
-                <td className="border border-gray-200 px-3 py-2 text-center dark:border dark:border-gray-600">
-                  Domain 3
+                <td className="border border-gray-200 px-3 py-2 text-left text-center dark:border dark:border-gray-600">
+                  <div>
+                    <strong>Domain 3</strong> (28%)
+                  </div>
                 </td>
               </tr>
               {/* Module 6: AI có trách nhiệm */}
@@ -458,8 +472,10 @@ export default function CourseSpecial({ frontMatter, mentorDetails }) {
                     <div>• Kiểm tra kiến thức</div>
                   </div>
                 </td>
-                <td className="border border-gray-200 px-3 py-2 text-center dark:border dark:border-gray-600">
-                  Domain 4
+                <td className="border border-gray-200 px-3 py-2 text-left text-center dark:border dark:border-gray-600">
+                  <div>
+                    <strong>Domain 4</strong> (14%)
+                  </div>
                 </td>
               </tr>
               {/* Module 7: Bảo mật, Quản trị, Tuân thủ */}
@@ -482,8 +498,10 @@ export default function CourseSpecial({ frontMatter, mentorDetails }) {
                     <div>• Kiểm tra kiến thức</div>
                   </div>
                 </td>
-                <td className="border border-gray-200 px-3 py-2 text-center dark:border dark:border-gray-600">
-                  Domain 5
+                <td className="border border-gray-200 px-3 py-2 text-left text-center dark:border dark:border-gray-600">
+                  <div>
+                    <strong>Domain 5</strong> (14%)
+                  </div>
                 </td>
               </tr>
               {/* Module 8: Triển khai ứng dụng GenAI */}
@@ -502,8 +520,10 @@ export default function CourseSpecial({ frontMatter, mentorDetails }) {
                     <div>• Kiểm tra kiến thức</div>
                   </div>
                 </td>
-                <td className="border border-gray-200 px-3 py-2 text-center dark:border dark:border-gray-600">
-                  Domain 3
+                <td className="border border-gray-200 px-3 py-2 text-left text-center dark:border dark:border-gray-600">
+                  <div>
+                    <strong>Domain 3</strong> (28%)
+                  </div>
                 </td>
               </tr>
               {/* Module 9: Ôn tập & Chuẩn bị thi */}
@@ -522,7 +542,7 @@ export default function CourseSpecial({ frontMatter, mentorDetails }) {
                   </div>
                 </td>
                 <td className="border border-gray-200 px-3 py-2 text-center dark:border dark:border-gray-600">
-                  Tất cả chủ đề
+                  All domains
                 </td>
               </tr>
               <tr className="align-top">
@@ -538,34 +558,11 @@ export default function CourseSpecial({ frontMatter, mentorDetails }) {
                   </div>
                 </td>
                 <td className="border border-gray-200 px-3 py-2 text-center dark:border dark:border-gray-600">
-                  Tất cả chủ đề
+                  All domains
                 </td>
               </tr>
             </tbody>
           </table>
-        </div>
-        <div className="mt-8">
-          <h3 className="mb-4 text-xl font-bold text-indigo-700 dark:text-indigo-300">
-            Tỷ trọng các domain trong đề thi AIF-C01
-          </h3>
-          <ul className="mb-4 list-disc pl-6 text-base text-gray-700 dark:text-gray-200">
-            <li>
-              <strong>Domain 1:</strong> Fundamentals of AI and ML (20%) - 13 câu
-            </li>
-            <li>
-              <strong>Domain 2:</strong> Fundamentals of Generative AI (24%) - 16 câu
-            </li>
-            <li>
-              <strong>Domain 3:</strong> Applications of Foundation Models (28%) - 18 câu
-            </li>
-            <li>
-              <strong>Domain 4:</strong> Guidelines for Responsible AI (14%) - 9 câu
-            </li>
-            <li>
-              <strong>Domain 5:</strong> Security, Compliance, and Governance for AI Solutions (14%)
-              - 9 câu
-            </li>
-          </ul>
         </div>
       </section>
 
