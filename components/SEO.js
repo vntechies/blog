@@ -260,9 +260,26 @@ export const CourseSEO = ({
       name: title,
       description: summary,
       provider: provider,
+      hasCourseInstance: [
+        {
+          '@type': 'CourseInstance',
+          courseMode: 'online',
+          startDate: date ? new Date(date).toISOString() : undefined,
+          endDate: lastmod ? new Date(lastmod).toISOString() : undefined,
+          url: url,
+        },
+      ],
+      offers: [
+        {
+          '@type': 'Offer',
+          url: url,
+          price: '0',
+          priceCurrency: 'USD',
+          availability: 'https://schema.org/InStock',
+        },
+      ],
     }
   }
-
   const twImageUrl = featuredImages[0].url
 
   return (

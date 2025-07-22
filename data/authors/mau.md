@@ -1,34 +1,69 @@
 ---
 name: Quang Mau
 avatar: /static/images/authors/mau.jpg
-occupation: Solution Architect
+occupation: Lead Cloud Solution Architect
 company: Cloud Kinetics
-email: mau@qmau.me
-twitter: https://twitter.com/qmau94
+email: mau@vntechies.com
 facebook: https://fb.me/qmauvnt
 linkedin: https://www.linkedin.com/in/qmauvnt/
 github: https://github.com/qmauvnt
-url: http://qmau.me/
+website: http://qmau.me/
+startYear: 2016
+isMentor: true
+studentCount: 10
+successRate: 100
+testimonials: ['5 | Giảng dạy có tâm, truyền đạt kiến thức dễ hiểu | Võ Hùng - Division Manager']
 ---
 
-Cựu sinh viên K57 Bách Khoa Hà Nội, đang làm việc tại Hà Nội. Hiện tại mình đang là Cloud Solution Architect của Cloud Kinetics Vietnam.
+**Kinh nghiệm:**
 
-Khi nhập học Bách Khoa, mình đăng ký hệ tiếng Anh nhưng vì không đủ chỉ tiêu nên được offer qua hệ tiếng Nhật. Bằng một cái tặc lưỡi và sau 5 năm chơi bời vất vả thì hôm nay mình đang ngồi trong một căn phòng nhỏ đầy nắng ở Tokyo 🗼
+- Hơn 7 năm làm việc tại Nhật Bản và Việt Nam với background từ Backend Engineer, Cloud/DevOps Engineer, và Solution Architect
+- Dẫn dắt các dự án di chuyển hệ thống lên cloud cho các tập đoàn lớn
+- Tư vấn chiến lược chuyển đổi số, triển khai DevSecOps, giải pháp AI/GenAI/Data cho doanh nghiệp lớn tại Nhật Bản, Việt Nam, Úc, Mỹ
+- Có kinh nghiệm với các dự án toàn cầu, giao tiếp tiếng Anh & tiếng Nhật
 
-Ngoài ra mình cũng là founder của [VNTechies Dev Blog](https://vntechies.dev/). Hãy qua ủng hộ các bài viết của tụi mình nhé! 😉
-<a href="https://vntechies.dev/">
-![VNTechies Dev Blog](/static/images/logo.webp)
-</a>
+**Chứng chỉ chuyên môn:**
 
-## Work
+- AWS Certified Solutions Architect – Professional
+- AWS Certified SysOps Administrator – Associate
+- AWS Certified Developer – Associate
+- AWS Certified AI Practitioner
+- AWS Certified Machine Learning Engineer – Associate
+- Certified Kubernetes Administrator (CKA)
+- Fundamental Information Technology Engineer Examination (FE)
+- Japanese-Language Proficiency Test N2
+- TOEIC 940
 
-- 09/2021 - Now Cloud Kinetics - Senior Solution Architect
-- 06/2021 - 09/2023 Dominos Pizza Japan - Senior Technical Specialist
-- 11/2017 - 05/2021 HOT-FACTORY.,LTD - System Engineer
-- 05/2016 - 10/2016 FRAMGIA VIETNAM - Engineer Trainee
+<div className="cert-grid">
+  <div className="cert-row" style={{display: "flex", justifyContent: "center", flexWrap: "wrap", gap: "20px", margin: "5px 0"}}>
+    <div style={{width: "160px", textAlign: "center"}}>
+      <img src="/static/images/authors/certs/mausapro.png" alt="AWS Certified Solutions Architect – Professional" style={{width: "100%", border: "1px solid #eaeaea", borderRadius: "8px", padding: "5px"}}/>
+      <p style={{fontSize: "0.8rem", marginTop: "5px"}}>AWS Certified Solutions Architect – Professional</p>
+    </div>
+    <div style={{width: "160px", textAlign: "center"}}>
+      <img src="/static/images/authors/certs/mausoe.png" alt="AWS Certified Solutions Architect – Associate" style={{width: "100%", border: "1px solid #eaeaea", borderRadius: "8px", padding: "5px"}}/>
+      <p style={{fontSize: "0.8rem", marginTop: "5px"}}>AWS Certified Solutions Architect – Associate</p>
+    </div>
+    <div style={{width: "160px", textAlign: "center"}}>
+      <img src="/static/images/authors/certs/mauda.png" alt="AWS Certified Developer – Associate" style={{width: "100%", border: "1px solid #eaeaea", borderRadius: "8px", padding: "5px"}}/>
+      <p style={{fontSize: "0.8rem", marginTop: "5px"}}>AWS Certified Developer – Associate</p>
+    </div>
+    <div style={{width: "160px", textAlign: "center"}}>
+      <img src="/static/images/authors/certs/mausa.png" alt="AWS Certified SysOps Administrator – Associate" style={{width: "100%", border: "1px solid #eaeaea", borderRadius: "8px", padding: "5px"}}/>
+      <p style={{fontSize: "0.8rem", marginTop: "5px"}}>AWS Certified SysOps Administrator – Associate</p>
+    </div>
+    <div style={{width: "160px", textAlign: "center"}}>
+      <img src="/static/images/authors/certs/mauai.png" alt="AWS Certified AI Practitioner" style={{width: "100%", border: "1px solid #eaeaea", borderRadius: "8px", padding: "5px"}}/>
+      <p style={{fontSize: "0.8rem", marginTop: "5px"}}>AWS Certified AI Practitioner</p>
+    </div>
+    <div style={{width: "160px", textAlign: "center"}}>
+      <img src="/static/images/authors/certs/mauml.png" alt="AWS Certified Machine Learning Engineer – Associate" style={{width: "100%", border: "1px solid #eaeaea", borderRadius: "8px", padding: "5px"}}/>
+      <p style={{fontSize: "0.8rem", marginTop: "5px"}}>AWS Certified Machine Learning Engineer – Associate</p>
+    </div>
+  </div>
+</div>
 
-## Education
+**Hoạt động cộng đồng:**
 
-- 09/2012 - 07/2017 ĐẠI HỌC BÁCH KHOA HÀ NỘI - HEDSPI K57
-- 08/2009 - 05/2012 CHUYÊN LÝ TỔNG HỢP - K24B
-- 09/2006 - 05/2009 HANOI - AMSTERDAM
+- Founder của VNTechies, admin Viet-AWS User Group & Vietnam MongoDB User Group
+- Diễn giả tại các sự kiện lớn về Cloud/DevOps, hỗ trợ cộng đồng công nghệ Việt Nam
