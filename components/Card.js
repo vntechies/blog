@@ -19,15 +19,16 @@ const Card = ({ title, description, imgSrc, href, showMore = true, isFree }) => 
         )}
         <div className="flex-grow p-6">
           <h2 className="mb-3 text-xl font-bold leading-8 tracking-tight sm:text-2xl">
-            {isFree ? (
-              <span className="mb-2 inline-block rounded bg-green-100 px-2.5 py-0.5 text-sm font-medium text-green-800 dark:bg-green-900 dark:text-green-300">
-                MIỄN PHÍ
-              </span>
-            ) : (
-              <span className="mb-2 inline-block rounded px-2.5 py-0.5 text-sm font-medium text-orange-800 dark:bg-orange-900 dark:text-orange-300">
-                💎 PREMIUM
-              </span>
-            )}
+            {isFree !== undefined &&
+              (isFree ? (
+                <span className="mb-2 inline-block rounded bg-green-100 px-2.5 py-0.5 text-sm font-medium text-green-800 dark:bg-green-900 dark:text-green-300">
+                  MIỄN PHÍ
+                </span>
+              ) : (
+                <span className="mb-2 inline-block rounded px-2.5 py-0.5 text-sm font-medium text-orange-800 dark:bg-orange-900 dark:text-orange-300">
+                  💎 PREMIUM
+                </span>
+              ))}
             <div>{title}</div>
           </h2>
           <p className="prose mb-3 max-w-none text-gray-500 dark:text-gray-400">{description}</p>

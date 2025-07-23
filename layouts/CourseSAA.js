@@ -1081,7 +1081,7 @@ export default function CourseSpecial({ frontMatter, mentorDetails }) {
               {' '}
               Messenger{' '}
             </Link>
-            để được tư vấn tâm lý
+            để được tư vấn miễn phí
           </p>
         </div>
       </section>

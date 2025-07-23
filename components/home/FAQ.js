@@ -9,7 +9,7 @@ const faqs = [
         đồng và phi lợi nhuận. Bạn có thể tham khảo source code của website này trên github repo{' '}
         <a
           href="https://github.com/vntechies/blog"
-          className="font-medium text-primary-600 underline hover:no-underline dark:text-primary-500"
+          className="font-medium text-orange-600 underline hover:no-underline dark:text-orange-400"
           target="_blank"
           rel="noreferrer"
         >
@@ -25,7 +25,7 @@ const faqs = [
         Các bạn có thể làm theo hướng dẫn tại trang{' '}
         <a
           href="/docs/contribute"
-          className="font-medium text-primary-600 underline hover:no-underline dark:text-primary-500"
+          className="font-medium text-orange-600 underline hover:no-underline dark:text-orange-400"
           target="_blank"
           rel="noreferrer"
         >
@@ -42,7 +42,7 @@ const faqs = [
         Các bạn có thể liên hệ trực tiếp qua facebook messenger của VNTechies tại{' '}
         <a
           href="https://m.me/vntechies"
-          className="font-medium text-primary-600 underline hover:no-underline dark:text-primary-500"
+          className="font-medium text-orange-600 underline hover:no-underline dark:text-orange-400"
           target="_blank"
           rel="noreferrer"
         >
@@ -51,7 +51,7 @@ const faqs = [
         để được phản hồi nhanh nhất hoặc liên hệ qua email{' '}
         <a
           href="mailto:info@vntechies.dev"
-          className="font-medium text-primary-600 underline hover:no-underline dark:text-primary-500"
+          className="font-medium text-orange-600 underline hover:no-underline dark:text-orange-400"
           target="_blank"
           rel="noreferrer"
         >
@@ -64,31 +64,39 @@ const faqs = [
 
 const FAQ = () => {
   return (
-    <section className="bg-white dark:bg-gray-900">
-      <div className="mx-auto max-w-screen-xl py-8 px-4 sm:py-16 lg:px-6">
-        <h2 className="mb-8 text-4xl font-extrabold tracking-tight text-gray-900 dark:text-white">
-          Câu hỏi thường gặp
-        </h2>
-        <div className="grid border-t border-gray-200 pt-8 text-left dark:border-gray-700 md:gap-16">
-          <div>
-            {faqs.map((faq) => (
-              <div key={faq.question} className="mb-10">
-                <h3 className="text-lg mb-4 flex items-center font-medium text-gray-900 dark:text-white">
-                  <svg
-                    className="mr-2 h-5 w-5 flex-shrink-0 text-gray-500 dark:text-gray-400"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                    xmlns="https://www.w3.org/2000/svg"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z"
-                      clipRule="evenodd"
-                    ></path>
-                  </svg>
-                  {faq.question}
-                </h3>
-                <p className="text-gray-500 dark:text-gray-400">{faq.answer}</p>
+    <section className="relative bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-800">
+      <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
+        <div className="mb-16 text-center">
+          <h2 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-4xl lg:text-5xl">
+            Câu hỏi{' '}
+            <span className="bg-gradient-to-r from-gray-600 to-gray-800 bg-clip-text text-transparent dark:from-gray-300 dark:to-gray-100">
+              thường gặp
+            </span>
+          </h2>
+          <p className="text-lg mx-auto mt-4 max-w-2xl text-gray-600 dark:text-gray-300">
+            Tìm hiểu thêm về VNTechies và cách thức hoạt động của chúng tôi
+          </p>
+        </div>
+
+        <div className="mx-auto max-w-4xl">
+          <div className="space-y-8">
+            {faqs.map((faq, index) => (
+              <div key={faq.question} className="group">
+                <div className="relative overflow-hidden rounded-2xl bg-white p-8 shadow-lg transition-all hover:shadow-xl dark:bg-gray-800">
+                  <div className="absolute top-0 right-0 h-32 w-32 -translate-y-16 translate-x-16 transform rounded-full bg-gradient-to-br from-orange-100 to-orange-200 opacity-10 dark:from-orange-900 dark:to-orange-800"></div>
+
+                  <div className="relative">
+                    <h3 className="mb-4 flex items-start text-xl font-bold text-gray-900 dark:text-white">
+                      <div className="mr-4 mt-1 flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg bg-gradient-to-r from-orange-500 to-orange-600 text-white">
+                        <span className="text-sm font-bold">{index + 1}</span>
+                      </div>
+                      {faq.question}
+                    </h3>
+                    <div className="ml-12 leading-relaxed text-gray-600 dark:text-gray-300">
+                      {faq.answer}
+                    </div>
+                  </div>
+                </div>
               </div>
             ))}
           </div>
