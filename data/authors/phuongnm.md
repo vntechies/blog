@@ -1,7 +1,7 @@
 ---
 name: Phuong NM
 avatar: /static/images/authors/phuongnm.png
-occupation: Cloud DevOps Engineer
+occupation: Senior Cloud DevOps Engineer
 company: VNTechies Dev blog
 email: phuong@vntechies.dev
 linkedin: https://www.linkedin.com/in/mrphuongbn
@@ -13,7 +13,7 @@ url: https://vntechies.dev/
 **Chứng chỉ**
 CKA: Certified Kubernetes Administrator
 AWS Certified Solutions Architect - Professional
-AWS Certified DevOps Engineer - Professional 
+AWS Certified DevOps Engineer - Professional
 AWS Certified Sysops Administrator - Associate
 AWS Certified Solutions Architect - Associate
 AWS Certified Developer - Associate

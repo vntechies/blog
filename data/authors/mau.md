@@ -2,8 +2,8 @@
 name: Quang Mau
 avatar: /static/images/authors/mau.jpg
 occupation: Lead Cloud Solution Architect
-company: Cloud Kinetics
-email: mau@vntechies.com
+company: VNTechies
+email: mau@vntechies.dev
 facebook: https://fb.me/qmauvnt
 linkedin: https://www.linkedin.com/in/qmauvnt/
 github: https://github.com/qmauvnt
