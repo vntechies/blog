@@ -83,9 +83,9 @@ const courseInfo = {
 }
 
 const stats = [
-  { number: '20+', label: 'Học viên đã tham gia' },
-  { number: '90%', label: 'Tỷ lệ pass chứng chỉ' },
-  { number: '11', label: 'Buổi học thực hành' },
+  { number: '50+', label: 'Học viên đã tham gia' },
+  { number: '95%', label: 'Tỷ lệ đỗ chứng chỉ' },
+  { number: '12', label: 'Buổi học thực hành' },
   { number: '4+', label: 'Mentor kinh nghiệm' },
 ]
 
@@ -148,7 +148,7 @@ export default function CourseSpecial({ frontMatter, mentorDetails }) {
               <div className="mb-10 rounded-2xl bg-gradient-to-br from-slate-900 to-slate-800 p-8 text-white shadow-xl">
                 <div className="mb-6">
                   <h3 className="text-md text-center font-bold text-orange-400">
-                    Khoá học Cloud Computing được lựa chọn nhiều nhất
+                    Khoá học AWS được lựa chọn nhiều nhất
                   </h3>
                 </div>
                 <div className="grid gap-4 sm:grid-cols-2">
@@ -160,9 +160,7 @@ export default function CourseSpecial({ frontMatter, mentorDetails }) {
                   </div>
                   <div className="flex items-start gap-3">
                     <FaCheckCircle className="mt-1 h-5 w-5 flex-shrink-0 text-orange-500" />
-                    <span className="text-sm leading-relaxed">
-                      35% thời lượng lab và use case thực tế
-                    </span>
+                    <span className="text-sm leading-relaxed">40% thời lượng thực hành lab</span>
                   </div>
                   <div className="flex items-start gap-3">
                     <FaCheckCircle className="mt-1 h-5 w-5 flex-shrink-0 text-orange-500" />
@@ -173,7 +171,7 @@ export default function CourseSpecial({ frontMatter, mentorDetails }) {
                   <div className="flex items-start gap-3">
                     <FaCheckCircle className="mt-1 h-5 w-5 flex-shrink-0 text-orange-500" />
                     <span className="text-sm leading-relaxed">
-                      Luyện đề, tips pass chứng chỉ từ senior mentor
+                      Luyện đề, tips thi đỗ chứng chỉ từ senior mentor
                     </span>
                   </div>
                   <div className="flex items-start gap-3">
@@ -254,8 +252,8 @@ export default function CourseSpecial({ frontMatter, mentorDetails }) {
                   <h3 className="text-2xl font-bold">Học để làm - Không chỉ lý thuyết</h3>
                 </div>
                 <p className="text-lg mb-6 opacity-90">
-                  35% thời lượng là thực hành với các dự án thực tế. Mục tiêu: Sau khóa học, bạn có
-                  thể tự tin ứng tuyển và làm việc với AWS ngay lập tức.
+                  40% thời lượng là thực hành lab. Mục tiêu: Sau khóa học, bạn có kiến thức để tự
+                  tin ứng tuyển và làm việc với AWS ngay lập tức.
                 </p>
                 <div className="mb-6 rounded-lg bg-white/10 p-4">
                   <h4 className="text-lg mb-3 font-semibold text-orange-400">
@@ -268,10 +266,10 @@ export default function CourseSpecial({ frontMatter, mentorDetails }) {
                 </div>
                 <div className="flex flex-wrap gap-4">
                   <div className="rounded-lg bg-white/20 px-4 py-2 text-sm font-medium">
-                    ✓ 11 buổi lab thực hành
+                    ✓ 12 buổi thực hành lab
                   </div>
                   <div className="rounded-lg bg-white/20 px-4 py-2 text-sm font-medium">
-                    ✓ Dự án capstone
+                    ✓ Chia sẻ kinh nghiệm thực chiến từ mentor
                   </div>
                   <div className="rounded-lg bg-white/20 px-4 py-2 text-sm font-medium">
                     ✓ Portfolio mạnh mẽ
@@ -317,8 +315,8 @@ export default function CourseSpecial({ frontMatter, mentorDetails }) {
                 Cam kết đồng hành
               </h3>
               <p className="text-gray-600 dark:text-gray-300">
-                Hỗ trợ học viên đến khi pass chứng chỉ. Giải đáp thắc mắc 24/7, review CV, tư vấn
-                phỏng vấn và định hướng nghề nghiệp.
+                Hỗ trợ học viên đến khi thi đỗ chứng chỉ. Giải đáp thắc mắc, review CV, tư vấn phỏng
+                vấn và định hướng nghề nghiệp.
               </p>
             </div>
 
@@ -372,8 +370,8 @@ export default function CourseSpecial({ frontMatter, mentorDetails }) {
                 Thực hành triển khai dịch vụ AWS
               </h3>
               <p className="text-gray-700 dark:text-gray-300">
-                Làm lab thực tế, xây dựng giải pháp trên AWS, áp dụng kiến thức sử dụng AI trong
-                việc triển khai dự án thật.
+                Thực hành lab, xây dựng giải pháp trên AWS, và học hỏi kinh nghiệm triển khai dự án
+                thực tế từ mentor.
               </p>
             </div>
 
@@ -382,7 +380,7 @@ export default function CourseSpecial({ frontMatter, mentorDetails }) {
                 <FaCertificate className="h-6 w-6 text-white" />
               </div>
               <h3 className="mb-4 text-xl font-bold text-gray-900 dark:text-gray-100">
-                Kỹ năng giải đề & tips pass chứng chỉ
+                Kỹ năng giải đề & tips thi đỗ chứng chỉ
               </h3>
               <p className="text-gray-700 dark:text-gray-300">
                 Luyện đề, phân tích đáp án, chia sẻ kinh nghiệm thi thực tế từ mentor.
@@ -473,6 +471,9 @@ export default function CourseSpecial({ frontMatter, mentorDetails }) {
                     Buổi
                   </th>
                   <th className="text-xs border border-gray-200 px-2 py-2 text-center font-bold text-orange-700 dark:border-gray-600 dark:text-orange-300 sm:px-3 sm:text-sm md:text-base">
+                    Module
+                  </th>
+                  <th className="text-xs border border-gray-200 px-2 py-2 text-center font-bold text-orange-700 dark:border-gray-600 dark:text-orange-300 sm:px-3 sm:text-sm md:text-base">
                     Nội dung
                   </th>
                 </tr>
@@ -483,81 +484,218 @@ export default function CourseSpecial({ frontMatter, mentorDetails }) {
                     1
                   </td>
                   <td className="border border-gray-200 px-3 py-2 dark:border-gray-600">
+                    Giới thiệu kiến trúc điện toán đám mây
+                  </td>
+                  <td className="border border-gray-200 px-3 py-2 dark:border-gray-600">
                     <div className="ml-2 space-y-1">
-                      <div>Kiến thức nền tảng kiến trúc AWS</div>
-                      <div>Quản lý tài khoản và bảo mật (IAM, MFA)</div>
+                      <div>Tổng quan và kiến trúc điện toán đám mây</div>
+                      <div>AWS Well-Architected Framework</div>
+                      <div>Nguyên tắc thiết kế kiến trúc</div>
+                      <div>Hạ tầng toàn cầu AWS</div>
+                    </div>
+                  </td>
+                </tr>
+                <tr className="align-top">
+                  <td className="border border-gray-200 px-3 py-2 text-center font-bold dark:border-gray-600">
+                    2
+                  </td>
+                  <td className="border border-gray-200 px-3 py-2 dark:border-gray-600">
+                    Bảo mật truy cập
+                  </td>
+                  <td className="border border-gray-200 px-3 py-2 dark:border-gray-600">
+                    <div className="ml-2 space-y-1">
+                      <div>Nguyên lý bảo mật</div>
+                      <div>Xác thực và phân quyền</div>
+                      <div>Dùng IAM hiệu quả</div>
                       <div className="font-semibold text-orange-700 dark:text-orange-300">
-                        🔧 Lab 1: Làm quen Console và CLI
+                        Lab: AWS Identity and Access Management (IAM)
                       </div>
                     </div>
                   </td>
                 </tr>
                 <tr className="align-top">
                   <td className="border border-gray-200 px-3 py-2 text-center font-bold dark:border-gray-600">
-                    2–3
+                    3
+                  </td>
+                  <td className="border border-gray-200 px-3 py-2 dark:border-gray-600">
+                    Lưu trữ với Amazon S3
                   </td>
                   <td className="border border-gray-200 px-3 py-2 dark:border-gray-600">
                     <div className="ml-2 space-y-1">
-                      <div>Networking cơ bản và nâng cao (VPC, Subnet, Route Table)</div>
+                      <div>Giới thiệu về S3</div>
+                      <div>Di chuyển và lưu trữ dữ liệu với S3</div>
+                      <div>Thiết kế với S3</div>
+                      <div>
+                        Áp dụng các nguyên tắc của AWS Well-Architected Framework vào lưu trữ
+                      </div>
+                      <div>
+                        Demo: Amazon S3 Transfer Acceleration, Managing Lifecycles, Versioning
+                      </div>
                       <div className="font-semibold text-orange-700 dark:text-orange-300">
-                        🔧 Lab 2 & 3: Thiết lập hạ tầng mạng riêng trên AWS
+                        Lab: Static website
                       </div>
                     </div>
                   </td>
                 </tr>
                 <tr className="align-top">
                   <td className="border border-gray-200 px-3 py-2 text-center font-bold dark:border-gray-600">
-                    4–5
+                    4
+                  </td>
+                  <td className="border border-gray-200 px-3 py-2 dark:border-gray-600">
+                    Amazon EC2 và Elastic File System
                   </td>
                   <td className="border border-gray-200 px-3 py-2 dark:border-gray-600">
                     <div className="ml-2 space-y-1">
-                      <div>Dịch vụ tính toán (EC2, Auto Scaling)</div>
-                      <div>Lưu trữ (S3, EBS, EFS)</div>
+                      <div>Giới thiệu về EC2</div>
+                      <div>Các thành phần và tính năng của EC2</div>
+                      <div>Demo: Cấu hình EC2 Instance với User Data</div>
+                      <div>Giới thiệu về EFS</div>
+                      <div>Demo: EFS</div>
                       <div className="font-semibold text-orange-700 dark:text-orange-300">
-                        🔧 Lab 4: Cấu hình EC2, lưu trữ
+                        Lab: Tạo Dynamic Website
                       </div>
                     </div>
                   </td>
                 </tr>
                 <tr className="align-top">
                   <td className="border border-gray-200 px-3 py-2 text-center font-bold dark:border-gray-600">
-                    6–7
+                    5
+                  </td>
+                  <td className="border border-gray-200 px-3 py-2 dark:border-gray-600">
+                    Database
                   </td>
                   <td className="border border-gray-200 px-3 py-2 dark:border-gray-600">
                     <div className="ml-2 space-y-1">
-                      <div>Cơ sở dữ liệu (RDS, DynamoDB)</div>
-                      <div>Giám sát & mở rộng (CloudWatch, Load Balancer)</div>
+                      <div>Amazon RDS, DynamoDB</div>
+                      <div>Demo: Amazon RDS, DynamoDB</div>
                       <div className="font-semibold text-orange-700 dark:text-orange-300">
-                        🔧 Lab 5 & 6: Tạo DB layer & High Availability
+                        Lab: Khởi tạo Amazon RDS Database với các tính năng
+                      </div>
+                      <div>Dịch chuyển dữ liệu tới AWS databases</div>
+                      <div className="font-semibold text-orange-700 dark:text-orange-300">
+                        Lab: Dịch chuyển dữ liệu tới Amazon RDS
                       </div>
                     </div>
                   </td>
                 </tr>
                 <tr className="align-top">
                   <td className="border border-gray-200 px-3 py-2 text-center font-bold dark:border-gray-600">
-                    8–9
+                    6
+                  </td>
+                  <td className="border border-gray-200 px-3 py-2 dark:border-gray-600">
+                    Networking
                   </td>
                   <td className="border border-gray-200 px-3 py-2 dark:border-gray-600">
                     <div className="ml-2 space-y-1">
-                      <div>Tự động hoá hạ tầng (CloudFormation)</div>
-                      <div>Containers (ECS, EKS)</div>
-                      <div>AI Services (Amazon Q, Bedrock)</div>
+                      <div>Giới thiệu về Amazon VPC và các thành phần của VPC</div>
+                      <div>Demo: Khởi tạo và cầu hình VPC</div>
                       <div className="font-semibold text-orange-700 dark:text-orange-300">
-                        🔧 Lab 7 & 8: IaC và triển khai container với AI Assistant (Amazon Q)
+                        Lab: Tạo môi trường mạng VPC và các thành phần của VPC
+                      </div>
+                      <div>Áp dụng AWS Well-Architected Framework vào thiết kế mạng</div>
+                      <div>Mở rộng mạng VPC với VPC peering, Transit Gateway</div>
+                      <div>Kết nối mạng từ xa với VPN Site-to-Site và Direct Connect</div>
+                    </div>
+                  </td>
+                </tr>
+                <tr className="align-top">
+                  <td className="border border-gray-200 px-3 py-2 text-center font-bold dark:border-gray-600">
+                    7
+                  </td>
+                  <td className="border border-gray-200 px-3 py-2 dark:border-gray-600">
+                    Bảo mật quyền truy cập của người dùng, ứng dụng và dữ liệu
+                  </td>
+                  <td className="border border-gray-200 px-3 py-2 dark:border-gray-600">
+                    <div className="ml-2 space-y-1">
+                      <div>Quản lý quyền và truy cập với môi trường multi-accounts</div>
+                      <div className="font-semibold text-orange-700 dark:text-orange-300">
+                        Lab: Bảo mật ứng dụng với Amazon Cognito
+                      </div>
+                      <div>Mã hoá dữ liệu đầu cuối</div>
+                      <div className="font-semibold text-orange-700 dark:text-orange-300">
+                        Lab: Mã hoá dữ liệu đầu cuối
+                      </div>
+                      <div>
+                        Các dịch vụ bảo mật về quyền truy cập của người dùng, ứng dụng, và dữ liệu
                       </div>
                     </div>
                   </td>
                 </tr>
                 <tr className="align-top">
                   <td className="border border-gray-200 px-3 py-2 text-center font-bold dark:border-gray-600">
-                    10–11
+                    8
+                  </td>
+                  <td className="border border-gray-200 px-3 py-2 dark:border-gray-600">
+                    Triển khai mở rộng và giám sát hạ tầng AWS
                   </td>
                   <td className="border border-gray-200 px-3 py-2 dark:border-gray-600">
                     <div className="ml-2 space-y-1">
-                      <div>Serverless (Lambda, API Gateway)</div>
-                      <div>Dịch vụ Edge (CloudFront, S3 Static Hosting)</div>
+                      <div>Tổng quan về Autoscaling, Elastic Load Balancer</div>
+                      <div>Demo: Elastic Load Balancer và Auto Scaling</div>
+                      <div>Tổng quan về CloudWatch, Route 53</div>
+                      <div>Demo: CloudWatch, Amazon Route 53</div>
+                      <div>
+                        Áp dụng các nguyên tắc của AWS Well-Architected Framework vào các hệ thống
+                        có tính khả dụng cao
+                      </div>
                       <div className="font-semibold text-orange-700 dark:text-orange-300">
-                        🔧 Lab 9 & 10: Xây dựng kiến trúc serverless & CDN
+                        Lab: Tạo website có tính sẵn sàng cao với Elastic Load Balancer và Auto
+                        Scaling
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+                <tr className="align-top">
+                  <td className="border border-gray-200 px-3 py-2 text-center font-bold dark:border-gray-600">
+                    9
+                  </td>
+                  <td className="border border-gray-200 px-3 py-2 dark:border-gray-600">
+                    Tự động hoá và dịch vụ AI/ML
+                  </td>
+                  <td className="border border-gray-200 px-3 py-2 dark:border-gray-600">
+                    <div className="ml-2 space-y-1">
+                      <div>Infrastructure as code</div>
+                      <div>Tuỳ chỉnh với CloudFormation</div>
+                      <div>Demo: CloudFormation</div>
+                      <div className="font-semibold text-orange-700 dark:text-orange-300">
+                        Lab: Tự động hoá triển khai cơ sở hạ tầng AWS với AWS CloudFormation
+                      </div>
+                      <div>Dịch vụ AI/ML: Amazon Bedrock, Amazon Q, Amazon Sagemaker</div>
+                      <div>Demo: Amazon Bedrock</div>
+                    </div>
+                  </td>
+                </tr>
+                <tr className="align-top">
+                  <td className="border border-gray-200 px-3 py-2 text-center font-bold dark:border-gray-600">
+                    10
+                  </td>
+                  <td className="border border-gray-200 px-3 py-2 dark:border-gray-600">Caching</td>
+                  <td className="border border-gray-200 px-3 py-2 dark:border-gray-600">
+                    <div className="ml-2 space-y-1">
+                      <div>Tổng quan về caching</div>
+                      <div>Caching sử dụng CloudFront, ElastiCache</div>
+                      <div>Demo: CloudFront, ElastiCache</div>
+                      <div>Áp dụng các nguyên tắc AWS Well-Architected Framework vào caching</div>
+                      <div className="font-semibold text-orange-700 dark:text-orange-300">
+                        Lab: Streaming Dynamic Content sử dụng Amazon CloudFront
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+                <tr className="align-top">
+                  <td className="border border-gray-200 px-3 py-2 text-center font-bold dark:border-gray-600">
+                    11
+                  </td>
+                  <td className="border border-gray-200 px-3 py-2 dark:border-gray-600">
+                    Xây dựng kiến trúc phi tập trung
+                  </td>
+                  <td className="border border-gray-200 px-3 py-2 dark:border-gray-600">
+                    <div className="ml-2 space-y-1">
+                      <div>Kiến trúc decoupled</div>
+                      <div>Decoupling ứng dụng với Amazon SQS, Amazon SNS, và Amazon MQ</div>
+                      <div>Demo: Amazon SNS, SQS</div>
+                      <div className="font-semibold text-orange-700 dark:text-orange-300">
+                        Lab: Xây dựng ứng dụng decoupled với Amazon SQS
                       </div>
                     </div>
                   </td>
@@ -567,9 +705,28 @@ export default function CourseSpecial({ frontMatter, mentorDetails }) {
                     12
                   </td>
                   <td className="border border-gray-200 px-3 py-2 dark:border-gray-600">
+                    Xây dựng kiến trúc Serverless và Microservices
+                  </td>
+                  <td className="border border-gray-200 px-3 py-2 dark:border-gray-600">
                     <div className="ml-2 space-y-1">
-                      <div>Backup & Recovery (S3 Lifecycle, DR)</div>
-                      <div>Dịch vụ AI/ML (Textract, Translate)</div>
+                      <div>Thiết kế ứng dụng serverless trên AWS</div>
+                      <div>
+                        Áp dụng các nguyên tắc AWS Well-Architected Framework vào xây dựng kiến trúc
+                        serverless
+                      </div>
+                      <div>Demo: API Gateway, Lambda</div>
+                      <div className="font-semibold text-orange-700 dark:text-orange-300">
+                        Lab: Triển khai ứng dụng serverless trên AWS
+                      </div>
+                      <div>Thiết kế ứng dụng microservice trên AWS</div>
+                      <div>
+                        Áp dụng các nguyên tắc AWS Well-Architected Framework vào xây dựng kiến trúc
+                        serverless
+                      </div>
+                      <div>Demo: ECS</div>
+                      <div className="font-semibold text-orange-700 dark:text-orange-300">
+                        Lab: Triển khai ứng dụng container trên AWS với ECS
+                      </div>
                     </div>
                   </td>
                 </tr>
@@ -578,22 +735,48 @@ export default function CourseSpecial({ frontMatter, mentorDetails }) {
                     13
                   </td>
                   <td className="border border-gray-200 px-3 py-2 dark:border-gray-600">
+                    Xử lý dữ liệu
+                  </td>
+                  <td className="border border-gray-200 px-3 py-2 dark:border-gray-600">
                     <div className="ml-2 space-y-1">
-                      <div className="font-semibold text-orange-700 dark:text-orange-300">
-                        🏗 Capstone Lab: Xây dựng kiến trúc nhiều tầng trên AWS
-                      </div>
-                      <div>Q&A, chia sẻ kinh nghiệm thực chiến</div>
+                      <div>Các đặc điểm của dữ liệu</div>
+                      <div>Data pipelines với các dịch vụ AWS</div>
+                      <div>Xử lý dữ liệu batch và real-time</div>
+                      <div>Lưu trữ, phân tích và trực quan hoá dữ liệu với các dịch vụ AWS</div>
+                      <div>Demo: Xử lý dữ liệu với dịch vụ AWS</div>
                     </div>
                   </td>
                 </tr>
                 <tr className="align-top">
                   <td className="border border-gray-200 px-3 py-2 text-center font-bold dark:border-gray-600">
-                    14–15
+                    14
+                  </td>
+                  <td className="border border-gray-200 px-3 py-2 dark:border-gray-600">
+                    Sao lưu và khôi phục thảm hoạ
                   </td>
                   <td className="border border-gray-200 px-3 py-2 dark:border-gray-600">
                     <div className="ml-2 space-y-1">
-                      <div>Ôn tập toàn bộ nội dung</div>
-                      <div>Thi thử với bộ đề chuẩn SAA-C03</div>
+                      <div>AWS Backup, AWS DRS</div>
+                      <div>Các chiến lược DR</div>
+                      <div>
+                        Áp dụng các nguyên tắc AWS Well-Architected Framework cho việc lập kế hoạch
+                        DR
+                      </div>
+                      <div className="font-semibold text-orange-700 dark:text-orange-300">
+                        Lab: Cấu hình sao lưu dữ liệu với AWS Backup
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+                <tr className="align-top">
+                  <td className="border border-gray-200 px-3 py-2 text-center font-bold dark:border-gray-600">
+                    15
+                  </td>
+                  <td className="border border-gray-200 px-3 py-2 dark:border-gray-600">Ôn tập</td>
+                  <td className="border border-gray-200 px-3 py-2 dark:border-gray-600">
+                    <div className="ml-2 space-y-1">
+                      <div>Ôn tập khoá học</div>
+                      <div>Thi thử với bộ đề SAA-C03</div>
                     </div>
                   </td>
                 </tr>
@@ -602,9 +785,12 @@ export default function CourseSpecial({ frontMatter, mentorDetails }) {
                     16
                   </td>
                   <td className="border border-gray-200 px-3 py-2 dark:border-gray-600">
+                    Tổng kết
+                  </td>
+                  <td className="border border-gray-200 px-3 py-2 dark:border-gray-600">
                     <div className="ml-2 space-y-1">
                       <div className="font-semibold text-orange-700 dark:text-orange-300">
-                        🎯 Seminar hướng nghiệp: Tips viết CV, phỏng vấn, định hướng vị trí
+                        Seminar hướng nghiệp: Tips viết CV, phỏng vấn, định hướng vị trí
                         Cloud/DevOps
                       </div>
                     </div>
@@ -772,7 +958,7 @@ export default function CourseSpecial({ frontMatter, mentorDetails }) {
                 04
               </div>
               <h3 className="mb-4 text-xl font-bold text-gray-900 dark:text-gray-100">
-                Network cùng chuyên gia trong nghề
+                Mạng lưới kết nối cùng chuyên gia
               </h3>
               <p className="text-gray-600 dark:text-gray-300">
                 Tiếp cận với mạng lưới mentor là các chuyên gia AWS tại các công ty nước ngoài, và
@@ -925,7 +1111,7 @@ export default function CourseSpecial({ frontMatter, mentorDetails }) {
               Học viên nói gì?
             </h2>
             <p className="text-xl text-gray-600 dark:text-gray-300">
-              90% học viên pass chứng chỉ ngay lần đầu và có việc làm tốt
+              90% học viên đỗ chứng chỉ ngay lần đầu và có việc làm tốt
             </p>
           </div>
 
@@ -1043,10 +1229,10 @@ export default function CourseSpecial({ frontMatter, mentorDetails }) {
 
           <div className="mb-8 flex flex-wrap justify-center gap-4">
             <div className="rounded-full bg-white/20 px-4 py-2 text-sm font-medium backdrop-blur">
-              ✓ 35% thực hành
+              ✓ 40% thực hành
             </div>
             <div className="rounded-full bg-white/20 px-4 py-2 text-sm font-medium backdrop-blur">
-              ✓ 90% tỷ lệ pass
+              ✓ 90% tỷ lệ đỗ chứng chỉ
             </div>
             <div className="rounded-full bg-white/20 px-4 py-2 text-sm font-medium backdrop-blur">
               ✓ Mentor MNC
