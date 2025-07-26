@@ -267,13 +267,13 @@ export default function CourseSpecial({ frontMatter, mentorDetails }) {
           </div>
 
           {/* Right Image */}
-          <div className="bg-grid-pattern relative flex w-full items-center justify-center overflow-hidden p-6 md:w-2/5">
+          <div className="bg-grid-pattern relative flex w-full items-center justify-center overflow-hidden bg-gray-50 p-6 dark:bg-gray-700 md:w-2/5">
             <div
-              className="absolute -bottom-24 -right-20 h-80 w-80 rounded-full opacity-10 blur-3xl"
+              className="absolute -bottom-24 -right-20 h-80 w-80 rounded-full opacity-20 blur-3xl dark:opacity-10"
               style={{ backgroundColor: '#FF9900' }}
             ></div>
             <div
-              className="absolute -top-20 -left-24 h-72 w-72 rounded-full opacity-10 blur-3xl"
+              className="absolute -top-20 -left-24 h-72 w-72 rounded-full opacity-20 blur-3xl dark:opacity-10"
               style={{ backgroundColor: '#2563eb' }}
             ></div>
 
