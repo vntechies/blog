@@ -75,7 +75,7 @@ const courseInfo = {
   image: '/static/images/courses/awssaac03-hero.png',
   startDate: '19/08/2025',
   duration: '8 tuần (16 buổi, 32h)',
-  schedule: 'Tối Thứ 3 & Thứ 5 (20:00 - 22:00)',
+  schedule: 'Tối Thứ 3 & Thứ 5 (19:00 - 21:00)',
   location: 'Online qua Zoom',
   price: '8.000.000 VNĐ',
   earlyBird: '7.200.000 VNĐ (giảm 10%)',
@@ -238,7 +238,7 @@ export default function CourseSpecial({ frontMatter, mentorDetails }) {
             <div className="rounded-xl bg-orange-50 p-6 text-center dark:bg-orange-900/20">
               <div className="mb-3 text-2xl font-bold text-orange-600">T3 & T5</div>
               <div className="text-sm font-medium text-gray-700 dark:text-gray-300">Lịch học</div>
-              <div className="text-xs text-gray-500 dark:text-gray-400">20:00 - 22:00</div>
+              <div className="text-xs text-gray-500 dark:text-gray-400">19:00 - 21:00</div>
             </div>
             <div className="rounded-xl bg-orange-50 p-6 text-center dark:bg-orange-900/20">
               <div className="mb-3 text-2xl font-bold text-orange-600">19/8</div>
