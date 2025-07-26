@@ -13,6 +13,7 @@ import {
   FaRocket,
 } from 'react-icons/fa'
 import Link from 'next/link'
+import CourseRegistrationForm from '../components/CourseRegistrationForm'
 
 const testimonials = [
   {
@@ -192,9 +193,7 @@ export default function CourseSpecial({ frontMatter, mentorDetails }) {
 
               <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
                 <a
-                  href={info.registrationLink}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  href="#registration-form"
                   className="text-lg inline-flex items-center justify-center rounded-xl bg-gradient-to-r from-orange-600 to-orange-500 px-8 py-4 font-bold text-white shadow-xl transition hover:from-orange-700 hover:to-orange-600 hover:shadow-2xl"
                 >
                   Đăng ký ngay
@@ -827,9 +826,7 @@ export default function CourseSpecial({ frontMatter, mentorDetails }) {
               </div>
 
               <a
-                href={info.registrationLink}
-                target="_blank"
-                rel="noopener noreferrer"
+                href="#registration-form"
                 className="block w-full rounded-xl bg-slate-900 py-4 text-center font-semibold text-white transition hover:bg-slate-800"
               >
                 Đăng ký ngay
@@ -861,9 +858,7 @@ export default function CourseSpecial({ frontMatter, mentorDetails }) {
               </div>
 
               <a
-                href={info.registrationLink}
-                target="_blank"
-                rel="noopener noreferrer"
+                href="#registration-form"
                 className="block w-full rounded-xl bg-white py-4 text-center font-bold text-orange-600 transition hover:bg-gray-50"
               >
                 Đăng ký ngay
@@ -903,9 +898,7 @@ export default function CourseSpecial({ frontMatter, mentorDetails }) {
               </div>
 
               <a
-                href={info.registrationLink}
-                target="_blank"
-                rel="noopener noreferrer"
+                href="#registration-form"
                 className="block w-full rounded-xl bg-orange-600 py-4 text-center font-semibold text-white transition hover:bg-orange-700"
               >
                 Đăng ký ngay
@@ -920,6 +913,9 @@ export default function CourseSpecial({ frontMatter, mentorDetails }) {
           </div>
         </div>
       </section>
+
+      {/* Registration Form */}
+      <CourseRegistrationForm courseTitle="AWS SAA-C03" />
 
       {/* Testimonials */}
       <section className="bg-slate-50 py-20 dark:bg-slate-800">
@@ -1061,9 +1057,7 @@ export default function CourseSpecial({ frontMatter, mentorDetails }) {
           </div>
 
           <a
-            href={info.registrationLink}
-            target="_blank"
-            rel="noopener noreferrer"
+            href="#registration-form"
             className="inline-flex items-center rounded-2xl bg-orange-600 px-8 py-4 text-xl font-bold text-white shadow-2xl transition hover:bg-orange-700"
           >
             Đăng ký ngay - Nhận ưu đãi
