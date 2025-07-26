@@ -75,7 +75,7 @@ const courseInfo = {
   image: '/static/images/courses/awssaac03-hero.png',
   startDate: '19/08/2025',
   duration: '8 tuần (16 buổi, 32h)',
-  schedule: 'Tối Thứ 3 & Thứ 5 (20:00 - 22:00)',
+  schedule: 'Tối Thứ 3 & Thứ 5 (19:00 - 21:00)',
   location: 'Online qua Zoom',
   price: '8.000.000 VNĐ',
   earlyBird: '7.200.000 VNĐ (giảm 10%)',
