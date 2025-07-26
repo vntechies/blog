@@ -39,7 +39,7 @@ const ContentSecurityPolicy = `
     https://giphy.com;
   object-src 'none';
   base-uri 'self';
-  form-action 'self';
+  form-action 'self' https://script.google.com;
   child-src https://*.google.com https://*.googlesyndication.com;
   worker-src 'self' blob: https://*.googlesyndication.com;
 `

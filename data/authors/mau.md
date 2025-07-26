@@ -17,7 +17,7 @@ testimonials: ['5 | Giảng dạy có tâm, truyền đạt kiến thức dễ h
 
 **Kinh nghiệm:**
 
-- Hơn 7 năm làm việc tại Nhật Bản và Việt Nam với background từ Backend Engineer, Cloud/DevOps Engineer, và Solution Architect
+- 9 năm làm việc tại Nhật Bản và Việt Nam với background từ Backend Engineer, Cloud/DevOps Engineer, và Solution Architect
 - Dẫn dắt các dự án di chuyển hệ thống lên cloud cho các tập đoàn lớn
 - Tư vấn chiến lược chuyển đổi số, triển khai DevSecOps, giải pháp AI/GenAI/Data cho doanh nghiệp lớn tại Nhật Bản, Việt Nam, Úc, Mỹ
 - Có kinh nghiệm với các dự án toàn cầu, giao tiếp tiếng Anh & tiếng Nhật

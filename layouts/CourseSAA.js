@@ -73,9 +73,9 @@ const courseInfo = {
   title: 'Khoá học AWS Certified Solutions Architect – Associate (SAA-C03)',
   subtitle: 'Luyện thi & thực chiến AWS cùng chuyên gia',
   image: '/static/images/courses/awssaac03-hero.png',
-  startDate: '15/07/2025',
+  startDate: '19/08/2025',
   duration: '8 tuần (16 buổi, 32h)',
-  schedule: 'Tối Thứ 3 & Thứ 6 (20:00 - 22:00)',
+  schedule: 'Tối Thứ 3 & Thứ 5 (20:00 - 22:00)',
   location: 'Online qua Zoom',
   price: '8.000.000 VNĐ',
   earlyBird: '7.200.000 VNĐ (giảm 10%)',
@@ -209,6 +209,41 @@ export default function CourseSpecial({ frontMatter, mentorDetails }) {
                   </Link>
                 </div>
               </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Course Info Section */}
+      <section className="bg-white py-16 dark:bg-gray-900">
+        <div className="mx-auto max-w-6xl px-4">
+          <div className="mb-12 text-center">
+            <h2 className="mb-4 text-3xl font-bold text-gray-900 dark:text-gray-100">
+              Thông tin khoá học
+            </h2>
+          </div>
+          <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
+            <div className="rounded-xl bg-orange-50 p-6 text-center dark:bg-orange-900/20">
+              <div className="mb-3 text-3xl font-bold text-orange-600">16</div>
+              <div className="text-sm font-medium text-gray-700 dark:text-gray-300">Buổi học</div>
+              <div className="text-xs text-gray-500 dark:text-gray-400">Mỗi buổi 2 tiếng</div>
+            </div>
+            <div className="rounded-xl bg-orange-50 p-6 text-center dark:bg-orange-900/20">
+              <div className="mb-3 text-3xl font-bold text-orange-600">32h</div>
+              <div className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                Tổng thời lượng
+              </div>
+              <div className="text-xs text-gray-500 dark:text-gray-400">8 tuần học</div>
+            </div>
+            <div className="rounded-xl bg-orange-50 p-6 text-center dark:bg-orange-900/20">
+              <div className="mb-3 text-2xl font-bold text-orange-600">T3 & T5</div>
+              <div className="text-sm font-medium text-gray-700 dark:text-gray-300">Lịch học</div>
+              <div className="text-xs text-gray-500 dark:text-gray-400">20:00 - 22:00</div>
+            </div>
+            <div className="rounded-xl bg-orange-50 p-6 text-center dark:bg-orange-900/20">
+              <div className="mb-3 text-2xl font-bold text-orange-600">19/8</div>
+              <div className="text-sm font-medium text-gray-700 dark:text-gray-300">Khai giảng</div>
+              <div className="text-xs text-gray-500 dark:text-gray-400">Online Zoom</div>
             </div>
           </div>
         </div>
@@ -1101,7 +1136,7 @@ export default function CourseSpecial({ frontMatter, mentorDetails }) {
       </section>
 
       {/* Registration Form */}
-      <CourseRegistrationForm courseTitle="AWS SAA-C03" />
+      <CourseRegistrationForm courseTitle="AWS SAA-C03" theme="orange" />
 
       {/* Testimonials */}
       <section className="bg-slate-50 py-20 dark:bg-slate-800">

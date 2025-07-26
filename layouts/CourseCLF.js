@@ -14,41 +14,59 @@ import {
   FaCloud,
 } from 'react-icons/fa'
 import Link from 'next/link'
+import CourseRegistrationForm from '../components/CourseRegistrationForm'
 
 const testimonials = [
   {
     rating: 5,
-    comment:
-      'Khóa học tuyệt vời! Từ zero kiến thức cloud đến pass AWS Cloud Practitioner chỉ sau 8 tuần. Mentor rất tận tâm!',
-    author: 'Nguyễn Thị Lan - Marketing Manager',
+    comment: 'Khoá học rất thực tế, mentor tận tâm, mình đã pass SAA-C03 ngay lần đầu!',
+    author: 'Võ Phi Hùng - Division Manager',
+    image: '/static/images/customers/vophihung.jpg',
+  },
+  {
+    rating: 5,
+    comment: 'Nội dung chi tiết, nhiều lab thực hành, cực kỳ hữu ích cho người mới.',
+    author: 'Lê Văn Thắng - Tech Lead',
+    image: '/static/images/customers/lethang.jpg',
   },
   {
     rating: 5,
     comment:
-      'Nội dung dễ hiểu, thực tế. Mình là người không có background IT nhưng vẫn học được. Recommended!',
-    author: 'Trần Văn Minh - Sales Executive',
+      'VNTechies đưa ra nhiều kiến thức bổ ích về DEVOPS, giúp mình càng hiểu rõ hơn hệ thống mình đang làm việc',
+    author: 'Nguyễn Quốc Trường - Developer Lead',
+    image: '/static/images/customers/nguyen quoc truong.jpg',
   },
   {
     rating: 5,
-    comment: 'Pass Cloud Practitioner ngay lần đầu! Giờ đang tiếp tục học SAA. Cảm ơn VNTechies!',
-    author: 'Lê Thị Hương - Project Manager',
+    comment: '🥰 Thông tin rất cụ thể, dễ tiếp cận. Mình thực sự đã được giúp đỡ',
+    author: 'Lưu Bình Công - Project Manager',
+    image: '/static/images/customers/luubinhcong.jpg',
+  },
+  {
+    rating: 5,
+    comment: 'Khóa học và series hữu ích cho devops beginner 👍',
+    author: 'Đặng Hoàng Linh - Senior BrSE',
+    image: '/static/images/customers/dang hoang linh.jpg',
   },
   {
     rating: 5,
     comment:
-      'Khóa học giúp mình hiểu rõ cloud computing và mở ra career path mới. Đầu tư xứng đáng!',
-    author: 'Phạm Đức Anh - Fresher Developer',
+      'Blog rất chất lượng, series 90 ngày DevOps rất phù hợp với cá nhân mình. Cảm ơn đội ngũ của VNTechies rất nhiều',
+    author: 'Đào Mạnh Nhất - Software Developer',
+    image: '/static/images/customers/daomanhnhat.jpg',
   },
   {
     rating: 5,
     comment:
-      'Mentor kinh nghiệm, giảng dạy dễ hiểu. Lab thực hành giúp mình tự tin với AWS console',
-    author: 'Võ Thị Mai - Business Analyst',
+      'Với 5 năm kinh nghiệm IT mình thấy VNTechies rất hữu ích cho các bạn mới làm quen devops . Khoá học dễ học dễ hiểu bổ ích . Recommend cho mọi người',
+    author: 'Nguyễn Tiến Nghiệp - Frontend Developer',
+    image: '/static/images/customers/nguyen tien nghiep.jpg',
   },
   {
     rating: 5,
-    comment: 'Chuyển career từ finance sang cloud. Khóa học này là starting point hoàn hảo!',
-    author: 'Nguyễn Hoàng Nam - Finance Manager',
+    comment: 'Rất nhiều kiến thức chất lượng và hữu ích cho người muốn tìm hiểu về Tech',
+    author: 'Trần Duy Mạnh - Data Engineer',
+    image: '/static/images/customers/tranduymanh.jpg',
   },
 ]
 
@@ -56,8 +74,9 @@ const courseInfo = {
   title: 'Khoá học AWS Certified Cloud Practitioner (CLF-C02)',
   subtitle: 'Bước đầu tiên vào thế giới Cloud Computing - Từ Zero đến AWS Certified',
   image: '/static/images/courses/awsclfc02Info.png',
-  startDate: '15/08/2025',
+  startDate: '19/08/2025',
   duration: '6 tuần (12 buổi, 24h)',
+  schedule: 'Tối Thứ 3 & Thứ 5 (20:00 - 22:00)',
   location: 'Online qua Zoom',
   price: '5.000.000 VNĐ',
   earlyBird: '1.199.000 VNĐ (giảm 20% - chỉ 50 suất đầu)',
@@ -256,14 +275,14 @@ export default function CourseSpecial({ frontMatter, mentorDetails }) {
             </div>
 
             {/* CTA Button */}
-            <Link
-              href={info.registrationLink}
+            <a
+              href="#registration-form"
               className="text-lg inline-flex items-center rounded-lg px-8 py-4 font-semibold transition-colors hover:opacity-90"
               style={{ backgroundColor: '#FF9900', color: '#000' }}
             >
               <FaRocket className="mr-2" />
               Đăng Ký Ngay - Chỉ {info.earlyBirdPrice}
-            </Link>
+            </a>
           </div>
 
           {/* Right Image */}
@@ -409,30 +428,46 @@ export default function CourseSpecial({ frontMatter, mentorDetails }) {
       </section>
 
       {/* Testimonials */}
-      <section className="bg-gray-50 py-16 px-4 dark:bg-gray-900">
-        <div className="mx-auto max-w-6xl">
-          <h2 className="mb-12 text-center text-3xl font-bold text-gray-900 dark:text-white">
-            Học Viên Nói Gì Về Chúng Tôi
-          </h2>
-          <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
-            {testimonials.map((testimonial, index) => (
-              <div key={index} className="rounded-lg bg-white p-6 shadow-lg dark:bg-gray-800">
-                <div className="mb-4 flex">
-                  {[...Array(testimonial.rating)].map((_, i) => (
-                    <FaStar key={i} className="text-yellow-400" />
+      <section className="bg-slate-50 py-20 dark:bg-slate-800">
+        <div className="mx-auto max-w-6xl px-4">
+          <div className="mb-16 text-center">
+            <h2 className="mb-4 text-4xl font-bold text-gray-900 dark:text-gray-100">
+              Học viên nói gì?
+            </h2>
+          </div>
+
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {testimonials.map((t, i) => (
+              <div
+                key={i}
+                className="group rounded-2xl bg-white p-6 shadow-lg transition hover:shadow-xl dark:bg-gray-900"
+              >
+                <div className="mb-4 flex items-center gap-1">
+                  {[...Array(t.rating)].map((_, idx) => (
+                    <FaStar key={idx} className="h-4 w-4 text-yellow-400" />
                   ))}
                 </div>
-                <p className="mb-4 italic text-gray-700 dark:text-gray-300">
-                  "{testimonial.comment}"
-                </p>
-                <p className="font-semibold text-gray-900 dark:text-white">
-                  — {testimonial.author}
-                </p>
+                <blockquote className="mb-4 text-gray-700 dark:text-gray-300">
+                  "{t.comment}"
+                </blockquote>
+                <div className="flex items-center gap-3">
+                  <Image
+                    src={t.image}
+                    alt={t.author}
+                    width={40}
+                    height={40}
+                    className="h-10 w-10 rounded-full object-cover"
+                  />
+                  <div className="text-sm font-semibold text-gray-900 dark:text-gray-100">
+                    {t.author}
+                  </div>
+                </div>
               </div>
             ))}
           </div>
         </div>
       </section>
+
       {/* Mentor Section */}
       <section className="bg-gray-100 px-4 py-16 dark:bg-gray-900">
         <div className="mx-auto max-w-6xl">
@@ -599,6 +634,9 @@ export default function CourseSpecial({ frontMatter, mentorDetails }) {
         </div>
       </section>
 
+      {/* Registration Form */}
+      <CourseRegistrationForm courseTitle="AWS CLF-C02" theme="blue" />
+
       {/* Final CTA */}
       <section className="bg-gradient-to-r from-blue-600 to-purple-600 py-16 px-4">
         <div className="mx-auto max-w-4xl text-center">
@@ -610,13 +648,13 @@ export default function CourseSpecial({ frontMatter, mentorDetails }) {
             mây của bạn!
           </p>
           <div className="flex flex-col justify-center gap-4 sm:flex-row">
-            <Link
-              href={info.registrationLink}
+            <a
+              href="#registration-form"
               className="text-lg inline-flex items-center rounded-lg bg-white px-8 py-4 font-semibold text-blue-600 transition-colors hover:bg-gray-100"
             >
               <FaRocket className="mr-2" />
               Đăng Ký Ngay - Chỉ {info.earlyBirdPrice}
-            </Link>
+            </a>
           </div>
           <p className="mt-4 text-sm text-blue-100">
             💰 Hoàn tiền 100% nếu không pass exam | Tư vấn 1:1 với chuyên gia | 📚 Tài liệu học tập
