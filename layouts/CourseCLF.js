@@ -56,8 +56,8 @@ const courseInfo = {
   title: 'Khoá học AWS Certified Cloud Practitioner (CLF-C02)',
   subtitle: 'Bước đầu tiên vào thế giới Cloud Computing - Từ Zero đến AWS Certified',
   image: '/static/images/courses/awsclfc02Info.png',
-  startDate: '15/02/2025',
-  duration: '8 tuần (16 buổi, 32h)',
+  startDate: '15/08/2025',
+  duration: '6 tuần (12 buổi, 24h)',
   location: 'Online qua Zoom',
   price: '5.000.000 VNĐ',
   earlyBird: '1.199.000 VNĐ (giảm 20% - chỉ 50 suất đầu)',
@@ -106,22 +106,29 @@ const learningOutcomes = [
 // Curriculum overview
 const curriculum = [
   {
-    week: 'Tuần 1-2',
+    week: 'Tuần 1',
     title: 'Cloud Computing Foundation',
     topics: [
       'Cloud vs On-premises',
       'IaaS, PaaS, SaaS',
-      'AWS Global Infrastructure',
+      'AWS Global Infrastructure and Reliability',
+      'Compute in the Cloud',
       'AWS Console hands-on',
     ],
   },
   {
-    week: 'Tuần 3-4',
+    week: 'Tuần 2',
     title: 'Core AWS Services',
-    topics: ['EC2, S3, VPC basics', 'RDS, DynamoDB intro', 'Lambda serverless', 'Hands-on labs'],
+    topics: [
+      'Networking',
+      'Storage & Database',
+      'RDS, DynamoDB intro',
+      'Lambda serverless',
+      'Hands-on labs',
+    ],
   },
   {
-    week: 'Tuần 5-6',
+    week: 'Tuần 3',
     title: 'Security & Compliance',
     topics: [
       'Shared Responsibility Model',
@@ -131,9 +138,19 @@ const curriculum = [
     ],
   },
   {
-    week: 'Tuần 7-8',
-    title: 'Pricing & Exam Prep',
-    topics: ['Cost management tools', 'Support plans', 'Mock exams', 'Exam strategies'],
+    week: 'Tuần 4',
+    title: 'Monitoring & Pricing',
+    topics: ['Monitoring and Analytics', 'Cost management tools', 'Pricing Models', 'Support Plan'],
+  },
+  {
+    week: 'Tuần 5',
+    title: 'Migration & Innovation',
+    topics: ['Migration and Innovation', 'Exam strategies', 'Mock exams 1'],
+  },
+  {
+    week: 'Tuần 6',
+    title: 'Exam Preparation',
+    topics: ['Mock exams 2'],
   },
 ]
 
@@ -250,13 +267,13 @@ export default function CourseSpecial({ frontMatter, mentorDetails }) {
           </div>
 
           {/* Right Image */}
-          <div className="bg-grid-pattern relative flex w-full items-center justify-center overflow-hidden p-6 md:w-2/5">
+          <div className="bg-grid-pattern relative flex w-full items-center justify-center overflow-hidden bg-gray-50 p-6 dark:bg-gray-700 md:w-2/5">
             <div
-              className="absolute -bottom-24 -right-20 h-80 w-80 rounded-full opacity-10 blur-3xl"
+              className="absolute -bottom-24 -right-20 h-80 w-80 rounded-full opacity-20 blur-3xl dark:opacity-10"
               style={{ backgroundColor: '#FF9900' }}
             ></div>
             <div
-              className="absolute -top-20 -left-24 h-72 w-72 rounded-full opacity-10 blur-3xl"
+              className="absolute -top-20 -left-24 h-72 w-72 rounded-full opacity-20 blur-3xl dark:opacity-10"
               style={{ backgroundColor: '#2563eb' }}
             ></div>
 
@@ -417,7 +434,7 @@ export default function CourseSpecial({ frontMatter, mentorDetails }) {
         </div>
       </section>
       {/* Mentor Section */}
-      <section className="px-4 py-16">
+      <section className="bg-gray-100 px-4 py-16 dark:bg-gray-900">
         <div className="mx-auto max-w-6xl">
           <h2 className="mb-4 text-center text-3xl font-bold text-gray-900 dark:text-gray-100">
             Đội ngũ Mentor
