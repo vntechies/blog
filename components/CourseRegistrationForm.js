@@ -1,7 +1,11 @@
 import { useState } from 'react'
 import { FaUser, FaEnvelope, FaPhone, FaGraduationCap, FaSpinner } from 'react-icons/fa'
 
-export default function CourseRegistrationForm({ courseTitle = 'AWS SAA-C03', theme = 'orange' }) {
+export default function CourseRegistrationForm({
+  courseTitle = 'AWS SAA-C03',
+  theme = 'orange',
+  onSuccess,
+}) {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -86,6 +90,11 @@ export default function CourseRegistrationForm({ courseTitle = 'AWS SAA-C03', th
         groupMembers: '',
       })
       setIsSubmitting(false)
+
+      // Call onSuccess callback if provided
+      if (onSuccess) {
+        onSuccess()
+      }
     } catch (error) {
       console.error('Error:', error)
       setSubmitStatus('error')
@@ -341,7 +350,10 @@ export default function CourseRegistrationForm({ courseTitle = 'AWS SAA-C03', th
 
             {/* Status Messages */}
             {submitStatus === 'success' && (
-              <div className="rounded-lg bg-green-50 p-4 text-center text-green-800 dark:bg-green-900/20 dark:text-green-400">
+              <div
+                data-success-message
+                className="rounded-lg bg-green-50 p-4 text-center text-green-800 dark:bg-green-900/20 dark:text-green-400"
+              >
                 ✅ Đăng ký thành công! Chúng tôi sẽ liên hệ với bạn trong 24h.
               </div>
             )}
