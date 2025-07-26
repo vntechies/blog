@@ -1,10 +1,10 @@
 import siteMetadata from './siteMetadata'
 
 export const headerNavLinks = [
-  { href: '/blog', title: 'Blog' },
   { href: '/courses', title: 'Khoá học' },
+  { href: '/blog', title: 'Blog' },
   { href: '/series', title: 'Series' },
-  { href: '/tags', title: 'Tags' },
+  { href: '/career', title: 'Career Center' },
   { href: 'https://github.com/vntechies/toolbox', title: 'Toolbox' },
 ]
 
@@ -19,7 +19,7 @@ export const footerNavLinks = [
 export const featuredLinks = [
   {
     title: 'Khoá học',
-    summary: 'Tập trung vào DevOps, CI/CD, tự động hoá, CDK và vận hành trên Cloud',
+    summary: 'Tập trung vào DevOps, CI/CD, tự động hoá, CDK, AI và vận hành trên Cloud',
     url: '/courses',
   },
   {
