@@ -1,0 +1,240 @@
+---
+title: 'Ngày 21 - Tự động rà quét image repository'
+images: ['/static/images/ogps/90daysofdevopsv2d21.png']
+summary: 'Tự động rà quét image repository'
+date: '2025-07-26'
+index: 21
+chapter: 'Tuần 4'
+---
+
+<TOCInline toc={props.toc} asDisclosure />
+
+# Quét Kho lưu trữ Image Liên tục
+
+Trong [Ngày 14](https://vntechies.dev/courses/90-ngay-devops-v2/ngay-14-quet-container-image), chúng ta đã tìm hiểu về quét image container là gì và tại sao nó lại quan trọng.
+Chúng ta cũng đã biết về các công cụ như Grype và Trivy giúp chúng ta quét các image container của mình.
+
+Tuy nhiên, trong các Vòng đời Phát triển Phần mềm (SDLC) hiện đại, một kỹ sư DevSecOps hiếm khi quét image container thủ công, ví dụ, họ sẽ không chạy Grype và Trivy trên máy cục bộ và xem xét từng lỗ hổng một.
+Thay vào đó, họ sẽ cấu hình việc quét image như một phần của đường ống CI/CD.
+Bằng cách này, họ sẽ chắc chắn rằng tất cả các image đang được xây dựng bởi các đường ống cũng được quét bởi trình quét image.
+Các kết quả này sau đó có thể được gửi đến một hệ thống khác, nơi các kỹ sư DevSecOps có thể xem xét chúng và thực hiện hành động tùy thuộc vào kết quả.
+
+Một đường ống CI/CD mẫu có thể trông như thế này:
+
+0.  _Lập trình viên đẩy code_
+1.  Lint code (Kiểm tra định dạng code)
+2.  Build code (Xây dựng code)
+3.  Test code (Kiểm thử code)
+4.  Build các tạo tác (image container, helm chart, v.v.)
+5.  Quét các tạo tác
+6.  (Tùy chọn) Gửi kết quả quét đến một nơi nào đó
+7.  (Tùy chọn) Xác minh kết quả quét và làm thất bại đường ống nếu việc xác minh không thành công
+8.  Đẩy các tạo tác lên một kho lưu trữ
+
+Một lỗi trong các bước quét hoặc xác minh (bước 6 và 7) sẽ có nghĩa là container của chúng ta sẽ không được đẩy lên kho lưu trữ, và chúng ta không thể sử dụng code mà chúng ta đã gửi.
+
+Hôm nay, chúng ta sẽ xem xét cách chúng ta có thể thiết lập một đường ống như vậy và một cấu hình hợp lý cho nó sẽ như thế nào.
+
+---
+
+## Thiết lập đường ống CI/CD với Grype
+
+Hãy cùng xem trình quét [Grype](https://github.com/anchore/grype).
+Grype là một trình quét mã nguồn mở được duy trì bởi công ty [Anchore](https://anchore.com/).
+
+### Quét một image bằng Grype
+
+Việc quét một image container với Grype đơn giản như chạy lệnh sau:
+
+```shell
+grype <IMAGE>
+```
+
+Ví dụ, nếu chúng ta muốn quét image `ubuntu:20.04`, chúng ta có thể chạy:
+
+```shell
+$ grype ubuntu:20.04
+
+ ✔ Vulnerability DB        [no update available]
+ ✔ Pulled image
+ ✔ Loaded image
+ ✔ Parsed image
+ ✔ Cataloged packages      [92 packages]
+ ✔ Scanned image           [19 vulnerabilities]
+
+NAME          INSTALLED                 FIXED-IN  TYPE  VULNERABILITY   SEVERITY
+coreutils     8.30-3ubuntu2                       deb   CVE-2016-2781   Low
+gpgv          2.2.19-3ubuntu2.2                   deb   CVE-2022-3219   Low
+libc-bin      2.31-0ubuntu9.9                     deb   CVE-2016-20013  Negligible
+libc6         2.31-0ubuntu9.9                     deb   CVE-2016-20013  Negligible
+# ... (kết quả được rút gọn)
+```
+
+Tất nhiên, bạn đã biết điều này vì chúng ta đã làm nó vào [Ngày 14](https://vntechies.dev/courses/90-ngay-devops-v2/ngay-14-quet-container-image).
+
+Tuy nhiên, lệnh này sẽ chỉ xuất ra các lỗ hổng và thoát với mã thành công.
+Vì vậy, nếu điều này nằm trong một đường ống CI/CD, đường ống sẽ thành công ngay cả khi chúng ta có nhiều lỗ hổng.
+
+Người chạy đường ống sẽ phải mở nó ra, xem nhật ký và tự xác định xem kết quả có ổn không.
+Điều này rất tẻ nhạt và dễ gây ra lỗi.
+
+Hãy xem cách chúng ta có thể thực thi một số quy tắc cho các kết quả từ quá trình quét.
+
+### Thực thi quy tắc cho các image được quét
+
+Như chúng ta đã xác định, chỉ quét image thôi thì không làm được gì nhiều ngoài việc cho chúng ta thấy số lượng lỗ hổng bên trong image.
+Nhưng nếu chúng ta muốn thực thi một bộ quy tắc cho các image container của mình thì sao?
+
+Ví dụ, một quy tắc tốt sẽ là "một image không nên có các lỗ hổng nghiêm trọng (critical)" hoặc "một image không nên có các lỗ hổng đã có bản vá."
+
+May mắn cho chúng ta, đây cũng là điều mà Grype hỗ trợ sẵn.
+Chúng ta có thể sử dụng cờ `--fail-on <SEVERITY>` để yêu cầu Grype thoát với mã thoát khác không nếu trong quá trình quét, nó tìm thấy các lỗ hổng có mức độ nghiêm trọng cao hơn hoặc bằng mức chúng ta đã chỉ định.
+Điều này sẽ làm thất bại đường ống của chúng ta, và kỹ sư sẽ phải xem xét kết quả và sửa chữa một cái gì đó để nó có thể vượt qua.
+
+Hãy thử xem.
+Chúng ta sẽ sử dụng image `springio/petclinic:latest`, mà chúng ta đã phát hiện có nhiều lỗ hổng.
+Bạn có thể quay lại [Ngày 14](https://vntechies.dev/courses/90-ngay-devops-v2/ngay-14-quet-container-image) hoặc tự quét để xem chính xác là bao nhiêu.
+
+Chúng ta muốn làm thất bại đường ống nếu image có các lỗ hổng `CRITICAL`.
+Chúng ta sẽ chạy quét như sau:
+
+```shell
+$ grype springio/petclinic:latest --fail-on critical
+ ✔ Vulnerability DB        [no update available]
+ ✔ Loaded image
+ ✔ Parsed image
+ ✔ Cataloged packages      [212 packages]
+ ✔ Scanned image           [168 vulnerabilities]
+
+NAME        INSTALLED FIXED-IN TYPE         VULNERABILITY    SEVERITY
+spring-core 5.3.6              java-archive CVE-2016-1000027 Critical
+spring-core 5.3.6              java-archive CVE-2022-22965   Critical
+...
+1 error occurred:
+    * discovered vulnerabilities at or above the severity threshold
+
+$ echo $?
+1
+```
+
+Chúng ta thấy hai điều ở đây:
+
+- Ngoài các kết quả, Grype cũng xuất ra một lỗi cho chúng ta biết rằng lần quét này đã vi phạm quy tắc chúng ta đã xác định (không có lỗ hổng CRITICAL)
+- Grype thoát với mã thoát 1, cho biết thất bại.
+  Nếu đây là một đường ống CI, nó sẽ bị thất bại.
+
+Khi điều này xảy ra, chúng ta sẽ bị chặn không thể hợp nhất code và đẩy container của mình lên registry.
+Điều này có nghĩa là chúng ta cần phải hành động để khắc phục lỗi để có thể hoàn thành nhiệm vụ và đẩy thay đổi của mình.
+
+Hãy xem các lựa chọn của chúng ta là gì.
+
+---
+
+### Sửa lỗi đường ống
+
+Khi chúng ta gặp phải một lỗ hổng đang ngăn cản chúng ta phát hành container, chúng ta có một vài cách để xử lý tùy thuộc vào lỗ hổng đó.
+
+#### 1\. Lỗ hổng đã có bản vá
+
+Trường hợp tốt nhất là khi lỗ hổng này đã được khắc phục trong một phiên bản mới hơn của thư viện mà chúng ta đang phụ thuộc.
+
+Một lỗ hổng như vậy là đây:
+
+```text
+NAME      INSTALLED FIXED-IN TYPE         VULNERABILITY       SEVERITY
+snakeyaml 1.27      1.31     java-archive GHSA-3mc7-4q67-w48m High
+```
+
+Đây là một lỗ hổng có mức độ nghiêm trọng `High`.
+Nó đến từ gói Java `snakeyaml`, phiên bản `1.27`.
+Grype đang cho chúng ta biết rằng lỗ hổng này đã được khắc phục trong phiên bản `1.31` của cùng thư viện đó.
+
+Trong trường hợp này, chúng ta chỉ cần nâng cấp phiên bản của thư viện này trong tệp `pom.xml` hoặc `build.gradle` của mình,
+kiểm thử code để đảm bảo không có gì bị hỏng với phiên bản mới,
+và gửi lại code.
+
+Điều này sẽ xây dựng một phiên bản mới của container, quét lại nó, và hy vọng lần này, lỗ hổng sẽ không xuất hiện, và quá trình quét của chúng ta sẽ thành công.
+
+---
+
+### 2\. Lỗ hổng chưa có bản vá, nhưng không nguy hiểm
+
+Đôi khi một lỗ hổng chúng ta gặp phải sẽ không có bản vá sẵn có.
+Đây là những lỗ hổng được gọi là lỗ hổng zero-day, được tiết lộ trước khi có bản vá.
+
+Chúng ta có thể thấy hai trong số đó trong kết quả quét ban đầu:
+
+```text
+NAME        INSTALLED FIXED-IN TYPE         VULNERABILITY    SEVERITY
+spring-core 5.3.6              java-archive CVE-2016-1000027 Critical
+spring-core 5.3.6              java-archive CVE-2022-22965   Critical
+```
+
+Khi gặp phải một lỗ hổng như vậy, chúng ta cần đánh giá mức độ nghiêm trọng của nó và tính toán rủi ro khi phát hành phần mềm của mình với lỗ hổng đó.
+
+Chúng ta có thể xác định rằng lỗ hổng không gây ra bất kỳ nguy hiểm nào cho phần mềm và người tiêu dùng của chúng ta.
+Một trường hợp như vậy có thể là khi một lỗ hổng đòi hỏi quyền truy cập vật lý vào máy chủ để bị khai thác.
+Nếu chúng ta chắc chắn rằng các máy chủ vật lý của mình đủ an toàn và kẻ tấn công không thể truy cập vào chúng, chúng ta có thể bỏ qua lỗ hổng này một cách an toàn.
+
+Trong trường hợp này, chúng ta có thể yêu cầu Grype bỏ qua lỗ hổng này và không làm thất bại quá trình quét vì nó.
+
+Chúng ta có thể làm điều này thông qua tệp cấu hình `grype.yaml`, nơi chúng ta có thể liệt kê các lỗ hổng muốn bỏ qua:
+
+```yaml
+ignore:
+  # Đây là bộ đầy đủ các trường quy tắc được hỗ trợ:
+  - vulnerability: CVE-2016-1000027
+    fix-state: unknown
+    package:
+      name: spring-core
+      version: 5.3.6
+      type: java-archive
+  # Chúng ta có thể liệt kê bao nhiêu cái tùy thích
+  - vulnerability: CVE-2022-22965
+  # Hoặc liệt kê toàn bộ các gói mà chúng ta muốn bỏ qua
+  - package:
+      type: gem
+```
+
+Đặt điều này vào tệp cấu hình của chúng ta và chạy lại quá trình quét sẽ làm cho đường ống của chúng ta chuyển sang màu xanh (thành công).
+
+Tuy nhiên, điều quan trọng là chúng ta phải theo dõi tệp này và không bỏ qua các lỗ hổng đã có bản vá.
+Ví dụ, khi một bản vá cho lỗ hổng này được phát hành, tốt nhất là chúng ta nên nâng cấp phụ thuộc của mình và loại bỏ lỗ hổng này khỏi ứng dụng.
+
+Bằng cách đó, chúng ta sẽ đảm bảo rằng ứng dụng của mình an toàn nhất có thể và không có lỗ hổng nào có thể trở nên nghiêm trọng hơn chúng ta nghĩ ban đầu.
+
+---
+
+### 3\. Lỗ hổng chưa có bản vá, và NÓ nguy hiểm
+
+Trường hợp xấu nhất là nếu chúng ta gặp phải một lỗ hổng chưa có bản vá, và nó thực sự nguy hiểm, và có khả năng bị khai thác.
+
+Trong trường hợp đó, không có một nước đi nào là hoàn toàn đúng.
+Điều tốt nhất chúng ta có thể làm là ngồi lại với đội ngũ bảo mật và đưa ra một kế hoạch hành động.
+
+Chúng ta có thể quyết định tốt nhất là không làm gì trong khi chờ lỗ hổng được vá.
+Chúng ta có thể quyết định vá một số thứ thủ công để loại bỏ ít nhất một phần nguy hiểm.
+Nó thực sự phụ thuộc vào tình hình.
+
+Đôi khi, một lỗ hổng zero-day đã có trong ứng dụng đang được triển khai của bạn.
+Trong trường hợp đó, việc đóng băng các lần triển khai sẽ không giúp ích gì vì ứng dụng của bạn đã dễ bị tấn công.
+
+Đó là trường hợp của lỗ hổng Log4Shell được phát hiện vào cuối năm 2021 nhưng đã tồn tại trong Log4j từ năm 2013.
+May mắn thay, đã có một bản vá trong vòng vài giờ, nhưng lần sau chúng ta có thể không may mắn như vậy.
+
+---
+
+## Tóm tắt
+
+Như chúng ta đã học trong [Ngày 14](https://vntechies.dev/courses/90-ngay-devops-v2/ngay-14-quet-container-image), việc quét các image container để tìm lỗ hổng là rất quan trọng vì nó có thể cung cấp cho bạn những hiểu biết quý giá về
+tình hình bảo mật của các image.
+
+Hôm nay chúng ta đã học được rằng việc tích hợp nó như một phần của đường ống CI/CD và thực thi một số quy tắc cơ bản về các lỗ hổng bạn có trong image của mình còn tốt hơn nữa.
+
+Cuối cùng, chúng ta đã thảo luận về các bước chúng ta có thể thực hiện khi tìm thấy một lỗ hổng.
+
+Ngày mai, chúng ta sẽ xem xét các registry container cho phép quét tự động và cũng sẽ xem xét việc quét các loại tạo tác khác.
+
+Hẹn gặp lại bạn vào ngày 22.
+
+> Các bài viết là bản tiếng Việt của tài liệu [90DaysOfDevOps](https://github.com/MichaelCade/90DaysOfDevOps/tree/main/2023/Days) của [Micheal Cade](https://twitter.com/MichaelCade1) và có qua sửa đổi, bổ sung. Tất cả đều có license [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License][cc-by-nc-sa].
