@@ -22,6 +22,10 @@ successRate: 90
 - AWS Certified Solutions Architect - Associate
 - AWS Certified Developer - Associate
 - AWS Academy Certified Educator
+- AWS Certified AI Practitioner
+- Cisco Certified Network Associate (CCNA)
+- Terraform: Certified HashiCorp Implementation Partner (CHIP)
+- Linux Professional Institute LPIC-1
 - Google Cloud Certified - Professional Cloud Architect
 - HashiCorp Certified: Vault Associate (002)
 - HashiCorp Certified: Terraform Associate (003)
@@ -80,6 +84,24 @@ successRate: 90
     <div style={{width: "160px", textAlign: "center"}}>
       <img src="/static/images/authors/certs/phuongnm/microsoftsa.png" alt="Microsoft Certified Solutions Associate" style={{width: "100%", border: "1px solid #eaeaea", borderRadius: "8px", padding: "5px"}}/>
       <p style={{fontSize: "0.8rem", marginTop: "5px"}}>Microsoft Certified Solutions Associate</p>
+    </div>
+  </div>
+  <div className="cert-row" style={{display: "flex", justifyContent: "center", flexWrap: "wrap", gap: "20px", margin: "5px 0"}}>
+    <div style={{width: "160px", textAlign: "center"}}>
+      <img src="/static/images/authors/certs/phuongnm/AIF.png" alt="AWS Certified AI Practitioner" style={{width: "100%", border: "1px solid #eaeaea", borderRadius: "8px", padding: "5px"}}/>
+      <p style={{fontSize: "0.8rem", marginTop: "5px"}}>AWS Certified AI Practitioner</p>
+    </div>
+    <div style={{width: "160px", textAlign: "center"}}>
+      <img src="/static/images/authors/certs/phuongnm/ccna.png" alt="Cisco Certified Network Associate" style={{width: "100%", border: "1px solid #eaeaea", borderRadius: "8px", padding: "5px"}}/>
+      <p style={{fontSize: "0.8rem", marginTop: "5px"}}>Cisco Certified Network Associate</p>
+    </div>
+    <div style={{width: "160px", textAlign: "center"}}>
+      <img src="/static/images/authors/certs/phuongnm/chip.png" alt="Terraform: Certified HashiCorp Implementation Partner (CHIP)" style={{width: "100%", border: "1px solid #eaeaea", borderRadius: "8px", padding: "5px"}}/>
+      <p style={{fontSize: "0.8rem", marginTop: "5px"}}>Terraform: Certified HashiCorp Implementation Partner (CHIP)</p>
+    </div>
+    <div style={{width: "160px", textAlign: "center"}}>
+      <img src="/static/images/authors/certs/phuongnm/lpic1.png" alt="Linux Professional Institute LPIC-1" style={{width: "100%", border: "1px solid #eaeaea", borderRadius: "8px", padding: "5px"}}/>
+      <p style={{fontSize: "0.8rem", marginTop: "5px"}}>Linux Professional Institute LPIC-1</p>
     </div>
   </div>
 </div>
