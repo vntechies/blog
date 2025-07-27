@@ -35,46 +35,33 @@ export default function CourseRegistrationForm({
     setSubmitStatus(null)
 
     try {
-      // Google Apps Script Web goApp URL - replace with your actual URL
-      const GOOGLE_SCRIPT_URL =
-        'https://script.google.com/macros/s/AKfycbxBsyI5cmfpw-SQBjH6cyKL3O8lwuv7UAY2b-eZ02A9oEINYsrpjAZQgKEVupNnuKNg/exec'
-
       const dataToSend = {
         ...formData,
         timestamp: new Date().toISOString(),
         course: courseTitle,
       }
 
-      console.log('Sending data:', dataToSend)
+      console.log('Sending data to serverless API Gateway:', dataToSend)
 
-      // Create hidden iframe for form submission
-      const iframe = document.createElement('iframe')
-      iframe.name = 'hidden-form'
-      iframe.style.display = 'none'
-      document.body.appendChild(iframe)
+      // Send data to serverless API Gateway
+      const response = await fetch(
+        'https://01okmqz7w1.execute-api.ap-southeast-1.amazonaws.com/prod/register',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(dataToSend),
+        }
+      )
 
-      const form = document.createElement('form')
-      form.method = 'POST'
-      form.action = GOOGLE_SCRIPT_URL
-      form.target = 'hidden-form'
-      form.style.display = 'none'
+      const result = await response.json()
 
-      Object.keys(dataToSend).forEach((key) => {
-        const input = document.createElement('input')
-        input.type = 'hidden'
-        input.name = key
-        input.value = dataToSend[key]
-        form.appendChild(input)
-      })
+      if (!response.ok) {
+        throw new Error(result.message || 'Registration failed')
+      }
 
-      document.body.appendChild(form)
-      form.submit()
-
-      // Cleanup after submission
-      setTimeout(() => {
-        document.body.removeChild(form)
-        document.body.removeChild(iframe)
-      }, 1000)
+      console.log('Registration submitted to serverless stack:', result)
 
       setSubmitStatus('success')
       setFormData({
