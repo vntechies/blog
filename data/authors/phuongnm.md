@@ -1,7 +1,7 @@
 ---
 name: Phuong NM
 avatar: /static/images/authors/phuongnm.png
-occupation: Senior Cloud DevOps Engineer
+occupation: Senior DevOps Engineer & AWS Academy Educator
 company: VNTechies Dev blog
 email: phuong@vntechies.dev
 linkedin: https://www.linkedin.com/in/mrphuongbn
