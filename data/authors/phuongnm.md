@@ -16,10 +16,9 @@ successRate: 100
 
 **Kinh nghiệm:**
 
-- Hơn 7 năm làm việc tại Nhật Bản và Việt Nam với background từ Backend Engineer, Cloud/DevOps Engineer, và Solution Architect
-- Dẫn dắt các dự án di chuyển hệ thống lên cloud cho các tập đoàn lớn
-- Tư vấn chiến lược chuyển đổi số, triển khai DevSecOps, giải pháp AI/GenAI/Data cho doanh nghiệp lớn tại Nhật Bản, Việt Nam, Úc, Mỹ
-- Có kinh nghiệm với các dự án toàn cầu, giao tiếp tiếng Anh & tiếng Nhật
+- Senior Cloud DevOps Engineer với gần 10 năm kinh nghiệm đa lĩnh vực trong ngành IT, thiết kế, phát triển và triển khai hạ tầng trong các môi trường tập đoàn lớn của các nước Singapore, Thailand và Việt Nam.
+- Tham gia các dự án chuyển đổi số cho ngân hàng, e-commerce, nhóm doanh nghiệp sản xuất và các dự án mang tính chất phục vụ người dùng toàn cầu.
+- Ngoài ra còn là AWS Community Builder, AWS Academy Certified Educator, tham gia các hoạt động cộng đồng, chia sẻ kiến thức về Cloud/DevOps cho cộng đồng, sinh viên.
 
 **Chứng chỉ:**
 
