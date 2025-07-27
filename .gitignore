@@ -39,3 +39,4 @@ yarn-error.log*
 .env
 **.aws-sam
 .idea
+node_modules
