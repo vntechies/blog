@@ -506,9 +506,6 @@ export default function CourseSpecial({ frontMatter, mentorDetails }) {
                     Buổi
                   </th>
                   <th className="text-xs border border-gray-200 px-2 py-2 text-center font-bold text-orange-700 dark:border-gray-600 dark:text-orange-300 sm:px-3 sm:text-sm md:text-base">
-                    Module
-                  </th>
-                  <th className="text-xs border border-gray-200 px-2 py-2 text-center font-bold text-orange-700 dark:border-gray-600 dark:text-orange-300 sm:px-3 sm:text-sm md:text-base">
                     Nội dung
                   </th>
                 </tr>
@@ -519,10 +516,10 @@ export default function CourseSpecial({ frontMatter, mentorDetails }) {
                     1
                   </td>
                   <td className="border border-gray-200 px-3 py-2 dark:border-gray-600">
-                    Giới thiệu kiến trúc điện toán đám mây
-                  </td>
-                  <td className="border border-gray-200 px-3 py-2 dark:border-gray-600">
                     <div className="ml-2 space-y-1">
+                      <div className="font-semibold text-orange-700 dark:text-orange-300">
+                        Module: Giới thiệu kiến trúc điện toán đám mây
+                      </div>
                       <div>Tổng quan và kiến trúc điện toán đám mây</div>
                       <div>AWS Well-Architected Framework</div>
                       <div>Nguyên tắc thiết kế kiến trúc</div>
@@ -535,10 +532,10 @@ export default function CourseSpecial({ frontMatter, mentorDetails }) {
                     2
                   </td>
                   <td className="border border-gray-200 px-3 py-2 dark:border-gray-600">
-                    Bảo mật truy cập
-                  </td>
-                  <td className="border border-gray-200 px-3 py-2 dark:border-gray-600">
                     <div className="ml-2 space-y-1">
+                      <div className="font-semibold text-orange-700 dark:text-orange-300">
+                        Module: Bảo mật truy cập
+                      </div>
                       <div>Nguyên lý bảo mật</div>
                       <div>Xác thực và phân quyền</div>
                       <div>Dùng IAM hiệu quả</div>
@@ -553,10 +550,10 @@ export default function CourseSpecial({ frontMatter, mentorDetails }) {
                     3
                   </td>
                   <td className="border border-gray-200 px-3 py-2 dark:border-gray-600">
-                    Lưu trữ với Amazon S3
-                  </td>
-                  <td className="border border-gray-200 px-3 py-2 dark:border-gray-600">
                     <div className="ml-2 space-y-1">
+                      <div className="font-semibold text-orange-700 dark:text-orange-300">
+                        Module: Lưu trữ với Amazon S3
+                      </div>
                       <div>Giới thiệu về S3</div>
                       <div>Di chuyển và lưu trữ dữ liệu với S3</div>
                       <div>Thiết kế với S3</div>
@@ -577,10 +574,10 @@ export default function CourseSpecial({ frontMatter, mentorDetails }) {
                     4
                   </td>
                   <td className="border border-gray-200 px-3 py-2 dark:border-gray-600">
-                    Amazon EC2 và Elastic File System
-                  </td>
-                  <td className="border border-gray-200 px-3 py-2 dark:border-gray-600">
                     <div className="ml-2 space-y-1">
+                      <div className="font-semibold text-orange-700 dark:text-orange-300">
+                        Module: Amazon EC2 và Elastic File System
+                      </div>
                       <div>Giới thiệu về EC2</div>
                       <div>Các thành phần và tính năng của EC2</div>
                       <div>Demo: Cấu hình EC2 Instance với User Data</div>
@@ -597,10 +594,10 @@ export default function CourseSpecial({ frontMatter, mentorDetails }) {
                     5
                   </td>
                   <td className="border border-gray-200 px-3 py-2 dark:border-gray-600">
-                    Database
-                  </td>
-                  <td className="border border-gray-200 px-3 py-2 dark:border-gray-600">
                     <div className="ml-2 space-y-1">
+                      <div className="font-semibold text-orange-700 dark:text-orange-300">
+                        Module: Database
+                      </div>
                       <div>Amazon RDS, DynamoDB</div>
                       <div>Demo: Amazon RDS, DynamoDB</div>
                       <div className="font-semibold text-orange-700 dark:text-orange-300">
@@ -618,10 +615,10 @@ export default function CourseSpecial({ frontMatter, mentorDetails }) {
                     6
                   </td>
                   <td className="border border-gray-200 px-3 py-2 dark:border-gray-600">
-                    Networking
-                  </td>
-                  <td className="border border-gray-200 px-3 py-2 dark:border-gray-600">
                     <div className="ml-2 space-y-1">
+                      <div className="font-semibold text-orange-700 dark:text-orange-300">
+                        Module: Networking
+                      </div>
                       <div>Giới thiệu về Amazon VPC và các thành phần của VPC</div>
                       <div>Demo: Khởi tạo và cầu hình VPC</div>
                       <div className="font-semibold text-orange-700 dark:text-orange-300">
@@ -638,10 +635,10 @@ export default function CourseSpecial({ frontMatter, mentorDetails }) {
                     7
                   </td>
                   <td className="border border-gray-200 px-3 py-2 dark:border-gray-600">
-                    Bảo mật quyền truy cập của người dùng, ứng dụng và dữ liệu
-                  </td>
-                  <td className="border border-gray-200 px-3 py-2 dark:border-gray-600">
                     <div className="ml-2 space-y-1">
+                      <div className="font-semibold text-orange-700 dark:text-orange-300">
+                        Module: Bảo mật quyền truy cập của người dùng, ứng dụng và dữ liệu
+                      </div>
                       <div>Quản lý quyền và truy cập với môi trường multi-accounts</div>
                       <div className="font-semibold text-orange-700 dark:text-orange-300">
                         Lab: Bảo mật ứng dụng với Amazon Cognito
@@ -661,10 +658,10 @@ export default function CourseSpecial({ frontMatter, mentorDetails }) {
                     8
                   </td>
                   <td className="border border-gray-200 px-3 py-2 dark:border-gray-600">
-                    Triển khai mở rộng và giám sát hạ tầng AWS
-                  </td>
-                  <td className="border border-gray-200 px-3 py-2 dark:border-gray-600">
                     <div className="ml-2 space-y-1">
+                      <div className="font-semibold text-orange-700 dark:text-orange-300">
+                        Module: Triển khai mở rộng và giám sát hạ tầng AWS
+                      </div>
                       <div>Tổng quan về Autoscaling, Elastic Load Balancer</div>
                       <div>Demo: Elastic Load Balancer và Auto Scaling</div>
                       <div>Tổng quan về CloudWatch, Route 53</div>
@@ -685,10 +682,10 @@ export default function CourseSpecial({ frontMatter, mentorDetails }) {
                     9
                   </td>
                   <td className="border border-gray-200 px-3 py-2 dark:border-gray-600">
-                    Tự động hoá và dịch vụ AI/ML
-                  </td>
-                  <td className="border border-gray-200 px-3 py-2 dark:border-gray-600">
                     <div className="ml-2 space-y-1">
+                      <div className="font-semibold text-orange-700 dark:text-orange-300">
+                        Module: Tự động hoá và dịch vụ AI/ML
+                      </div>
                       <div>Infrastructure as code</div>
                       <div>Tuỳ chỉnh với CloudFormation</div>
                       <div>Demo: CloudFormation</div>
@@ -704,9 +701,11 @@ export default function CourseSpecial({ frontMatter, mentorDetails }) {
                   <td className="border border-gray-200 px-3 py-2 text-center font-bold dark:border-gray-600">
                     10
                   </td>
-                  <td className="border border-gray-200 px-3 py-2 dark:border-gray-600">Caching</td>
                   <td className="border border-gray-200 px-3 py-2 dark:border-gray-600">
                     <div className="ml-2 space-y-1">
+                      <div className="font-semibold text-orange-700 dark:text-orange-300">
+                        Module: Caching
+                      </div>
                       <div>Tổng quan về caching</div>
                       <div>Caching sử dụng CloudFront, ElastiCache</div>
                       <div>Demo: CloudFront, ElastiCache</div>
@@ -722,10 +721,10 @@ export default function CourseSpecial({ frontMatter, mentorDetails }) {
                     11
                   </td>
                   <td className="border border-gray-200 px-3 py-2 dark:border-gray-600">
-                    Xây dựng kiến trúc phi tập trung
-                  </td>
-                  <td className="border border-gray-200 px-3 py-2 dark:border-gray-600">
                     <div className="ml-2 space-y-1">
+                      <div className="font-semibold text-orange-700 dark:text-orange-300">
+                        Module: Xây dựng kiến trúc phi tập trung
+                      </div>
                       <div>Kiến trúc decoupled</div>
                       <div>Decoupling ứng dụng với Amazon SQS, Amazon SNS, và Amazon MQ</div>
                       <div>Demo: Amazon SNS, SQS</div>
@@ -740,10 +739,10 @@ export default function CourseSpecial({ frontMatter, mentorDetails }) {
                     12
                   </td>
                   <td className="border border-gray-200 px-3 py-2 dark:border-gray-600">
-                    Xây dựng kiến trúc Serverless và Microservices
-                  </td>
-                  <td className="border border-gray-200 px-3 py-2 dark:border-gray-600">
                     <div className="ml-2 space-y-1">
+                      <div className="font-semibold text-orange-700 dark:text-orange-300">
+                        Module: Xây dựng kiến trúc Serverless và Microservices
+                      </div>
                       <div>Thiết kế ứng dụng serverless trên AWS</div>
                       <div>
                         Áp dụng các nguyên tắc AWS Well-Architected Framework vào xây dựng kiến trúc
@@ -770,10 +769,10 @@ export default function CourseSpecial({ frontMatter, mentorDetails }) {
                     13
                   </td>
                   <td className="border border-gray-200 px-3 py-2 dark:border-gray-600">
-                    Xử lý dữ liệu
-                  </td>
-                  <td className="border border-gray-200 px-3 py-2 dark:border-gray-600">
                     <div className="ml-2 space-y-1">
+                      <div className="font-semibold text-orange-700 dark:text-orange-300">
+                        Module: Xử lý dữ liệu
+                      </div>
                       <div>Các đặc điểm của dữ liệu</div>
                       <div>Data pipelines với các dịch vụ AWS</div>
                       <div>Xử lý dữ liệu batch và real-time</div>
@@ -787,10 +786,10 @@ export default function CourseSpecial({ frontMatter, mentorDetails }) {
                     14
                   </td>
                   <td className="border border-gray-200 px-3 py-2 dark:border-gray-600">
-                    Sao lưu và khôi phục thảm hoạ
-                  </td>
-                  <td className="border border-gray-200 px-3 py-2 dark:border-gray-600">
                     <div className="ml-2 space-y-1">
+                      <div className="font-semibold text-orange-700 dark:text-orange-300">
+                        Module: Sao lưu và khôi phục thảm hoạ
+                      </div>
                       <div>AWS Backup, AWS DRS</div>
                       <div>Các chiến lược DR</div>
                       <div>
@@ -807,9 +806,11 @@ export default function CourseSpecial({ frontMatter, mentorDetails }) {
                   <td className="border border-gray-200 px-3 py-2 text-center font-bold dark:border-gray-600">
                     15
                   </td>
-                  <td className="border border-gray-200 px-3 py-2 dark:border-gray-600">Ôn tập</td>
                   <td className="border border-gray-200 px-3 py-2 dark:border-gray-600">
                     <div className="ml-2 space-y-1">
+                      <div className="font-semibold text-orange-700 dark:text-orange-300">
+                        Module: Ôn tập
+                      </div>
                       <div>Ôn tập khoá học</div>
                       <div>Thi thử với bộ đề SAA-C03</div>
                     </div>
@@ -820,10 +821,10 @@ export default function CourseSpecial({ frontMatter, mentorDetails }) {
                     16
                   </td>
                   <td className="border border-gray-200 px-3 py-2 dark:border-gray-600">
-                    Tổng kết
-                  </td>
-                  <td className="border border-gray-200 px-3 py-2 dark:border-gray-600">
                     <div className="ml-2 space-y-1">
+                      <div className="font-semibold text-orange-700 dark:text-orange-300">
+                        Module: Tổng kết
+                      </div>
                       <div className="font-semibold text-orange-700 dark:text-orange-300">
                         Seminar hướng nghiệp: Tips viết CV, phỏng vấn, định hướng vị trí
                         Cloud/DevOps
