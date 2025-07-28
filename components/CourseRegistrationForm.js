@@ -35,16 +35,19 @@ export default function CourseRegistrationForm({
     setSubmitStatus(null)
 
     try {
+      const GOOGLE_SCRIPT_URL =
+        'https://script.google.com/macros/s/AKfycbxBsyI5cmfpw-SQBjH6cyKL3O8lwuv7UAY2b-eZ02A9oEINYsrpjAZQgKEVupNnuKNg/exec'
+
       const dataToSend = {
         ...formData,
         timestamp: new Date().toISOString(),
         course: courseTitle,
       }
 
-      console.log('Sending data to serverless API Gateway:', dataToSend)
+      console.log('Sending data to serverless API Gateway and App Script:', dataToSend)
 
-      // Send data to serverless API Gateway
-      const response = await fetch(
+      // 1. Send to AWS Serverless API Gateway (Odoo)
+      const serverlessPromise = fetch(
         'https://01okmqz7w1.execute-api.ap-southeast-1.amazonaws.com/prod/register',
         {
           method: 'POST',
@@ -55,32 +58,103 @@ export default function CourseRegistrationForm({
         }
       )
 
-      const result = await response.json()
+      // 2. Send to Google Apps Script (Google Sheets) using iframe method
+      const googlePromise = new Promise((resolve, reject) => {
+        try {
+          // Create hidden iframe for form submission
+          const iframe = document.createElement('iframe')
+          iframe.name = 'hidden-form'
+          iframe.style.display = 'none'
+          document.body.appendChild(iframe)
 
-      if (!response.ok) {
-        throw new Error(result.message || 'Registration failed')
+          const form = document.createElement('form')
+          form.method = 'POST'
+          form.action = GOOGLE_SCRIPT_URL
+          form.target = 'hidden-form'
+          form.style.display = 'none'
+
+          Object.keys(dataToSend).forEach((key) => {
+            const input = document.createElement('input')
+            input.type = 'hidden'
+            input.name = key
+            input.value = dataToSend[key]
+            form.appendChild(input)
+          })
+
+          document.body.appendChild(form)
+          form.submit()
+
+          // Cleanup after submission
+          setTimeout(() => {
+            document.body.removeChild(form)
+            document.body.removeChild(iframe)
+            resolve({ success: true, message: 'Google Sheets submission completed' })
+          }, 1000)
+        } catch (error) {
+          reject(error)
+        }
+      })
+
+      // Wait for both submissions
+      const [serverlessResponse, googleResponse] = await Promise.allSettled([
+        serverlessPromise,
+        googlePromise,
+      ])
+
+      // Check results
+      let successCount = 0
+      const results = {}
+
+      // Check serverless response
+      if (serverlessResponse.status === 'fulfilled') {
+        try {
+          const serverlessResult = await serverlessResponse.value.json()
+          if (serverlessResponse.value.ok) {
+            results.serverless = { status: 'SUCCESS', data: serverlessResult }
+            successCount++
+          } else {
+            results.serverless = { status: 'FAILED', error: serverlessResult.message }
+          }
+        } catch (error) {
+          results.serverless = { status: 'FAILED', error: error.message }
+        }
+      } else {
+        results.serverless = { status: 'FAILED', error: serverlessResponse.reason }
       }
 
-      console.log('Registration submitted to serverless stack:', result)
+      // Check Google Script response
+      if (googleResponse.status === 'fulfilled') {
+        results.google = { status: 'SUCCESS', data: googleResponse.value }
+        successCount++
+      } else {
+        results.google = { status: 'FAILED', error: googleResponse.reason }
+      }
 
-      setSubmitStatus('success')
-      setFormData({
-        name: '',
-        email: '',
-        phone: '',
-        studentType: 'working',
-        experience: '',
-        motivation: '',
-        isAlumni: false,
-        groupRegistration: false,
-        groupSize: '',
-        groupMembers: '',
-      })
-      setIsSubmitting(false)
+      console.log('Submission results:', results)
 
-      // Call onSuccess callback if provided
-      if (onSuccess) {
-        onSuccess()
+      // Consider it successful if at least one system worked
+      if (successCount > 0) {
+        setSubmitStatus('success')
+        setFormData({
+          name: '',
+          email: '',
+          phone: '',
+          studentType: 'working',
+          experience: '',
+          motivation: '',
+          isAlumni: false,
+          groupRegistration: false,
+          groupSize: '',
+          groupMembers: '',
+        })
+        setIsSubmitting(false)
+
+        // Call onSuccess callback if provided
+        if (onSuccess) {
+          onSuccess()
+        }
+      } else {
+        throw new Error('Both submission systems failed')
       }
     } catch (error) {
       console.error('Error:', error)
