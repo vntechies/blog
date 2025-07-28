@@ -1,7 +1,11 @@
 import { useState } from 'react'
 import { FaUser, FaEnvelope, FaPhone, FaGraduationCap, FaSpinner } from 'react-icons/fa'
 
-export default function CourseRegistrationForm({ courseTitle = 'AWS SAA-C03', theme = 'orange' }) {
+export default function CourseRegistrationForm({
+  courseTitle = 'AWS SAA-C03',
+  theme = 'orange',
+  onSuccess,
+}) {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -31,7 +35,6 @@ export default function CourseRegistrationForm({ courseTitle = 'AWS SAA-C03', th
     setSubmitStatus(null)
 
     try {
-      // Google Apps Script Web goApp URL - replace with your actual URL
       const GOOGLE_SCRIPT_URL =
         'https://script.google.com/macros/s/AKfycbxBsyI5cmfpw-SQBjH6cyKL3O8lwuv7UAY2b-eZ02A9oEINYsrpjAZQgKEVupNnuKNg/exec'
 
@@ -41,51 +44,118 @@ export default function CourseRegistrationForm({ courseTitle = 'AWS SAA-C03', th
         course: courseTitle,
       }
 
-      console.log('Sending data:', dataToSend)
+      console.log('Sending data to serverless API Gateway and App Script:', dataToSend)
 
-      // Create hidden iframe for form submission
-      const iframe = document.createElement('iframe')
-      iframe.name = 'hidden-form'
-      iframe.style.display = 'none'
-      document.body.appendChild(iframe)
+      // 1. Send to AWS Serverless API Gateway (Odoo)
+      const serverlessPromise = fetch(
+        'https://01okmqz7w1.execute-api.ap-southeast-1.amazonaws.com/prod/register',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(dataToSend),
+        }
+      )
 
-      const form = document.createElement('form')
-      form.method = 'POST'
-      form.action = GOOGLE_SCRIPT_URL
-      form.target = 'hidden-form'
-      form.style.display = 'none'
+      // 2. Send to Google Apps Script (Google Sheets) using iframe method
+      const googlePromise = new Promise((resolve, reject) => {
+        try {
+          // Create hidden iframe for form submission
+          const iframe = document.createElement('iframe')
+          iframe.name = 'hidden-form'
+          iframe.style.display = 'none'
+          document.body.appendChild(iframe)
 
-      Object.keys(dataToSend).forEach((key) => {
-        const input = document.createElement('input')
-        input.type = 'hidden'
-        input.name = key
-        input.value = dataToSend[key]
-        form.appendChild(input)
+          const form = document.createElement('form')
+          form.method = 'POST'
+          form.action = GOOGLE_SCRIPT_URL
+          form.target = 'hidden-form'
+          form.style.display = 'none'
+
+          Object.keys(dataToSend).forEach((key) => {
+            const input = document.createElement('input')
+            input.type = 'hidden'
+            input.name = key
+            input.value = dataToSend[key]
+            form.appendChild(input)
+          })
+
+          document.body.appendChild(form)
+          form.submit()
+
+          // Cleanup after submission
+          setTimeout(() => {
+            document.body.removeChild(form)
+            document.body.removeChild(iframe)
+            resolve({ success: true, message: 'Google Sheets submission completed' })
+          }, 1000)
+        } catch (error) {
+          reject(error)
+        }
       })
 
-      document.body.appendChild(form)
-      form.submit()
+      // Wait for both submissions
+      const [serverlessResponse, googleResponse] = await Promise.allSettled([
+        serverlessPromise,
+        googlePromise,
+      ])
 
-      // Cleanup after submission
-      setTimeout(() => {
-        document.body.removeChild(form)
-        document.body.removeChild(iframe)
-      }, 1000)
+      // Check results
+      let successCount = 0
+      const results = {}
 
-      setSubmitStatus('success')
-      setFormData({
-        name: '',
-        email: '',
-        phone: '',
-        studentType: 'working',
-        experience: '',
-        motivation: '',
-        isAlumni: false,
-        groupRegistration: false,
-        groupSize: '',
-        groupMembers: '',
-      })
-      setIsSubmitting(false)
+      // Check serverless response
+      if (serverlessResponse.status === 'fulfilled') {
+        try {
+          const serverlessResult = await serverlessResponse.value.json()
+          if (serverlessResponse.value.ok) {
+            results.serverless = { status: 'SUCCESS', data: serverlessResult }
+            successCount++
+          } else {
+            results.serverless = { status: 'FAILED', error: serverlessResult.message }
+          }
+        } catch (error) {
+          results.serverless = { status: 'FAILED', error: error.message }
+        }
+      } else {
+        results.serverless = { status: 'FAILED', error: serverlessResponse.reason }
+      }
+
+      // Check Google Script response
+      if (googleResponse.status === 'fulfilled') {
+        results.google = { status: 'SUCCESS', data: googleResponse.value }
+        successCount++
+      } else {
+        results.google = { status: 'FAILED', error: googleResponse.reason }
+      }
+
+      console.log('Submission results:', results)
+
+      // Consider it successful if at least one system worked
+      if (successCount > 0) {
+        setSubmitStatus('success')
+        setFormData({
+          name: '',
+          email: '',
+          phone: '',
+          studentType: 'working',
+          experience: '',
+          motivation: '',
+          isAlumni: false,
+          groupRegistration: false,
+          groupSize: '',
+          groupMembers: '',
+        })
+        setIsSubmitting(false)
+
+        // Call onSuccess callback if provided
+        if (onSuccess) {
+          onSuccess()
+        }
+      } else {
+        throw new Error('Both submission systems failed')
+      }
     } catch (error) {
       console.error('Error:', error)
       setSubmitStatus('error')
@@ -341,7 +411,10 @@ export default function CourseRegistrationForm({ courseTitle = 'AWS SAA-C03', th
 
             {/* Status Messages */}
             {submitStatus === 'success' && (
-              <div className="rounded-lg bg-green-50 p-4 text-center text-green-800 dark:bg-green-900/20 dark:text-green-400">
+              <div
+                data-success-message
+                className="rounded-lg bg-green-50 p-4 text-center text-green-800 dark:bg-green-900/20 dark:text-green-400"
+              >
                 ✅ Đăng ký thành công! Chúng tôi sẽ liên hệ với bạn trong 24h.
               </div>
             )}
