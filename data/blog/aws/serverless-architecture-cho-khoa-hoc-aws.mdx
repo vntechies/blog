@@ -8,9 +8,9 @@ images: ['/static/images/ogps/aws-serverless.jpg']
 summary: '🔍 Khám phá kiến trúc serverless AWS được xây dựng cho nền tảng đăng ký khóa học VNTechies, từ API Gateway đến Lambda và SQS, tạo nền tảng học tập hoàn toàn trên cloud với chi phí tối thiểu'
 ---
 
-Sau một thời gian dài im ắng, đội ngũ admin tại Vntechies hiện đang cố gắng mang lại những trải nghiệm tốt nhất cho cộng đồng DevOps & Cloud tại Việt Nam. Hôm nay bọn mình muốn chia sẻ với các bạn về một phần trong chiến dịch đem lại cho anh chị- **nền tảng học tập AWS hoàn toàn trên cloud**.
+Chào các bạn! Sau một thời gian dài im ắng, team admin tại VNTechies đang cố gắng mang lại những trải nghiệm tốt nhất cho cộng đồng DevOps & Cloud tại Việt Nam. Hôm nay mình muốn chia sẻ với các bạn về một phần trong chiến dịch đem lại cho anh chị - **nền tảng học tập AWS hoàn toàn trên cloud**.
 
-Đây không chỉ là một bài viết kỹ thuật thông thường, mà là câu chuyện về cách mình và team anh trai IT tại VNTechies đang cố gắng tạo ra một **môi trường học tập thực tế** cho các bạn - nơi mà lý thuyết và thực hành được kết hợp một cách hoàn hảo.
+Đây không chỉ là một bài viết kỹ thuật thông thường, mà là câu chuyện về cách mình và team IT tại VNTechies đang cố gắng tạo ra một **môi trường học tập thực tế** cho các bạn - nơi mà lý thuyết và thực hành được kết hợp một cách hoàn hảo.
 
 ## 🎯 TL;DR
 
@@ -18,13 +18,13 @@ Sau một thời gian dài im ắng, đội ngũ admin tại Vntechies hiện đ
 
 ![AWS](/static/images/ogps/aws-serverless.jpg)
 
-### ⚠️ Vấn đề
+### ⚠️ Vấn đề ban đầu
 
-Ban đầu hệ thống đăng ký khóa học của VNTechies chỉ đơn giản là dùng Google Sheets làm backend. Nó không tệ vì nó đơn giản và dễ sử dụng, nhưng khi số lượng anh chị em quan tâm tăng lên, mình nhận ra có những hạn chế rất lớn:
+Ban đầu hệ thống đăng ký khóa học của VNTechies chỉ đơn giản là dùng Google Sheets làm backend. Nó không tệ vì đơn giản và dễ sử dụng, nhưng khi số lượng anh chị em quan tâm tăng lên, mình nhận ra có những hạn chế rất lớn:
 
 - **📈 Không có khả năng mở rộng**: Khi số lượng học viên tăng, khó có khả năng mở rộng và tuỳ biến
 - **🔒 Thiếu tính bảo mật**: Dữ liệu nhạy cảm của các bạn không được mã hóa đúng cách
-- **📊 Không có monitoring**: Bọn mình không biết được hệ thống có hoạt động tốt không
+- **📊 Không có monitoring**: Team không biết được hệ thống có hoạt động tốt không
 - **🔗 Không thể tích hợp**: Khó kết nối với các hệ thống CRM chuyên nghiệp
 
 ### ✅ Giải pháp Serverless
@@ -47,23 +47,23 @@ Vậy là mình và team quyết định xây dựng một kiến trúc serverle
 
 ### 🔄 Luồng xử lý dữ liệu
 
-1. **📝 Nhập liệu** → Người dùng điền form đăng ký trên Next.js
-2. **🛡️ Kiểm tra** → API Gateway validate và giới hạn tốc độ request
-3. **💾 Lưu trữ** → SQS lưu tin nhắn an toàn với mã hóa
-4. **🧠 Xử lý** → Lambda xử lý logic nghiệp vụ và tích hợp CRM
-5. **📊 Tạo lead** → Hệ thống CRM tạo và quản lý leads
+1. **Nhập liệu** → Người dùng điền form đăng ký trên Next.js
+2. **Kiểm tra** → API Gateway validate và giới hạn tốc độ request
+3. **Lưu trữ** → SQS lưu tin nhắn an toàn với mã hóa
+4. **Xử lý** → Lambda xử lý logic nghiệp vụ và tích hợp CRM
+5. **Tạo lead** → Hệ thống CRM tạo và quản lý leads
 
 ### 🎯 Lợi ích chính
 
-- **🛡️ Bảo mật**: Rate limiting, mã hóa, IAM roles
-- **📈 Khả năng mở rộng**: Tự động scale theo nhu cầu
-- **💰 Tiết kiệm chi phí**: Chỉ trả tiền khi sử dụng
-- **🔄 Độ tin cậy**: Dead letter queues, cơ chế retry
-- **📊 Giám sát**: CloudWatch logs và metrics
+- **Bảo mật**: Rate limiting, mã hóa, IAM roles
+- **Khả năng mở rộng**: Tự động scale theo nhu cầu
+- **Tiết kiệm chi phí**: Chỉ trả tiền khi sử dụng
+- **Độ tin cậy**: Dead letter queues, cơ chế retry
+- **Giám sát**: CloudWatch logs và metrics
 
 Rồi sau đây chúng ta đi vào chi tiết hơn nhé.
 
-### 1. 🚪 API Gateway - Cổng vào của hệ thống
+### 1. API Gateway - Cổng vào của hệ thống
 
 API Gateway đóng vai trò là **cổng vào duy nhất** cho tất cả các request đăng ký khóa học:
 
@@ -73,13 +73,13 @@ ThrottlingBurstLimit: 5
 ThrottlingRateLimit: 5
 ```
 
-**🛡️ Tại sao cần Rate Limiting?**
+**Tại sao cần Rate Limiting?**
 
-- 🛡️ Bảo vệ hệ thống khỏi spam và tấn công
-- ⚖️ Đảm bảo tài nguyên được phân bổ công bằng
+- Bảo vệ hệ thống khỏi spam và tấn công
+- Đảm bảo tài nguyên được phân bổ công bằng
 - 💰 Giảm chi phí vận hành
 
-### 2. 📬 SQS Queue - Xử lý bất đồng bộ
+### 2. SQS Queue - Xử lý bất đồng bộ
 
 SQS (Simple Queue Service) đóng vai trò quan trọng trong việc **decoupling** các thành phần:
 
@@ -97,11 +97,11 @@ const sqsParams = {
 
 **🎯 Lợi ích của SQS:**
 
-- **🛡️ Reliability**: Message được lưu trữ an toàn
-- **📈 Scalability**: Tự động scale theo tải
-- **🔄 Fault Tolerance**: Dead Letter Queue cho failed messages
+- **Reliability**: Message được lưu trữ an toàn
+- **Scalability**: Tự động scale theo tải
+- **Fault Tolerance**: Dead Letter Queue cho failed messages
 
-### 3. ⚡ Lambda Function - Xử lý business logic
+### 3. Lambda Function - Xử lý business logic
 
 Lambda function xử lý việc tạo lead trong CRM:
 
@@ -115,8 +115,8 @@ const leadId = await createCRMLead(sessionId, registrationData)
 
 **🤔 Tại sao chọn Lambda?**
 
-- **☁️ Serverless**: Không cần quản lý server
-- **📈 Auto-scaling**: Tự động scale theo demand
+- **Serverless**: Không cần quản lý server
+- **Auto-scaling**: Tự động scale theo demand
 - **💰 Cost-effective**: Chỉ trả tiền khi sử dụng
 
 ## 🔄 Dual Submission System
@@ -133,11 +133,11 @@ const [serverlessResponse, googleResponse] = await Promise.allSettled([
 
 **🎯 Lợi ích:**
 
-- **🔄 Redundancy**: Dữ liệu được lưu ở hai nơi
-- **🛡️ Reliability**: Nếu một hệ thống fail, hệ thống khác vẫn hoạt động
-- **💾 Backup**: Google Sheets làm backup cho 3rd Party CRM
+- **Redundancy**: Dữ liệu được lưu ở hai nơi
+- **Reliability**: Nếu một hệ thống fail, hệ thống khác vẫn hoạt động
+- **Backup**: Google Sheets làm backup cho 3rd Party CRM
 
-## 🏗️ Infrastructure as Code với SAM
+## Infrastructure as Code với SAM
 
 Toàn bộ infrastructure được định nghĩa bằng code:
 
@@ -159,21 +159,21 @@ Resources:
 
 **🎯 Lợi ích của IaC:**
 
-- **📝 Version Control**: Infrastructure được track trong Git
-- **🔄 Reproducibility**: Có thể deploy lại chính xác
-- **👥 Collaboration**: Team có thể review và contribute
+- **Version Control**: Infrastructure được track trong Git
+- **Reproducibility**: Có thể deploy lại chính xác
+- **Collaboration**: Team có thể review và contribute
 
-## 📊 Monitoring và Observability
+## Monitoring và Observability
 
 ### 📈 CloudWatch Metrics
 
 Chúng ta monitor các metrics quan trọng:
 
-- **🚪 API Gateway**: Request count, latency, error rate
-- **📬 SQS**: Message count, age, DLQ metrics
-- **⚡ Lambda**: Invocation count, duration, error rate
+- **API Gateway**: Request count, latency, error rate
+- **SQS**: Message count, age, DLQ metrics
+- **Lambda**: Invocation count, duration, error rate
 
-### 📝 Logging Strategy
+### Logging Strategy
 
 ```
 // Structured logging
@@ -186,7 +186,7 @@ console.log('Processing registration:', {
 
 ## 🔒 Security Best Practices
 
-### 1. 🔐 IAM Roles với Least Privilege
+### 1. IAM Roles với Least Privilege
 
 ```
 Policies:
@@ -198,7 +198,7 @@ Policies:
         Resource: !GetAtt CourseRegistrationQueue.Arn
 ```
 
-### 2. 🔧 Environment Variables
+### 2. Environment Variables
 
 ```
 Environment:
@@ -207,7 +207,7 @@ Environment:
     ...
 ```
 
-### 3. 🛡️ Rate Limiting
+### 3. Rate Limiting
 
 ```
 MethodSettings:
@@ -221,21 +221,21 @@ MethodSettings:
 
 ### 💵 Cost Breakdown
 
-| Service        | Monthly Cost (estimated)                                       |
-| -------------- | -------------------------------------------------------------- |
-| 🚪 API Gateway | $1-5                                                           |
-| ⚡ Lambda      | $0.50-2                                                        |
-| 📬 SQS         | $0.40-1                                                        |
-| 📊 CloudWatch  | $1-3                                                           |
-| **💰 Total**   | **$3-11** tương đương chưa đến 500k VND tại thời điểm hiện tại |
+| Service      | Monthly Cost (estimated)                                       |
+| ------------ | -------------------------------------------------------------- |
+| API Gateway  | $1-5                                                           |
+| Lambda       | $0.50-2                                                        |
+| SQS          | $0.40-1                                                        |
+| CloudWatch   | $1-3                                                           |
+| **💰 Total** | **$3-11** tương đương chưa đến 500k VND tại thời điểm hiện tại |
 
 ## 🎯 Kết luận
 
-Thông qua việc sử dụng các AWS services trong thực tế, bọn mình mong muốn các bạn sẽ:
+Thông qua việc sử dụng các AWS services trong thực tế, mình mong muốn các bạn sẽ:
 
 1. **🧠 Hiểu sâu** về các AWS services - không chỉ là lý thuyết
 2. **🛠️ Thực hành** với real-world scenarios - như trong công việc thực tế
-3. **📚 Học** best practices và security - từ những gì bọn đã trải nghiệm
+3. **📚 Học** best practices và security - từ những gì team đã trải nghiệm
 
 **Hẹn gặp lại anh chị em trong các bài viết tiếp theo!**
 

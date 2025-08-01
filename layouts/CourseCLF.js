@@ -307,16 +307,16 @@ export default function CourseSpecial({ frontMatter, mentorDetails }) {
       </section>
 
       {/* Course Highlights */}
-      <section className="bg-white py-16 px-4 dark:bg-gray-800">
+      <section className="bg-white py-16 px-4 dark:bg-gray-900">
         <div className="mx-auto max-w-6xl">
-          <h2 className="mb-12 text-center text-3xl font-bold text-gray-900 dark:text-white">
+          <h2 className="mb-12 text-center text-3xl font-bold text-gray-800 dark:text-white">
             Tại Sao Chọn Khóa Học Của Chúng Tôi?
           </h2>
           <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
             {highlights.map((highlight, index) => (
               <div
                 key={index}
-                className="rounded-lg border border-gray-200 p-6 text-center transition-shadow hover:shadow-lg dark:border-gray-700"
+                className="rounded-lg border border-gray-200 p-6 text-center transition-shadow hover:shadow-lg dark:border-gray-800"
               >
                 <div className="mb-4 flex justify-center">{highlight.icon}</div>
                 <h3 className="mb-2 text-xl font-semibold text-gray-900 dark:text-white">
@@ -711,7 +711,7 @@ export default function CourseSpecial({ frontMatter, mentorDetails }) {
             </a>
           </div>
           <p className="mt-4 text-sm text-blue-100">
-            💰 Hoàn tiền 100% nếu không pass exam | Tư vấn 1:1 với chuyên gia | 📚 Tài liệu học tập
+            💰 Giảm 50% lệ phí thi chứng chỉ | Thực hành trên tài khoản AWS | 📚 Tài liệu học tập
             trọn đời
           </p>
         </div>
