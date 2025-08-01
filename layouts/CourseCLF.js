@@ -75,8 +75,7 @@ const courseInfo = {
   subtitle: 'Bước đầu tiên vào thế giới Cloud Computing - Từ Zero đến AWS Certified',
   image: '/static/images/courses/awsclfc02Info.png',
   startDate: '19/08/2025',
-  duration: '6 tuần (12 buổi, 24h)',
-  schedule: 'Tối Thứ 3 & Thứ 5 (20:00 - 22:00)',
+  duration: '4 tuần (8 buổi, 16h)',
   location: 'Online qua Zoom',
   price: '5.000.000 VNĐ',
   earlyBird: '1.199.000 VNĐ (giảm 20% - chỉ 50 suất đầu)',
@@ -87,7 +86,7 @@ const courseInfo = {
 const stats = [
   { number: '100+', label: 'Học viên đã tham gia' },
   { number: '99%', label: 'Tỷ lệ pass chứng chỉ' },
-  { number: '12', label: 'Buổi học đi kèm thực hành và ôn tập kĩ lưỡng' },
+  { number: '8', label: 'Buổi học với 50% thời lượng lab thực hành' },
   { number: '5+', label: 'Mentor kinh nghiệm' },
 ]
 
@@ -104,72 +103,69 @@ const highlights = [
     description: 'Tập trung 100% vào việc pass AWS Cloud Practitioner exam',
   },
   {
-    icon: <FaChartLine className="text-2xl text-purple-500" />,
-    title: '🚀 Career Booster',
-    description: 'Mở ra career path mới với mức lương cạnh tranh trên thị trường',
+    icon: <FaDollarSign className="text-2xl text-green-500" />,
+    title: '💰 Voucher 50%',
+    description: 'Nhận voucher 50% lệ phí thi AWS Cloud Practitioner sau khóa học',
   },
 ]
 
 // Learning outcomes
 const learningOutcomes = [
   'Hiểu rõ cloud computing concepts và AWS ecosystem',
-  'Nắm vững 4 domains chính của Cloud Practitioner exam',
-  'Làm thực tế với 20+ AWS core services',
-  'Master AWS pricing models và cost optimization',
-  'Hiểu AWS security và compliance frameworks',
-  'Có khả năng tư vấn AWS solutions cho businesses',
-  'Pass AWS Cloud Practitioner exam với confidence',
-  'Ready cho next-level AWS certifications',
+  'Nắm vững 4 domains chính của Cloud Practitioner exam (CLF-C02)',
+  'Thực hành hands-on với 20+ AWS core services (50% thời lượng lab)',
+  'Hiểu AWS security và compliance frameworks (Shared Responsibility Model)',
+  'Pass AWS Cloud Practitioner exam với confidence cao',
+  'Sẵn sàng cho khoá học nâng cao AWS certifications (SAA, DVA, AIF, v.v.)',
+  'Nhận voucher 50% lệ phí thi sau khóa học',
 ]
 
 // Curriculum overview
 const curriculum = [
   {
     week: 'Tuần 1',
-    title: 'Cloud Computing Foundation',
+    title: 'Cloud Computing Foundation & Core Services',
     topics: [
-      'Cloud vs On-premises',
-      'IaaS, PaaS, SaaS',
+      'Cloud vs On-premises concepts',
+      'IaaS, PaaS, SaaS models',
       'AWS Global Infrastructure and Reliability',
-      'Compute in the Cloud',
-      'AWS Console hands-on',
+      'Compute services (EC2, Lambda)',
+      'Storage services (S3, EBS)',
+      'Hands-on labs với AWS Console',
     ],
   },
   {
     week: 'Tuần 2',
-    title: 'Core AWS Services',
+    title: 'Networking & Database Services',
     topics: [
-      'Networking',
-      'Storage & Database',
-      'RDS, DynamoDB intro',
-      'Lambda serverless',
-      'Hands-on labs',
+      'VPC và networking fundamentals',
+      'Database services (RDS, DynamoDB)',
+      'Security groups và NACLs',
+      'Load balancing với ALB/ELB',
+      'Hands-on labs với networking',
     ],
   },
   {
     week: 'Tuần 3',
-    title: 'Security & Compliance',
+    title: 'Security, Compliance & Monitoring',
     topics: [
       'Shared Responsibility Model',
-      'IAM deep dive',
+      'IAM deep dive và best practices',
       'Encryption & KMS',
-      'Security best practices',
+      'CloudWatch monitoring',
+      'Security best practices lab',
     ],
   },
   {
     week: 'Tuần 4',
-    title: 'Monitoring & Pricing',
-    topics: ['Monitoring and Analytics', 'Cost management tools', 'Pricing Models', 'Support Plan'],
-  },
-  {
-    week: 'Tuần 5',
-    title: 'Migration & Innovation',
-    topics: ['Migration and Innovation', 'Exam strategies', 'Mock exams 1'],
-  },
-  {
-    week: 'Tuần 6',
-    title: 'Exam Preparation',
-    topics: ['Mock exams 2'],
+    title: 'Pricing, Migration & Exam Preparation',
+    topics: [
+      'AWS pricing models và cost optimization',
+      'Migration strategies và innovation',
+      'Support plans và billing',
+      'Mock exams và exam strategies',
+      'Review toàn bộ khóa học',
+    ],
   },
 ]
 
@@ -248,7 +244,7 @@ export default function CourseSpecial({ frontMatter, mentorDetails }) {
                   style={{ color: '#FF9900' }}
                 />
                 <span>
-                  <b>Thực chiến:</b> 35%+ thời lượng là Lab & Use Case trên tài khoản AWS.
+                  <b>Thực chiến:</b> 50% thời lượng là Lab & Use Case trên tài khoản AWS.
                 </span>
               </div>
               <div className="flex items-start">
@@ -257,7 +253,8 @@ export default function CourseSpecial({ frontMatter, mentorDetails }) {
                   style={{ color: '#FF9900' }}
                 />
                 <span>
-                  <b>Cộng đồng:</b> Hỗ trợ 1-1 và tham gia cộng đồng 3000+ thành viên.
+                  <b>Ưu đãi đặc biệt:</b> Nhận voucher 50% lệ phí thi AWS Cloud Practitioner sau
+                  khóa học.
                 </span>
               </div>
             </div>
@@ -570,37 +567,71 @@ export default function CourseSpecial({ frontMatter, mentorDetails }) {
           <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
             <div className="rounded-xl bg-white p-8 shadow-lg dark:bg-gray-800">
               <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-blue-100 dark:bg-blue-900">
-                <FaClock className="h-8 w-8 text-blue-600 dark:text-blue-400" />
+                <FaRocket className="h-8 w-8 text-blue-600 dark:text-blue-400" />
               </div>
-              <h3 className="mb-4 text-xl font-bold text-gray-900 dark:text-gray-100">TRỌN ĐỜI</h3>
+              <h3 className="mb-4 text-xl font-bold text-gray-900 dark:text-gray-100">
+                LAB THỰC HÀNH 50%
+              </h3>
               <p className="text-gray-600 dark:text-gray-300">
-                Truy cập vào hệ thống thư viện nội bộ của VNTechies, tài liệu khóa học và video
-                record
+                50% thời lượng khóa học là lab thực hành trực tiếp trên AWS Console với tài khoản
+                thật
               </p>
             </div>
 
             <div className="rounded-xl bg-white p-8 shadow-lg dark:bg-gray-800">
               <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-green-100 dark:bg-green-900">
-                <FaUsers className="h-8 w-8 text-green-600 dark:text-green-400" />
+                <FaDollarSign className="h-8 w-8 text-green-600 dark:text-green-400" />
               </div>
               <h3 className="mb-4 text-xl font-bold text-gray-900 dark:text-gray-100">
-                Cộng đồng hỗ trợ học viên
+                VOUCHER 50% LỆ PHÍ THI
+              </h3>
+              <p className="text-gray-600 dark:text-gray-300">
+                Nhận voucher 50% lệ phí thi chứng chỉ AWS Cloud Practitioner sau khi hoàn thành khóa
+                học
+              </p>
+            </div>
+
+            <div className="rounded-xl bg-white p-8 shadow-lg dark:bg-gray-800">
+              <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-purple-100 dark:bg-purple-900">
+                <FaClock className="h-8 w-8 text-purple-600 dark:text-purple-400" />
+              </div>
+              <h3 className="mb-4 text-xl font-bold text-gray-900 dark:text-gray-100">
+                TRUY CẬP TRỌN ĐỜI
               </h3>
               <div className="space-y-3 text-sm text-gray-600 dark:text-gray-300">
                 <div className="flex items-start space-x-2">
-                  <FaCheckCircle className="mt-1 h-4 w-4 text-green-500" />
+                  <FaCheckCircle className="mt-1 h-4 w-4 text-purple-500" />
+                  <span>Tài liệu khóa học và video record trọn đời</span>
+                </div>
+                <div className="flex items-start space-x-2">
+                  <FaCheckCircle className="mt-1 h-4 w-4 text-purple-500" />
+                  <span>Cập nhật kiến thức mới nhất từ AWS</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="rounded-xl bg-white p-8 shadow-lg dark:bg-gray-800">
+              <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-yellow-100 dark:bg-yellow-900">
+                <FaUsers className="h-8 w-8 text-yellow-600 dark:text-yellow-400" />
+              </div>
+              <h3 className="mb-4 text-xl font-bold text-gray-900 dark:text-gray-100">
+                CỘNG ĐỒNG HỖ TRỢ
+              </h3>
+              <div className="space-y-3 text-sm text-gray-600 dark:text-gray-300">
+                <div className="flex items-start space-x-2">
+                  <FaCheckCircle className="mt-1 h-4 w-4 text-yellow-500" />
                   <span>
                     <strong>Career Center:</strong> Giới thiệu việc làm từ Mentor và cộng đồng
                   </span>
                 </div>
                 <div className="flex items-start space-x-2">
-                  <FaCheckCircle className="mt-1 h-4 w-4 text-green-500" />
+                  <FaCheckCircle className="mt-1 h-4 w-4 text-yellow-500" />
                   <span>
                     <strong>VNTechies Community:</strong> Kết nối và xây dựng network chuyên nghiệp
                   </span>
                 </div>
                 <div className="flex items-start space-x-2">
-                  <FaCheckCircle className="mt-1 h-4 w-4 text-green-500" />
+                  <FaCheckCircle className="mt-1 h-4 w-4 text-yellow-500" />
                   <span>
                     <strong>Cộng đồng Q&A:</strong> Hỏi đáp, tư vấn kiến thức và công việc 24/7
                   </span>
@@ -609,24 +640,47 @@ export default function CourseSpecial({ frontMatter, mentorDetails }) {
             </div>
 
             <div className="rounded-xl bg-white p-8 shadow-lg dark:bg-gray-800">
-              <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-purple-100 dark:bg-purple-900">
-                <FaAward className="h-8 w-8 text-purple-600 dark:text-purple-400" />
+              <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-red-100 dark:bg-red-900">
+                <FaAward className="h-8 w-8 text-red-600 dark:text-red-400" />
               </div>
               <h3 className="mb-4 text-xl font-bold text-gray-900 dark:text-gray-100">
-                Sự kiện độc quyền
+                SỰ KIỆN ĐỘC QUYỀN
               </h3>
               <div className="space-y-3 text-sm text-gray-600 dark:text-gray-300">
                 <div className="flex items-start space-x-2">
-                  <FaCheckCircle className="mt-1 h-4 w-4 text-purple-500" />
+                  <FaCheckCircle className="mt-1 h-4 w-4 text-red-500" />
                   <span>Miễn phí tham gia Master Class và Workshop</span>
                 </div>
                 <div className="flex items-start space-x-2">
-                  <FaCheckCircle className="mt-1 h-4 w-4 text-purple-500" />
+                  <FaCheckCircle className="mt-1 h-4 w-4 text-red-500" />
                   <span>Alumni's Support và Office Hour với chuyên gia</span>
                 </div>
                 <div className="flex items-start space-x-2">
-                  <FaCheckCircle className="mt-1 h-4 w-4 text-purple-500" />
+                  <FaCheckCircle className="mt-1 h-4 w-4 text-red-500" />
                   <span>Cập nhật trend và công nghệ mới nhất trong ngành</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="rounded-xl bg-white p-8 shadow-lg dark:bg-gray-800">
+              <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-indigo-100 dark:bg-indigo-900">
+                <FaChartLine className="h-8 w-8 text-indigo-600 dark:text-indigo-400" />
+              </div>
+              <h3 className="mb-4 text-xl font-bold text-gray-900 dark:text-gray-100">
+                HỖ TRỢ THI CHỨNG CHỈ
+              </h3>
+              <div className="space-y-3 text-sm text-gray-600 dark:text-gray-300">
+                <div className="flex items-start space-x-2">
+                  <FaCheckCircle className="mt-1 h-4 w-4 text-indigo-500" />
+                  <span>Mock exams và practice tests miễn phí</span>
+                </div>
+                <div className="flex items-start space-x-2">
+                  <FaCheckCircle className="mt-1 h-4 w-4 text-indigo-500" />
+                  <span>Hướng dẫn đăng ký thi và lịch thi</span>
+                </div>
+                <div className="flex items-start space-x-2">
+                  <FaCheckCircle className="mt-1 h-4 w-4 text-indigo-500" />
+                  <span>Review và feedback trước khi thi thật</span>
                 </div>
               </div>
             </div>
