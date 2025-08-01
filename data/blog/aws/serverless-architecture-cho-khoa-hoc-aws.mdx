@@ -1,0 +1,249 @@
+---
+title: '🚀 Xây dựng nền tảng đăng kí học tập với chi phí chưa đến 10 bát phở 🍜 với AWS Serverless'
+date: '2025-07-28'
+tags: ['aws', 'serverless', 'architecture', 'lambda', 'api-gateway', 'sqs', 'crm', 'education']
+draft: false
+authors: ['hungran']
+images: ['/static/images/ogps/aws-serverless.jpg']
+summary: '🔍 Khám phá kiến trúc serverless AWS được xây dựng cho nền tảng đăng ký khóa học VNTechies, từ API Gateway đến Lambda và SQS, tạo nền tảng học tập hoàn toàn trên cloud với chi phí tối thiểu'
+---
+
+Sau một thời gian dài im ắng, đội ngũ admin tại Vntechies hiện đang cố gắng mang lại những trải nghiệm tốt nhất cho cộng đồng DevOps & Cloud tại Việt Nam. Hôm nay bọn mình muốn chia sẻ với các bạn về một phần trong chiến dịch đem lại cho anh chị- **nền tảng học tập AWS hoàn toàn trên cloud**.
+
+Đây không chỉ là một bài viết kỹ thuật thông thường, mà là câu chuyện về cách mình và team anh trai IT tại VNTechies đang cố gắng tạo ra một **môi trường học tập thực tế** cho các bạn - nơi mà lý thuyết và thực hành được kết hợp một cách hoàn hảo.
+
+## 🎯 TL;DR
+
+## 🤔 Tại sao chúng ta cần Serverless Architecture?
+
+![AWS](/static/images/ogps/aws-serverless.jpg)
+
+### ⚠️ Vấn đề
+
+Ban đầu hệ thống đăng ký khóa học của VNTechies chỉ đơn giản là dùng Google Sheets làm backend. Nó không tệ vì nó đơn giản và dễ sử dụng, nhưng khi số lượng anh chị em quan tâm tăng lên, mình nhận ra có những hạn chế rất lớn:
+
+- **📈 Không có khả năng mở rộng**: Khi số lượng học viên tăng, khó có khả năng mở rộng và tuỳ biến
+- **🔒 Thiếu tính bảo mật**: Dữ liệu nhạy cảm của các bạn không được mã hóa đúng cách
+- **📊 Không có monitoring**: Bọn mình không biết được hệ thống có hoạt động tốt không
+- **🔗 Không thể tích hợp**: Khó kết nối với các hệ thống CRM chuyên nghiệp
+
+### ✅ Giải pháp Serverless
+
+Vậy là mình và team quyết định xây dựng một kiến trúc serverless hoàn toàn trên Cloud và đặc biệt là AWS.
+
+## 🏗️ Kiến trúc Serverless hoàn chỉnh
+
+### 📊 Tổng quan Kiến trúc
+
+| Thành phần           | Dịch vụ                                                             | Mục đích             | Tính năng                                     |
+| -------------------- | ------------------------------------------------------------------- | -------------------- | --------------------------------------------- |
+| 🌐 **Frontend**      | Nextjs Cũng là Cloud nhưng mà màu Cam 😅                            | Giao diện người dùng | 📱 Responsive, 📝 Form đăng ký, ✅ Validation |
+| 🚪 **API Gateway**   | AWS API Gateway                                                     | Cổng vào hệ thống    | 🛡️ Rate Limiting, 🔐 Xác thực, 📊 Ghi log     |
+| 📬 **Message Queue** | AWS SQS                                                             | Bộ đệm tin nhắn      | 💾 Lưu trữ an toàn, 🔄 Tự động scale          |
+| ⚡ **Xử lý**         | AWS Lambda                                                          | Logic nghiệp vụ      | 🧠 Serverless, 📧 Gửi email, 🔗 Tích hợp CRM  |
+| 🏢 **CRM System**    | 3rd Party CRM - Cũng là Cloud nhưng cho bọn mình giữ làm bí mật nha | Quản lý khách hàng   | 👥 Tạo lead, 📊 Quản lý dữ liệu               |
+
+![Serverless Architecture for AWS Courses](/static/images/ogps/vntechies-registration-white-background.png)
+
+### 🔄 Luồng xử lý dữ liệu
+
+1. **📝 Nhập liệu** → Người dùng điền form đăng ký trên Next.js
+2. **🛡️ Kiểm tra** → API Gateway validate và giới hạn tốc độ request
+3. **💾 Lưu trữ** → SQS lưu tin nhắn an toàn với mã hóa
+4. **🧠 Xử lý** → Lambda xử lý logic nghiệp vụ và tích hợp CRM
+5. **📊 Tạo lead** → Hệ thống CRM tạo và quản lý leads
+
+### 🎯 Lợi ích chính
+
+- **🛡️ Bảo mật**: Rate limiting, mã hóa, IAM roles
+- **📈 Khả năng mở rộng**: Tự động scale theo nhu cầu
+- **💰 Tiết kiệm chi phí**: Chỉ trả tiền khi sử dụng
+- **🔄 Độ tin cậy**: Dead letter queues, cơ chế retry
+- **📊 Giám sát**: CloudWatch logs và metrics
+
+Rồi sau đây chúng ta đi vào chi tiết hơn nhé.
+
+### 1. 🚪 API Gateway - Cổng vào của hệ thống
+
+API Gateway đóng vai trò là **cổng vào duy nhất** cho tất cả các request đăng ký khóa học:
+
+```
+# Rate Limiting Configuration
+ThrottlingBurstLimit: 5
+ThrottlingRateLimit: 5
+```
+
+**🛡️ Tại sao cần Rate Limiting?**
+
+- 🛡️ Bảo vệ hệ thống khỏi spam và tấn công
+- ⚖️ Đảm bảo tài nguyên được phân bổ công bằng
+- 💰 Giảm chi phí vận hành
+
+### 2. 📬 SQS Queue - Xử lý bất đồng bộ
+
+SQS (Simple Queue Service) đóng vai trò quan trọng trong việc **decoupling** các thành phần:
+
+```
+// Gửi message đến SQS
+const sqsParams = {
+  QueueUrl: process.env.COURSE_REGISTRATION_QUEUE_URL,
+  MessageBody: JSON.stringify(registrationData),
+  MessageAttributes: {
+    source: { DataType: 'String', StringValue: 'website' },
+    course: { DataType: 'String', StringValue: course }
+  }
+}
+```
+
+**🎯 Lợi ích của SQS:**
+
+- **🛡️ Reliability**: Message được lưu trữ an toàn
+- **📈 Scalability**: Tự động scale theo tải
+- **🔄 Fault Tolerance**: Dead Letter Queue cho failed messages
+
+### 3. ⚡ Lambda Function - Xử lý business logic
+
+Lambda function xử lý việc tạo lead trong CRM:
+
+```
+// Authenticate với crm
+const sessionId = await authenticateWithCRM()
+
+// Tạo CRM lead
+const leadId = await createCRMLead(sessionId, registrationData)
+```
+
+**🤔 Tại sao chọn Lambda?**
+
+- **☁️ Serverless**: Không cần quản lý server
+- **📈 Auto-scaling**: Tự động scale theo demand
+- **💰 Cost-effective**: Chỉ trả tiền khi sử dụng
+
+## 🔄 Dual Submission System
+
+Để đảm bảo độ tin cậy, chúng ta implement **dual submission system**:
+
+```
+// Gửi đến cả hai hệ thống
+const [serverlessResponse, googleResponse] = await Promise.allSettled([
+  serverlessPromise,  // AWS Serverless
+  googlePromise       // Google Apps Script
+])
+```
+
+**🎯 Lợi ích:**
+
+- **🔄 Redundancy**: Dữ liệu được lưu ở hai nơi
+- **🛡️ Reliability**: Nếu một hệ thống fail, hệ thống khác vẫn hoạt động
+- **💾 Backup**: Google Sheets làm backup cho 3rd Party CRM
+
+## 🏗️ Infrastructure as Code với SAM
+
+Toàn bộ infrastructure được định nghĩa bằng code:
+
+```
+# SAM Template
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+
+Resources:
+  CourseRegistrationQueue:
+    Type: AWS::SQS::Queue
+    Properties:
+      QueueName: course-registration-queue
+      VisibilityTimeout: 60
+      RedrivePolicy:
+        deadLetterTargetArn: !GetAtt CourseRegistrationDLQ.Arn
+        maxReceiveCount: 3
+```
+
+**🎯 Lợi ích của IaC:**
+
+- **📝 Version Control**: Infrastructure được track trong Git
+- **🔄 Reproducibility**: Có thể deploy lại chính xác
+- **👥 Collaboration**: Team có thể review và contribute
+
+## 📊 Monitoring và Observability
+
+### 📈 CloudWatch Metrics
+
+Chúng ta monitor các metrics quan trọng:
+
+- **🚪 API Gateway**: Request count, latency, error rate
+- **📬 SQS**: Message count, age, DLQ metrics
+- **⚡ Lambda**: Invocation count, duration, error rate
+
+### 📝 Logging Strategy
+
+```
+// Structured logging
+console.log('Processing registration:', {
+  messageId: record.messageId,
+  course: registrationData.course,
+  timestamp: new Date().toISOString()
+})
+```
+
+## 🔒 Security Best Practices
+
+### 1. 🔐 IAM Roles với Least Privilege
+
+```
+Policies:
+  - Version: '2012-10-17'
+    Statement:
+      - Effect: Allow
+        Action:
+          - sqs:SendMessage
+        Resource: !GetAtt CourseRegistrationQueue.Arn
+```
+
+### 2. 🔧 Environment Variables
+
+```
+Environment:
+  Variables:
+    VNTECHIES_KEY: TUYETVOI
+    ...
+```
+
+### 3. 🛡️ Rate Limiting
+
+```
+MethodSettings:
+  - ResourcePath: "/*"
+    HttpMethod: "*"
+    ThrottlingBurstLimit: 5
+    ThrottlingRateLimit: 5
+```
+
+## 💰 Chi phí và Optimization
+
+### 💵 Cost Breakdown
+
+| Service        | Monthly Cost (estimated)                                       |
+| -------------- | -------------------------------------------------------------- |
+| 🚪 API Gateway | $1-5                                                           |
+| ⚡ Lambda      | $0.50-2                                                        |
+| 📬 SQS         | $0.40-1                                                        |
+| 📊 CloudWatch  | $1-3                                                           |
+| **💰 Total**   | **$3-11** tương đương chưa đến 500k VND tại thời điểm hiện tại |
+
+## 🎯 Kết luận
+
+Thông qua việc sử dụng các AWS services trong thực tế, bọn mình mong muốn các bạn sẽ:
+
+1. **🧠 Hiểu sâu** về các AWS services - không chỉ là lý thuyết
+2. **🛠️ Thực hành** với real-world scenarios - như trong công việc thực tế
+3. **📚 Học** best practices và security - từ những gì bọn đã trải nghiệm
+
+**Hẹn gặp lại anh chị em trong các bài viết tiếp theo!**
+
+---
+
+**Tài liệu tham khảo:**
+
+- [AWS Serverless Application Model (SAM)](https://docs.aws.amazon.com/serverless-application-model/)
+- [API Gateway Rate Limiting](https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-request-throttling.html)
+- [SQS Best Practices](https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-best-practices.html)
+- [Lambda Error Handling](https://docs.aws.amazon.com/lambda/latest/dg/error-handling.html)
