@@ -78,7 +78,7 @@ const courseInfo = {
   duration: '4 tuần (8 buổi, 16h)',
   location: 'Online qua Zoom',
   price: '5.000.000 VNĐ',
-  earlyBird: '1.199.000 VNĐ (giảm 20% - chỉ 50 suất đầu)',
+  earlyBird: '1.199.000 VNĐ (chỉ 50 suất đầu)',
   registrationLink: 'https://m.me/vntechies',
 }
 
