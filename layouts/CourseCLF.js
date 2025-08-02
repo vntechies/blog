@@ -114,12 +114,13 @@ const highlights = [
 
 // Learning outcomes - Aligned with AWS Academy Cloud Foundations
 const learningOutcomes = [
-  'Hiểu rõ cloud computing fundamentals và AWS Well-Architected Framework',
-  'Nắm vững AWS pricing models và cost optimization strategies',
-  'Thực hành hands-on với AWS Global Infrastructure và core services',
-  'Pass AWS Cloud Practitioner exam với confidence cao',
-  'Sẵn sàng cho khoá học nâng cao AWS certifications (SAA, DVA, AIF, v.v.)',
-  'Nhận voucher 50% lệ phí thi sau khóa học',
+  'Hiểu rõ các khái niệm về điện toán đám mây và hệ sinh thái AWS',
+  'Nắm vững 4 domains chính của kỳ thi Cloud Practitioner (CLF - C02)',
+  'Thực hành trực tiếp với hơn 20 dịch vụ cốt lõi của AWS (50% thời lượng là lab thực hành)',
+  'Hiểu về bảo mật và tuân thủ trên AWS',
+  'Vượt qua kỳ thi AWS Cloud Practitioner với mức độ tự tin cao',
+  'Sẵn sàng cho các khóa học chứng chỉ AWS nâng cao (SAA, DVA, AIF, v.v.)',
+  'Nhận voucher giảm 50% lệ phí thi sau khóa học',
 ]
 
 // Curriculum overview - 8 buổi học gộp từ 10 modules
