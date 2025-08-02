@@ -2,6 +2,8 @@ import fs from 'fs'
 import generateRss from '@/lib/generate-rss'
 import { MDXLayoutRenderer } from '@/components/MDXComponents'
 import { formatSlug, getAllFilesFrontMatter, getFileBySlug, getFiles } from '@/lib/mdx'
+import { CourseSEO } from '@/components/SEO'
+import siteMetadata from '@/data/siteMetadata'
 import path from 'path'
 
 const DEFAULT_LAYOUT = 'CourseSimple'
@@ -83,18 +85,41 @@ export default function Course({
   next,
 }) {
   const { mdxSource, toc, frontMatter } = post
+  const { title, summary, date, lastmod, images, slug, index, price, startDate, duration } =
+    frontMatter
+
+  // Generate proper SEO data
+  const courseUrl = `${siteMetadata.siteUrl}/courses/${slug}`
+  const courseImages = images && images.length > 0 ? images : [siteMetadata.socialBanner]
+  const courseDescription = summary || `${title} - Khóa học tại VNTechies`
+  const courseTitle = `${title} | VNTechies`
+
   return (
-    <MDXLayoutRenderer
-      layout={frontMatter.layout || DEFAULT_LAYOUT}
-      toc={toc}
-      mdxSource={mdxSource}
-      frontMatter={frontMatter}
-      authorDetails={authorDetails}
-      mentorDetails={mentorDetails}
-      posts={posts}
-      otherCourses={otherCourses}
-      prev={prev}
-      next={next}
-    />
+    <>
+      <CourseSEO
+        title={courseTitle}
+        summary={courseDescription}
+        date={startDate || date}
+        lastmod={lastmod}
+        url={courseUrl}
+        images={courseImages}
+        courseItems={index === 0 ? posts : null}
+        canonicalUrl={courseUrl}
+        price={price}
+        duration={duration}
+      />
+      <MDXLayoutRenderer
+        layout={frontMatter.layout || DEFAULT_LAYOUT}
+        toc={toc}
+        mdxSource={mdxSource}
+        frontMatter={frontMatter}
+        authorDetails={authorDetails}
+        mentorDetails={mentorDetails}
+        posts={posts}
+        otherCourses={otherCourses}
+        prev={prev}
+        next={next}
+      />
+    </>
   )
 }

@@ -11,6 +11,7 @@ import {
   FaLaptopCode,
   FaCertificate,
   FaRocket,
+  FaDollarSign,
 } from 'react-icons/fa'
 import Link from 'next/link'
 import CourseRegistrationForm from '../components/CourseRegistrationForm'
@@ -188,6 +189,18 @@ export default function CourseSpecial({ frontMatter, mentorDetails }) {
                       Tham gia cộng đồng AI 3000+ thành viên
                     </span>
                   </div>
+                  <div className="flex items-start gap-3 rounded-lg bg-pink-500/20 p-3">
+                    <FaCheckCircle className="mt-1 h-5 w-5 flex-shrink-0 text-pink-400" />
+                    <span className="text-sm font-semibold leading-relaxed text-pink-100">
+                      Giảm 50% phí thi chứng chỉ AWS (tiết kiệm 50$)
+                    </span>
+                  </div>
+                  <div className="flex items-start gap-3 rounded-lg bg-purple-400/20 p-3">
+                    <FaCheckCircle className="mt-1 h-5 w-5 flex-shrink-0 text-purple-300" />
+                    <span className="text-sm font-semibold leading-relaxed text-purple-100">
+                      Tài khoản lab miễn phí cho tất cả modules
+                    </span>
+                  </div>
                 </div>
               </div>
 
@@ -328,8 +341,8 @@ export default function CourseSpecial({ frontMatter, mentorDetails }) {
             </div>
           </div>
 
-          {/* 3 Key Differentiators */}
-          <div className="grid gap-8 md:grid-cols-3">
+          {/* 4 Key Differentiators */}
+          <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
             <div className="rounded-xl bg-gray-50 p-8 shadow-sm dark:bg-gray-800">
               <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-purple-100 dark:bg-purple-900">
                 <FaUserTie className="h-8 w-8 text-purple-600 dark:text-purple-400" />
@@ -367,6 +380,37 @@ export default function CourseSpecial({ frontMatter, mentorDetails }) {
                 Tham gia cộng đồng VNTechies với hàng ngàn thành viên, cơ hội việc làm và kết nối
                 với các chuyên gia hàng đầu.
               </p>
+            </div>
+
+            <div className="rounded-xl border-2 border-pink-200 bg-gradient-to-br from-pink-50 to-purple-50 p-8 shadow-lg dark:border-pink-800 dark:from-pink-900/20 dark:to-purple-900/20">
+              <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-r from-pink-500 to-purple-500">
+                <span className="text-2xl">💰</span>
+              </div>
+              <h3 className="mb-4 text-xl font-bold text-gray-900 dark:text-gray-100">
+                Tiết kiệm chi phí đáng kể
+              </h3>
+              <div className="space-y-2 text-gray-600 dark:text-gray-300">
+                <div className="flex items-center gap-2">
+                  <span className="text-pink-500">•</span>
+                  <span className="text-sm">
+                    Giảm 50% phí thi: <strong>50 USD</strong>
+                  </span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="text-purple-500">•</span>
+                  <span className="text-sm">
+                    Lab miễn phí: <strong>100 USD</strong>
+                  </span>
+                </div>
+                <div className="mt-3 rounded-lg bg-gradient-to-r from-pink-100 to-purple-100 p-3 dark:from-pink-900/30 dark:to-purple-900/30">
+                  <div className="text-center font-bold text-gray-900 dark:text-gray-100">
+                    Tổng: 150 USD
+                  </div>
+                  <div className="text-center text-sm text-gray-600 dark:text-gray-400">
+                    ≈ 3.750.000 VNĐ
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -1009,10 +1053,9 @@ export default function CourseSpecial({ frontMatter, mentorDetails }) {
             </div>
           </div>
 
-          <div className="mt-12 text-center">
+          <div className="mt-12 space-y-4 text-center">
             <p className="text-lg text-gray-600 dark:text-gray-300">
-              💰 <strong>ROI dự kiến:</strong> Tăng productivity và cơ hội nghề nghiệp mới. 1 tháng
-              lương mang lại giá trị mang suốt đời
+              💰 <strong>ROI dự kiến:</strong> Tăng productivity và cơ hội nghề nghiệp mới
             </p>
           </div>
         </div>
@@ -1144,18 +1187,29 @@ export default function CourseSpecial({ frontMatter, mentorDetails }) {
             Đăng ký ngay để nhận ưu đãi Early Bird và bộ tài liệu luyện thi đầy đủ!
           </p>
 
-          <div className="mb-8 flex flex-wrap justify-center gap-4">
-            <div className="rounded-full bg-white/20 px-4 py-2 text-sm font-medium backdrop-blur">
-              ✓ Hands-on AI/ML
+          <div className="mb-8 space-y-4">
+            <div className="flex flex-wrap justify-center gap-4">
+              <div className="rounded-full bg-white/20 px-4 py-2 text-sm font-medium backdrop-blur">
+                ✓ Hands-on AI/ML
+              </div>
+              <div className="rounded-full bg-white/20 px-4 py-2 text-sm font-medium backdrop-blur">
+                ✓ 100% tỷ lệ pass
+              </div>
+              <div className="rounded-full bg-white/20 px-4 py-2 text-sm font-medium backdrop-blur">
+                ✓ Mentor MNC
+              </div>
+              <div className="rounded-full bg-white/20 px-4 py-2 text-sm font-medium backdrop-blur">
+                ✓ Cam kết đồng hành
+              </div>
             </div>
-            <div className="rounded-full bg-white/20 px-4 py-2 text-sm font-medium backdrop-blur">
-              ✓ 100% tỷ lệ pass
-            </div>
-            <div className="rounded-full bg-white/20 px-4 py-2 text-sm font-medium backdrop-blur">
-              ✓ Mentor MNC
-            </div>
-            <div className="rounded-full bg-white/20 px-4 py-2 text-sm font-medium backdrop-blur">
-              ✓ Cam kết đồng hành
+
+            <div className="flex flex-wrap justify-center gap-4">
+              <div className="rounded-full bg-pink-400/90 px-6 py-3 text-sm font-bold text-white shadow-lg">
+                💰 Giảm 50% phí thi (50 USD)
+              </div>
+              <div className="rounded-full bg-purple-400/90 px-6 py-3 text-sm font-bold text-white shadow-lg">
+                🎁 Lab miễn phí (100 USD)
+              </div>
             </div>
           </div>
 

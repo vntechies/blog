@@ -199,6 +199,8 @@ export const CourseSEO = ({
   canonicalUrl,
   images = [],
   showCanonical,
+  price,
+  duration,
 }) => {
   const router = useRouter()
   const publishedAt = new Date(date).toISOString()
@@ -250,6 +252,10 @@ export const CourseSEO = ({
       itemListElement: items,
     }
   } else {
+    // Parse price from Vietnamese format (e.g., "8.000.000 VNĐ" -> "8000000")
+    const parsedPrice = price ? price.replace(/[^0-9]/g, '') || '0' : '0'
+    const currency = price && price.includes('VNĐ') ? 'VND' : 'USD'
+
     structuredData = {
       '@context': 'https://schema.org',
       '@type': 'Course',
@@ -259,28 +265,41 @@ export const CourseSEO = ({
       },
       name: title,
       description: summary,
-      provider: provider,
-      hasCourseInstance: [
-        {
-          '@type': 'CourseInstance',
-          courseMode: 'online',
-          startDate: date ? new Date(date).toISOString() : undefined,
-          endDate: lastmod ? new Date(lastmod).toISOString() : undefined,
-          url: url,
+      provider: {
+        '@type': 'Organization',
+        name: 'VNTechies',
+        url: 'https://vntechies.dev',
+        logo: {
+          '@type': 'ImageObject',
+          url: `${siteMetadata.siteUrl}${siteMetadata.siteLogo}`,
         },
-      ],
-      offers: [
-        {
-          '@type': 'Offer',
-          url: url,
-          price: '0',
-          priceCurrency: 'USD',
-          availability: 'https://schema.org/InStock',
+      },
+      hasCourseInstance: {
+        '@type': 'CourseInstance',
+        courseMode: 'online',
+        startDate: date
+          ? new Date(date).toISOString().split('T')[0]
+          : new Date().toISOString().split('T')[0],
+        location: 'Vietnam',
+        instructor: {
+          '@type': 'Organization',
+          name: 'VNTechies',
         },
-      ],
+      },
+      offers: {
+        '@type': 'Offer',
+        url: url,
+        price: parsedPrice,
+        priceCurrency: currency,
+        availability: 'https://schema.org/InStock',
+        validFrom: new Date().toISOString().split('T')[0],
+      },
+      ...(duration && { timeRequired: duration }),
+      ...(featuredImages.length > 0 && { image: featuredImages[0].url }),
     }
   }
   const twImageUrl = featuredImages[0].url
+  const ogImageUrl = featuredImages[0].url
 
   return (
     <>
@@ -288,7 +307,7 @@ export const CourseSEO = ({
         title={title}
         description={summary}
         ogType="course"
-        ogImage={featuredImages}
+        ogImage={ogImageUrl}
         twImage={twImageUrl}
         canonicalUrl={canonicalUrl}
         showCanonical={showCanonical}

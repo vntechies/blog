@@ -1,7 +1,5 @@
 import Link from '@/components/Link'
 import SectionContainer from '@/components/SectionContainer'
-import { CourseSEO } from '@/components/SEO'
-import siteMetadata from '@/data/siteMetadata'
 import Comments from '@/components/comments'
 import ScrollTopAndComment from '@/components/ScrollTopAndComment'
 import Image from '@/components/Image'
@@ -24,14 +22,6 @@ export default function CourseSimple({
 
   return (
     <SectionContainer>
-      {index === 0 && (
-        <CourseSEO
-          courseItems={posts}
-          url={`${siteMetadata.siteUrl}/courses/${slug}`}
-          {...frontMatter}
-          showCanonical={false}
-        />
-      )}
       <ScrollTopAndComment />
       <article>
         <div className="xl:divide-y xl:divide-gray-200 xl:dark:divide-gray-700">
