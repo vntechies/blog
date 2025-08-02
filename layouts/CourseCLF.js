@@ -78,10 +78,10 @@ const courseInfo = {
   subtitle: 'Bước đầu tiên vào thế giới Cloud Computing - Từ Zero đến AWS Certified',
   image: '/static/images/courses/awsclfc02Info.png',
   startDate: '19/08/2025',
-  duration: '10 modules (20 giờ, 1,200 phút)',
+  duration: '8 buổi học (16 giờ)',
   location: 'Online qua Zoom',
   price: '5.000.000 VNĐ',
-  earlyBird: '1.199.000 VNĐ (chỉ 50 suất đầu)',
+  earlyBird: '1.199.000 VNĐ',
   registrationLink: 'https://m.me/vntechies',
 }
 
@@ -89,7 +89,7 @@ const courseInfo = {
 const stats = [
   { number: '100+', label: 'Học viên đã tham gia' },
   { number: '99%', label: 'Tỷ lệ pass chứng chỉ' },
-  { number: '10', label: 'Modules theo chuẩn AWS Academy' },
+  { number: '10', label: 'Modules theo chuẩn giáo trình quốc tế' },
   { number: '585', label: 'Phút thực hành lab (49% thời lượng)' },
 ]
 
@@ -122,65 +122,48 @@ const learningOutcomes = [
   'Nhận voucher 50% lệ phí thi sau khóa học',
 ]
 
-// Curriculum overview - Aligned with AWS Academy Cloud Foundations
+// Curriculum overview - 8 buổi học gộp từ 10 modules
 const curriculum = [
   {
-    week: 'Module 1',
-    title: 'Cloud Concepts',
+    week: 'Buổi 1',
+    title: 'Cloud Concepts & Economics',
     topics: [
       'Introduction to cloud computing',
       'Advantages of the cloud',
       'Introduction to AWS',
       'Moving to the AWS Cloud',
-      'Activity: Sample Exam Question',
-      'Knowledge check',
-    ],
-  },
-  {
-    week: 'Module 2',
-    title: 'Cloud Economics and Billing',
-    topics: [
       'Fundamentals of pricing',
       'Total cost of ownership',
       'Activity: Simple Monthly Calculator',
-      'Delaware North case study',
       'AWS Organizations',
       'AWS billing and cost management',
-      'Billing dashboards',
       'Technical support models',
-    ],
-  },
-  {
-    week: 'Module 3',
-    title: 'AWS Global Infrastructure Overview',
-    topics: [
-      'AAWS global infrastructures',
-      'Demo: AWS global infrastructure',
-      'AWS services and service categories',
-      'Activity: AWS Management Console Clickthrough',
       'Activity: Sample Exam Question',
       'Knowledge check',
     ],
   },
   {
-    week: 'Module 4',
-    title: 'Cloud Security',
+    week: 'Buổi 2',
+    title: 'AWS Global Infrastructure & Security',
     topics: [
+      'AWS global infrastructures',
+      'Demo: AWS global infrastructure',
+      'AWS services and service categories',
+      'Activity: AWS Management Console Clickthrough',
       'AWS shared responsibility model',
       'Activity: AWS Shared Responsibility Model',
       'AWS IAM',
       'Demo: AWS IAM Console',
       'Securing a new AWS account',
       'Lab: Introduction to AWS IAM',
-      'Securing accounts',
-      'Securing data',
+      'Securing accounts & data',
       'Working to ensure compliance',
       'Activity: Sample Exam Question',
       'Knowledge check',
     ],
   },
   {
-    week: 'Module 5',
+    week: 'Buổi 3',
     title: 'Networking and Content Delivery',
     topics: [
       'Networking basics',
@@ -198,13 +181,11 @@ const curriculum = [
     ],
   },
   {
-    week: 'Module 6',
-    title: 'Compute',
+    week: 'Buổi 4',
+    title: 'Compute Services',
     topics: [
       'Compute services overview',
-      'Amazon EC2 part 1',
-      'Amazon EC2 part 2',
-      'Amazon EC2 part 3',
+      'Amazon EC2 part 1, 2, 3',
       'Demo: Amazon EC2',
       'Lab: Introduction to Amazon EC2',
       'Activity: Amazon EC2 Versus Managed Services',
@@ -214,11 +195,13 @@ const curriculum = [
       'Introduction to AWS Lambda',
       'Activity: AWS Lambda',
       'Introduction to AWS Elastic Beanstalk',
+      'Activity: Sample Exam Question',
+      'Knowledge check',
     ],
   },
   {
-    week: 'Module 7',
-    title: 'Storage',
+    week: 'Buổi 5',
+    title: 'Storage Services',
     topics: [
       'AWS EBS',
       'Demo: Amazon Elastic Block Store Console',
@@ -235,8 +218,8 @@ const curriculum = [
     ],
   },
   {
-    week: 'Module 8',
-    title: 'Databases',
+    week: 'Buổi 6',
+    title: 'Database Services',
     topics: [
       'Amazon RDS',
       'Demo: Amazon RDS Console',
@@ -251,8 +234,8 @@ const curriculum = [
     ],
   },
   {
-    week: 'Module 9',
-    title: 'Cloud Architecture',
+    week: 'Buổi 7',
+    title: 'Cloud Architecture & Well-Architected Framework',
     topics: [
       'AWS Well-Architected Framework design principles',
       'Activity: AWS Well-Architected Framework Design Principles',
@@ -269,8 +252,8 @@ const curriculum = [
     ],
   },
   {
-    week: 'Module 10',
-    title: 'Automatic Scaling and Monitoring',
+    week: 'Buổi 8',
+    title: 'Auto Scaling, Monitoring & Exam Prep',
     topics: [
       'Elastic Load Balancing',
       'Activity: Elastic Load Balancing',
@@ -278,6 +261,9 @@ const curriculum = [
       'Activity: Amazon CloudWatch',
       'Amazon EC2 auto scaling',
       'Lab: Scale & Load Balance your Architecture',
+      'Exam preparation & review',
+      'Mock exam practice',
+      'Final Q&A session',
       'Activity: Sample Exam Question',
       'Knowledge check',
     ],
@@ -359,7 +345,7 @@ export default function CourseSpecial({ frontMatter, mentorDetails }) {
                   style={{ color: '#FF9900' }}
                 />
                 <span>
-                  <b>Thực chiến:</b> 50% thời lượng là Lab & Use Case trên tài khoản AWS.
+                  <b>Thực chiến:</b> 50% thời lượng là Lab & miễn phí tài khoản thực hành.
                 </span>
               </div>
               <div className="flex items-start">
@@ -827,7 +813,7 @@ export default function CourseSpecial({ frontMatter, mentorDetails }) {
             🚀 Đừng Bỏ Lỡ Cơ Hội Thay Đổi Sự Nghiệp!
           </h2>
           <p className="mb-8 text-xl text-blue-100">
-            Chỉ còn 50 suất early bird với giá ưu đãi 20%. Đăng ký ngay để bắt đầu hành trình lên
+            Chỉ còn 50 suất early bird với giá ưu đãi 80%. Đăng ký ngay để bắt đầu hành trình lên
             mây của bạn!
           </p>
           <div className="flex flex-col justify-center gap-4 sm:flex-row">
@@ -840,8 +826,8 @@ export default function CourseSpecial({ frontMatter, mentorDetails }) {
             </a>
           </div>
           <p className="mt-4 text-sm text-blue-100">
-            💰 Giảm 50% lệ phí thi chứng chỉ | Thực hành trên tài khoản AWS | 📚 Tài liệu học tập
-            trọn đời
+            💰 Giảm 50% lệ phí thi chứng chỉ | Thực hành miễn phí trên tài khoản AWS | 📚 Tài liệu
+            học tập trọn đời
           </p>
         </div>
       </section>
