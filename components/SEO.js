@@ -299,6 +299,7 @@ export const CourseSEO = ({
     }
   }
   const twImageUrl = featuredImages[0].url
+  const ogImageUrl = featuredImages[0].url
 
   return (
     <>
@@ -306,7 +307,7 @@ export const CourseSEO = ({
         title={title}
         description={summary}
         ogType="course"
-        ogImage={featuredImages}
+        ogImage={ogImageUrl}
         twImage={twImageUrl}
         canonicalUrl={canonicalUrl}
         showCanonical={showCanonical}
