@@ -12,6 +12,9 @@ import {
   FaChartLine,
   FaLightbulb,
   FaCloud,
+  FaCode,
+  FaUserTie,
+  FaHandshake,
 } from 'react-icons/fa'
 import Link from 'next/link'
 import CourseRegistrationForm from '../components/CourseRegistrationForm'
@@ -75,22 +78,22 @@ const courseInfo = {
   subtitle: 'Bước đầu tiên vào thế giới Cloud Computing - Từ Zero đến AWS Certified',
   image: '/static/images/courses/awsclfc02Info.png',
   startDate: '19/08/2025',
-  duration: '4 tuần (8 buổi, 16h)',
+  duration: '10 modules (20 giờ, 1,200 phút)',
   location: 'Online qua Zoom',
   price: '5.000.000 VNĐ',
   earlyBird: '1.199.000 VNĐ (chỉ 50 suất đầu)',
   registrationLink: 'https://m.me/vntechies',
 }
 
-// Statistics data
+// Statistics data - Aligned with AWS Academy Cloud Foundations
 const stats = [
   { number: '100+', label: 'Học viên đã tham gia' },
   { number: '99%', label: 'Tỷ lệ pass chứng chỉ' },
-  { number: '8', label: 'Buổi học với 50% thời lượng lab thực hành' },
-  { number: '5+', label: 'Mentor kinh nghiệm' },
+  { number: '10', label: 'Modules theo chuẩn AWS Academy' },
+  { number: '585', label: 'Phút thực hành lab (49% thời lượng)' },
 ]
 
-// Course highlights
+// Course highlights - Aligned with AWS Academy Cloud Foundations
 const highlights = [
   {
     icon: <FaRocket className="text-2xl text-blue-500" />,
@@ -109,62 +112,174 @@ const highlights = [
   },
 ]
 
-// Learning outcomes
+// Learning outcomes - Aligned with AWS Academy Cloud Foundations
 const learningOutcomes = [
-  'Hiểu rõ cloud computing concepts và AWS ecosystem',
-  'Nắm vững 4 domains chính của Cloud Practitioner exam (CLF-C02)',
-  'Thực hành hands-on với 20+ AWS core services (50% thời lượng lab)',
-  'Hiểu AWS security và compliance frameworks (Shared Responsibility Model)',
+  'Hiểu rõ cloud computing fundamentals và AWS Well-Architected Framework',
+  'Nắm vững AWS pricing models và cost optimization strategies',
+  'Thực hành hands-on với AWS Global Infrastructure và core services',
   'Pass AWS Cloud Practitioner exam với confidence cao',
   'Sẵn sàng cho khoá học nâng cao AWS certifications (SAA, DVA, AIF, v.v.)',
   'Nhận voucher 50% lệ phí thi sau khóa học',
 ]
 
-// Curriculum overview
+// Curriculum overview - Aligned with AWS Academy Cloud Foundations
 const curriculum = [
   {
-    week: 'Tuần 1',
-    title: 'Cloud Computing Foundation & Core Services',
+    week: 'Module 1',
+    title: 'Cloud Concepts',
     topics: [
-      'Cloud vs On-premises concepts',
-      'IaaS, PaaS, SaaS models',
-      'AWS Global Infrastructure and Reliability',
-      'Compute services (EC2, Lambda)',
-      'Storage services (S3, EBS)',
-      'Hands-on labs với AWS Console',
+      'Introduction to cloud computing',
+      'Advantages of the cloud',
+      'Introduction to AWS',
+      'Moving to the AWS Cloud',
+      'Activity: Sample Exam Question',
+      'Knowledge check',
     ],
   },
   {
-    week: 'Tuần 2',
-    title: 'Networking & Database Services',
+    week: 'Module 2',
+    title: 'Cloud Economics and Billing',
     topics: [
-      'VPC và networking fundamentals',
-      'Database services (RDS, DynamoDB)',
-      'Security groups và NACLs',
-      'Load balancing với ALB/ELB',
-      'Hands-on labs với networking',
+      'Fundamentals of pricing',
+      'Total cost of ownership',
+      'Activity: Simple Monthly Calculator',
+      'Delaware North case study',
+      'AWS Organizations',
+      'AWS billing and cost management',
+      'Billing dashboards',
+      'Technical support models',
     ],
   },
   {
-    week: 'Tuần 3',
-    title: 'Security, Compliance & Monitoring',
+    week: 'Module 3',
+    title: 'AWS Global Infrastructure Overview',
     topics: [
-      'Shared Responsibility Model',
-      'IAM deep dive và best practices',
-      'Encryption & KMS',
-      'CloudWatch monitoring',
-      'Security best practices lab',
+      'AAWS global infrastructures',
+      'Demo: AWS global infrastructure',
+      'AWS services and service categories',
+      'Activity: AWS Management Console Clickthrough',
+      'Activity: Sample Exam Question',
+      'Knowledge check',
     ],
   },
   {
-    week: 'Tuần 4',
-    title: 'Pricing, Migration & Exam Preparation',
+    week: 'Module 4',
+    title: 'Cloud Security',
     topics: [
-      'AWS pricing models và cost optimization',
-      'Migration strategies và innovation',
-      'Support plans và billing',
-      'Mock exams và exam strategies',
-      'Review toàn bộ khóa học',
+      'AWS shared responsibility model',
+      'Activity: AWS Shared Responsibility Model',
+      'AWS IAM',
+      'Demo: AWS IAM Console',
+      'Securing a new AWS account',
+      'Lab: Introduction to AWS IAM',
+      'Securing accounts',
+      'Securing data',
+      'Working to ensure compliance',
+      'Activity: Sample Exam Question',
+      'Knowledge check',
+    ],
+  },
+  {
+    week: 'Module 5',
+    title: 'Networking and Content Delivery',
+    topics: [
+      'Networking basics',
+      'Amazon VPC',
+      'VPC networking',
+      'Activity: Label This diagram',
+      'Demo: Amazon VPC Console',
+      'VPC security',
+      'Activity: Design a VPC',
+      'Lab: Build a VPC and Launch a Web Server',
+      'Route 53',
+      'CloudFront',
+      'Activity: Sample Exam Question',
+      'Knowledge check',
+    ],
+  },
+  {
+    week: 'Module 6',
+    title: 'Compute',
+    topics: [
+      'Compute services overview',
+      'Amazon EC2 part 1',
+      'Amazon EC2 part 2',
+      'Amazon EC2 part 3',
+      'Demo: Amazon EC2',
+      'Lab: Introduction to Amazon EC2',
+      'Activity: Amazon EC2 Versus Managed Services',
+      'Demo: Amazon EC2 Part Console',
+      'Amazon EC2 cost optimization',
+      'Container services',
+      'Introduction to AWS Lambda',
+      'Activity: AWS Lambda',
+      'Introduction to AWS Elastic Beanstalk',
+    ],
+  },
+  {
+    week: 'Module 7',
+    title: 'Storage',
+    topics: [
+      'AWS EBS',
+      'Demo: Amazon Elastic Block Store Console',
+      'Lab: Working with EBS',
+      'AWS S3',
+      'Demo: AWS S3 Console',
+      'AWS EFS',
+      'Demo: AWS EFS Console',
+      'AWS S3 Glacier',
+      'Demo: AWS S3 Glacier Console',
+      'Activity: Storage Technology Selection',
+      'Activity: Sample Exam Question',
+      'Knowledge check',
+    ],
+  },
+  {
+    week: 'Module 8',
+    title: 'Databases',
+    topics: [
+      'Amazon RDS',
+      'Demo: Amazon RDS Console',
+      'Lab: Build a Database Server',
+      'Amazon DynamoDB',
+      'Demo: Amazon DynamoDB',
+      'Amazon Redshift',
+      'Amazon Aurora',
+      'Activity: Database case study',
+      'Activity: Sample Exam Question',
+      'Knowledge check',
+    ],
+  },
+  {
+    week: 'Module 9',
+    title: 'Cloud Architecture',
+    topics: [
+      'AWS Well-Architected Framework design principles',
+      'Activity: AWS Well-Architected Framework Design Principles',
+      'Operational excellence',
+      'Security',
+      'Reliability',
+      'Performance efficiency',
+      'Cost optimization',
+      'Reliability & high availability',
+      'AWS Trusted Advisor',
+      'Activity: Interpret AWS Trusted Advisor Recommendations',
+      'Activity: Sample Exam Question',
+      'Knowledge check',
+    ],
+  },
+  {
+    week: 'Module 10',
+    title: 'Automatic Scaling and Monitoring',
+    topics: [
+      'Elastic Load Balancing',
+      'Activity: Elastic Load Balancing',
+      'Amazon CloudWatch',
+      'Activity: Amazon CloudWatch',
+      'Amazon EC2 auto scaling',
+      'Lab: Scale & Load Balance your Architecture',
+      'Activity: Sample Exam Question',
+      'Knowledge check',
     ],
   },
 ]
@@ -280,6 +395,17 @@ export default function CourseSpecial({ frontMatter, mentorDetails }) {
               <FaRocket className="mr-2" />
               Đăng Ký Ngay - Chỉ {info.earlyBirdPrice}
             </a>
+            <div className="text-sm text-gray-600 dark:text-gray-400">
+              <span className="font-semibold">Tư vấn:</span>{' '}
+              <Link
+                href="https://m.me/vntechies"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-purple-500 hover:underline"
+              >
+                Messenger VNTechies
+              </Link>
+            </div>
           </div>
 
           {/* Right Image */}
@@ -307,16 +433,17 @@ export default function CourseSpecial({ frontMatter, mentorDetails }) {
       </section>
 
       {/* Course Highlights */}
-      <section className="bg-white py-16 px-4 dark:bg-gray-900">
-        <div className="mx-auto max-w-6xl">
+      <section className="py-22 bg-slate-100 dark:bg-gray-900">
+        <div className="rounded-2xl p-8 text-white dark:bg-slate-900">
           <h2 className="mb-12 text-center text-3xl font-bold text-gray-800 dark:text-white">
-            Tại Sao Chọn Khóa Học Của Chúng Tôi?
+            Tại Sao Chọn Học Cloud Practitioner Với{' '}
+            <span className="text-purple-600">VNTechies</span>?
           </h2>
           <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
             {highlights.map((highlight, index) => (
               <div
                 key={index}
-                className="rounded-lg border border-gray-200 p-6 text-center transition-shadow hover:shadow-lg dark:border-gray-800"
+                className="rounded-lg border border-gray-200 p-6 text-center transition-shadow hover:shadow-lg dark:border-gray-900"
               >
                 <div className="mb-4 flex justify-center">{highlight.icon}</div>
                 <h3 className="mb-2 text-xl font-semibold text-gray-900 dark:text-white">
@@ -328,7 +455,6 @@ export default function CourseSpecial({ frontMatter, mentorDetails }) {
           </div>
         </div>
       </section>
-
       {/* Course Information */}
       <section className="bg-gray-50 py-16 px-4 dark:bg-gray-900">
         <div className="mx-auto max-w-6xl">
@@ -401,8 +527,11 @@ export default function CourseSpecial({ frontMatter, mentorDetails }) {
           </h2>
           <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
             {curriculum.map((module, index) => (
-              <div key={index} className="rounded-lg bg-gray-50 p-6 dark:bg-gray-700">
-                <div className="mb-4 flex items-center">
+              <div
+                key={index}
+                className="rounded-lg bg-gray-50 p-6 shadow-lg transition hover:shadow-xl dark:bg-gray-700"
+              >
+                <div className="mb-4 flex items-center justify-between">
                   <span className="rounded-full bg-blue-600 px-3 py-1 text-sm font-semibold text-white">
                     {module.week}
                   </span>
