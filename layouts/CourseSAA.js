@@ -144,6 +144,32 @@ export default function CourseSpecial({ frontMatter, mentorDetails }) {
                 <span className="text-4xl lg:text-5xl">cùng chuyên gia</span>
               </h1>
 
+              {/* Special Offer Highlight */}
+              <div className="mb-8 rounded-2xl bg-gradient-to-r from-orange-600 to-red-600 p-6 text-white shadow-xl">
+                <div className="text-center">
+                  <div className="mb-4">
+                    <h3 className="text-lg mb-2 font-bold">🎁 Ưu đãi đặc biệt</h3>
+                  </div>
+                  <div className="space-y-3">
+                    <div className="flex flex-col items-center justify-center gap-2 rounded-lg bg-white/10 p-3">
+                      <div className="flex items-center gap-3">
+                        <FaCertificate className="h-5 w-5 flex-shrink-0 text-yellow-300" />
+                        <span className="text-sm font-medium">
+                          Voucher giảm 50% lệ phí thi chứng chỉ AWS SAA-C03
+                        </span>
+                      </div>
+                      <div className="text-xs font-semibold text-yellow-200">(Tiết kiệm $75)</div>
+                    </div>
+                    <div className="flex items-center justify-center gap-3 rounded-lg bg-white/10 p-3">
+                      <FaLaptopCode className="h-5 w-5 flex-shrink-0 text-yellow-300" />
+                      <span className="text-sm font-medium">
+                        Tài khoản AWS thực hành miễn phí toàn khóa học
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
               {/* Key Features */}
               <div className="mb-10 rounded-2xl bg-gradient-to-br from-slate-900 to-slate-800 p-8 text-white shadow-xl">
                 <div className="mb-6">
@@ -152,12 +178,6 @@ export default function CourseSpecial({ frontMatter, mentorDetails }) {
                   </h3>
                 </div>
                 <div className="grid gap-4 sm:grid-cols-2">
-                  <div className="flex items-start gap-3">
-                    <FaCheckCircle className="mt-1 h-5 w-5 flex-shrink-0 text-orange-500" />
-                    <span className="text-sm leading-relaxed">
-                      Giáo án và kho tài liệu độc quyền
-                    </span>
-                  </div>
                   <div className="flex items-start gap-3">
                     <FaCheckCircle className="mt-1 h-5 w-5 flex-shrink-0 text-orange-500" />
                     <span className="text-sm leading-relaxed">40% thời lượng thực hành lab</span>
@@ -184,6 +204,12 @@ export default function CourseSpecial({ frontMatter, mentorDetails }) {
                     <FaCheckCircle className="mt-1 h-5 w-5 flex-shrink-0 text-orange-500" />
                     <span className="text-sm leading-relaxed">
                       Tham gia cộng đồng Cloud 3000+ thành viên
+                    </span>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <FaCheckCircle className="mt-1 h-5 w-5 flex-shrink-0 text-orange-500" />
+                    <span className="text-sm leading-relaxed">
+                      Giáo án và kho tài liệu độc quyền
                     </span>
                   </div>
                 </div>
@@ -1016,6 +1042,14 @@ export default function CourseSpecial({ frontMatter, mentorDetails }) {
             <p className="text-xl text-gray-600 dark:text-gray-300">
               Chỉ bằng 1-2 tháng lương Junior, nhưng giá trị mang lại suốt đời
             </p>
+
+            <div className="mt-6 text-center">
+              <p className="text-xl text-orange-600">
+                🎁 Voucher giảm 50% lệ phí thi chứng chỉ AWS SAA-C03 (Tiết kiệm $75)
+                <br />
+                🎁 Tài khoản AWS thực hành miễn phí toàn khoá học
+              </p>
+            </div>
           </div>
 
           <div className="grid gap-8 lg:grid-cols-3">
