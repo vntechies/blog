@@ -48,7 +48,7 @@ export default function CourseRegistrationForm({
 
       // 1. Send to AWS Serverless API Gateway (Odoo)
       const serverlessPromise = fetch(
-        'https://01okmqz7w1.execute-api.ap-southeast-1.amazonaws.com/prod/register',
+        'https://daypauo6of.execute-api.ap-southeast-1.amazonaws.com/prod/register',
         {
           method: 'POST',
           headers: {
