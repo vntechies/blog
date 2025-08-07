@@ -251,7 +251,7 @@ export default function CourseSpecial({ frontMatter, mentorDetails }) {
               <div className="text-xs text-gray-500 dark:text-gray-400">5 tuần học</div>
             </div>
             <div className="rounded-xl bg-purple-50 p-6 text-center dark:bg-purple-900/20">
-              <div className="mb-3 text-2xl font-bold text-purple-600">T2 & T4</div>
+              <div className="mb-3 text-2xl font-bold text-purple-600">02 buổi/tuần</div>
               <div className="text-sm font-medium text-gray-700 dark:text-gray-300">Lịch học</div>
               <div className="text-xs text-gray-500 dark:text-gray-400">20:00 - 22:00</div>
             </div>

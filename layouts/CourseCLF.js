@@ -108,7 +108,7 @@ const highlights = [
   {
     icon: <FaDollarSign className="text-2xl text-green-500" />,
     title: '💰 Voucher 50%',
-    description: 'Nhận voucher 50% lệ phí thi AWS Cloud Practitioner sau khóa học',
+    description: 'Giảm 50% chi phí đăng ký thi chứng chỉ AWS Cloud Practitioner sau khóa học',
   },
 ]
 
@@ -120,7 +120,7 @@ const learningOutcomes = [
   'Hiểu về bảo mật và tuân thủ trên AWS',
   'Vượt qua kỳ thi AWS Cloud Practitioner với mức độ tự tin cao',
   'Sẵn sàng cho các khóa học chứng chỉ AWS nâng cao (SAA, DVA, AIF, v.v.)',
-  'Nhận voucher giảm 50% lệ phí thi sau khóa học',
+  'Giảm 50% chi phí đăng ký thi chứng chỉ AWS Cloud Practitioner sau khóa học',
 ]
 
 // Curriculum overview - 8 buổi học gộp từ 10 modules
@@ -355,7 +355,7 @@ export default function CourseSpecial({ frontMatter, mentorDetails }) {
                   style={{ color: '#FF9900' }}
                 />
                 <span>
-                  <b>Ưu đãi đặc biệt:</b> Nhận voucher 50% lệ phí thi AWS Cloud Practitioner sau
+                  <b>Ưu đãi đặc biệt:</b> Giảm 50% chi phí đăng ký thi chứng chỉ AWS Cloud Practitioner sau
                   khóa học.
                 </span>
               </div>
@@ -702,7 +702,7 @@ export default function CourseSpecial({ frontMatter, mentorDetails }) {
                 VOUCHER 50% LỆ PHÍ THI
               </h3>
               <p className="text-gray-600 dark:text-gray-300">
-                Nhận voucher 50% lệ phí thi chứng chỉ AWS Cloud Practitioner sau khi hoàn thành khóa
+                Giảm 50% chi phí đăng ký thi chứng chỉ sau khi hoàn thành khóa
                 học
               </p>
             </div>
