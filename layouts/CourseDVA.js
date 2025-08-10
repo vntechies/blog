@@ -13,6 +13,7 @@ import {
   FaRocket,
 } from 'react-icons/fa'
 import Link from 'next/link'
+import CourseRegistrationForm from '../components/CourseRegistrationForm'
 
 const testimonials = [
   {
@@ -685,7 +686,9 @@ export default function CourseSpecial({ frontMatter, mentorDetails }) {
                         Module: Giới thiệu kiến trúc điện toán đám mây
                       </div>
                       <div>Tổng quan về kiến trúc điện toán đám mây và Hạ tầng AWS</div>
-                      <div>Giới thiệu về Amazon EC2, Elastic Load Balancing và Amazon EC2 Auto Scaling</div>
+                      <div>
+                        Giới thiệu về Amazon EC2, Elastic Load Balancing và Amazon EC2 Auto Scaling
+                      </div>
                       <div>Giới thiệu về Serverless với AWS Lambda</div>
                       <div>Từ monolithic đến microservices</div>
                     </div>
@@ -721,9 +724,7 @@ export default function CourseSpecial({ frontMatter, mentorDetails }) {
                       </div>
                       <div>Giới thiệu về S3</div>
                       <div>Làm việc với S3 bucket và S3 objects</div>
-                      <div>
-                        Bảo vệ dữ liệu và quản lý quyền truy cập tài nguyên Amazon S3
-                      </div>
+                      <div>Bảo vệ dữ liệu và quản lý quyền truy cập tài nguyên Amazon S3</div>
                       <div className="font-semibold text-orange-700 dark:text-orange-300">
                         Lab: Làm việc với Amazon S3
                       </div>
@@ -862,8 +863,9 @@ export default function CourseSpecial({ frontMatter, mentorDetails }) {
                       <div className="font-semibold text-orange-700 dark:text-orange-300">
                         Lab: Lưu trữ dữ liệu ứng dụng với ElastiCache
                       </div>
-                      <div>Caching với Amazon CloudFront
-                      <div>Chiến lược caching</div>
+                      <div>
+                        Caching với Amazon CloudFront
+                        <div>Chiến lược caching</div>
                       </div>
                       <div className="font-semibold text-orange-700 dark:text-orange-300">
                         Lab: Triển khai CloudFront để caching và bảo mật ứng dụng
@@ -935,7 +937,7 @@ export default function CourseSpecial({ frontMatter, mentorDetails }) {
                       <div className="font-semibold text-orange-700 dark:text-orange-300">
                         Lab: Triển khai xác thực ứng dụng với Amazon Cognito
                       </div>
-                      <div>Kiểm tra kiến thức</div> 
+                      <div>Kiểm tra kiến thức</div>
                     </div>
                   </td>
                 </tr>
@@ -982,8 +984,8 @@ export default function CourseSpecial({ frontMatter, mentorDetails }) {
                         Module: Tổng kết
                       </div>
                       <div className="font-semibold text-orange-700 dark:text-orange-300">
-                        Seminar hướng nghiệp: Tips viết CV, phỏng vấn, định hướng vị trí
-                        liên quan đến Cloud/DevOps
+                        Seminar hướng nghiệp: Tips viết CV, phỏng vấn, định hướng vị trí liên quan
+                        đến Cloud/DevOps
                       </div>
                     </div>
                   </td>
