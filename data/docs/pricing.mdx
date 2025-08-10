@@ -14,7 +14,7 @@ Chính sách giá combo của VNTechies giúp học viên tiết kiệm chi phí
 <div
   className="combo-hero"
   style={{
-    background: 'var(--combo-hero-bg, linear-gradient(135deg, #ea580c 0%, #dc2626 100%))',
+    background: 'var(--combo-hero-bg, linear-gradient(135deg, #ea580c 0%,rgb(243, 75, 75) 100%))',
     borderRadius: '16px',
     padding: 'clamp(24px, 6vw, 48px)',
     margin: '24px 0',
@@ -67,21 +67,34 @@ Chính sách giá combo của VNTechies giúp học viên tiết kiệm chi phí
             display: 'flex',
             alignItems: 'center',
             gap: '12px',
-            padding: '8px 0',
+            padding: '12px 16px',
+            background: 'rgba(0, 0, 0, 0.3)',
+            borderRadius: '12px',
+            border: '1px solid rgba(255, 255, 255, 0.2)',
+            transition: 'all 0.3s ease',
+            cursor: 'pointer',
           }}
         >
           <div
             style={{
-              background: 'rgba(255,255,255,0.2)',
+              background: 'linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%)',
               borderRadius: '8px',
-              padding: '4px 12px',
+              padding: '4px 200px',
               fontSize: 'clamp(12px, 3vw, 14px)',
-              fontWeight: '600',
+              fontWeight: '700',
+              color: '#1f2937',
+              border: '1px solid rgba(245, 158, 11, 0.3)',
+              boxShadow: '0 2px 8px rgba(245, 158, 11, 0.2)',
             }}
           >
             2 khóa
           </div>
-          <span style={{ fontSize: 'clamp(14px, 3.5vw, 16px)' }}>Giảm 20%</span>
+          <span style={{
+            fontSize: 'clamp(14px, 3.5vw, 16px)',
+            fontWeight: '500',
+            color: '#ffffff',
+            textShadow: '0 2px 4px rgba(0,0,0,0.5)'
+          }}>Giảm 20%</span>
         </div>
 
         <div
@@ -90,21 +103,34 @@ Chính sách giá combo của VNTechies giúp học viên tiết kiệm chi phí
             display: 'flex',
             alignItems: 'center',
             gap: '12px',
-            padding: '8px 0',
+            padding: '12px 16px',
+            background: 'rgba(0, 0, 0, 0.3)',
+            borderRadius: '12px',
+            border: '1px solid rgba(255, 255, 255, 0.2)',
+            transition: 'all 0.3s ease',
+            cursor: 'pointer',
           }}
         >
           <div
             style={{
-              background: 'rgba(255,255,255,0.2)',
+              background: 'linear-gradient(135deg, #f97316 0%, #ea580c 100%)',
               borderRadius: '8px',
-              padding: '4px 12px',
+              padding: '4px 300px',
               fontSize: 'clamp(12px, 3vw, 14px)',
-              fontWeight: '600',
+              fontWeight: '700',
+              color: '#ffffff',
+              border: '1px solid rgba(234, 88, 12, 0.3)',
+              boxShadow: '0 2px 8px rgba(234, 88, 12, 0.2)',
             }}
           >
             3 khóa
           </div>
-          <span style={{ fontSize: 'clamp(14px, 3.5vw, 16px)' }}>Giảm 30%</span>
+          <span style={{
+            fontSize: 'clamp(14px, 3.5vw, 16px)',
+            fontWeight: '700',
+            color: '#ffffff',
+            textShadow: '0 2px 4px rgba(0,0,0,0.5)'
+          }}>Giảm 30%</span>
         </div>
 
         <div
@@ -113,21 +139,34 @@ Chính sách giá combo của VNTechies giúp học viên tiết kiệm chi phí
             display: 'flex',
             alignItems: 'center',
             gap: '12px',
-            padding: '8px 0',
+            padding: '12px 16px',
+            background: 'rgba(255, 255, 255, 0.1)',
+            borderRadius: '12px',
+            border: '1px solid rgba(255, 255, 255, 0.15)',
+            transition: 'all 0.3s ease',
+            cursor: 'pointer',
           }}
         >
           <div
             style={{
-              background: 'rgba(255,255,255,0.2)',
+              background: 'linear-gradient(135deg,rgba(22, 45, 249, 0.48) 0%,rgb(0, 30, 255) 100%)',
               borderRadius: '8px',
-              padding: '4px 12px',
-              fontSize: 'clamp(12px, 3vw, 14px)',
-              fontWeight: '600',
+              padding: '4px 400px',
+              fontSize: 'clamp(12px, 2.5vw, 14px)',
+              fontWeight: '700',
+              color: '#ffffff',
+              border: '1px solid rgba(236, 72, 154, 0)',
+              boxShadow: '0 2px 8px rgba(236, 72, 154, 0)',
             }}
           >
             4+ khóa
           </div>
-          <span style={{ fontSize: 'clamp(14px, 3.5vw, 16px)' }}>Giảm 40%</span>
+          <span style={{
+            fontSize: 'clamp(12px, 3.5vw, 16px)',
+            fontWeight: '900',
+            color: '#ffffff',
+            textShadow: '0 2px 4px rgba(0,0,0,0.5)'
+          }}>Giảm 40%</span>
         </div>
       </div>
     </div>
@@ -160,6 +199,7 @@ Chính sách giá combo của VNTechies giúp học viên tiết kiệm chi phí
         Tiết kiệm tối đa
       </div>
     </div>
+
   </div>
 </div>
 
@@ -212,16 +252,17 @@ Chính sách giá combo của VNTechies giúp học viên tiết kiệm chi phí
     </h4>
   </div>
 
-  <p
-    style={{
-      fontSize: 'clamp(13px, 3vw, 14px)',
-      color: 'var(--text-secondary, #6b7280)',
-      margin: '0 0 16px 0',
-      lineHeight: '1.5',
-    }}
-  >
-    AWS Cloud Practitioner + AWS AI Practitioner
-  </p>
+{' '}
+<p
+  style={{
+    fontSize: 'clamp(13px, 3vw, 14px)',
+    color: 'var(--text-secondary, #6b7280)',
+    margin: '0 0 16px 0',
+    lineHeight: '1.5',
+  }}
+>
+  AWS Cloud Practitioner + AWS AI Practitioner
+</p>
 
   <div
     className="price-section"
@@ -300,16 +341,17 @@ Chính sách giá combo của VNTechies giúp học viên tiết kiệm chi phí
     </h4>
   </div>
 
-  <p
-    style={{
-      fontSize: 'clamp(13px, 3vw, 14px)',
-      color: 'var(--text-secondary, #6b7280)',
-      margin: '0 0 16px 0',
-      lineHeight: '1.5',
-    }}
-  >
-    AWS Cloud Practitioner + AWS Solutions Architect Associate
-  </p>
+{' '}
+<p
+  style={{
+    fontSize: 'clamp(13px, 3vw, 14px)',
+    color: 'var(--text-secondary, #6b7280)',
+    margin: '0 0 16px 0',
+    lineHeight: '1.5',
+  }}
+>
+  AWS Cloud Practitioner + AWS Solutions Architect Associate
+</p>
 
   <div
     className="price-section"
@@ -383,38 +425,40 @@ Chính sách giá combo của VNTechies giúp học viên tiết kiệm chi phí
     Phổ biến
   </div>
 
-  <div
-    className="package-header"
+{' '}
+<div
+  className="package-header"
+  style={{
+    display: 'flex',
+    alignItems: 'center',
+    gap: '8px',
+    marginBottom: '12px',
+  }}
+>
+  <span style={{ fontSize: '20px' }}>💻</span>
+  <h4
     style={{
-      display: 'flex',
-      alignItems: 'center',
-      gap: '8px',
-      marginBottom: '12px',
+      color: 'var(--text-primary, #1f2937)',
+      margin: '0',
+      fontSize: 'clamp(16px, 4vw, 18px)',
+      fontWeight: '600',
     }}
   >
-    <span style={{ fontSize: '20px' }}>💻</span>
-    <h4
-      style={{
-        color: 'var(--text-primary, #1f2937)',
-        margin: '0',
-        fontSize: 'clamp(16px, 4vw, 18px)',
-        fontWeight: '600',
-      }}
-    >
-      AWS Developer
-    </h4>
-  </div>
+    AWS Developer
+  </h4>
+</div>
 
-  <p
-    style={{
-      fontSize: 'clamp(13px, 3vw, 14px)',
-      color: 'var(--text-secondary, #6b7280)',
-      margin: '0 0 16px 0',
-      lineHeight: '1.5',
-    }}
-  >
-    AWS CLF + AWS SAA + AWS DVA
-  </p>
+{' '}
+<p
+  style={{
+    fontSize: 'clamp(13px, 3vw, 14px)',
+    color: 'var(--text-secondary, #6b7280)',
+    margin: '0 0 16px 0',
+    lineHeight: '1.5',
+  }}
+>
+  AWS CLF + AWS SAA + AWS DVA
+</p>
 
   <div
     className="price-section"
@@ -488,38 +532,40 @@ Chính sách giá combo của VNTechies giúp học viên tiết kiệm chi phí
     Tốt nhất
   </div>
 
-  <div
-    className="package-header"
+{' '}
+<div
+  className="package-header"
+  style={{
+    display: 'flex',
+    alignItems: 'center',
+    gap: '8px',
+    marginBottom: '12px',
+  }}
+>
+  <span style={{ fontSize: '20px' }}>🎯</span>
+  <h4
     style={{
-      display: 'flex',
-      alignItems: 'center',
-      gap: '8px',
-      marginBottom: '12px',
+      color: 'var(--text-primary, #1f2937)',
+      margin: '0',
+      fontSize: 'clamp(16px, 4vw, 18px)',
+      fontWeight: '600',
     }}
   >
-    <span style={{ fontSize: '20px' }}>🎯</span>
-    <h4
-      style={{
-        color: 'var(--text-primary, #1f2937)',
-        margin: '0',
-        fontSize: 'clamp(16px, 4vw, 18px)',
-        fontWeight: '600',
-      }}
-    >
-      Combo AWS
-    </h4>
-  </div>
+    Combo AWS
+  </h4>
+</div>
 
-  <p
-    style={{
-      fontSize: 'clamp(13px, 3vw, 14px)',
-      color: 'var(--text-secondary, #6b7280)',
-      margin: '0 0 16px 0',
-      lineHeight: '1.5',
-    }}
-  >
-    AWS CLF + AWS AIF + AWS SAA + AWS DVA
-  </p>
+{' '}
+<p
+  style={{
+    fontSize: 'clamp(13px, 3vw, 14px)',
+    color: 'var(--text-secondary, #6b7280)',
+    margin: '0 0 16px 0',
+    lineHeight: '1.5',
+  }}
+>
+  AWS CLF + AWS AIF + AWS SAA + AWS DVA
+</p>
 
   <div
     className="price-section"
@@ -712,20 +758,21 @@ Chính sách giá combo của VNTechies giúp học viên tiết kiệm chi phí
     PHỔ BIẾN
   </div>
 
-  <h4
-    style={{
-      color: 'var(--installment-title-1, #9a3412)',
-      margin: '0 0 16px 0',
-      fontSize: 'clamp(16px, 4vw, 18px)',
-      fontWeight: 'bold',
-      display: 'flex',
-      alignItems: 'center',
-      gap: '8px',
-    }}
-  >
-    <span style={{ fontSize: 'clamp(20px, 5vw, 24px)' }}>💳</span>
-    Trả góp 3 đợt
-  </h4>
+{' '}
+<h4
+  style={{
+    color: 'var(--installment-title-1, #9a3412)',
+    margin: '0 0 16px 0',
+    fontSize: 'clamp(16px, 4vw, 18px)',
+    fontWeight: 'bold',
+    display: 'flex',
+    alignItems: 'center',
+    gap: '8px',
+  }}
+>
+  <span style={{ fontSize: 'clamp(20px, 5vw, 24px)' }}>💳</span>
+  Trả góp 3 đợt
+</h4>
 
   <div
     className="payment-steps"
@@ -883,6 +930,7 @@ Chính sách giá combo của VNTechies giúp học viên tiết kiệm chi phí
         </div>
       </div>
     </div>
+
   </div>
 </div>
 
@@ -913,20 +961,21 @@ Chính sách giá combo của VNTechies giúp học viên tiết kiệm chi phí
     LINH HOẠT
   </div>
 
-  <h4
-    style={{
-      color: 'var(--installment-title-2, #334155)',
-      margin: '0 0 16px 0',
-      fontSize: 'clamp(16px, 4vw, 18px)',
-      fontWeight: 'bold',
-      display: 'flex',
-      alignItems: 'center',
-      gap: '8px',
-    }}
-  >
-    <span style={{ fontSize: 'clamp(20px, 5vw, 24px)' }}>🎯</span>
-    Trả góp 4 đợt
-  </h4>
+{' '}
+<h4
+  style={{
+    color: 'var(--installment-title-2, #334155)',
+    margin: '0 0 16px 0',
+    fontSize: 'clamp(16px, 4vw, 18px)',
+    fontWeight: 'bold',
+    display: 'flex',
+    alignItems: 'center',
+    gap: '8px',
+  }}
+>
+  <span style={{ fontSize: 'clamp(20px, 5vw, 24px)' }}>🎯</span>
+  Trả góp 4 đợt
+</h4>
 
   <div
     className="payment-steps"
@@ -1135,6 +1184,7 @@ Chính sách giá combo của VNTechies giúp học viên tiết kiệm chi phí
         </div>
       </div>
     </div>
+
   </div>
 </div>
 
