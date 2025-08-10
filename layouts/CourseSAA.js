@@ -155,7 +155,7 @@ export default function CourseSpecial({ frontMatter, mentorDetails }) {
                       <div className="flex items-center gap-3">
                         <FaCertificate className="h-5 w-5 flex-shrink-0 text-yellow-300" />
                         <span className="text-sm font-medium">
-                          Voucher giảm 50% lệ phí thi chứng chỉ AWS SAA-C03
+                          Giảm 50% chi phí đăng ký thi chứng chỉ AWS SAA-C03
                         </span>
                       </div>
                       <div className="text-xs font-semibold text-yellow-200">(Tiết kiệm $75)</div>
@@ -262,7 +262,7 @@ export default function CourseSpecial({ frontMatter, mentorDetails }) {
               <div className="text-xs text-gray-500 dark:text-gray-400">8 tuần học</div>
             </div>
             <div className="rounded-xl bg-orange-50 p-6 text-center dark:bg-orange-900/20">
-              <div className="mb-3 text-2xl font-bold text-orange-600">T3 & T5</div>
+              <div className="mb-3 text-2xl font-bold text-orange-600">02 buổi/tuần</div>
               <div className="text-sm font-medium text-gray-700 dark:text-gray-300">Lịch học</div>
               <div className="text-xs text-gray-500 dark:text-gray-400">19:00 - 21:00</div>
             </div>
@@ -1045,7 +1045,7 @@ export default function CourseSpecial({ frontMatter, mentorDetails }) {
 
             <div className="mt-6 text-center">
               <p className="text-xl text-orange-600">
-                🎁 Voucher giảm 50% lệ phí thi chứng chỉ AWS SAA-C03 (Tiết kiệm $75)
+                🎁 Giảm 50% chi phí đăng ký thi chứng chỉ AWS SAA-C03 (Tiết kiệm $75)
                 <br />
                 🎁 Tài khoản AWS thực hành miễn phí toàn khoá học
               </p>
@@ -1078,6 +1078,15 @@ export default function CourseSpecial({ frontMatter, mentorDetails }) {
                   <div className="text-2xl font-bold text-orange-700 dark:text-orange-300">
                     7.500.000₫
                   </div>
+                  <div className="text-xs mt-2 text-orange-600 dark:text-orange-400">
+                    Hỗ trợ học phí lên tới 500.000đ
+                  </div>
+                  <Link
+                    href="/docs/pricing#ho-tro-hoc-phi"
+                    className="text-xs font-semibold text-orange-700 hover:underline dark:text-orange-300"
+                  >
+                    Financial Aid Program
+                  </Link>
                 </div>
               </div>
 
@@ -1110,6 +1119,13 @@ export default function CourseSpecial({ frontMatter, mentorDetails }) {
                   <div className="text-sm font-medium opacity-90">Sinh viên</div>
                   <div className="text-2xl font-bold">6.700.000₫</div>
                   <div className="text-sm line-through opacity-75">7.500.000₫</div>
+                  <div className="text-xs mt-2 opacity-90">Hỗ trợ học phí lên tới 500.000đ</div>
+                  <Link
+                    href="/docs/pricing#ho-tro-hoc-phi"
+                    className="text-xs font-semibold opacity-90 hover:underline"
+                  >
+                    Financial Aid Program
+                  </Link>
                 </div>
               </div>
 
@@ -1150,6 +1166,14 @@ export default function CourseSpecial({ frontMatter, mentorDetails }) {
                     6.300.000₫
                   </div>
                   <div className="text-sm text-gray-500 line-through">7.500.000₫</div>
+                </div>
+                <div className="mt-3 text-center">
+                  <Link
+                    href="/docs/pricing#cuu-hoc-vien"
+                    className="text-sm text-orange-600 hover:underline dark:text-orange-400"
+                  >
+                    Giá cho cựu học viên
+                  </Link>
                 </div>
               </div>
 

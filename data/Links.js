@@ -9,6 +9,7 @@ export const headerNavLinks = [
 ]
 
 export const footerNavLinks = [
+  { href: '/docs/pricing', title: 'Chính sách giá' },
   { href: '/docs/privacy', title: 'Chính sách bảo mật' },
   { href: '/docs/tos', title: 'Điều khoản sử dụng' },
   { href: siteMetadata.messenger, title: 'Liên hệ' },
