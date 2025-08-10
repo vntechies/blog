@@ -72,7 +72,7 @@ const testimonials = [
 const courseInfo = {
   title: 'AWS Academy Cloud Developing - Phát triển ứng dụng Cloud',
   subtitle: 'Học lập trình & phát triển ứng dụng thực tế trên AWS',
-  image: '/static/images/courses/aws-cloud-developing.png',
+  image: '/static/images/courses/awsdvac02-hero.png',
   startDate: '10/09/2025',
   duration: '8 tuần (15 buổi,30+ giờ học)',
   schedule: 'Tối Thứ 2 & Thứ 4 (19:00 - 21:00)',
@@ -115,7 +115,8 @@ export default function CourseSpecial({ frontMatter, mentorDetails }) {
       <section className="bg-gradient-to-br from-white to-slate-50 px-4 py-24 dark:from-gray-900 dark:to-slate-800">
         <div className="mx-auto max-w-7xl">
           <div className="grid items-center gap-16 lg:grid-cols-2">
-            <div className="order-1 lg:order-1">
+            {/* Left Content */}
+            <div className="order-2 lg:order-1">
               <div className="mb-8 inline-flex items-center rounded-full bg-gradient-to-r from-yellow-100 to-yellow-50 px-6 py-3 text-yellow-700 shadow-sm dark:from-yellow-900/30 dark:to-yellow-800/20 dark:text-yellow-400">
                 <FaCode className="mr-3 h-5 w-5" />
                 <span className="font-semibold">Học để làm - Không chỉ lý thuyết</span>
@@ -230,6 +231,33 @@ export default function CourseSpecial({ frontMatter, mentorDetails }) {
                   >
                     Messenger VNTechies
                   </Link>
+                </div>
+              </div>
+            </div>
+
+            {/* Right Image */}
+            <div className="order-1 lg:order-2">
+              <div className="relative flex w-full items-center justify-center overflow-hidden rounded-2xl bg-gradient-to-br from-blue-50 to-orange-50 p-8 dark:from-blue-900/20 dark:to-orange-900/20">
+                {/* Subtle background decoration */}
+                <div
+                  className="absolute -bottom-16 -right-16 h-64 w-64 rounded-full opacity-10 blur-3xl"
+                  style={{ backgroundColor: '#FF9900' }}
+                ></div>
+                <div
+                  className="absolute -top-16 -left-16 h-56 w-56 rounded-full opacity-10 blur-3xl"
+                  style={{ backgroundColor: '#2563eb' }}
+                ></div>
+
+                {/* Main image container */}
+                <div className="relative z-10 flex h-full w-full items-center justify-center">
+                  <Image
+                    src={info.image}
+                    alt={info.title}
+                    width={500}
+                    height={600}
+                    className="h-auto max-w-full object-contain drop-shadow-2xl"
+                    priority
+                  />
                 </div>
               </div>
             </div>
