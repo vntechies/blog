@@ -1,5 +1,5 @@
-import { useState } from 'react'
-import { FaUser, FaEnvelope, FaPhone, FaGraduationCap, FaSpinner } from 'react-icons/fa'
+import { useState, useEffect } from 'react'
+import { FaUser, FaEnvelope, FaPhone, FaGraduationCap, FaSpinner, FaTag } from 'react-icons/fa'
 
 export default function CourseRegistrationForm({
   courseTitle = 'AWS SAA-C03',
@@ -11,15 +11,22 @@ export default function CourseRegistrationForm({
     email: '',
     phone: '',
     studentType: 'working', // working or student
-    experience: '',
     motivation: '',
     isAlumni: false,
     groupRegistration: false,
-    groupSize: '',
-    groupMembers: '',
+    couponCode: '',
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitStatus, setSubmitStatus] = useState(null)
+
+  // Get coupon code from URL parameter
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search)
+    const coupon = urlParams.get('coupon')
+    if (coupon) {
+      setFormData((prev) => ({ ...prev, couponCode: coupon }))
+    }
+  }, [])
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target
@@ -140,12 +147,10 @@ export default function CourseRegistrationForm({
           email: '',
           phone: '',
           studentType: 'working',
-          experience: '',
           motivation: '',
           isAlumni: false,
           groupRegistration: false,
-          groupSize: '',
-          groupMembers: '',
+          couponCode: '',
         })
         setIsSubmitting(false)
 
@@ -287,25 +292,6 @@ export default function CourseRegistrationForm({
               </div>
             </div>
 
-            {/* Experience */}
-            <div>
-              <label className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">
-                Kinh nghiệm với AWS/Cloud
-              </label>
-              <select
-                name="experience"
-                value={formData.experience}
-                onChange={handleChange}
-                className={`w-full rounded-lg border border-gray-300 bg-white py-3 px-4 text-gray-900 focus:outline-none focus:ring-2 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100 ${currentTheme.focus}`}
-              >
-                <option value="">Chọn mức độ kinh nghiệm</option>
-                <option value="beginner">Mới bắt đầu</option>
-                <option value="basic">Có kiến thức cơ bản</option>
-                <option value="intermediate">Đã có kinh nghiệm</option>
-                <option value="advanced">Có kinh nghiệm nhiều năm</option>
-              </select>
-            </div>
-
             {/* Alumni Status */}
             <div
               className={`flex cursor-pointer items-center rounded-lg border border-gray-200 p-4 transition dark:border-gray-600 ${currentTheme.hover}`}
@@ -324,56 +310,40 @@ export default function CourseRegistrationForm({
             </div>
 
             {/* Group Registration */}
-            <div className="space-y-4">
-              <div
-                className={`flex cursor-pointer items-center rounded-lg border border-gray-200 p-4 transition dark:border-gray-600 ${currentTheme.hover}`}
-                onClick={() =>
-                  setFormData({ ...formData, groupRegistration: !formData.groupRegistration })
-                }
-              >
-                <input
-                  type="checkbox"
-                  name="groupRegistration"
-                  checked={formData.groupRegistration}
-                  onChange={handleChange}
-                  className={`mr-3 h-5 w-5 rounded border-gray-300 ${currentTheme.checkbox}`}
-                />
-                <label className="cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300">
-                  Đăng ký theo nhóm (2+ người) - Giảm giá đặc biệt!
-                </label>
-              </div>
+            <div
+              className={`flex cursor-pointer items-center rounded-lg border border-gray-200 p-4 transition dark:border-gray-600 ${currentTheme.hover}`}
+              onClick={() =>
+                setFormData({ ...formData, groupRegistration: !formData.groupRegistration })
+              }
+            >
+              <input
+                type="checkbox"
+                name="groupRegistration"
+                checked={formData.groupRegistration}
+                onChange={handleChange}
+                className={`mr-3 h-5 w-5 rounded border-gray-300 ${currentTheme.checkbox}`}
+              />
+              <label className="cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300">
+                Đăng ký theo nhóm (2+ người)
+              </label>
+            </div>
 
-              {formData.groupRegistration && (
-                <div className="grid gap-4 md:grid-cols-2">
-                  <div>
-                    <label className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">
-                      Số lượng thành viên
-                    </label>
-                    <input
-                      type="number"
-                      name="groupSize"
-                      value={formData.groupSize}
-                      onChange={handleChange}
-                      min="2"
-                      className={`w-full rounded-lg border border-gray-300 bg-white py-3 px-4 text-gray-900 focus:outline-none focus:ring-2 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100 ${currentTheme.focus}`}
-                      placeholder="2"
-                    />
-                  </div>
-                  <div>
-                    <label className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">
-                      Thông tin thành viên khác
-                    </label>
-                    <textarea
-                      name="groupMembers"
-                      value={formData.groupMembers}
-                      onChange={handleChange}
-                      rows={2}
-                      className={`w-full rounded-lg border border-gray-300 bg-white py-3 px-4 text-gray-900 focus:outline-none focus:ring-2 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100 ${currentTheme.focus}`}
-                      placeholder="Tên, email các thành viên khác..."
-                    />
-                  </div>
-                </div>
-              )}
+            {/* Coupon Code */}
+            <div>
+              <label className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">
+                Coupon Code
+              </label>
+              <div className="relative">
+                <FaTag className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+                <input
+                  type="text"
+                  name="couponCode"
+                  value={formData.couponCode}
+                  onChange={handleChange}
+                  className={`w-full rounded-lg border border-gray-300 bg-white py-3 pl-10 pr-4 text-gray-900 focus:outline-none focus:ring-2 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100 ${currentTheme.focus}`}
+                  placeholder="Nhập mã giảm giá"
+                />
+              </div>
             </div>
 
             {/* Motivation */}

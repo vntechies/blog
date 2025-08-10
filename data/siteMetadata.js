@@ -26,6 +26,7 @@ const siteMetadata = {
   youtube: 'https://www.youtube.com/@vntechies',
   linkedin: 'https://linkedin.com/company/vntechies',
   messenger: 'https://m.me/vntechies',
+  tiktok: 'https://www.tiktok.com/@vntechies.dev',
   discord: 'https://discord.com/invite/YecagKUqpS',
   locale: 'vi-VN',
   analytics: {
