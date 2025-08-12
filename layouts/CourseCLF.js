@@ -108,7 +108,7 @@ const highlights = [
   {
     icon: <FaDollarSign className="text-2xl text-green-500" />,
     title: '💰 Voucher 50%',
-    description: 'Nhận voucher 50% lệ phí thi AWS Cloud Practitioner sau khóa học',
+    description: 'Giảm 50% chi phí đăng ký thi chứng chỉ AWS Cloud Practitioner sau khóa học',
   },
 ]
 
@@ -120,7 +120,7 @@ const learningOutcomes = [
   'Hiểu về bảo mật và tuân thủ trên AWS',
   'Vượt qua kỳ thi AWS Cloud Practitioner với mức độ tự tin cao',
   'Sẵn sàng cho các khóa học chứng chỉ AWS nâng cao (SAA, DVA, AIF, v.v.)',
-  'Nhận voucher giảm 50% lệ phí thi sau khóa học',
+  'Giảm 50% chi phí đăng ký thi chứng chỉ AWS Cloud Practitioner sau khóa học',
 ]
 
 // Curriculum overview - 8 buổi học gộp từ 10 modules
@@ -355,8 +355,8 @@ export default function CourseSpecial({ frontMatter, mentorDetails }) {
                   style={{ color: '#FF9900' }}
                 />
                 <span>
-                  <b>Ưu đãi đặc biệt:</b> Nhận voucher 50% lệ phí thi AWS Cloud Practitioner sau
-                  khóa học.
+                  <b>Ưu đãi đặc biệt:</b> Giảm 50% chi phí đăng ký thi chứng chỉ AWS Cloud
+                  Practitioner sau khóa học.
                 </span>
               </div>
             </div>
@@ -476,6 +476,15 @@ export default function CourseSpecial({ frontMatter, mentorDetails }) {
                       <span className="ml-2 font-bold text-red-600">{info.earlyBirdPrice}</span>
                     </p>
                     <p className="text-sm text-gray-500">Early bird - Chỉ 50 suất đầu</p>
+                    <div className="text-xs mt-2 text-green-600 dark:text-green-400">
+                      Hỗ trợ học phí lên tới 500.000đ
+                    </div>
+                    <Link
+                      href="/docs/pricing#ho-tro-hoc-phi"
+                      className="text-xs font-semibold text-green-700 hover:underline dark:text-green-300"
+                    >
+                      Financial Aid Program
+                    </Link>
                   </div>
                 </div>
                 <div className="flex items-start space-x-4">
@@ -702,8 +711,7 @@ export default function CourseSpecial({ frontMatter, mentorDetails }) {
                 VOUCHER 50% LỆ PHÍ THI
               </h3>
               <p className="text-gray-600 dark:text-gray-300">
-                Nhận voucher 50% lệ phí thi chứng chỉ AWS Cloud Practitioner sau khi hoàn thành khóa
-                học
+                Giảm 50% chi phí đăng ký thi chứng chỉ sau khi hoàn thành khóa học
               </p>
             </div>
 

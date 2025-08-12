@@ -145,7 +145,7 @@ export default function CourseSpecial({ frontMatter, mentorDetails }) {
                       <div className="flex items-center gap-3">
                         <FaCertificate className="h-5 w-5 flex-shrink-0 text-yellow-300" />
                         <span className="text-sm font-medium">
-                          Voucher giảm 50% lệ phí thi chứng chỉ AWS DVA-C02
+                          Giảm 50% chi phí đăng ký thi chứng chỉ AWS DVA-C02
                         </span>
                       </div>
                       <div className="text-xs font-semibold text-yellow-200">(Tiết kiệm $75)</div>

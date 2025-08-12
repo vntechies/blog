@@ -251,12 +251,12 @@ export default function CourseSpecial({ frontMatter, mentorDetails }) {
               <div className="text-xs text-gray-500 dark:text-gray-400">5 tuần học</div>
             </div>
             <div className="rounded-xl bg-purple-50 p-6 text-center dark:bg-purple-900/20">
-              <div className="mb-3 text-2xl font-bold text-purple-600">T2 & T4</div>
+              <div className="mb-3 text-2xl font-bold text-purple-600">02 buổi/tuần</div>
               <div className="text-sm font-medium text-gray-700 dark:text-gray-300">Lịch học</div>
               <div className="text-xs text-gray-500 dark:text-gray-400">20:00 - 22:00</div>
             </div>
             <div className="rounded-xl bg-purple-50 p-6 text-center dark:bg-purple-900/20">
-              <div className="mb-3 text-2xl font-bold text-purple-600">18/8</div>
+              <div className="mb-3 text-2xl font-bold text-purple-600">9/2025</div>
               <div className="text-sm font-medium text-gray-700 dark:text-gray-300">Khai giảng</div>
               <div className="text-xs text-gray-500 dark:text-gray-400">Online Zoom</div>
             </div>
@@ -967,6 +967,15 @@ export default function CourseSpecial({ frontMatter, mentorDetails }) {
                   <div className="text-2xl font-bold text-purple-700 dark:text-purple-300">
                     5.500.000₫
                   </div>
+                  <div className="text-xs mt-2 text-purple-600 dark:text-purple-400">
+                    Hỗ trợ học phí lên tới 500.000đ
+                  </div>
+                  <Link
+                    href="/docs/pricing#ho-tro-hoc-phi"
+                    className="text-xs font-semibold text-purple-700 hover:underline dark:text-purple-300"
+                  >
+                    Financial Aid Program
+                  </Link>
                 </div>
               </div>
 
@@ -1001,6 +1010,13 @@ export default function CourseSpecial({ frontMatter, mentorDetails }) {
                   <div className="text-sm font-medium opacity-90">Sinh viên</div>
                   <div className="text-2xl font-bold">4.900.000₫</div>
                   <div className="text-sm line-through opacity-75">5.500.000₫</div>
+                  <div className="text-xs mt-2 opacity-90">Hỗ trợ học phí lên tới 500.000đ</div>
+                  <Link
+                    href="/docs/pricing#ho-tro-hoc-phi"
+                    className="text-xs font-semibold opacity-90 hover:underline"
+                  >
+                    Financial Aid Program
+                  </Link>
                 </div>
               </div>
 
@@ -1041,6 +1057,14 @@ export default function CourseSpecial({ frontMatter, mentorDetails }) {
                     4.500.000₫
                   </div>
                   <div className="text-sm text-gray-500 line-through">5.500.000₫</div>
+                </div>
+                <div className="mt-3 text-center">
+                  <Link
+                    href="/docs/pricing#cuu-hoc-vien"
+                    className="text-sm text-purple-600 hover:underline dark:text-purple-400"
+                  >
+                    Giá cho cựu học viên
+                  </Link>
                 </div>
               </div>
 
