@@ -193,12 +193,6 @@ export default function CourseSpecial({ frontMatter, mentorDetails }) {
                     </span>
                   </div>
                   <div className="flex items-start gap-3">
-                    <FaCheckCircle className="mt-1 h-5 w-5 flex-shrink-0 text-orange-500" />
-                    <span className="text-sm leading-relaxed">
-                      Luyện đề, tips thi đỗ chứng chỉ từ senior mentor
-                    </span>
-                  </div>
-                  <div className="flex items-start gap-3">
                     <FaCheckCircle className="mt-1 h-5 w-5 flex-shrink-0 text-yellow-600" />
                     <span className="text-sm leading-relaxed text-gray-700 dark:text-gray-300">
                       Chứng chỉ AWS Developer Associate (DVA-C02)
