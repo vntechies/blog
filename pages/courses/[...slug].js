@@ -52,7 +52,15 @@ export async function getStaticProps({ params }) {
   }
 
   const courses = await getAllFilesFrontMatter('courses')
-  let otherCourses = courses.filter((c) => c.slug.split('/')[0] !== course && c.index === 0)
+  let otherCourses = courses
+    .filter((c) => c.index === 0) // Only main course pages
+    .filter((c) => c.slug !== post.slug) // Exclude current course
+    .sort((a, b) => {
+      // Sort by priority: paid courses first, then free courses
+      if (a.isFree === b.isFree) return 0
+      return a.isFree ? 1 : -1
+    })
+    .slice(0, 6) // Limit to 6 courses
 
   // rss
   if (allPosts.length > 0) {
