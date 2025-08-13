@@ -13,6 +13,7 @@ import {
   FaRocket,
 } from 'react-icons/fa'
 import Link from 'next/link'
+import OtherCoursesSection from '@/components/OtherCoursesSection'
 
 const testimonials = [
   {
@@ -88,7 +89,7 @@ const stats = [
   { number: '100%', label: 'Ứng dụng thực tế' },
 ]
 
-export default function CourseSpecial({ frontMatter, mentorDetails }) {
+export default function CourseSpecial({ frontMatter, mentorDetails, otherCourses = [] }) {
   const info = {
     title: frontMatter?.title || courseInfo.title,
     subtitle: frontMatter?.subtitle || courseInfo.subtitle,
@@ -419,6 +420,9 @@ export default function CourseSpecial({ frontMatter, mentorDetails }) {
           </p>
         </div>
       </section>
+
+      {/* Other Courses Section */}
+      <OtherCoursesSection otherCourses={otherCourses} />
     </div>
   )
 }
