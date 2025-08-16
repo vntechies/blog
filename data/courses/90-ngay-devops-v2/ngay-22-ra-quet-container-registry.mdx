@@ -1,0 +1,92 @@
+---
+title: 'Ngày 22 - Tích hợp rà quét Container Registry'
+images: ['/static/images/ogps/90daysofdevopsv2d22.png']
+summary: 'Tích hợp rà quét Container Registry'
+date: '2025-08-16'
+index: 22
+chapter: 'Tuần 4'
+---
+
+<TOCInline toc={props.toc} asDisclosure />
+
+# Quét Liên Tục Kho Lưu Trữ Container
+
+Hôm qua, chúng ta đã học cách tích hợp quét lỗ hổng hình ảnh container vào các pipeline CI/CD của mình.
+
+Hôm nay, chúng ta sẽ xem xét cách đảm bảo rằng các hình ảnh của chúng ta được quét ở một cấp độ khác - kho lưu trữ container.
+
+Có những kho lưu trữ container sẽ tự động quét các hình ảnh container của bạn ngay khi bạn đẩy chúng lên.
+Điều này đảm bảo rằng chúng ta sẽ có cái nhìn sâu sắc về số lượng lỗ hổng cho mỗi hình ảnh container được sản xuất bởi đội ngũ của chúng ta.
+
+Hãy cùng xem xét một số kho lưu trữ khác nhau cung cấp khả năng này và cách chúng ta có thể sử dụng nó.
+
+## Docker Hub
+
+[Docker Hub](https://hub.docker.com/) là kho lưu trữ container đầu tiên.
+Nó được xây dựng bởi đội ngũ đã tạo ra Docker và vẫn rất phổ biến cho đến ngày nay.
+
+Docker Hub có trình quét lỗ hổng tự động, được cung cấp bởi [Snyk](https://snyk.io/).
+
+Điều này có nghĩa là, nếu được kích hoạt, khi bạn đẩy một hình ảnh lên Docker Hub, nó sẽ được quét tự động và kết quả sẽ hiển thị cho bạn trong giao diện người dùng.
+
+Bạn có thể tìm hiểu thêm về cách kích hoạt và sử dụng tính năng này từ [tài liệu Docker Hub](https://docs.docker.com/docker-hub/vulnerability-scanning/).
+
+**LƯU Ý:** Tính năng này không miễn phí.
+Để sử dụng nó, bạn cần có một gói đăng ký.
+
+## Harbor
+
+[Harbor](https://goharbor.io/) là một kho lưu trữ container mã nguồn mở.
+Ban đầu được phát triển tại VMware, hiện nay nó là một phần của CNCF.
+
+Nó hỗ trợ quét hình ảnh thông qua [Trivy](https://github.com/aquasecurity/trivy) và/hoặc [Clair](https://github.com/quay/clair).
+
+Điều này được cấu hình trong quá trình cài đặt.
+(Ngay cả khi bạn không kích hoạt quét hình ảnh trong quá trình cài đặt, nó vẫn có thể được cấu hình sau đó).
+Để biết thêm thông tin, hãy xem [tài liệu](https://goharbor.io/docs/2.0.0/administration/vulnerability-scanning/).
+
+## AWS ECR
+
+[AWS ECR](https://aws.amazon.com/ecr/) cũng hỗ trợ [quét hình ảnh thông qua Clair](https://docs.aws.amazon.com/AmazonECR/latest/userguide/image-scanning-basic.html).
+
+## Azure Container Registry
+
+[Azure Container Registry](https://azure.microsoft.com/en-us/products/container-registry) hỗ trợ [quét hình ảnh thông qua Qualys](https://azure.microsoft.com/en-us/updates/vulnerability-scanning-for-images-in-azure-container-registry-is-now-generally-available/).
+
+## GCP
+
+[GCP Container Registry](https://cloud.google.com/container-registry) cũng hỗ trợ [quét hình ảnh tự động](https://cloud.google.com/container-analysis/docs/automated-scanning-howto).
+
+## Thực Thi Chính Sách
+
+Chỉ quét các hình ảnh và có kết quả hiển thị trong kho lưu trữ của bạn là điều tốt,
+nhưng sẽ tốt hơn nếu chúng ta có cách để thực thi một số tiêu chuẩn cho các hình ảnh này.
+
+Trong [Ngày 14](https://vntechies.dev/courses/90-ngay-devops-v2/ngay-14-quet-container-image), chúng ta đã thấy cách làm cho `grype` thất bại trong việc quét nếu một hình ảnh có lỗ hổng trên một mức độ nghiêm trọng nhất định.
+
+Điều gì đó tương tự cũng có thể được thực thi ở cấp độ kho lưu trữ container.
+
+Ví dụ, [Harbor](https://goharbor.io/) có tùy chọn **Ngăn chặn hình ảnh dễ bị tổn thương chạy**, khi được kích hoạt, không cho phép bạn kéo một hình ảnh có lỗ hổng trên một mức độ nghiêm trọng nhất định.
+Nếu bạn không thể kéo hình ảnh, bạn không thể chạy nó, vì vậy đây là một quy tắc tốt nếu bạn không muốn chạy các hình ảnh dễ bị tổn thương.
+Tất nhiên, một quy tắc như vậy có thể ngăn bạn triển khai một cái gì đó vào môi trường của bạn, vì vậy bạn cần sử dụng nó một cách cẩn thận.
+
+Để biết thêm về tùy chọn này và cách kích hoạt nó trong Harbor, bạn có thể đọc [tại đây](https://goharbor.io/docs/2.3.0/working-with-projects/project-configuration/).
+
+Để kiểm soát chi tiết hơn và để mở khóa các triển khai, bạn có thể cấu hình một [danh sách cho phép CVE theo dự án](https://goharbor.io/docs/2.3.0/working-with-projects/project-configuration/configure-project-allowlist/).
+Điều này sẽ cho phép một số hình ảnh chạy ngay cả khi chúng có lỗ hổng.
+Tuy nhiên, những lỗ hổng này sẽ được quản lý và cho phép thủ công bởi quản trị viên repo.
+
+## Tóm Tắt
+
+Quét các hình ảnh container của bạn và có cái nhìn sâu sắc về số lượng lỗ hổng bên trong chúng là rất quan trọng cho một SDLC an toàn.
+
+Một nơi để làm điều đó là pipeline CI của bạn (như đã thấy trong [Ngày 21](https://vntechies.dev/courses/90-ngay-devops-v2/ngay-21-tu-dong-quet-image-repository)).
+
+Một nơi khác là kho lưu trữ container của bạn (như đã thấy hôm nay).
+
+Cả hai đều là những lựa chọn tốt, cả hai đều có ưu và nhược điểm.
+Nó phụ thuộc vào kiến trúc sư DevSecOps để quyết định cách tiếp cận nào phù hợp hơn với họ và mô hình mối đe dọa của họ.
+
+Hẹn gặp lại bạn vào ngày 23.
+
+> Các bài viết là bản tiếng Việt của tài liệu [90DaysOfDevOps](https://github.com/MichaelCade/90DaysOfDevOps/tree/main/2023/Days) của [Micheal Cade](https://twitter.com/MichaelCade1) và có qua sửa đổi, bổ sung. Tất cả đều có license [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License][cc-by-nc-sa].
