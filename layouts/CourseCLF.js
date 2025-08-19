@@ -77,7 +77,7 @@ const courseInfo = {
   title: 'Khoá học AWS Certified Cloud Practitioner (CLF-C02)',
   subtitle: 'Bước đầu tiên vào thế giới Cloud Computing - Từ Zero đến AWS Certified',
   image: '/static/images/courses/awsclfc02Info.png',
-  startDate: '19/08/2025',
+  startDate: '08/09/2025',
   duration: '8 buổi học (16 giờ)',
   location: 'Online qua Zoom',
   price: '5.000.000 VNĐ',

@@ -18,7 +18,7 @@ import CourseRegistrationForm from '../components/CourseRegistrationForm'
 const testimonials = [
   {
     rating: 5,
-    comment: 'Khoá học rất thực tế, mentor tận tâm, mình đã pass DVA-C02 ngay lần đầu!',
+    comment: 'Khoá học rất thực tế, mentor tận tâm, mình đã pass SAA-C03 ngay lần đầu!',
     author: 'Võ Phi Hùng - Division Manager',
     image: '/static/images/customers/vophihung.jpg',
   },
