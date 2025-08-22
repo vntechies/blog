@@ -40,3 +40,5 @@ yarn-error.log*
 **.aws-sam
 .idea
 node_modules
+.cursor
+serverless
