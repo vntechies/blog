@@ -77,7 +77,7 @@ const courseInfo = {
   startDate: '19/08/2025',
   duration: '8 tuần (16 buổi, 32h)',
   schedule: 'Tối Thứ 3 & Thứ 5 (19:00 - 21:00)',
-  location: 'Online qua Zoom',
+  location: 'Online qua Google',
   price: '8.000.000 VNĐ',
   earlyBird: '7.200.000 VNĐ (giảm 10%)',
   registrationLink: 'https://m.me/vntechies',
@@ -270,7 +270,7 @@ export default function CourseSpecial({ frontMatter, mentorDetails, otherCourses
             <div className="rounded-xl bg-orange-50 p-6 text-center dark:bg-orange-900/20">
               <div className="mb-3 text-2xl font-bold text-orange-600">10/9</div>
               <div className="text-sm font-medium text-gray-700 dark:text-gray-300">Khai giảng</div>
-              <div className="text-xs text-gray-500 dark:text-gray-400">Online Zoom</div>
+              <div className="text-xs text-gray-500 dark:text-gray-400">Online Google</div>
             </div>
           </div>
         </div>

@@ -80,9 +80,9 @@ const courseInfo = {
   image: '/static/images/courses/awsclfc02Info.png',
   startDate: '08/09/2025',
   duration: '8 buổi học (16 giờ)',
-  location: 'Online qua Zoom',
+  location: 'Online qua Google',
   price: '5.000.000 VNĐ',
-  earlyBird: '1.199.000 VNĐ',
+  earlyBird: '2.499.000 VNĐ',
   registrationLink: 'https://m.me/vntechies',
 }
 
@@ -476,7 +476,7 @@ export default function CourseSpecial({ frontMatter, mentorDetails, otherCourses
                       <span className="line-through">{info.price}</span>
                       <span className="ml-2 font-bold text-red-600">{info.earlyBirdPrice}</span>
                     </p>
-                    <p className="text-sm text-gray-500">Early bird - Chỉ 50 suất đầu</p>
+                    <p className="text-sm text-gray-500">Giảm 50% cho 20 học viên</p>
                     <div className="text-xs mt-2 text-green-600 dark:text-green-400">
                       Hỗ trợ học phí lên tới 500.000đ
                     </div>
@@ -823,8 +823,7 @@ export default function CourseSpecial({ frontMatter, mentorDetails, otherCourses
             🚀 Đừng Bỏ Lỡ Cơ Hội Thay Đổi Sự Nghiệp!
           </h2>
           <p className="mb-8 text-xl text-blue-100">
-            Chỉ còn 50 suất early bird với giá ưu đãi 80%. Đăng ký ngay để bắt đầu hành trình lên
-            mây của bạn!
+            Chỉ còn 20 suất với giá ưu đãi 50%. Đăng ký ngay để bắt đầu hành trình lên mây của bạn!
           </p>
           <div className="flex flex-col justify-center gap-4 sm:flex-row">
             <a
