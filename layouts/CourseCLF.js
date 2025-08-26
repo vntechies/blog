@@ -480,7 +480,7 @@ export default function CourseSpecial({ frontMatter, mentorDetails }) {
                       Hỗ trợ học phí lên tới 500.000đ
                     </div>
                     <Link
-                      href="/docs/pricing#ho-tro-hoc-phi"
+                      href="/pricing#financial-aid"
                       className="text-xs font-semibold text-green-700 hover:underline dark:text-green-300"
                     >
                       Financial Aid Program

@@ -2,6 +2,7 @@ import siteMetadata from './siteMetadata'
 
 export const headerNavLinks = [
   { href: '/courses', title: 'Khoá học' },
+  { href: '/aws-certification-paths', title: 'AWS Certs' },
   { href: '/blog', title: 'Blog' },
   { href: '/series', title: 'Series' },
   { href: '/career', title: 'Career Center' },
@@ -9,7 +10,7 @@ export const headerNavLinks = [
 ]
 
 export const footerNavLinks = [
-  { href: '/docs/pricing', title: 'Chính sách giá' },
+  { href: '/pricing', title: 'Chính sách giá' },
   { href: '/docs/privacy', title: 'Chính sách bảo mật' },
   { href: '/docs/tos', title: 'Điều khoản sử dụng' },
   { href: siteMetadata.messenger, title: 'Liên hệ' },
@@ -22,6 +23,11 @@ export const featuredLinks = [
     title: 'Khoá học',
     summary: 'Tập trung vào DevOps, CI/CD, tự động hoá, CDK, AI và vận hành trên Cloud',
     url: '/courses',
+  },
+  {
+    title: 'AWS Certification Paths',
+    summary: 'Lộ trình chứng chỉ AWS từ Foundational đến Professional và Specialty',
+    url: '/aws-certification-paths',
   },
   {
     title: 'Chứng chỉ',

@@ -1082,7 +1082,7 @@ export default function CourseSpecial({ frontMatter, mentorDetails }) {
                     Hỗ trợ học phí lên tới 500.000đ
                   </div>
                   <Link
-                    href="/docs/pricing#ho-tro-hoc-phi"
+                    href="/pricing#financial-aid"
                     className="text-xs font-semibold text-orange-700 hover:underline dark:text-orange-300"
                   >
                     Financial Aid Program
@@ -1121,7 +1121,7 @@ export default function CourseSpecial({ frontMatter, mentorDetails }) {
                   <div className="text-sm line-through opacity-75">7.500.000₫</div>
                   <div className="text-xs mt-2 opacity-90">Hỗ trợ học phí lên tới 500.000đ</div>
                   <Link
-                    href="/docs/pricing#ho-tro-hoc-phi"
+                    href="/pricing#financial-aid"
                     className="text-xs font-semibold opacity-90 hover:underline"
                   >
                     Financial Aid Program
@@ -1169,7 +1169,7 @@ export default function CourseSpecial({ frontMatter, mentorDetails }) {
                 </div>
                 <div className="mt-3 text-center">
                   <Link
-                    href="/docs/pricing#cuu-hoc-vien"
+                    href="/pricing#cuu-hoc-vien"
                     className="text-sm text-orange-600 hover:underline dark:text-orange-400"
                   >
                     Giá cho cựu học viên
