@@ -2,7 +2,7 @@ import siteMetadata from './siteMetadata'
 
 export const headerNavLinks = [
   { href: '/courses', title: 'Khoá học' },
-  { href: '/aws-certification-paths', title: 'AWS Certs' },
+  { href: '/aws-certification-paths', title: 'AWS Paths' },
   { href: '/blog', title: 'Blog' },
   { href: '/series', title: 'Series' },
   { href: '/career', title: 'Career Center' },
