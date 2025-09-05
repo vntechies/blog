@@ -14,6 +14,7 @@ import {
 } from 'react-icons/fa'
 import Link from 'next/link'
 import CourseRegistrationForm from '../components/CourseRegistrationForm'
+import OtherCoursesSection from '@/components/OtherCoursesSection'
 
 const testimonials = [
   {
@@ -74,8 +75,8 @@ const courseInfo = {
   subtitle: 'Học lập trình & phát triển ứng dụng thực tế trên AWS',
   image: '/static/images/courses/awsdvac02-hero.png',
   startDate: '10/09/2025',
-  duration: '8 tuần (15 buổi,30+ giờ học)',
-  schedule: 'Tối Thứ 2 & Thứ 4 (19:00 - 21:00)',
+  duration: '8 tuần (16 buổi,30+ giờ học)',
+  schedule: '2 tổi trong tuần (19:00 - 21:00)',
   location: 'Online qua Google Meet + Lab thực hành',
   price: '8.000.000 VNĐ',
   earlyBird: '7.200.000 VNĐ (giảm 10%)',
@@ -89,7 +90,7 @@ const stats = [
   { number: '100%', label: 'Ứng dụng thực tế' },
 ]
 
-export default function CourseSpecial({ frontMatter, mentorDetails }) {
+export default function CourseSpecial({ frontMatter, mentorDetails, otherCourses = [] }) {
   const info = {
     title: frontMatter?.title || courseInfo.title,
     subtitle: frontMatter?.subtitle || courseInfo.subtitle,
@@ -1136,6 +1137,9 @@ export default function CourseSpecial({ frontMatter, mentorDetails }) {
           </p>
         </div>
       </section>
+
+      {/* Other Courses Section */}
+      <OtherCoursesSection otherCourses={otherCourses} />
     </div>
   )
 }

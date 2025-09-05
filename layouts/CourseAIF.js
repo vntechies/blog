@@ -15,6 +15,7 @@ import {
 } from 'react-icons/fa'
 import Link from 'next/link'
 import CourseRegistrationForm from '../components/CourseRegistrationForm'
+import OtherCoursesSection from '@/components/OtherCoursesSection'
 
 const testimonials = [
   {
@@ -74,9 +75,9 @@ const courseInfo = {
   title: 'AWS AI Practitioner - Professional AI Foundations',
   subtitle: 'Kiến thức nền tảng cho AI trên AWS - Giáo trình chuẩn toàn cầu',
   image: '/static/images/courses/awsaifc01.png',
-  startDate: '19/08/2025',
+  startDate: '10/2025',
   duration: '5 tuần (10 buổi, 20h)',
-  schedule: 'Tối Thứ 3 & Thứ 5 (20:00 - 22:00)',
+  schedule: '2 tối trong tuần (19:00-21:00)',
   location: 'Online qua Google',
   price: '6.000.000 VNĐ',
   earlyBird: '5.400.000 VNĐ (giảm 10%)',
@@ -90,7 +91,7 @@ const stats = [
   { number: '4+', label: 'Mentor kinh nghiệm' },
 ]
 
-export default function CourseSpecial({ frontMatter, mentorDetails }) {
+export default function CourseSpecial({ frontMatter, mentorDetails, otherCourses = [] }) {
   const info = {
     title: frontMatter?.title || courseInfo.title,
     subtitle: frontMatter?.subtitle || courseInfo.subtitle,
@@ -253,7 +254,7 @@ export default function CourseSpecial({ frontMatter, mentorDetails }) {
             <div className="rounded-xl bg-purple-50 p-6 text-center dark:bg-purple-900/20">
               <div className="mb-3 text-2xl font-bold text-purple-600">02 buổi/tuần</div>
               <div className="text-sm font-medium text-gray-700 dark:text-gray-300">Lịch học</div>
-              <div className="text-xs text-gray-500 dark:text-gray-400">20:00 - 22:00</div>
+              <div className="text-xs text-gray-500 dark:text-gray-400">19:00 - 21:00</div>
             </div>
             <div className="rounded-xl bg-purple-50 p-6 text-center dark:bg-purple-900/20">
               <div className="mb-3 text-2xl font-bold text-purple-600">9/2025</div>
@@ -1260,6 +1261,9 @@ export default function CourseSpecial({ frontMatter, mentorDetails }) {
           </p>
         </div>
       </section>
+
+      {/* Other Courses Section */}
+      <OtherCoursesSection otherCourses={otherCourses} />
     </div>
   )
 }
