@@ -75,9 +75,9 @@ const courseInfo = {
   title: 'AWS AI Practitioner - Professional AI Foundations',
   subtitle: 'Kiến thức nền tảng cho AI trên AWS - Giáo trình chuẩn toàn cầu',
   image: '/static/images/courses/awsaifc01.png',
-  startDate: '19/08/2025',
+  startDate: '10/2025',
   duration: '5 tuần (10 buổi, 20h)',
-  schedule: 'Tối Thứ 3 & Thứ 5 (19:00 - 21:00)',
+  schedule: '2 tối trong tuần (19:00-21:00)',
   location: 'Online qua Google',
   price: '6.000.000 VNĐ',
   earlyBird: '5.400.000 VNĐ (giảm 10%)',
@@ -972,7 +972,7 @@ export default function CourseSpecial({ frontMatter, mentorDetails, otherCourses
                     Hỗ trợ học phí lên tới 500.000đ
                   </div>
                   <Link
-                    href="/docs/pricing#ho-tro-hoc-phi"
+                    href="/pricing#financial-aid"
                     className="text-xs font-semibold text-purple-700 hover:underline dark:text-purple-300"
                   >
                     Financial Aid Program
@@ -1013,7 +1013,7 @@ export default function CourseSpecial({ frontMatter, mentorDetails, otherCourses
                   <div className="text-sm line-through opacity-75">5.500.000₫</div>
                   <div className="text-xs mt-2 opacity-90">Hỗ trợ học phí lên tới 500.000đ</div>
                   <Link
-                    href="/docs/pricing#ho-tro-hoc-phi"
+                    href="/pricing#financial-aid"
                     className="text-xs font-semibold opacity-90 hover:underline"
                   >
                     Financial Aid Program
@@ -1061,7 +1061,7 @@ export default function CourseSpecial({ frontMatter, mentorDetails, otherCourses
                 </div>
                 <div className="mt-3 text-center">
                   <Link
-                    href="/docs/pricing#cuu-hoc-vien"
+                    href="/pricing#cuu-hoc-vien"
                     className="text-sm text-purple-600 hover:underline dark:text-purple-400"
                   >
                     Giá cho cựu học viên
