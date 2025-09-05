@@ -4,7 +4,7 @@ occupation: Cloud Solutions Architect - AWS Builder & Community Leader
 avatar: /static/images/authors/kha.png
 linkedin: https://www.linkedin.com/in/vanhoangkha
 github: https://github.com/vanhoangkha
-startYear: 2022
+startYear: 2020
 isMentor: true
 studentCount: 50
 successRate: 95
