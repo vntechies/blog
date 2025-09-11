@@ -33,7 +33,7 @@ testimonials:
 - Microsoft Azure Administrator Associate
 - Microsoft Azure Database Administrator Associate
 - Microsoft Azure Developer Associate
-- Microsoft Azure Solution Architect Expert 
+- Microsoft Azure Solution Architect Expert
 - Oracle Cloud Infrastructure Architect Professional 2019
 - Oracle Cloud Infrastructure Architect Associate 2019
 - Oracle Cloud Infrastructure Foundation 2020

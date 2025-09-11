@@ -473,15 +473,13 @@ export default function CourseSpecial({ frontMatter, mentorDetails, otherCourses
                   <div>
                     <h3 className="font-semibold text-gray-900 dark:text-white">Học phí</h3>
                     <p className="text-gray-600 dark:text-gray-300">
-                      <span className="line-through">{info.price}</span>
-                      <span className="ml-2 font-bold text-red-600">{info.earlyBirdPrice}</span>
+                      <span>{info.price}</span>
                     </p>
-                    <p className="text-sm text-gray-500">Giảm 50% cho 20 học viên</p>
                     <div className="text-xs mt-2 text-green-600 dark:text-green-400">
                       Hỗ trợ học phí lên tới 500.000đ
                     </div>
                     <Link
-                      href="/docs/pricing#ho-tro-hoc-phi"
+                      href="/pricing#financial-aid"
                       className="text-xs font-semibold text-green-700 hover:underline dark:text-green-300"
                     >
                       Financial Aid Program
