@@ -1,0 +1,159 @@
+---
+title: 'Ngày 23 - Tích hợp rà quét Artifacts'
+images: ['/static/images/ogps/90daysofdevopsv2d22.png']
+summary: 'Tích hợp rà quét Artifacts'
+date: '2025-09-16'
+index: 23
+chapter: 'Tuần 4'
+---
+
+<TOCInline toc={props.toc} asDisclosure />
+
+# Quét các Artifacts
+
+Trong hai ngày trước, chúng ta đã tìm hiểu lý do và cách quét các container images.
+Tuy nhiên, thông thường cơ sở hạ tầng của chúng ta không chỉ bao gồm các container images. Đúng là các dịch vụ của chúng ta sẽ chạy dưới dạng container, nhưng xung quanh chúng, chúng ta còn có thể có các artifacts khác như:
+
+- Các tệp manifest của Kubernetes
+- Các template của Helm
+- Mã Terraform
+- Thư viện dependencies
+
+Để đạt được mức bảo mật tối đa, bạn nên quét tất cả các artifacts mà bạn sử dụng cho môi trường của mình, không chỉ các container images.
+Lý do là, ngay cả khi bạn có các Docker images an toàn nhất mà không có bất kỳ lỗ hổng CVE nào, nhưng lại chạy chúng trên một cơ sở hạ tầng không an toàn với cấu hình Kubernetes kém, thì môi trường của bạn sẽ không an toàn.
+Mỗi hệ thống đều chỉ an toàn bằng mắt xích yếu nhất của nó.
+
+Hôm nay, chúng ta sẽ xem xét các công cụ khác nhau để quét các artifacts ngoài container images.
+
+## Các tệp Kubernetes Manifests
+
+Quét các tệp manifest của Kubernetes có thể giúp phát hiện các cấu hình sai và các thói quen bảo mật kém như:
+
+- Chạy container với quyền root
+- Chạy container mà không có giới hạn tài nguyên
+- Cấp quá nhiều và quá mạnh các quyền cho container
+- Hardcode (mã hóa cứng) các secret (bí mật) trong các template, v.v.
+
+Tất cả những điều này đều là một phần của tư thế bảo mật của các khối lượng công việc Kubernetes của chúng ta, và có một tư thế bảo mật kém cũng tệ như có một tư thế thật kém trong đời thực vậy.
+
+Một công cụ mã nguồn mở phổ biến để quét các tệp manifest của Kubernetes là [KubeSec](https://kubesec.io/).
+
+Nó sẽ xuất ra một danh sách các cấu hình sai.
+
+Ví dụ, tệp manifest Kubernetes này, được lấy từ tài liệu của họ, có rất nhiều cấu hình sai như thiếu giới hạn bộ nhớ, chạy với quyền root, v.v.
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: kubesec-demo
+spec:
+  containers:
+    - name: kubesec-demo
+      image: gcr.io/google-samples/node-hello:1.0
+      securityContext:
+        runAsNonRoot: false
+```
+
+Hãy quét nó và xem kết quả.
+
+```shell
+
+$ kubesec scan kubesec-test.yaml
+[
+  {
+    "object": "Pod/kubesec-demo.default",
+    "valid": true,
+    "message": "Passed with a score of 0 points",
+    "score": 0,
+    "scoring": {
+      "advise": [
+        {
+          "selector": ".metadata .annotations .\"container.seccomp.security.alpha.kubernetes.io/pod\"",
+          "reason": "Seccomp profiles set minimum privilege and secure against unknown threats"
+        },
+        {
+          "selector": ".spec .serviceAccountName",
+          "reason": "Service accounts restrict Kubernetes API access and should be configured with least privilege"
+        },
+        {
+          "selector": "containers[] .securityContext .runAsNonRoot == true",
+          "reason": "Force the running image to run as a non-root user to ensure least privilege"
+        },
+        {
+          "selector": ".metadata .annotations .\"container.apparmor.security.beta.kubernetes.io/nginx\"",
+          "reason": "Well defined AppArmor policies may provide greater protection from unknown threats. WARNING: NOT PRODUCTION READY"
+        },
+        {
+          "selector": "containers[] .resources .requests .memory",
+          "reason": "Enforcing memory requests aids a fair balancing of resources across the cluster"
+        },
+        {
+          "selector": "containers[] .securityContext .runAsUser -gt 10000",
+          "reason": "Run as a high-UID user to avoid conflicts with the host's user table"
+        },
+        {
+          "selector": "containers[] .resources .limits .cpu",
+          "reason": "Enforcing CPU limits prevents DOS via resource exhaustion"
+        },
+        {
+          "selector": "containers[] .resources .requests .cpu",
+          "reason": "Enforcing CPU requests aids a fair balancing of resources across the cluster"
+        },
+        {
+          "selector": "containers[] .securityContext .readOnlyRootFilesystem == true",
+          "reason": "An immutable root filesystem can prevent malicious binaries being added to PATH and increase attack cost"
+        },
+        {
+          "selector": "containers[] .securityContext .capabilities .drop",
+          "reason": "Reducing kernel capabilities available to a container limits its attack surface"
+        },
+        {
+          "selector": "containers[] .resources .limits .memory",
+          "reason": "Enforcing memory limits prevents DOS via resource exhaustion"
+        },
+        {
+          "selector": "containers[] .securityContext .capabilities .drop | index(\"ALL\")",
+          "reason": "Drop all capabilities and add only those required to reduce syscall attack surface"
+        }
+      ]
+    }
+  }
+]
+```
+
+Như chúng ta thấy, nó đã tạo ra 12 cảnh báo về những điều chúng ta cần thay đổi trong tệp manifest này. Mỗi cảnh báo đều có một lời giải thích cho chúng ta biết TẠI SAO chúng ta cần khắc phục nó.
+
+## Các công cụ khác
+
+Các công cụ tương tự khác bao gồm [kube-bench](https://github.com/aquasecurity/kube-bench), [kubeaudit](https://github.com/Shopify/kubeaudit) và [kube-score](https://github.com/zegl/kube-score).
+
+Chúng hoạt động theo cách tương tự hoặc giống nhau. Bạn cung cấp cho chúng một tài nguyên để phân tích và chúng sẽ xuất ra một danh sách những việc cần khắc phục.
+
+Chúng có thể được sử dụng trong thiết lập CI. Một số trong số chúng cũng có thể được sử dụng làm [Kubernetes validating webhook](https://kubernetes.io/docs/reference/access-authn-authz/extensible-admission-controllers/) và có thể chặn việc tạo tài nguyên nếu chúng vi phạm một chính sách.
+
+## Các template của [Helm](https://helm.sh/)
+
+Các template của [Helm](https://helm.sh/) về cơ bản là các tài nguyên Kubernetes được tạo template có thể được tái sử dụng và cấu hình với các giá trị khác nhau.
+
+Có một số công cụ như [Snyk](https://snyk.io/) hay [Wiz](https://wiz.io/) có các công cụ hỗ trợ để quét các template của Helm nhằm tìm các cấu hình sai, giống như cách chúng ta đang quét các tài nguyên Kubernetes.
+
+Tuy nhiên, cách tốt nhất để tiếp cận vấn đề này là chỉ quét phiên bản cuối cùng đã được tạo template của các Helm chart của bạn hay nói cách khác là version mới nhất. Ví dụ: sử dụng helm template để thay thế các giá trị template bằng các giá trị thực và chỉ cần quét nó thông qua các công cụ đã được cung cấp ở trên.
+
+## Terraform
+
+Công cụ phổ biến nhất để quét các cấu hình sai trong mã [Terraform](https://www.terraform.io/) là [tfsec](https://github.com/aquasecurity/tfsec).
+Nó sử dụng phân tích tĩnh để phát hiện các vấn đề tiềm ẩn trong mã của bạn.
+Nó hỗ trợ nhiều nhà cung cấp đám mây và chỉ ra các vấn đề cụ thể cho nhà cung cấp mà bạn đang sử dụng.
+Ví dụ, nó có các kiểm tra cho việc sử dụng VPC mặc định trong AWS, hardcode secret trong dữ liệu người dùng của EC2, hoặc cho phép truy cập công khai vào các container images ECR của bạn.
+Nó cho phép bạn bật/tắt các kiểm tra và bỏ qua các cảnh báo thông qua các nhận xét nội tuyến.
+Nó cũng cho phép bạn xác định các chính sách của riêng mình thông qua Rego.
+
+## Tóm tắt
+
+Một SDLC (Vòng đời Phát triển Phần mềm) An toàn sẽ bao gồm việc quét tất cả các artifacts cuối cùng nằm trong môi trường sản xuất của chúng ta, không chỉ các container images.
+Hôm nay chúng ta đã học cách quét các artifacts không phải container như các tệp manifest của Kubernetes, Helm chart và mã Terraform. Các công cụ chúng ta đã xem xét đều miễn phí và mã nguồn mở, có thể được tích hợp vào bất kỳ quy trình làm việc hoặc CI pipeline nào.
+
+Hẹn gặp lại bạn vào Ngày 24.
+
+> Các bài viết là bản tiếng Việt của tài liệu [90DaysOfDevOps](https://github.com/MichaelCade/90DaysOfDevOps/tree/main/2023/Days) của [Micheal Cade](https://twitter.com/MichaelCade1) và có qua sửa đổi, bổ sung. Tất cả đều có license [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License][cc-by-nc-sa].
