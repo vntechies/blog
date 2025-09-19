@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Image from '../components/Image'
 import {
   FaCheckCircle,
@@ -11,6 +11,8 @@ import {
   FaLaptopCode,
   FaCertificate,
   FaRocket,
+  FaChevronDown,
+  FaChevronUp,
 } from 'react-icons/fa'
 import Link from 'next/link'
 import CourseRegistrationForm from '../components/CourseRegistrationForm'
@@ -45,12 +47,11 @@ const courseInfo = {
   subtitle: 'Từ Zero đến Hero với DevOps - Lộ trình đào tạo toàn diện',
   image: '/static/images/courses/devopseng01-hero.png',
   startDate: '9/10/2025',
-  duration: '16 tuần (32 buổi, 64h)',
+  duration: '8 tuần (16 buổi)',
   schedule: '19:00 - 21:00 - UTC+7',
   location: 'Online qua Google Meet',
-  price: '7.199.000 VNĐ',
-  earlyBird: '6.500.000 VNĐ',
-  studentPrice: '6.000.000 VNĐ',
+  price: '8.000.000 VNĐ',
+  earlyBird: '7.200.000 VNĐ (giảm 10%)',
   registrationLink: 'https://m.me/vntechies',
   modules: [
     {
@@ -286,6 +287,9 @@ const stats = [
 ]
 
 export default function CourseDevOps({ frontMatter, mentorDetails, otherCourses = [] }) {
+  // State to track which lessons are expanded
+  const [expandedLessons, setExpandedLessons] = useState(new Set())
+
   const info = {
     title: frontMatter?.title || courseInfo.title,
     subtitle: frontMatter?.subtitle || courseInfo.subtitle,
@@ -304,6 +308,20 @@ export default function CourseDevOps({ frontMatter, mentorDetails, otherCourses 
   }
 
   const mentors = mentorDetails
+
+  // Function to toggle lesson expansion
+  const toggleLesson = (moduleIndex, lessonIndex) => {
+    const lessonKey = `${moduleIndex}-${lessonIndex}`
+    const newExpandedLessons = new Set(expandedLessons)
+
+    if (newExpandedLessons.has(lessonKey)) {
+      newExpandedLessons.delete(lessonKey)
+    } else {
+      newExpandedLessons.add(lessonKey)
+    }
+
+    setExpandedLessons(newExpandedLessons)
+  }
 
   return (
     <div className="mx-auto w-full max-w-7xl">
@@ -345,7 +363,9 @@ export default function CourseDevOps({ frontMatter, mentorDetails, otherCourses 
                 <div className="rounded-2xl bg-gradient-to-r from-blue-600 to-indigo-600 p-6 text-white shadow-xl">
                   <div className="text-center">
                     <div className="mb-4">
-                      <h3 className="text-lg mb-2 font-bold">🎁 Khoá học độc quyền</h3>
+                      <h3 className="text-lg mb-2 font-bold">
+                        🎁 Khoá học độc quyền với hơn hơn 50% THỜI LƯỢNG LAB
+                      </h3>
                     </div>
                     <div className="space-y-3">
                       <div className="flex flex-col items-center justify-center gap-2 rounded-lg bg-white/10 p-3">
@@ -358,9 +378,7 @@ export default function CourseDevOps({ frontMatter, mentorDetails, otherCourses 
                       </div>
                       <div className="flex items-center justify-center gap-3 rounded-lg bg-white/10 p-3">
                         <FaLaptopCode className="h-5 w-5 flex-shrink-0 text-yellow-300" />
-                        <span className="text-sm font-medium">
-                          Xây dựng hệ thống DevOps từ cơ bản đến nâng cao
-                        </span>
+                        <span className="text-sm font-medium">LAB LAB LAB VÀ LAB!!!</span>
                       </div>
                     </div>
                   </div>
@@ -370,7 +388,7 @@ export default function CourseDevOps({ frontMatter, mentorDetails, otherCourses 
                 <div className="rounded-2xl bg-gradient-to-br from-slate-900 to-slate-800 p-8 text-white shadow-xl">
                   <div className="mb-6">
                     <h3 className="text-md text-center font-bold text-blue-400">
-                      Khoá học DevOps được lựa chọn nhiều nhất
+                      Xây dựng hệ thống DevOps từ cơ bản đến nâng cao
                     </h3>
                   </div>
                   <div className="grid gap-4 sm:grid-cols-2">
@@ -449,16 +467,16 @@ export default function CourseDevOps({ frontMatter, mentorDetails, otherCourses 
           </div>
           <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
             <div className="rounded-xl bg-blue-50 p-6 text-center dark:bg-blue-900/20">
-              <div className="mb-3 text-3xl font-bold text-blue-600">32</div>
+              <div className="mb-3 text-3xl font-bold text-blue-600">16</div>
               <div className="text-sm font-medium text-gray-700 dark:text-gray-300">Buổi học</div>
               <div className="text-xs text-gray-500 dark:text-gray-400">Mỗi buổi 2 tiếng</div>
             </div>
             <div className="rounded-xl bg-blue-50 p-6 text-center dark:bg-blue-900/20">
-              <div className="mb-3 text-3xl font-bold text-blue-600">64h</div>
+              <div className="mb-3 text-3xl font-bold text-blue-600">32h</div>
               <div className="text-sm font-medium text-gray-700 dark:text-gray-300">
                 Tổng thời lượng
               </div>
-              <div className="text-xs text-gray-500 dark:text-gray-400">16 tuần học</div>
+              <div className="text-xs text-gray-500 dark:text-gray-400">8 tuần học</div>
             </div>
             <div className="rounded-xl bg-blue-50 p-6 text-center dark:bg-blue-900/20">
               <div className="mb-3 text-2xl font-bold text-blue-600">02 buổi/tuần</div>
@@ -466,9 +484,9 @@ export default function CourseDevOps({ frontMatter, mentorDetails, otherCourses 
               <div className="text-xs text-gray-500 dark:text-gray-400">19:00 - 21:00</div>
             </div>
             <div className="rounded-xl bg-blue-50 p-6 text-center dark:bg-blue-900/20">
-              <div className="mb-3 text-2xl font-bold text-blue-600">19/08</div>
-              <div className="text-sm font-medium text-gray-700 dark:text-gray-300">Khai giảng</div>
-              <div className="text-xs text-gray-500 dark:text-gray-400">Online Google Meet</div>
+              <div className="mb-3 text-2xl font-bold text-blue-600">Liên Tục Khai Giảng</div>
+              <div className="text-sm font-medium text-gray-700 dark:text-gray-300">Học Online</div>
+              <div className="text-xs text-gray-500 dark:text-gray-400">Google Meet</div>
             </div>
           </div>
         </div>
@@ -502,7 +520,7 @@ export default function CourseDevOps({ frontMatter, mentorDetails, otherCourses 
                     Người đi làm
                   </div>
                   <div className="text-3xl font-bold text-gray-900 dark:text-gray-100">
-                    7.199.000₫
+                    8.000.000₫
                   </div>
                 </div>
                 <div className="rounded-xl bg-blue-50 p-4 text-center dark:bg-blue-900/30">
@@ -510,7 +528,7 @@ export default function CourseDevOps({ frontMatter, mentorDetails, otherCourses 
                     Sinh viên
                   </div>
                   <div className="text-2xl font-bold text-blue-700 dark:text-blue-300">
-                    6.699.000₫
+                    7.500.000₫
                   </div>
                   <div className="text-xs mt-2 text-blue-600 dark:text-blue-400">
                     Hỗ trợ học phí lên tới 500.000đ
@@ -535,7 +553,7 @@ export default function CourseDevOps({ frontMatter, mentorDetails, otherCourses 
             {/* Early Bird Plan - Featured */}
             <div className="group relative scale-105 rounded-2xl bg-blue-600 p-8 text-white shadow-2xl">
               <div className="absolute -top-4 left-1/2 -translate-x-1/2 rounded-full bg-blue-400 px-4 py-2 text-sm font-bold text-white">
-                Ưu đãi hấp dẫn
+                HẤP DẪN
               </div>
 
               <div className="mb-8 text-center">
@@ -546,13 +564,13 @@ export default function CourseDevOps({ frontMatter, mentorDetails, otherCourses 
               <div className="mb-8 space-y-4">
                 <div className="rounded-xl bg-white/20 p-6 text-center backdrop-blur">
                   <div className="text-sm font-medium opacity-90">Người đi làm</div>
-                  <div className="text-3xl font-bold">6.699.000₫</div>
+                  <div className="text-3xl font-bold">7.200.000₫</div>
                   <div className="text-sm line-through opacity-75">7.199.000₫</div>
                 </div>
                 <div className="rounded-xl bg-white/10 p-4 text-center backdrop-blur">
                   <div className="text-sm font-medium opacity-90">Sinh viên</div>
-                  <div className="text-2xl font-bold">6.499.000₫</div>
-                  <div className="text-sm line-through opacity-75">6.699.000₫</div>
+                  <div className="text-2xl font-bold">6.700.000₫</div>
+                  <div className="text-sm line-through opacity-75">7.500.000₫</div>
                   <div className="text-xs mt-2 opacity-90">Hỗ trợ học phí lên tới 500.000đ</div>
                   <Link
                     href="/pricing#financial-aid"
@@ -588,18 +606,18 @@ export default function CourseDevOps({ frontMatter, mentorDetails, otherCourses 
                     Người đi làm
                   </div>
                   <div className="text-3xl font-bold text-blue-700 dark:text-blue-300">
-                    6.199.000₫
+                    6.800.000₫
                   </div>
-                  <div className="text-sm text-gray-500 line-through">7.199.000₫</div>
+                  <div className="text-sm text-gray-500 line-through">8.000.000₫</div>
                 </div>
                 <div className="rounded-xl bg-blue-50 p-4 text-center dark:bg-blue-900/20">
                   <div className="text-sm font-medium text-blue-600 dark:text-blue-400">
                     Sinh viên
                   </div>
                   <div className="text-2xl font-bold text-blue-700 dark:text-blue-300">
-                    5.999.000₫
+                    6.300.000₫
                   </div>
-                  <div className="text-sm text-gray-500 line-through">6.699.000₫</div>
+                  <div className="text-sm text-gray-500 line-through">7.500.000₫</div>
                 </div>
               </div>
 
@@ -640,27 +658,47 @@ export default function CourseDevOps({ frontMatter, mentorDetails, otherCourses 
                 </div>
 
                 <div className="space-y-6">
-                  {module.lessons.map((lesson, lessonIndex) => (
-                    <div
-                      key={lessonIndex}
-                      className="rounded-xl bg-slate-50 p-6 dark:bg-gray-700/50"
-                    >
-                      <h4 className="text-lg mb-4 font-semibold text-gray-900 dark:text-gray-100">
-                        {lesson.title}
-                      </h4>
-                      <ul className="space-y-2">
-                        {lesson.topics.map((topic, topicIndex) => (
-                          <li
-                            key={topicIndex}
-                            className="flex items-start gap-3 text-gray-600 dark:text-gray-300"
-                          >
-                            <FaCheckCircle className="mt-1 h-5 w-5 flex-shrink-0 text-blue-500" />
-                            <span>{topic}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  ))}
+                  {module.lessons.map((lesson, lessonIndex) => {
+                    const lessonKey = `${moduleIndex}-${lessonIndex}`
+                    const isExpanded = expandedLessons.has(lessonKey)
+
+                    return (
+                      <div
+                        key={lessonIndex}
+                        className="rounded-xl bg-slate-50 p-6 dark:bg-gray-700/50"
+                      >
+                        <div
+                          className="flex cursor-pointer items-center justify-between"
+                          onClick={() => toggleLesson(moduleIndex, lessonIndex)}
+                        >
+                          <h4 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+                            {lesson.title}
+                          </h4>
+                          <div className="ml-4 flex-shrink-0">
+                            {isExpanded ? (
+                              <FaChevronUp className="h-5 w-5 text-blue-500 transition-transform" />
+                            ) : (
+                              <FaChevronDown className="h-5 w-5 text-blue-500 transition-transform" />
+                            )}
+                          </div>
+                        </div>
+
+                        {isExpanded && (
+                          <ul className="mt-4 space-y-2 transition-all duration-300 ease-in-out">
+                            {lesson.topics.map((topic, topicIndex) => (
+                              <li
+                                key={topicIndex}
+                                className="flex items-start gap-3 text-gray-600 dark:text-gray-300"
+                              >
+                                <FaCheckCircle className="mt-1 h-5 w-5 flex-shrink-0 text-blue-500" />
+                                <span>{topic}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        )}
+                      </div>
+                    )
+                  })}
                 </div>
               </div>
             ))}
