@@ -364,7 +364,7 @@ export default function CourseDevOps({ frontMatter, mentorDetails, otherCourses 
                   <div className="text-center">
                     <div className="mb-4">
                       <h3 className="text-lg mb-2 font-bold">
-                        🎁 Khoá học độc quyền với hơn hơn 50% THỜI LƯỢNG LAB
+                        🎁 Khoá học độc quyền với hơn 50% THỜI LƯỢNG LAB
                       </h3>
                     </div>
                     <div className="space-y-3">
