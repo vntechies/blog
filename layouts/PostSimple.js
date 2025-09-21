@@ -7,6 +7,7 @@ import Comments from '@/components/comments'
 import ScrollTopAndComment from '@/components/ScrollTopAndComment'
 import Image from '@/components/Image'
 import HorizontalCard from '@/components/HorizontalCard'
+import SummaryButton from '@/components/SummaryButton'
 
 export default function PostLayout({ frontMatter, authorDetails, next, prev, children }) {
   const { date, title, images } = frontMatter
@@ -16,6 +17,11 @@ export default function PostLayout({ frontMatter, authorDetails, next, prev, chi
     <SectionContainer>
       <BlogSEO url={`${siteMetadata.siteUrl}/blog/${frontMatter.slug}`} {...frontMatter} />
       <ScrollTopAndComment />
+      <SummaryButton
+        content={
+          typeof children === 'string' ? children : children?.props?.children?.toString() || title
+        }
+      />
       <article>
         <div>
           <header>
