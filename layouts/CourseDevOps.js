@@ -329,6 +329,48 @@ export default function CourseDevOps({ frontMatter, mentorDetails, otherCourses 
       <section className="bg-gradient-to-br from-white to-slate-50 px-4 py-24 dark:from-gray-900 dark:to-slate-800">
         <div className="mx-auto max-w-7xl">
           <div className="flex flex-col items-center">
+            {/* Fixed Discount Banner - Left Corner */}
+            <div className="fixed top-40 left-4 z-50">
+              <div className="relative -rotate-45 transform">
+                <div
+                  className="bg-yellow-400 px-12 py-4 text-xl font-bold text-red-600 shadow-lg"
+                  style={{
+                    clipPath: 'polygon(15% 0, 100% 0, 100% 100%, 15% 100%, 0 50%)',
+                    width: '160px',
+                    height: '48px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    whiteSpace: 'nowrap',
+                    overflow: 'hidden',
+                  }}
+                >
+                  Discount 50%*
+                </div>
+              </div>
+            </div>
+
+            {/* Fixed FREE LAB Banner - Under Discount Flag */}
+            <div className="fixed top-72 left-4 z-50">
+              <div className="relative -rotate-45 transform">
+                <div
+                  className="bg-yellow-400 px-12 py-4 text-xl font-bold text-red-600 shadow-lg"
+                  style={{
+                    clipPath: 'polygon(15% 0, 100% 0, 100% 100%, 15% 100%, 0 50%)',
+                    width: '160px',
+                    height: '48px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    whiteSpace: 'nowrap',
+                    overflow: 'hidden',
+                  }}
+                >
+                  FREE LAB
+                </div>
+              </div>
+            </div>
+
             <div className="mb-16 max-w-4xl text-center">
               <h1 className="mb-8 text-center text-[3.5rem] font-black leading-none tracking-tight text-gray-900 dark:text-gray-100 md:text-[4rem] lg:text-[5rem] xl:text-[6rem]">
                 <span className="bg-gradient-to-r from-gray-900 to-slate-700 bg-clip-text text-transparent dark:from-gray-100 dark:to-slate-300">
