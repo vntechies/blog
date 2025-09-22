@@ -330,7 +330,7 @@ export default function CourseDevOps({ frontMatter, mentorDetails, otherCourses 
         <div className="mx-auto max-w-7xl">
           <div className="flex flex-col items-center">
             {/* Fixed Discount Banner - Left Corner */}
-            <div className="fixed top-40 left-4 z-50">
+            {/* <div className="fixed top-40 left-4 z-50">
               <div className="relative -rotate-45 transform">
                 <div
                   className="bg-yellow-400 px-12 py-4 text-xl font-bold text-red-600 shadow-lg"
@@ -348,10 +348,10 @@ export default function CourseDevOps({ frontMatter, mentorDetails, otherCourses 
                   Discount 50%*
                 </div>
               </div>
-            </div>
+            </div> */}
 
             {/* Fixed FREE LAB Banner - Under Discount Flag */}
-            <div className="fixed top-72 left-4 z-50">
+            {/* <div className="fixed top-72 left-4 z-50">
               <div className="relative -rotate-45 transform">
                 <div
                   className="bg-yellow-400 px-12 py-4 text-xl font-bold text-red-600 shadow-lg"
@@ -369,7 +369,7 @@ export default function CourseDevOps({ frontMatter, mentorDetails, otherCourses 
                   FREE LAB
                 </div>
               </div>
-            </div>
+            </div> */}
 
             <div className="mb-16 max-w-4xl text-center">
               <h1 className="mb-8 text-center text-[3.5rem] font-black leading-none tracking-tight text-gray-900 dark:text-gray-100 md:text-[4rem] lg:text-[5rem] xl:text-[6rem]">
