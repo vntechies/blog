@@ -6,7 +6,7 @@ linkedin: https://www.linkedin.com/in/vanhoangkha
 github: https://github.com/vanhoangkha
 startYear: 2020
 isMentor: true
-studentCount: 50
+studentCount: 2000
 successRate: 95
 testimonials: []
 ---

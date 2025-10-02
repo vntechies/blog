@@ -10,26 +10,31 @@ const Hero = () => {
         <div className="absolute -bottom-40 -left-32 h-80 w-80 rounded-full bg-blue-100 opacity-20 dark:bg-blue-900"></div>
       </div>
 
-      <div className="relative z-10 mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
+      <div className="relative z-10 mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8 lg:py-12">
         {/* Header Section */}
         <div className="text-center">
           {/* Badge */}
-          <div className="mb-8 inline-flex items-center rounded-full bg-orange-100 px-4 py-2 text-sm font-semibold text-orange-800 dark:bg-orange-900/30 dark:text-orange-300">
+          <div className="mb-4 inline-flex items-center rounded-full bg-orange-100 px-4 py-2 text-sm font-semibold text-orange-800 dark:bg-orange-900/30 dark:text-orange-300">
             <span className="mr-2">🚀</span>4 khoá học AWS mới đã ra mắt
           </div>
 
           {/* Main heading */}
-          <h1 className="lg:text-6xl mb-6 text-4xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-5xl">
-            Chinh phục{' '}
+          <h1 className="lg:text-6xl mb-4 text-4xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-5xl">
+            Chinh phục
+            <br />
             <span className="bg-gradient-to-r from-orange-500 to-orange-600 bg-clip-text text-transparent">
               AWS Certification
+            </span>{' '}
+            và{' '}
+            <span className="bg-gradient-to-r from-blue-500 to-blue-600 bg-clip-text text-transparent">
+              Cloud DevOps
             </span>
             <br />
             cùng VNTechies
           </h1>
 
           {/* Social Media Links */}
-          <div className="mb-8 flex flex-wrap justify-center gap-3">
+          <div className="mb-4 flex flex-wrap justify-center gap-3">
             <a
               href="https://fb.me/vntechies"
               target="_blank"
@@ -93,7 +98,7 @@ const Hero = () => {
           </div>
 
           {/* CTA Buttons */}
-          <div className="mb-16 flex flex-col gap-4 sm:flex-row sm:justify-center">
+          <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:justify-center">
             <Link
               href="/courses/aws/saa/gioi-thieu"
               className="inline-flex items-center justify-center rounded-lg bg-orange-500 px-8 py-3 text-base font-semibold text-white shadow-lg transition-all focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 hover:bg-orange-600 hover:shadow-xl"
@@ -159,12 +164,12 @@ const Hero = () => {
               image: '/static/images/courses/dva.png',
             },
             {
-              title: 'AI Practitioner',
-              code: 'AIF-C01',
-              level: 'Foundational',
+              title: 'DevOps Engineer',
+              code: 'VDE-C01',
+              level: 'Associate',
               color: 'from-purple-500 to-purple-600',
-              link: '/courses/aws/aif/gioi-thieu',
-              image: '/static/images/courses/aif.png',
+              link: '/courses/devops/gioi-thieu',
+              image: '/static/images/courses/vde.png',
             },
           ].map((course, index) => (
             <Link key={index} href={course.link} className="group">
@@ -177,7 +182,11 @@ const Hero = () => {
                   {course.image ? (
                     <Image
                       src={course.image}
-                      alt={`AWS ${course.title} certification`}
+                      alt={
+                        course.code === 'VDE-C01'
+                          ? 'DevOps Engineer'
+                          : `AWS ${course.title} certification`
+                      }
                       width={48}
                       height={48}
                       className="h-12 w-12 object-contain"
@@ -193,7 +202,9 @@ const Hero = () => {
                   )}
                 </div>
                 <h3 className="mb-2 font-semibold text-gray-900 dark:text-white">
-                  AWS {course.title}
+                  {course.code === 'VDE-C01'
+                    ? 'Course DevOps Engineer VDE-C01'
+                    : `AWS ${course.title} certification`}
                 </h3>
                 <p className="mb-3 text-sm text-gray-600 dark:text-gray-400">{course.level}</p>
                 <div className="flex items-center justify-between">
