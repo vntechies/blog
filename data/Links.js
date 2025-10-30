@@ -6,7 +6,6 @@ export const headerNavLinks = [
   { href: '/blog', title: 'Blog' },
   { href: '/series', title: 'Series' },
   { href: '/career', title: 'Career Center' },
-  { href: 'https://github.com/vntechies/toolbox', title: 'Toolbox' },
 ]
 
 export const footerNavLinks = [
