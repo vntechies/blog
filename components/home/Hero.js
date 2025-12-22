@@ -15,7 +15,7 @@ const Hero = () => {
         <div className="text-center">
           {/* Badge */}
           <div className="mb-4 inline-flex items-center rounded-full bg-orange-100 px-4 py-2 text-sm font-semibold text-orange-800 dark:bg-orange-900/30 dark:text-orange-300">
-            <span className="mr-2">🚀</span>4 khoá học AWS mới đã ra mắt
+            <span className="mr-2">🚀</span>5 khoá học AWS mới đã ra mắt
           </div>
 
           {/* Main heading */}
