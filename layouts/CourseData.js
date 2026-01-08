@@ -729,7 +729,7 @@ export default function CourseData({ frontMatter, mentorDetails, otherCourses = 
           {/* Instructor Stats */}
           <div className="mb-12 grid grid-cols-2 gap-8 md:grid-cols-4">
             <div className="text-center">
-              <div className="mb-2 text-3xl font-bold text-purple-600 dark:text-purple-400">4+</div>
+              <div className="mb-2 text-3xl font-bold text-purple-600 dark:text-purple-400">6+</div>
               <div className="text-sm text-gray-600 dark:text-gray-400">
                 Mentor tham gia giảng dạy
               </div>
