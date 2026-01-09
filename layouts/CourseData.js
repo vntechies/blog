@@ -124,7 +124,7 @@ const courseInfo = {
             'Cron jobs',
             'Lab: Viết shell script tự động ingest raw data',
             'Lab: Cronjob schedule ETL',
-          ]
+          ],
         },
       ],
     },
@@ -241,7 +241,7 @@ const courseInfo = {
           title: 'Buổi 16: Data Quality (Great Expectations + Deequ)',
           topics: [
             'Data Quality (GE, Deequ) &  Demo GE',
-            'Metadata & Data Governance (DataHub) & Demo DataHub '
+            'Metadata & Data Governance (DataHub) & Demo DataHub ',
           ],
         },
       ],
@@ -263,7 +263,7 @@ const courseInfo = {
           topics: [
             'End-to-end architecture review',
             'Build final pipeline',
-            'Presentation & Feedback'
+            'Presentation & Feedback',
           ],
         },
       ],
