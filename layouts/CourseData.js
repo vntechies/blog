@@ -45,12 +45,12 @@ const testimonials = [
 ]
 
 const courseInfo = {
-  title: 'Data Engineer Bootcamp – 6 Tuần (18 Buổi)',
+  title: 'Data Engineer Bootcamp – 9 Tuần (18 Buổi)',
   subtitle: 'Từ Zero đến Hero với Data Engineering - Lộ trình đào tạo toàn diện',
   image: '/static/images/courses/dae.png',
-  startDate: '15/02/2025',
-  duration: '6 tuần (18 buổi)',
-  schedule: 'Tối Thứ 3 & Thứ 5 (19:00 - 21:00)',
+  startDate: '02/03/2025',
+  duration: '9 tuần (18 buổi)',
+  schedule: 'Tối Thứ 2 & Thứ 4 (19:00 - 21:00)',
   location: 'Online qua Google Meet',
   price: '8.000.000 VNĐ',
   earlyBird: '7.200.000 VNĐ (giảm 10%)',
@@ -275,7 +275,7 @@ const stats = [
   { number: '18', label: 'Buổi học' },
   { number: '60%', label: 'Thực hành' },
   { number: '15+', label: 'Lab thực tế' },
-  { number: '6+', label: 'Mentor kinh nghiệm' },
+  { number: '7+', label: 'Mentor kinh nghiệm' },
 ]
 
 export default function CourseData({ frontMatter, mentorDetails, otherCourses = [] }) {
@@ -328,10 +328,10 @@ export default function CourseData({ frontMatter, mentorDetails, otherCourses = 
                 </span>
                 <br />
                 <span className="bg-gradient-to-r from-purple-600 to-indigo-500 bg-clip-text text-[2.5rem] text-transparent md:text-[3rem] lg:text-[4rem] xl:text-[5rem]">
-                  Bootcamp 6 Tuần
+                  Bootcamp
                 </span>
               </h1>
-              <p className="text-2xl font-bold text-gray-500">(18 Buổi)</p>
+              <p className="text-2xl font-bold text-gray-500">(18 Buổi - 09 tuần)</p>
             </div>
 
             <div className="grid items-center gap-16 lg:grid-cols-2">
@@ -399,7 +399,7 @@ export default function CourseData({ frontMatter, mentorDetails, otherCourses = 
                     <div className="flex items-start gap-3">
                       <FaCheckCircle className="mt-1 h-5 w-5 flex-shrink-0 text-purple-500" />
                       <span className="text-sm leading-relaxed">
-                        Nội dung bài lab thực tế với Spark, Kafka, Airflow, Trino
+                        Nội dung bài lab thực tế với Spark, Kafka, Airflow, Trino, AWS
                       </span>
                     </div>
                     <div className="flex items-start gap-3">
@@ -729,7 +729,7 @@ export default function CourseData({ frontMatter, mentorDetails, otherCourses = 
           {/* Instructor Stats */}
           <div className="mb-12 grid grid-cols-2 gap-8 md:grid-cols-4">
             <div className="text-center">
-              <div className="mb-2 text-3xl font-bold text-purple-600 dark:text-purple-400">6+</div>
+              <div className="mb-2 text-3xl font-bold text-purple-600 dark:text-purple-400">7+</div>
               <div className="text-sm text-gray-600 dark:text-gray-400">
                 Mentor tham gia giảng dạy
               </div>
@@ -741,7 +741,7 @@ export default function CourseData({ frontMatter, mentorDetails, otherCourses = 
               </div>
             </div>
             <div className="text-center">
-              <div className="mb-2 text-3xl font-bold text-indigo-600 dark:text-indigo-400">8+</div>
+              <div className="mb-2 text-3xl font-bold text-indigo-600 dark:text-indigo-400">5+</div>
               <div className="text-sm text-gray-600 dark:text-gray-400">
                 Năm kinh nghiệm Data Engineering
               </div>
