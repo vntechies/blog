@@ -840,17 +840,8 @@ export default function CourseData({ frontMatter, mentorDetails, otherCourses = 
                 <blockquote className="mb-4 text-gray-700 dark:text-gray-300">
                   "{t.comment}"
                 </blockquote>
-                <div className="flex items-center gap-3">
-                  <Image
-                    src={t.image}
-                    alt={t.author}
-                    width={40}
-                    height={40}
-                    className="h-10 w-10 rounded-full object-cover"
-                  />
-                  <div className="text-sm font-semibold text-gray-900 dark:text-gray-100">
-                    {t.author}
-                  </div>
+                <div className="text-sm font-semibold text-gray-900 dark:text-gray-100">
+                  {t.author}
                 </div>
               </div>
             ))}
