@@ -45,20 +45,19 @@ const testimonials = [
 ]
 
 const courseInfo = {
-  title: 'Data Engineer Bootcamp – 6 Tuần (18 Buổi)',
+  title: 'Data Engineer Bootcamp – 9 Tuần (18 Buổi)',
   subtitle: 'Từ Zero đến Hero với Data Engineering - Lộ trình đào tạo toàn diện',
   image: '/static/images/courses/dae.png',
-  startDate: '15/02/2025',
-  duration: '6 tuần (18 buổi)',
-  schedule: 'Tối Thứ 3 & Thứ 5 (19:00 - 21:00)',
+  startDate: '02/03/2025',
+  duration: '9 tuần (18 buổi)',
+  schedule: 'Tối Thứ 2 & Thứ 4 (19:00 - 21:00)',
   location: 'Online qua Google Meet',
   price: '8.000.000 VNĐ',
   earlyBird: '7.200.000 VNĐ (giảm 10%)',
   registrationLink: 'https://m.me/vntechies',
   modules: [
     {
-      title: 'Week 1: Big Data Foundations, SQL, Data Modeling',
-      focus: 'SQL, Data Modeling, Data Mart',
+      title: 'Week 1: Big Data Foundations + SQL Foundations',
       lessons: [
         {
           title: 'Buổi 1: Big Data Engineer Overview',
@@ -81,6 +80,11 @@ const courseInfo = {
             'Lab: Optimization query',
           ],
         },
+      ],
+    },
+    {
+      title: 'Week 2: Python, ETL, DW, UNIX',
+      lessons: [
         {
           title: 'Buổi 3: Data Modeling',
           topics: [
@@ -91,14 +95,21 @@ const courseInfo = {
             'Lab: Thiết kế bảng dimension + fact + SCD2 bằng SQL',
           ],
         },
+        {
+          title: 'Buổi 4: Ôn SQL + Mini case study Data Mart',
+          topics: [
+            'Review SQL nâng cao (window, CTE, performance)',
+            'Best practices viết SQL trong ETL',
+            'Lab: Hoàn thiện Data Mart tuần 1 & Bài tập SQL business case thực tế',
+          ],
+        },
       ],
     },
     {
-      title: 'Week 2: Python, ETL, DW, UNIX',
-      focus: 'Python, ETL Pipeline, Data Warehouse',
+      title: 'Week 3: Python for Data Engineering + Shell',
       lessons: [
         {
-          title: 'Buổi 4: Python for Data Engineering',
+          title: 'Buổi 5: Python for Data Engineering',
           topics: [
             'Pandas, typing, error handling',
             'Lab: Build mini ETL pipeline: CSV → clean → load PostgreSQL',
@@ -106,7 +117,7 @@ const courseInfo = {
           ],
         },
         {
-          title: 'Buổi 5: Unix/Linux & Shell Scripting',
+          title: 'Buổi 6: Unix/Linux & Shell Scripting',
           topics: [
             'File system',
             'Bash commands',
@@ -115,24 +126,38 @@ const courseInfo = {
             'Lab: Cronjob schedule ETL',
           ],
         },
+      ],
+    },
+    {
+      title: 'Week 4: ETL/ELT + Data Warehouse',
+      lessons: [
         {
-          title: 'Buổi 6: ETL/ELT & Data Warehouse',
+          title: 'Buổi 7:  ETL/ELT & Data Warehouse',
           topics: [
             'Kimball vs Inmon',
             'ETL vs ELT',
             'Slowly Changing Dimensions',
-            'Lab: Docker Compose PostgreSQL + Metabase',
+            'Lab: Docker Compose: PostgreSQL + Metabase',
             'Lab: Build dashboard đầu tiên',
+          ],
+        },
+        {
+          title: 'Buổi 8: Mini Project ETL + Dashboarding',
+          topics: [
+            'Review ETL best practices',
+            'Data modeling for dashboard (materialized tables)',
+            'Lab: ETL pipeline CSV → PostgreSQL → Data mart',
+            'Lab: Dashboard Metabase nâng cao',
+            'Recap',
           ],
         },
       ],
     },
     {
-      title: 'Week 3: Data Lakehouse & Spark Batch',
-      focus: 'Trino, Hive, MinIO, Spark Batch',
+      title: 'Week 5:  Data Lakehouse Architecture + Spark Batch',
       lessons: [
         {
-          title: 'Buổi 7: Data Lakehouse Architecture',
+          title: 'Buổi 9: Data Lakehouse Architecture',
           topics: [
             'Object Storage',
             'Delta Lake vs Iceberg vs Hudi',
@@ -142,7 +167,7 @@ const courseInfo = {
           ],
         },
         {
-          title: 'Buổi 8: Spark Batch Processing',
+          title: 'Buổi 10: Spark Batch Processing',
           topics: [
             'Spark RDD → DataFrame API',
             'Catalyst optimizer',
@@ -151,8 +176,13 @@ const courseInfo = {
             'Lab: Benchmark Parquet vs CSV',
           ],
         },
+      ],
+    },
+    {
+      title: 'Week 6: Table Formats + Kafka Fundamentals',
+      lessons: [
         {
-          title: 'Buổi 9: Table Format & Optimization',
+          title: 'Buổi 11: Table Format & Optimization',
           topics: [
             'Partitioning',
             'Compaction, Z-order',
@@ -161,14 +191,8 @@ const courseInfo = {
             'Lab: Optimize large dataset',
           ],
         },
-      ],
-    },
-    {
-      title: 'Week 4: Kafka, Debezium, Streaming',
-      focus: 'Kafka, CDC, Real-time Streaming',
-      lessons: [
         {
-          title: 'Buổi 10: Kafka Fundamentals',
+          title: 'Buổi 12: Kafka Fundamentals',
           topics: [
             'Broker, Topic, Consumer Group',
             'Offset, partitions',
@@ -176,8 +200,13 @@ const courseInfo = {
             'Lab: Producer & Consumer CLI + Python',
           ],
         },
+      ],
+    },
+    {
+      title: 'Week 7: Table Formats + Kafka Fundamentals',
+      lessons: [
         {
-          title: 'Buổi 11: CDC with Debezium',
+          title: 'Buổi 13: CDC with Debezium',
           topics: [
             'Change Data Capture',
             'Debezium: binlog, WAL',
@@ -186,7 +215,7 @@ const courseInfo = {
           ],
         },
         {
-          title: 'Buổi 12: Streaming (Flink hoặc Spark Streaming)',
+          title: 'Buổi 14: Streaming (Flink/Spark Structured Streaming)',
           topics: [
             'Stateless vs Stateful',
             'Time semantics, watermark',
@@ -197,11 +226,10 @@ const courseInfo = {
       ],
     },
     {
-      title: 'Week 5: Airflow, Data Quality, Governance',
-      focus: 'Orchestration, Data Quality, Metadata',
+      title: 'Week 8: Airflow + Data Quality + Governance',
       lessons: [
         {
-          title: 'Buổi 13: Airflow Orchestration',
+          title: 'Buổi 15: Airflow Orchestration',
           topics: [
             'DAG, Operators, Sensors',
             'Airflow vs Cron',
@@ -210,59 +238,32 @@ const courseInfo = {
           ],
         },
         {
-          title: 'Buổi 14: Data Quality (Great Expectations + Deequ)',
+          title: 'Buổi 16: Data Quality (Great Expectations + Deequ)',
           topics: [
-            'Data profiling',
-            'Validations & rules',
-            'Lab: GE Validator: null check, range check',
-            'Lab: Deequ anomaly detection',
-          ],
-        },
-        {
-          title: 'Buổi 15: Data Governance & Metadata (DataHub)',
-          topics: [
-            'Lineage, catalog',
-            'Data governance frameworks',
-            'Lab: Deploy DataHub',
-            'Lab: Ingest metadata từ PostgreSQL, Kafka, Airflow',
+            'Data Quality (GE, Deequ) &  Demo GE',
+            'Metadata & Data Governance (DataHub) & Demo DataHub ',
           ],
         },
       ],
     },
     {
-      title: 'Week 6: Feature Store & Capstone',
-      focus: 'Feature Store, End-to-end Project',
+      title: 'Week 9: Feature Store + Cloud + Capstone',
       lessons: [
         {
-          title: 'Buổi 16: Feature Store Fundamentals',
+          title: 'Buổi 17:  Feature Store Fundamentals + Cloud Integration',
           topics: [
-            'Offline vs Online Store',
-            'Feast architecture',
-            'Lab: Deploy Feast + Redis + PostgreSQL',
-            'Lab: Build feature view',
-            'Lab: Materialize online store',
-          ],
-        },
-        {
-          title: 'Buổi 17: Cloud Integration (Optional AWS)',
-          topics: [
-            'S3 as Data Lake',
-            'MSK, Glue, Athena, EMR',
-            'Lab: Move Bronze/Silver/Gold layers → S3',
-            'Lab: Query bằng Athena hoặc Trino',
+            'Feature Store lý thuyết & Feast demo',
+            'S3, Glue, Athena, EMR mapping',
+            'Lab: Deploy Feast + Redis',
+            'Lab: Move Bronze/Silver/Gold → S3 / Query Athena',
           ],
         },
         {
           title: 'Buổi 18: Capstone Project',
           topics: [
-            'Build End-to-end Pipeline: Source (PostgreSQL) → CDC → Kafka',
-            'Streaming → Silver table',
-            'Batch Spark → Gold',
-            'Data Validation',
-            'Orchestrated bằng Airflow',
-            'Metadata tracking bằng DataHub',
-            'Feature Store',
-            'Final Presentation',
+            'End-to-end architecture review',
+            'Build final pipeline',
+            'Presentation & Feedback',
           ],
         },
       ],
@@ -274,7 +275,7 @@ const stats = [
   { number: '18', label: 'Buổi học' },
   { number: '60%', label: 'Thực hành' },
   { number: '15+', label: 'Lab thực tế' },
-  { number: '4+', label: 'Mentor kinh nghiệm' },
+  { number: '7+', label: 'Mentor kinh nghiệm' },
 ]
 
 export default function CourseData({ frontMatter, mentorDetails, otherCourses = [] }) {
@@ -327,10 +328,10 @@ export default function CourseData({ frontMatter, mentorDetails, otherCourses = 
                 </span>
                 <br />
                 <span className="bg-gradient-to-r from-purple-600 to-indigo-500 bg-clip-text text-[2.5rem] text-transparent md:text-[3rem] lg:text-[4rem] xl:text-[5rem]">
-                  Bootcamp 6 Tuần
+                  Bootcamp
                 </span>
               </h1>
-              <p className="text-2xl font-bold text-gray-500">(18 Buổi)</p>
+              <p className="text-2xl font-bold text-gray-500">(18 Buổi - 09 tuần)</p>
             </div>
 
             <div className="grid items-center gap-16 lg:grid-cols-2">
@@ -398,7 +399,7 @@ export default function CourseData({ frontMatter, mentorDetails, otherCourses = 
                     <div className="flex items-start gap-3">
                       <FaCheckCircle className="mt-1 h-5 w-5 flex-shrink-0 text-purple-500" />
                       <span className="text-sm leading-relaxed">
-                        Nội dung bài lab thực tế với Spark, Kafka, Airflow, Trino
+                        Nội dung bài lab thực tế với Spark, Kafka, Airflow, Trino, AWS
                       </span>
                     </div>
                     <div className="flex items-start gap-3">
@@ -467,7 +468,7 @@ export default function CourseData({ frontMatter, mentorDetails, otherCourses = 
               <div className="text-sm font-medium text-gray-700 dark:text-gray-300">
                 Tổng thời lượng
               </div>
-              <div className="text-xs text-gray-500 dark:text-gray-400">6 tuần học</div>
+              <div className="text-xs text-gray-500 dark:text-gray-400">9 tuần học</div>
             </div>
             <div className="rounded-xl bg-purple-50 p-6 text-center dark:bg-purple-900/20">
               <div className="mb-3 text-2xl font-bold text-purple-600">02 buổi/tuần</div>
@@ -475,7 +476,7 @@ export default function CourseData({ frontMatter, mentorDetails, otherCourses = 
               <div className="text-xs text-gray-500 dark:text-gray-400">19:00 - 21:00</div>
             </div>
             <div className="rounded-xl bg-purple-50 p-6 text-center dark:bg-purple-900/20">
-              <div className="mb-3 text-2xl font-bold text-purple-600">15/02/2025</div>
+              <div className="mb-3 text-2xl font-bold text-purple-600">02/03/26</div>
               <div className="text-sm font-medium text-gray-700 dark:text-gray-300">Khai giảng</div>
               <div className="text-xs text-gray-500 dark:text-gray-400">Online Google Meet</div>
             </div>
@@ -728,7 +729,7 @@ export default function CourseData({ frontMatter, mentorDetails, otherCourses = 
           {/* Instructor Stats */}
           <div className="mb-12 grid grid-cols-2 gap-8 md:grid-cols-4">
             <div className="text-center">
-              <div className="mb-2 text-3xl font-bold text-purple-600 dark:text-purple-400">4+</div>
+              <div className="mb-2 text-3xl font-bold text-purple-600 dark:text-purple-400">7+</div>
               <div className="text-sm text-gray-600 dark:text-gray-400">
                 Mentor tham gia giảng dạy
               </div>
@@ -740,7 +741,7 @@ export default function CourseData({ frontMatter, mentorDetails, otherCourses = 
               </div>
             </div>
             <div className="text-center">
-              <div className="mb-2 text-3xl font-bold text-indigo-600 dark:text-indigo-400">8+</div>
+              <div className="mb-2 text-3xl font-bold text-indigo-600 dark:text-indigo-400">5+</div>
               <div className="text-sm text-gray-600 dark:text-gray-400">
                 Năm kinh nghiệm Data Engineering
               </div>
@@ -839,17 +840,8 @@ export default function CourseData({ frontMatter, mentorDetails, otherCourses = 
                 <blockquote className="mb-4 text-gray-700 dark:text-gray-300">
                   "{t.comment}"
                 </blockquote>
-                <div className="flex items-center gap-3">
-                  <Image
-                    src={t.image}
-                    alt={t.author}
-                    width={40}
-                    height={40}
-                    className="h-10 w-10 rounded-full object-cover"
-                  />
-                  <div className="text-sm font-semibold text-gray-900 dark:text-gray-100">
-                    {t.author}
-                  </div>
+                <div className="text-sm font-semibold text-gray-900 dark:text-gray-100">
+                  {t.author}
                 </div>
               </div>
             ))}
