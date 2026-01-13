@@ -1,6 +1,6 @@
 ---
 name: Sophie Nguyen Thu Thuy
-occupation: ThS. Master of Engineering | AWS Professional Services – AI/ML | Giảng viên Thỉnh giảng Học viện Ngân hàng
+occupation: MEng | MSc AI | AWS Proserve – AI/ML
 avatar: /static/images/authors/sophie.jpeg
 linkedin: https://www.linkedin.com/in/sophie-nguyenthuthuy/
 startYear: 2021
