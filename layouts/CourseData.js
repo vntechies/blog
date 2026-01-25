@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Image from '../components/Image'
 import {
   FaCheckCircle,
@@ -47,7 +47,7 @@ const testimonials = [
 const courseInfo = {
   title: 'Data Engineer Bootcamp – 9 Tuần (18 Buổi)',
   subtitle: 'Từ Zero đến Hero với Data Engineering - Lộ trình đào tạo toàn diện',
-  image: '/static/images/courses/dae.png',
+  image: '/static/images/courses/dae-hero.png',
   startDate: '02/03/2025',
   duration: '9 tuần (18 buổi)',
   schedule: 'Tối Thứ 2 & Thứ 4 (19:00 - 21:00)',
@@ -274,13 +274,23 @@ const courseInfo = {
 const stats = [
   { number: '18', label: 'Buổi học' },
   { number: '60%', label: 'Thực hành' },
-  { number: '15+', label: 'Lab thực tế' },
+  { number: '30+', label: 'Lab thực tế' },
   { number: '7+', label: 'Mentor kinh nghiệm' },
 ]
 
 export default function CourseData({ frontMatter, mentorDetails, otherCourses = [] }) {
   // State to track which lessons are expanded
   const [expandedLessons, setExpandedLessons] = useState(new Set())
+  const [showStickyButton, setShowStickyButton] = useState(false)
+
+  // Sticky CTA button on scroll
+  useEffect(() => {
+    const handleScroll = () => {
+      setShowStickyButton(window.scrollY > 800)
+    }
+    window.addEventListener('scroll', handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
 
   const info = {
     title: frontMatter?.title || courseInfo.title,
@@ -315,6 +325,33 @@ export default function CourseData({ frontMatter, mentorDetails, otherCourses = 
     setExpandedLessons(newExpandedLessons)
   }
 
+  // Expand/Collapse all lessons
+  const toggleAllLessons = () => {
+    if (expandedLessons.size === 0) {
+      const allLessons = new Set()
+      courseInfo.modules.forEach((module, mIdx) => {
+        module.lessons.forEach((_, lIdx) => {
+          allLessons.add(`${mIdx}-${lIdx}`)
+        })
+      })
+      setExpandedLessons(allLessons)
+    } else {
+      setExpandedLessons(new Set())
+    }
+  }
+
+  // Smooth scroll handler
+  const smoothScrollTo = (e, targetId) => {
+    e.preventDefault()
+    const element = document.querySelector(targetId)
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    }
+  }
+
+  // Calculate total lessons
+  const totalLessons = courseInfo.modules.reduce((acc, m) => acc + m.lessons.length, 0)
+
   return (
     <div className="mx-auto w-full max-w-7xl">
       {/* Hero Section */}
@@ -322,16 +359,16 @@ export default function CourseData({ frontMatter, mentorDetails, otherCourses = 
         <div className="mx-auto max-w-7xl">
           <div className="flex flex-col items-center">
             <div className="mb-16 max-w-4xl text-center">
-              <h1 className="mb-8 text-center text-[3.5rem] font-black leading-none tracking-tight text-gray-900 dark:text-gray-100 md:text-[4rem] lg:text-[5rem] xl:text-[6rem]">
+              <h1 className="md:text-6xl lg:text-7xl mb-8 text-center text-4xl font-black leading-none tracking-tight text-gray-900 dark:text-gray-100 sm:text-5xl">
                 <span className="bg-gradient-to-r from-gray-900 to-slate-700 bg-clip-text text-transparent dark:from-gray-100 dark:to-slate-300">
                   Data Engineer
                 </span>
                 <br />
-                <span className="bg-gradient-to-r from-purple-600 to-indigo-500 bg-clip-text text-[2.5rem] text-transparent md:text-[3rem] lg:text-[4rem] xl:text-[5rem]">
+                <span className="lg:text-6xl bg-gradient-to-r from-purple-600 to-indigo-500 bg-clip-text text-3xl text-transparent sm:text-4xl md:text-5xl">
                   Bootcamp
                 </span>
               </h1>
-              <p className="text-2xl font-bold text-gray-500">(18 Buổi - 09 tuần)</p>
+              <p className="text-xl font-bold text-gray-500 sm:text-2xl">(18 Buổi - 09 tuần)</p>
             </div>
 
             <div className="grid items-center gap-16 lg:grid-cols-2">
@@ -370,7 +407,9 @@ export default function CourseData({ frontMatter, mentorDetails, otherCourses = 
                       </div>
                       <div className="flex items-center justify-center gap-3 rounded-lg bg-white/10 p-3">
                         <FaStream className="h-5 w-5 flex-shrink-0 text-yellow-300" />
-                        <span className="text-sm font-medium">LAB LAB LAB VÀ LAB!!!</span>
+                        <span className="text-sm font-medium">
+                          Hơn 30+ bài LAB thực hành với công nghệ thực tế
+                        </span>
                       </div>
                     </div>
                   </div>
@@ -426,7 +465,8 @@ export default function CourseData({ frontMatter, mentorDetails, otherCourses = 
                 <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
                   <a
                     href="#registration-form"
-                    className="text-lg inline-flex items-center justify-center rounded-xl bg-gradient-to-r from-purple-600 to-indigo-500 px-8 py-4 font-bold text-white shadow-xl transition hover:from-purple-700 hover:to-indigo-600 hover:shadow-2xl"
+                    onClick={(e) => smoothScrollTo(e, '#registration-form')}
+                    className="text-lg inline-flex items-center justify-center rounded-xl bg-gradient-to-r from-purple-600 to-indigo-500 px-8 py-4 font-bold text-white shadow-xl transition hover:scale-105 hover:from-purple-700 hover:to-indigo-600 hover:shadow-2xl"
                   >
                     Đăng ký ngay
                     <FaRocket className="ml-3 h-5 w-5" />
@@ -553,7 +593,8 @@ export default function CourseData({ frontMatter, mentorDetails, otherCourses = 
 
               <a
                 href="#registration-form"
-                className="block w-full rounded-xl bg-slate-900 py-4 text-center font-semibold text-white transition hover:bg-slate-800"
+                onClick={(e) => smoothScrollTo(e, '#registration-form')}
+                className="block w-full rounded-xl bg-slate-900 py-4 text-center font-semibold text-white transition hover:scale-105 hover:bg-slate-800"
               >
                 Đăng ký ngay
               </a>
@@ -574,12 +615,12 @@ export default function CourseData({ frontMatter, mentorDetails, otherCourses = 
                 <div className="rounded-xl bg-white/20 p-6 text-center backdrop-blur">
                   <div className="text-sm font-medium opacity-90">Người đi làm</div>
                   <div className="text-3xl font-bold">7.200.000₫</div>
-                  <div className="text-sm line-through opacity-75">7.200.000₫</div>
+                  <div className="text-sm line-through opacity-75">8.000.000₫</div>
                 </div>
                 <div className="rounded-xl bg-white/10 p-4 text-center backdrop-blur">
                   <div className="text-sm font-medium opacity-90">Sinh viên</div>
                   <div className="text-2xl font-bold">6.700.000₫</div>
-                  <div className="text-sm line-through opacity-75">6.700.000₫</div>
+                  <div className="text-sm line-through opacity-75">7.500.000₫</div>
                   <div className="text-xs mt-2 opacity-90">Hỗ trợ học phí lên tới 500.000đ</div>
                   <Link
                     href="/pricing#financial-aid"
@@ -592,7 +633,8 @@ export default function CourseData({ frontMatter, mentorDetails, otherCourses = 
 
               <a
                 href="#registration-form"
-                className="block w-full rounded-xl bg-white py-4 text-center font-bold text-purple-600 transition hover:bg-gray-50"
+                onClick={(e) => smoothScrollTo(e, '#registration-form')}
+                className="block w-full rounded-xl bg-white py-4 text-center font-bold text-purple-600 transition hover:scale-105 hover:bg-gray-50"
               >
                 Đăng ký ngay
               </a>
@@ -617,7 +659,7 @@ export default function CourseData({ frontMatter, mentorDetails, otherCourses = 
                   <div className="text-3xl font-bold text-purple-700 dark:text-purple-300">
                     6.800.000₫
                   </div>
-                  <div className="text-sm text-gray-500 line-through">6.800.000₫</div>
+                  <div className="text-sm text-gray-500 line-through">8.000.000₫</div>
                 </div>
                 <div className="rounded-xl bg-purple-50 p-4 text-center dark:bg-purple-900/20">
                   <div className="text-sm font-medium text-purple-600 dark:text-purple-400">
@@ -626,13 +668,14 @@ export default function CourseData({ frontMatter, mentorDetails, otherCourses = 
                   <div className="text-2xl font-bold text-purple-700 dark:text-purple-300">
                     6.300.000₫
                   </div>
-                  <div className="text-sm text-gray-500 line-through">6.300.000₫</div>
+                  <div className="text-sm text-gray-500 line-through">7.500.000₫</div>
                 </div>
               </div>
 
               <a
                 href="#registration-form"
-                className="block w-full rounded-xl bg-purple-600 py-4 text-center font-semibold text-white transition hover:bg-purple-700"
+                onClick={(e) => smoothScrollTo(e, '#registration-form')}
+                className="block w-full rounded-xl bg-purple-600 py-4 text-center font-semibold text-white transition hover:scale-105 hover:bg-purple-700"
               >
                 Đăng ký ngay
               </a>
@@ -644,13 +687,27 @@ export default function CourseData({ frontMatter, mentorDetails, otherCourses = 
       {/* Course Outline Section */}
       <section className="bg-gradient-to-br from-slate-50 to-purple-50 py-20 dark:from-gray-900 dark:to-purple-900/20">
         <div className="mx-auto max-w-6xl px-4">
-          <div className="mb-16 text-center">
+          <div className="mb-12 text-center">
             <h2 className="mb-4 text-4xl font-bold text-gray-900 dark:text-gray-100">
               Lộ trình đào tạo chi tiết
             </h2>
             <p className="text-xl text-gray-600 dark:text-gray-300">
               18 buổi học với nội dung được thiết kế kỹ lưỡng, tập trung vào thực hành
             </p>
+            {expandedLessons.size > 0 && (
+              <p className="mt-4 text-sm text-purple-600 dark:text-purple-400">
+                Đang xem {expandedLessons.size} / {totalLessons} bài học
+              </p>
+            )}
+          </div>
+
+          <div className="mb-8 flex justify-end">
+            <button
+              onClick={toggleAllLessons}
+              className="rounded-lg bg-purple-600 px-6 py-3 text-sm font-semibold text-white shadow-md transition hover:bg-purple-700 hover:shadow-lg"
+            >
+              {expandedLessons.size === 0 ? '📖 Mở tất cả' : '📕 Thu gọn tất cả'}
+            </button>
           </div>
 
           <div className="space-y-12">
@@ -674,11 +731,17 @@ export default function CourseData({ frontMatter, mentorDetails, otherCourses = 
                     return (
                       <div
                         key={lessonIndex}
-                        className="rounded-xl bg-slate-50 p-6 dark:bg-gray-700/50"
+                        className={`rounded-xl p-6 transition-all duration-300 ${
+                          isExpanded
+                            ? 'bg-purple-50 shadow-md dark:bg-purple-900/30'
+                            : 'bg-slate-50 hover:bg-slate-100 dark:bg-gray-700/50 dark:hover:bg-gray-700'
+                        }`}
                       >
-                        <div
-                          className="flex cursor-pointer items-center justify-between"
+                        <button
+                          className="flex w-full cursor-pointer items-center justify-between text-left"
                           onClick={() => toggleLesson(moduleIndex, lessonIndex)}
+                          aria-expanded={isExpanded}
+                          aria-label={`${isExpanded ? 'Thu gọn' : 'Mở rộng'} ${lesson.title}`}
                         >
                           <h4 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
                             {lesson.title}
@@ -690,7 +753,7 @@ export default function CourseData({ frontMatter, mentorDetails, otherCourses = 
                               <FaChevronDown className="h-5 w-5 text-purple-500 transition-transform" />
                             )}
                           </div>
-                        </div>
+                        </button>
 
                         {isExpanded && (
                           <ul className="mt-4 space-y-2 transition-all duration-300 ease-in-out">
@@ -761,17 +824,17 @@ export default function CourseData({ frontMatter, mentorDetails, otherCourses = 
               const slug = m.slug || (m.name ? m.name.toLowerCase().replace(/\s+/g, '-') : '')
               return (
                 <Link key={idx} href={`/authors/${slug}`} className="block" passHref legacyBehavior>
-                  <a className="flex h-full flex-col items-center justify-between rounded-xl bg-gray-50 p-6 shadow transition hover:bg-purple-50 dark:bg-gray-800 dark:hover:bg-purple-700">
-                    <div className="flex flex-col items-center" style={{ minHeight: 260 }}>
+                  <a className="flex h-full flex-col items-center rounded-xl bg-gray-50 p-6 shadow transition hover:scale-105 hover:bg-purple-50 hover:shadow-xl dark:bg-gray-800 dark:hover:bg-purple-700">
+                    <div className="mb-4 flex-shrink-0">
                       <Image
                         src={m.avatar || m.avatar_url || '/data/authors/default.jpg'}
                         alt={m.name}
-                        width={240}
-                        height={240}
-                        className="mb-3 rounded-full object-cover shadow-lg"
+                        width={120}
+                        height={120}
+                        className="rounded-full object-cover shadow-lg"
                       />
                     </div>
-                    <div className="flex w-full flex-1 flex-col items-center justify-center">
+                    <div className="flex flex-1 flex-col items-center justify-start text-center">
                       {m.currentPosition && (
                         <div className="mb-1 text-center text-sm font-semibold text-purple-700 dark:text-purple-300">
                           {m.currentPosition}
@@ -830,7 +893,7 @@ export default function CourseData({ frontMatter, mentorDetails, otherCourses = 
             {testimonials.map((t, i) => (
               <div
                 key={i}
-                className="group rounded-2xl bg-white p-6 shadow-lg transition hover:shadow-xl dark:bg-gray-900"
+                className="group rounded-2xl bg-white p-6 shadow-lg transition hover:scale-105 hover:shadow-xl dark:bg-gray-900"
               >
                 <div className="mb-4 flex items-center gap-1">
                   {[...Array(t.rating)].map((_, idx) => (
@@ -851,6 +914,20 @@ export default function CourseData({ frontMatter, mentorDetails, otherCourses = 
 
       {/* Other Courses Section */}
       <OtherCoursesSection otherCourses={otherCourses} />
+
+      {/* Sticky CTA Button */}
+      {showStickyButton && (
+        <div className="fixed bottom-6 right-6 z-50 animate-bounce">
+          <a
+            href="#registration-form"
+            onClick={(e) => smoothScrollTo(e, '#registration-form')}
+            className="flex items-center gap-2 rounded-full bg-gradient-to-r from-purple-600 to-indigo-500 px-6 py-4 font-bold text-white shadow-2xl transition hover:scale-110 hover:shadow-purple-500/50"
+          >
+            <FaRocket className="h-5 w-5" />
+            <span className="hidden sm:inline">Đăng ký ngay</span>
+          </a>
+        </div>
+      )}
     </div>
   )
 }
