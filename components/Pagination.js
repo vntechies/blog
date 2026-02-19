@@ -5,30 +5,34 @@ export default function Pagination({ totalPages, currentPage }) {
   const nextPage = parseInt(currentPage) + 1 <= parseInt(totalPages)
 
   return (
-    <div className="space-y-2 pt-6 pb-8 md:space-y-5">
-      <nav className="flex justify-between">
-        {!prevPage && (
-          <button rel="previous" className="cursor-auto disabled:opacity-50" disabled={!prevPage}>
-            👈 Trước
-          </button>
-        )}
-        {prevPage && (
-          <Link href={currentPage - 1 === 1 ? `/blog/` : `/blog/page/${currentPage - 1}`}>
-            <button rel="previous">👈 Trang {currentPage - 1}</button>
+    <div className="pt-8 pb-12">
+      <nav className="surface-panel-muted flex items-center justify-between gap-3 px-4 py-3 sm:px-5">
+        {prevPage ? (
+          <Link
+            href={currentPage - 1 === 1 ? '/blog/' : `/blog/page/${currentPage - 1}`}
+            className="inline-flex items-center rounded-lg px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-200 dark:text-slate-200 dark:hover:bg-slate-700"
+          >
+            ← Trang {currentPage - 1}
           </Link>
+        ) : (
+          <span className="rounded-lg px-3 py-2 text-sm font-medium text-slate-400 dark:text-slate-500">
+            ← Trước
+          </span>
         )}
-        <span>
+        <span className="text-xs rounded-full bg-slate-200 px-3 py-1 font-semibold text-slate-700 dark:bg-slate-700 dark:text-slate-200">
           {currentPage} / {totalPages}
         </span>
-        {!nextPage && (
-          <button rel="next" className="cursor-auto disabled:opacity-50" disabled={!nextPage}>
-            Sau 👉
-          </button>
-        )}
-        {nextPage && (
-          <Link href={`/blog/page/${currentPage + 1}`}>
-            <button rel="next">Trang {currentPage + 1} 👉</button>
+        {nextPage ? (
+          <Link
+            href={`/blog/page/${currentPage + 1}`}
+            className="inline-flex items-center rounded-lg px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-200 dark:text-slate-200 dark:hover:bg-slate-700"
+          >
+            Trang {currentPage + 1} →
           </Link>
+        ) : (
+          <span className="rounded-lg px-3 py-2 text-sm font-medium text-slate-400 dark:text-slate-500">
+            Sau →
+          </span>
         )}
       </nav>
     </div>

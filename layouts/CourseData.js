@@ -45,7 +45,7 @@ const testimonials = [
 ]
 
 const courseInfo = {
-  title: 'Data Engineer Bootcamp – 9 Tuần (18 Buổi)',
+  title: 'Data Engineer Bootcamp (VDT-C01) – 9 Tuần (18 Buổi)',
   subtitle: 'Từ Zero đến Hero với Data Engineering - Lộ trình đào tạo toàn diện',
   image: '/static/images/courses/dae-hero.png',
   startDate: '02/03/2025',
@@ -368,7 +368,7 @@ export default function CourseData({ frontMatter, mentorDetails, otherCourses = 
                   Bootcamp
                 </span>
               </h1>
-              <p className="text-xl font-bold text-gray-500 sm:text-2xl">(18 Buổi - 09 tuần)</p>
+              <p className="text-xl font-bold text-gray-500 sm:text-2xl">(VDT-C01)</p>
             </div>
 
             <div className="grid items-center gap-16 lg:grid-cols-2">
@@ -875,7 +875,7 @@ export default function CourseData({ frontMatter, mentorDetails, otherCourses = 
       </section>
 
       {/* Registration Form */}
-      <CourseRegistrationForm courseTitle="Data Engineer Bootcamp" theme="purple" />
+      <CourseRegistrationForm courseTitle="VDT-C01" theme="purple" />
 
       {/* Testimonials */}
       <section className="bg-slate-50 py-20 dark:bg-slate-800">

@@ -1,6 +1,6 @@
 import siteMetadata from '@/data/siteMetadata'
 import Link from './Link'
-import Image from './Image'
+import Image from 'next/image'
 import { headerNavLinks } from '@/data/Links'
 import { useRouter } from 'next/router'
 import ThemeSwitch from './ThemeSwitch'
@@ -10,47 +10,53 @@ export default function Header() {
   const route = `/${router.pathname.split('/')[1]}`
 
   return (
-    <header className="flex items-center justify-between py-10">
-      <div>
-        <Link alt="Trang chủ" href="/" aria-label={siteMetadata.headerTitle}>
-          <div className="flex items-center justify-between">
-            <div className="mr-3">
-              <Image
-                src={'/static/images/logo.webp'}
-                width="200"
-                height="40"
-                alt="avatar"
-                className="w-200 h-10"
-              />
-            </div>
-          </div>
+    <header className="sticky top-0 z-40 py-4 sm:py-5">
+      <div className="surface-panel flex items-center justify-between gap-4 px-4 py-3 sm:px-5 lg:px-6">
+        <Link
+          alt="Trang chủ"
+          href="/"
+          aria-label={siteMetadata.headerTitle}
+          className="inline-flex items-center"
+        >
+          <Image
+            src="/static/images/logo.webp"
+            width={200}
+            height={40}
+            alt="VNTechies logo"
+            className="h-8 w-auto sm:h-9"
+            priority
+          />
         </Link>
-      </div>
-      <div className="flex items-center text-base leading-5">
-        <div className="hidden sm:block">
-          {headerNavLinks.map(({ title, href, isNew }) => (
-            <div key={title} className="relative inline-block">
-              <Link
-                alt={title}
-                href={href}
-                className={`relative rounded px-5 py-1 transition-all duration-150 sm:px-3 sm:py-2
-                  ${
-                    route === href && title === 'Khoá học'
-                      ? 'bg-orange-500 font-bold text-white shadow-lg dark:bg-orange-600 dark:text-white'
-                      : title === 'Khoá học'
-                      ? 'bg-orange-400/80 font-bold text-white shadow-lg hover:bg-orange-500 dark:bg-orange-700/80 dark:text-white'
-                      : route === href
-                      ? 'bg-gray-200 font-bold text-orange-500 dark:bg-gray-700 dark:text-orange-500'
-                      : 'font-medium text-zinc-600 hover:bg-gray-200 dark:text-zinc-400 dark:hover:bg-gray-700'
+        <div className="flex items-center gap-2 text-base leading-5 sm:gap-3">
+          <nav className="hidden items-center gap-1 md:flex">
+            {headerNavLinks.map(({ title, href }) => {
+              const isActive = route === href
+              const isFeatured = title === 'Khoá học'
+
+              return (
+                <Link
+                  alt={title}
+                  key={title}
+                  href={href}
+                  className={`rounded-lg px-3 py-2 text-sm font-semibold transition-all duration-200 ${
+                    isActive && isFeatured
+                      ? 'bg-orange-500 text-white shadow-lg shadow-orange-500/30'
+                      : isFeatured
+                      ? 'bg-orange-100 text-orange-700 hover:bg-orange-200 dark:bg-orange-900/50 dark:text-orange-200 dark:hover:bg-orange-900/80'
+                      : isActive
+                      ? 'bg-slate-900 text-white dark:bg-slate-100 dark:text-slate-900'
+                      : 'text-slate-600 hover:bg-slate-200 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-slate-100'
                   }`}
-              >
-                {title}
-              </Link>
-            </div>
-          ))}
+                >
+                  {title}
+                </Link>
+              )
+            })}
+          </nav>
+          <ThemeSwitch />
         </div>
-        <ThemeSwitch />
       </div>
+      <div className="h-3 bg-gradient-to-b from-orange-100/70 to-transparent dark:from-orange-500/10" />
     </header>
   )
 }

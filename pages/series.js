@@ -15,18 +15,22 @@ export default function Series({ series }) {
         title={`Series - ${siteMetadata.headerTitle}`}
         description={`Series - ${siteMetadata.description}`}
       />
-      <div className="divide-y divide-gray-200 dark:divide-gray-700">
-        <div className="space-y-2 pt-6 pb-8 md:space-y-5">
-          <h1 className="md:text-6xl text-3xl font-extrabold leading-9 tracking-tight text-gray-900 dark:text-gray-100 sm:text-4xl sm:leading-10 md:leading-14">
-            📦 Series
-          </h1>
-          <p className="text-lg leading-7 text-gray-500 dark:text-gray-400">
-            Tổng hợp các bài viết theo chủ đề
+      <div className="space-y-10">
+        <header>
+          <span className="page-eyebrow">Nội dung theo chủ đề</span>
+          <h1 className="page-heading text-slate-900 dark:text-slate-100">Series</h1>
+          <p className="page-lead">
+            Tổng hợp các bài viết được xếp theo lộ trình để học liền mạch.
           </p>
-        </div>
-        <div className="container py-12">
-          <div className="-m-4 flex flex-wrap">
-            {series.length === 0 && 'No series found.'}
+        </header>
+
+        <section>
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
+            {series.length === 0 && (
+              <div className="surface-panel col-span-full p-8 text-center text-sm text-slate-600 dark:text-slate-300">
+                No series found.
+              </div>
+            )}
             {series.map((d) => {
               return (
                 <Card
@@ -39,7 +43,7 @@ export default function Series({ series }) {
               )
             })}
           </div>
-        </div>
+        </section>
       </div>
     </>
   )

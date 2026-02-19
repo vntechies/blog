@@ -3,6 +3,7 @@ import { FaUser, FaEnvelope, FaPhone, FaGraduationCap, FaSpinner, FaTag } from '
 
 export default function CourseRegistrationForm({
   courseTitle = 'AWS SAA-C03',
+  courseLabel,
   theme = 'orange',
   onSuccess,
 }) {
@@ -177,6 +178,8 @@ export default function CourseRegistrationForm({
       button:
         'bg-gradient-to-r from-orange-600 to-orange-500 hover:from-orange-700 hover:to-orange-600',
       link: 'text-orange-600',
+      courseTag:
+        'border-orange-200 bg-orange-50 text-orange-700 dark:border-orange-500/40 dark:bg-orange-500/10 dark:text-orange-200',
     },
     purple: {
       bg: 'bg-gradient-to-br from-purple-50 to-purple-100 dark:from-purple-900/10 dark:to-purple-800/10',
@@ -186,6 +189,8 @@ export default function CourseRegistrationForm({
       button:
         'bg-gradient-to-r from-purple-600 to-pink-500 hover:from-purple-700 hover:to-pink-600',
       link: 'text-purple-600',
+      courseTag:
+        'border-purple-200 bg-purple-50 text-purple-700 dark:border-purple-500/40 dark:bg-purple-500/10 dark:text-purple-200',
     },
     blue: {
       bg: 'bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/10 dark:to-blue-800/10',
@@ -194,10 +199,13 @@ export default function CourseRegistrationForm({
       hover: 'hover:bg-blue-50 dark:hover:bg-blue-900/20',
       button: 'bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600',
       link: 'text-blue-600',
+      courseTag:
+        'border-blue-200 bg-blue-50 text-blue-700 dark:border-blue-500/40 dark:bg-blue-500/10 dark:text-blue-200',
     },
   }
 
-  const currentTheme = themeColors[theme]
+  const currentTheme = themeColors[theme] || themeColors.orange
+  const selectedCourseLabel = courseLabel || courseTitle
 
   return (
     <section id="registration-form" className={`py-20 ${currentTheme.bg}`}>
@@ -209,6 +217,12 @@ export default function CourseRegistrationForm({
           <p className="text-xl text-gray-600 dark:text-gray-300">
             Điền thông tin để nhận tư vấn chi tiết và ưu đãi đặc biệt
           </p>
+          <div
+            className={`mt-4 inline-flex flex-wrap items-center justify-center gap-2 rounded-full border px-4 py-2 text-sm font-semibold ${currentTheme.courseTag}`}
+          >
+            <span>Khóa đang chọn:</span>
+            <span>{selectedCourseLabel}</span>
+          </div>
         </div>
 
         <div className="rounded-2xl bg-white p-8 shadow-xl dark:bg-gray-900">
@@ -227,6 +241,7 @@ export default function CourseRegistrationForm({
                     value={formData.name}
                     onChange={handleChange}
                     required
+                    autoComplete="name"
                     className={`w-full rounded-lg border border-gray-300 bg-white py-3 pl-10 pr-4 text-gray-900 focus:outline-none focus:ring-2 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100 ${currentTheme.focus}`}
                     placeholder="Nhập họ và tên"
                   />
@@ -246,6 +261,7 @@ export default function CourseRegistrationForm({
                     value={formData.email}
                     onChange={handleChange}
                     required
+                    autoComplete="email"
                     className={`w-full rounded-lg border border-gray-300 bg-white py-3 pl-10 pr-4 text-gray-900 focus:outline-none focus:ring-2 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100 ${currentTheme.focus}`}
                     placeholder="email@example.com"
                   />
@@ -265,6 +281,8 @@ export default function CourseRegistrationForm({
                     value={formData.phone}
                     onChange={handleChange}
                     required
+                    autoComplete="tel"
+                    inputMode="tel"
                     className={`w-full rounded-lg border border-gray-300 bg-white py-3 pl-10 pr-4 text-gray-900 focus:outline-none focus:ring-2 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100 ${currentTheme.focus}`}
                     placeholder="0901234567"
                   />
@@ -293,40 +311,40 @@ export default function CourseRegistrationForm({
             </div>
 
             {/* Alumni Status */}
-            <div
+            <label
+              htmlFor="isAlumni"
               className={`flex cursor-pointer items-center rounded-lg border border-gray-200 p-4 transition dark:border-gray-600 ${currentTheme.hover}`}
-              onClick={() => setFormData({ ...formData, isAlumni: !formData.isAlumni })}
             >
               <input
+                id="isAlumni"
                 type="checkbox"
                 name="isAlumni"
                 checked={formData.isAlumni}
                 onChange={handleChange}
                 className={`mr-3 h-5 w-5 rounded border-gray-300 ${currentTheme.checkbox}`}
               />
-              <label className="cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300">
+              <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
                 Cựu học viên của VNTechies
-              </label>
-            </div>
+              </span>
+            </label>
 
             {/* Group Registration */}
-            <div
+            <label
+              htmlFor="groupRegistration"
               className={`flex cursor-pointer items-center rounded-lg border border-gray-200 p-4 transition dark:border-gray-600 ${currentTheme.hover}`}
-              onClick={() =>
-                setFormData({ ...formData, groupRegistration: !formData.groupRegistration })
-              }
             >
               <input
+                id="groupRegistration"
                 type="checkbox"
                 name="groupRegistration"
                 checked={formData.groupRegistration}
                 onChange={handleChange}
                 className={`mr-3 h-5 w-5 rounded border-gray-300 ${currentTheme.checkbox}`}
               />
-              <label className="cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300">
+              <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
                 Đăng ký theo nhóm (2+ người)
-              </label>
-            </div>
+              </span>
+            </label>
 
             {/* Coupon Code */}
             <div>

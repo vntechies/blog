@@ -35,6 +35,7 @@ module.exports = {
       },
       fontFamily: {
         sans: ['InterVariable', ...defaultTheme.fontFamily.sans],
+        display: ['InterVariable', ...defaultTheme.fontFamily.sans],
       },
       colors: {
         primary: colors.orange,

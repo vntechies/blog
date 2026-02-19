@@ -27,7 +27,7 @@ const FreeCourses = () => {
           </p>
         </div>
 
-        <div className="-m-4 flex flex-wrap justify-center">
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
           <Card
             title="90 Ngày DevOps v2 ♾️"
             description="Tập trung vào DevSecOps với các kiến thức bảo mật và chuyên sâu trong SDLC"

@@ -43,7 +43,7 @@ const testimonials = [
 ]
 
 const courseInfo = {
-  title: 'ĐỘC QUYỀN: Khoá học trở thành DevOps Engineer từ Zero',
+  title: 'ĐỘC QUYỀN: Khoá học DevOps Engineer Bootcamp',
   subtitle: 'Từ Zero đến Hero với DevOps - Lộ trình đào tạo toàn diện',
   image: '/static/images/courses/devopseng01-hero.png',
   startDate: '9/10/2025',

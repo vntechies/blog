@@ -10,16 +10,13 @@ export default function DocumentLayout({ children, frontMatter }) {
         title={`${title} - ${siteMetadata.title}`}
         description={`${title} - ${siteMetadata.title}`}
       />
-      <div className="divide-y divide-gray-200 dark:divide-gray-700">
-        <div className="space-y-2 pt-6 pb-8 md:space-y-5">
-          <h1 className="md:text-6xl text-3xl font-extrabold leading-9 tracking-tight text-gray-900 dark:text-gray-100 sm:text-4xl sm:leading-10 md:leading-14">
-            {title}
-          </h1>
-        </div>
-        <div className="items-start space-y-2 xl:grid xl:gap-x-8 xl:space-y-0">
-          <div className="prose max-w-none pt-8 pb-8 dark:prose-dark">{children}</div>
-        </div>
-      </div>
+      <article className="surface-panel overflow-hidden px-4 py-8 sm:px-8 lg:px-10">
+        <header className="mb-8">
+          <span className="page-eyebrow">Tài liệu</span>
+          <h1 className="page-heading text-slate-900 dark:text-slate-100">{title}</h1>
+        </header>
+        <div className="prose max-w-none pb-4 dark:prose-dark">{children}</div>
+      </article>
     </>
   )
 }

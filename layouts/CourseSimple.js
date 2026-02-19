@@ -10,7 +10,6 @@ import { useRouter } from 'next/router'
 
 export default function CourseSimple({
   frontMatter,
-  authorDetails,
   next,
   prev,
   posts = [],
@@ -18,103 +17,78 @@ export default function CourseSimple({
   children,
 }) {
   const router = useRouter()
-  const { index, title, slug, summary, date, readingTime, images, fileName } = frontMatter
+  const { title, slug, summary, date, readingTime, images, fileName } = frontMatter
+
+  const renderCourseLinks = () => (
+    <ul className="mt-3 space-y-1.5">
+      {posts.map((post) => {
+        const isActive = router.asPath === `/courses/${post.slug}`
+        return (
+          <li
+            key={post.slug}
+            ref={
+              isActive
+                ? (el) => {
+                    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' })
+                  }
+                : null
+            }
+          >
+            <a
+              className={`block rounded-lg px-3 py-2 text-sm leading-6 transition-colors ${
+                isActive
+                  ? 'bg-orange-100 font-semibold text-orange-700 dark:bg-orange-900/40 dark:text-orange-300'
+                  : 'text-slate-700 hover:bg-slate-200 dark:text-slate-300 dark:hover:bg-slate-700'
+              }`}
+              href={`/courses/${post.slug}`}
+            >
+              {post.title}
+            </a>
+          </li>
+        )
+      })}
+    </ul>
+  )
 
   return (
     <SectionContainer>
       <ScrollTopAndComment />
-      <article>
-        <div className="xl:divide-y xl:divide-gray-200 xl:dark:divide-gray-700">
-          <header className="pt-6 xl:pb-6 xl:pt-12">
-            <div className="space-y-1 text-center">
-              <div className="max-w-2lg container mx-auto">
-                <h1 className="text-2xl font-bold leading-9 tracking-tight text-black dark:text-gray-50 sm:text-3xl sm:leading-10 md:text-5xl md:leading-14">
-                  {title}
-                </h1>
-              </div>
-              {summary && (
-                <div className="flex justify-center space-x-4">
-                  <div>
-                    <p className="text-medium leading-6 text-gray-500 dark:text-gray-400 ">
-                      {summary}
-                    </p>
-                  </div>
-                </div>
-              )}
-              <div className="flex flex-row items-center justify-center gap-2 pt-4 text-sm font-semibold text-gray-700 dark:text-gray-300">
-                <dt className="sr-only">Đăng vào</dt>
-                <dd className="">
-                  <time dateTime={date} className="text-sm font-semibold">
-                    {formatDate(date)}
-                  </time>
-                </dd>{' '}
-                {readingTime && (
-                  <>
-                    • <span>{`${readingTime.text.replace('min read', 'phút')}`}</span>
-                  </>
-                )}
-              </div>
-            </div>
-          </header>
-
-          <div className="visible pr-4 pt-6 pb-6 md:invisible md:h-0 md:pt-0 md:pb-0 md:pr-0 xl:border-b xl:border-gray-200 xl:pt-11 xl:dark:border-gray-700">
-            <h3 className="dark:text-secondary-400 text-xl font-bold text-primary-600">Nội dung</h3>
-            <ul className="my-4">
-              {posts.map((post) => (
-                <li key={post.slug}>
-                  <a
-                    className={`my-2 block rounded-md py-4 px-2 text-sm text-gray-800 hover:bg-gray-200 dark:text-gray-300 hover:dark:bg-gray-800 ${
-                      router.asPath === `/courses/${post.slug}`
-                        ? 'bg-gray-200 font-bold text-primary-400 dark:bg-gray-800 dark:text-primary-400'
-                        : ''
-                    }`}
-                    href={`/courses/${post.slug}`}
-                  >
-                    {post.title}
-                  </a>
-                </li>
-              ))}
-            </ul>
+      <article className="surface-panel overflow-hidden px-3 py-6 sm:px-6 lg:px-8">
+        <header className="pb-4 text-center">
+          <span className="page-eyebrow mx-auto">Bài học</span>
+          <h1 className="page-heading text-slate-900 dark:text-slate-100">{title}</h1>
+          {summary && <p className="page-lead mx-auto mt-3 max-w-3xl">{summary}</p>}
+          <div className="mt-4 flex flex-wrap items-center justify-center gap-2 text-sm font-semibold text-slate-600 dark:text-slate-300">
+            <time dateTime={date}>{formatDate(date)}</time>
+            {readingTime && <span>- {readingTime.text.replace('min read', 'phút đọc')}</span>}
           </div>
-          <div
-            className="divide-y divide-gray-200 pb-8 dark:divide-gray-700 md:grid md:grid-cols-3 md:gap-x-4 md:divide-y-0"
-            style={{ gridTemplateRows: 'auto 1fr' }}
-          >
-            <div className="invisible pt-0 pb-0 pr-4 md:visible md:pt-6 md:pb-10 md:pr-0 xl:border-b xl:border-gray-200 xl:pt-11 xl:dark:border-gray-700">
-              <div className="sticky top-8 h-0 overflow-y-scroll md:h-[calc(100vh-5.75rem)]">
-                <h3 className="dark:text-secondary-400 text-xl font-bold text-primary-600">
-                  Nội dung khoá học
+        </header>
+
+        <div className="md:hidden">
+          <div className="surface-panel-muted mb-6 p-4">
+            <h3 className="text-sm font-bold uppercase tracking-wide text-slate-700 dark:text-slate-200">
+              Nội dung khóa học
+            </h3>
+            {renderCourseLinks()}
+          </div>
+        </div>
+
+        <div className="grid gap-6 md:grid-cols-[290px,1fr]">
+          <aside className="hidden md:block">
+            <div className="sticky top-24 space-y-6">
+              <div className="surface-panel-muted max-h-[calc(100vh-8rem)] overflow-y-auto p-4">
+                <h3 className="text-sm font-bold uppercase tracking-wide text-slate-700 dark:text-slate-200">
+                  Nội dung khóa học
                 </h3>
-                <ul className="my-4">
-                  {posts.map((post) => (
-                    <li
-                      key={post.slug}
-                      ref={
-                        router.asPath === `/courses/${post.slug}`
-                          ? (el) => {
-                              if (el) el.scrollIntoView({ behavior: 'smooth' })
-                            }
-                          : null
-                      }
-                    >
-                      <a
-                        className={`my-2 block rounded-md py-4 px-2 text-sm text-gray-800 hover:bg-gray-200 dark:text-gray-300 hover:dark:bg-gray-800 ${
-                          router.asPath === `/courses/${post.slug}`
-                            ? 'bg-gray-200 font-bold text-primary-400 dark:bg-gray-800 dark:text-primary-400'
-                            : ''
-                        }`}
-                        href={`/courses/${post.slug}`}
-                      >
-                        {post.title}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-                <div className="hidden border-t border-gray-200 pt-12 dark:border-gray-700 md:block">
-                  <h3 className="dark:text-secondary-400 text-xl font-bold text-primary-600">
-                    Khoá học khác
+                {renderCourseLinks()}
+              </div>
+
+              {otherCourses.length > 0 && (
+                <div className="surface-panel-muted p-4">
+                  <h3 className="text-sm font-bold uppercase tracking-wide text-slate-700 dark:text-slate-200">
+                    Khóa học khác
                   </h3>
-                  <div className="flex flex-col gap-5 text-sm font-medium">
+                  <div className="mt-3 flex flex-col gap-3">
                     {otherCourses.map((course) => (
                       <HorizontalCard
                         key={course.title}
@@ -125,77 +99,57 @@ export default function CourseSimple({
                     ))}
                   </div>
                 </div>
-              </div>
-            </div>
-            <div className="divide-y divide-gray-200 px-2 dark:divide-gray-700 md:col-span-2 md:row-span-1 md:pb-0 lg:px-8">
-              {images && images[0] && (
-                <div className="prose max-w-none pt-10 text-base dark:prose-dark">
-                  <div className="mb-8 mt-4">
-                    <Image
-                      alt={title}
-                      className="rounded object-cover"
-                      src={images[0]}
-                      layout="responsive"
-                      width={640}
-                      height={400}
-                      quality={75}
-                      loading="lazy"
-                    />
-                  </div>
-                </div>
               )}
-              <Share fileName={fileName} href={`/courses/${slug}`} />
-              <div className="prose max-w-none pt-10 pb-8 text-base dark:prose-dark">
-                {children}
+            </div>
+          </aside>
+
+          <div className="min-w-0">
+            {images?.[0] && (
+              <div className="mb-6 overflow-hidden rounded-2xl border border-slate-200 dark:border-slate-700">
+                <Image
+                  alt={title}
+                  className="h-auto w-full object-cover"
+                  src={images[0]}
+                  width={1200}
+                  height={760}
+                  quality={75}
+                  loading="lazy"
+                />
               </div>
-              <footer>
-                <div className="flex flex-col text-sm font-medium sm:flex-row sm:justify-between sm:text-base">
-                  {!prev && (
-                    <div className="pt-4 xl:pt-8">
-                      <button
-                        rel="previous"
-                        className="cursor-auto disabled:opacity-50"
-                        disabled={!prev}
-                      >
-                        👈 Bài trước
-                      </button>
-                    </div>
-                  )}
-                  {prev && (
-                    <div className="pt-4 xl:pt-8">
-                      👈{' '}
-                      <Link
-                        href={`/courses/${prev.slug}`}
-                        className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
-                      >
-                        {prev.title}
-                      </Link>
-                    </div>
-                  )}
-                  {!next && (
-                    <div className="pt-4 xl:pt-8">
-                      <button
-                        rel="previous"
-                        className="cursor-auto disabled:opacity-50"
-                        disabled={!next}
-                      >
-                        Bài sau 👉
-                      </button>
-                    </div>
-                  )}
-                  {next && (
-                    <div className="pt-4 xl:pt-8">
-                      <Link
-                        href={`/courses/${next.slug}`}
-                        className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
-                      >
-                        {next.title}
-                      </Link>{' '}
-                      👉
-                    </div>
-                  )}
-                </div>
-              </footer>
+            )}
+
+            <Share fileName={fileName} href={`/courses/${slug}`} />
+            <div className="prose mt-8 max-w-none text-base dark:prose-dark">{children}</div>
+
+            <footer className="mt-10 flex flex-col gap-3 text-sm font-semibold sm:flex-row sm:justify-between sm:text-base">
+              {prev ? (
+                <Link
+                  href={`/courses/${prev.slug}`}
+                  className="inline-flex items-center rounded-lg border border-orange-200 bg-orange-50 px-4 py-2 text-orange-700 hover:bg-orange-100 dark:border-orange-700/60 dark:bg-orange-900/30 dark:text-orange-300 dark:hover:bg-orange-900/50"
+                >
+                  ← {prev.title}
+                </Link>
+              ) : (
+                <span className="inline-flex items-center rounded-lg border border-slate-200 bg-slate-100 px-4 py-2 text-slate-400 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-500">
+                  ← Bài trước
+                </span>
+              )}
+
+              {next ? (
+                <Link
+                  href={`/courses/${next.slug}`}
+                  className="inline-flex items-center rounded-lg border border-orange-200 bg-orange-50 px-4 py-2 text-orange-700 hover:bg-orange-100 dark:border-orange-700/60 dark:bg-orange-900/30 dark:text-orange-300 dark:hover:bg-orange-900/50"
+                >
+                  {next.title} →
+                </Link>
+              ) : (
+                <span className="inline-flex items-center rounded-lg border border-slate-200 bg-slate-100 px-4 py-2 text-slate-400 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-500">
+                  Bài sau →
+                </span>
+              )}
+            </footer>
+
+            <div className="mt-10">
               <Comments frontMatter={frontMatter} />
             </div>
           </div>

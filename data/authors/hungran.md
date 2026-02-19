@@ -2,7 +2,7 @@
 name: Hung Vu
 avatar: /static/images/authors/hungran.png
 occupation: Senior DevOps Engineer & AWS Authorized Instructor
-company: PlayStudios
+company: PLAYSTUDIOS ASIA
 email: hung@vntechies.dev
 startYear: 2015
 studentCount: 100

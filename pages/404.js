@@ -6,28 +6,27 @@ export default function FourZeroFour() {
   return (
     <>
       <PageSEO title={`Lạc lối - ${siteMetadata.headerTitle}`} />
-      <div className="flex flex-col items-start justify-start md:mt-24 md:flex-row md:items-center md:justify-center md:space-x-6">
-        <div className="space-x-2 pt-6 pb-8 md:space-y-5">
-          <h1 className="text-6xl md:text-8xl font-extrabold leading-9 tracking-tight text-gray-900 dark:text-gray-100 md:border-r-2 md:px-6 md:leading-14">
-            404
-          </h1>
-        </div>
-        <div className="max-w-md">
-          <p className="mb-4 text-xl font-bold leading-normal md:text-2xl">
-            Xin lỗi, không tìm thấy trang bạn vừa yêu cầu 😅
-          </p>
-          <p className="mb-8">Đừng lo, VNTechies còn nhiều bài viết khác 🤩</p>
-          <p className="text-lg leading-7">
-            Quay về{' '}
-            <Link alt="Trang chủ" href="/">
-              <button className="hover-underline-animation inline-flex flex-row items-center gap-2 font-bold">
-                trang chủ
-                <svg style={{ width: '24px', height: '24px' }} viewBox="0 0 24 24">
-                  <path fill="currentColor" d="M10,20V14H14V20H19V12H22L12,3L2,12H5V20H10Z"></path>
-                </svg>
-              </button>
-            </Link>
-          </p>
+      <div className="mx-auto max-w-4xl py-12 sm:py-20">
+        <div className="surface-panel grid items-center gap-8 p-8 sm:p-12 md:grid-cols-[180px,1fr]">
+          <div className="text-center md:border-r md:border-slate-200 md:pr-8 md:text-left dark:md:border-slate-700">
+            <h1 className="text-7xl font-black tracking-tight text-slate-900 dark:text-slate-100">
+              404
+            </h1>
+          </div>
+          <div>
+            <span className="page-eyebrow mb-3">Trang không tồn tại</span>
+            <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100 sm:text-3xl">
+              Xin lỗi, không tìm thấy trang bạn vừa yêu cầu.
+            </h2>
+            <p className="mt-3 text-base leading-7 text-slate-600 dark:text-slate-300">
+              Bạn có thể quay lại trang chủ để tiếp tục đọc các bài viết mới nhất.
+            </p>
+            <div className="mt-6">
+              <Link alt="Trang chủ" href="/" className="action-btn-primary">
+                Về trang chủ
+              </Link>
+            </div>
+          </div>
         </div>
       </div>
     </>

@@ -1356,7 +1356,7 @@ export default function AWSCertificationPaths() {
           </div>
           <div className="bg-gradient-to-r from-purple-600 to-pink-600 px-6 py-2 text-white">
             <h3 id="data-analytics" className="text-lg font-semibold">
-              Phân tích dữ liệu - Data Analytics
+              Data Engineering - Data Engineer Bootcamp (VDT-C01)
             </h3>
           </div>
 

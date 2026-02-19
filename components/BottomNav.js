@@ -6,38 +6,32 @@ const BottomNav = () => {
   const route = `/${router.pathname.split('/')[1]}`
 
   return (
-    <div className="sm:hidden">
-      <nav className="pb-safe fixed bottom-0 z-50 w-full border-t bg-zinc-100 dark:border-zinc-800 dark:bg-zinc-900">
-        <div className="relative mx-auto flex h-16 max-w-md items-center justify-around px-6">
+    <div className="md:hidden">
+      <nav className="pb-safe fixed bottom-0 z-50 w-full border-t border-slate-200/80 bg-white/95 backdrop-blur-lg dark:border-slate-700/70 dark:bg-slate-900/95">
+        <div className="relative mx-auto flex h-16 max-w-md items-center justify-around px-5">
           {links.map(({ href, label, icon, isHighlighted }) => (
-            <Link alt={label} key={label} href={href}>
-              {isHighlighted ? (
-                <button className="relative -top-4 flex h-14 w-14 transform flex-col items-center justify-center rounded-full bg-gradient-to-r from-orange-500 to-orange-600 text-white shadow-lg transition-transform hover:scale-105">
-                  <div className="flex flex-col items-center">
-                    {icon}
-                    <span className="mt-1 text-[10px] font-medium">{label}</span>
-                  </div>
-                </button>
-              ) : (
-                <button
-                  className={`flex h-full w-full flex-col items-center justify-center space-y-1 ${
-                    route === href
-                      ? 'text-orange-500 dark:text-orange-400'
-                      : 'text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-50'
-                  }`}
-                >
-                  {icon}
-                  <span
-                    className={`text-[13px] ${
-                      route === href
-                        ? 'text-orange-500 dark:text-orange-400'
-                        : 'text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-50'
-                    }`}
-                  >
-                    {label}
-                  </span>
-                </button>
-              )}
+            <Link
+              key={label}
+              href={href}
+              aria-label={label}
+              className={
+                isHighlighted
+                  ? 'shadow-orange-500/35 relative -top-4 flex h-14 w-14 flex-col items-center justify-center rounded-full bg-gradient-to-r from-orange-500 to-orange-600 text-white shadow-lg'
+                  : `flex h-full min-w-[52px] flex-col items-center justify-center gap-1 ${
+                      (href === '/' ? router.pathname === '/' : route === href)
+                        ? 'text-orange-500 dark:text-orange-300'
+                        : 'text-slate-600 dark:text-slate-400'
+                    }`
+              }
+            >
+              {icon}
+              <span
+                className={`text-[11px] font-medium ${
+                  isHighlighted ? 'text-white' : 'tracking-wide'
+                }`}
+              >
+                {label}
+              </span>
             </Link>
           ))}
         </div>
