@@ -11,16 +11,30 @@ import Share from '@/components/Share'
 import HorizontalCard from '@/components/HorizontalCard'
 import SummaryButton from '@/components/SummaryButton'
 
-// const editUrl = (fileName) => `${siteMetadata.siteRepo}/blob/master/data/blog/${fileName}`
-// const discussUrl = (slug) =>
-//   `https://mobile.twitter.com/search?q=${encodeURIComponent(
-//     `${siteMetadata.siteUrl}/blog/${slug}`
-//   )}`
-
 const postDateTemplate = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }
 
+const formatFacebookHandle = (facebookUrl) => {
+  if (!facebookUrl) return ''
+
+  try {
+    const parsed = new URL(facebookUrl)
+    const rawPath = parsed.pathname.replace(/^\/+|\/+$/g, '')
+    if (!rawPath) return facebookUrl
+
+    // fb.me/<nick> and facebook.com/<nick> -> @nick
+    if (parsed.hostname.includes('fb.me') || parsed.hostname.includes('facebook.com')) {
+      const handle = rawPath.split('/')[0]
+      return handle ? `@${handle}` : facebookUrl
+    }
+  } catch {
+    return facebookUrl.replace('https://fb.me/', '@')
+  }
+
+  return facebookUrl
+}
+
 export default function PostLayout({ frontMatter, authorDetails, next, prev, children }) {
-  const { slug, fileName, date, title, images, tags } = frontMatter
+  const { slug, date, title, tags } = frontMatter
 
   return (
     <SectionContainer>
@@ -35,114 +49,134 @@ export default function PostLayout({ frontMatter, authorDetails, next, prev, chi
           typeof children === 'string' ? children : children?.props?.children?.toString() || title
         }
       />
-      <article>
-        <div className="xl:divide-y xl:divide-gray-200 xl:dark:divide-gray-700">
-          <header className="pt-6 xl:pb-6">
-            <div className="space-y-1 text-center">
-              <dl className="space-y-10">
-                <div>
-                  <dt className="sr-only">Đăng vào</dt>
-                  <dd className="text-base font-medium leading-6 text-gray-500 dark:text-gray-400">
-                    <time dateTime={date}>
-                      {new Date(date).toLocaleDateString(siteMetadata.locale, postDateTemplate)}
-                    </time>
-                  </dd>
-                </div>
-              </dl>
-              <div>
-                <PageTitle>{title}</PageTitle>
-              </div>
-            </div>
-          </header>
-          <div
-            className="divide-y divide-gray-200 pb-8 dark:divide-gray-700 xl:grid xl:grid-cols-4 xl:gap-x-6 xl:divide-y-0"
-            style={{ gridTemplateRows: 'auto 1fr' }}
-          >
-            <dl className="pt-6 pb-6 xl:pt-11">
-              <dt className="sr-only">Tác giả</dt>
-              <dd>
-                <ul className="flex justify-center space-x-8 sm:space-x-12 xl:block xl:space-x-0 xl:space-y-8">
-                  {authorDetails &&
-                    authorDetails.map((author) => (
-                      <li className="flex items-center space-x-2" key={author.name}>
-                        {author.avatar && (
-                          <Image
-                            src={author.avatar}
-                            width="38"
-                            height="38"
-                            alt="avatar"
-                            className="h-38 w-38 rounded-full"
-                            quality={75}
-                            loading="lazy"
-                          />
-                        )}
-                        <dl className="whitespace-nowrap text-sm font-medium leading-5">
-                          <dt className="sr-only">Name</dt>
-                          <dd className="text-gray-900 dark:text-gray-100">{author.name}</dd>
-                          <dt className="sr-only">Facebook</dt>
-                          <dd>
-                            {author.facebook && (
+
+      <article className="surface-panel overflow-hidden px-4 py-8 sm:px-8 lg:px-10">
+        <header className="mx-auto max-w-3xl text-center">
+          <span className="page-eyebrow mx-auto">
+            <time dateTime={date}>
+              {new Date(date).toLocaleDateString(siteMetadata.locale, postDateTemplate)}
+            </time>
+          </span>
+          <PageTitle>{title}</PageTitle>
+        </header>
+
+        <div className="mt-10 grid gap-8 xl:grid-cols-[230px,1fr]">
+          <aside className="space-y-5 xl:sticky xl:top-28 xl:self-start">
+            <div className="surface-panel-muted p-4 sm:p-5">
+              <h2 className="text-xs mb-4 font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">
+                Tác giả
+              </h2>
+              <ul className="space-y-4">
+                {authorDetails &&
+                  authorDetails.map((author) => {
+                    const facebookHandle = formatFacebookHandle(author.facebook)
+
+                    return (
+                      <li className="flex items-start gap-3" key={author.name}>
+                        {author.avatar &&
+                          (author.slug ? (
+                            <Link href={`/authors/${author.slug}`} className="flex-shrink-0">
+                              <Image
+                                src={author.avatar}
+                                width={44}
+                                height={44}
+                                alt={author.name}
+                                className="h-11 w-11 rounded-full object-cover"
+                                quality={75}
+                                loading="lazy"
+                              />
+                            </Link>
+                          ) : (
+                            <Image
+                              src={author.avatar}
+                              width={44}
+                              height={44}
+                              alt={author.name}
+                              className="h-11 w-11 rounded-full object-cover"
+                              quality={75}
+                              loading="lazy"
+                            />
+                          ))}
+
+                        <div className="min-w-0">
+                          {author.slug ? (
+                            <Link
+                              href={`/authors/${author.slug}`}
+                              className="block text-sm font-semibold leading-snug text-slate-900 hover:text-orange-600 dark:text-slate-100 dark:hover:text-orange-300"
+                            >
+                              {author.name}
+                            </Link>
+                          ) : (
+                            <p className="text-sm font-semibold leading-snug text-slate-900 dark:text-slate-100">
+                              {author.name}
+                            </p>
+                          )}
+
+                          {author.facebook && (
+                            <div className="mt-1 space-y-1">
                               <Link
                                 href={author.facebook}
-                                className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
+                                className="text-xs block font-medium text-orange-600 hover:text-orange-500 dark:text-orange-300 dark:hover:text-orange-200"
                               >
-                                {author.facebook.replace('https://fb.me/', '@')}
+                                {facebookHandle}
                               </Link>
-                            )}
-                          </dd>
-                        </dl>
+                            </div>
+                          )}
+                        </div>
                       </li>
-                    ))}
-                </ul>
-              </dd>
-            </dl>
-            <div className="xl:col-span-3 xl:row-span-2 xl:pb-0">
-              <div className="prose max-w-none pt-10 pb-8 dark:prose-dark">{children}</div>
-              <Share fileName={frontMatter.fileName} href={`/blog/${frontMatter.slug}`} />
+                    )
+                  })}
+              </ul>
+            </div>
+
+            {tags && (
+              <div className="surface-panel-muted p-4 sm:p-5">
+                <h2 className="text-xs mb-4 font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">
+                  Chủ đề
+                </h2>
+                <div className="flex flex-wrap">
+                  {tags.map((tag) => (
+                    <Tag key={tag} text={tag} />
+                  ))}
+                </div>
+              </div>
+            )}
+          </aside>
+
+          <div>
+            <div className="prose max-w-none pb-8 pt-2 dark:prose-dark">{children}</div>
+            <Share fileName={frontMatter.fileName} href={`/blog/${frontMatter.slug}`} />
+            <div className="mt-8">
               <Comments frontMatter={frontMatter} />
             </div>
-            <footer>
-              <div className="text-sm font-medium leading-5 xl:col-start-1 xl:row-start-2">
-                {tags && (
-                  <div className="py-4 xl:py-8">
-                    <h2 className="text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400">
-                      Tags
-                    </h2>
-                    <div className="flex flex-wrap">
-                      {tags.map((tag) => (
-                        <Tag key={tag} text={tag} />
-                      ))}
-                    </div>
-                  </div>
+
+            {(next || prev) && (
+              <div className="mt-8 grid grid-cols-1 gap-4 md:grid-cols-2">
+                {prev && (
+                  <HorizontalCard
+                    title={prev.title}
+                    image={prev.images[0]}
+                    href={`/blog/${prev.slug}`}
+                  />
                 )}
-                {(next || prev) && (
-                  <div className="my-4 hidden grid-cols-1 gap-4 dark:border-gray-800 md:grid">
-                    {prev && (
-                      <HorizontalCard
-                        title={prev.title}
-                        image={prev.images[0]}
-                        href={`/blog/${prev.slug}`}
-                      />
-                    )}
-                    {next && (
-                      <HorizontalCard
-                        title={next.title}
-                        image={next.images[0]}
-                        href={`/blog/${next.slug}`}
-                      />
-                    )}
-                  </div>
+                {next && (
+                  <HorizontalCard
+                    title={next.title}
+                    image={next.images[0]}
+                    href={`/blog/${next.slug}`}
+                  />
                 )}
               </div>
-              <div className="pt-4 xl:pt-8">
-                <Link
-                  href="/blog"
-                  className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
-                >
-                  👈 Quay trở lại blog
-                </Link>
-              </div>
-            </footer>
+            )}
+
+            <div className="pt-8">
+              <Link
+                href="/blog"
+                className="inline-flex items-center rounded-lg border border-orange-200 bg-orange-50 px-4 py-2 text-sm font-semibold text-orange-700 hover:bg-orange-100 dark:border-orange-700/60 dark:bg-orange-900/30 dark:text-orange-300 dark:hover:bg-orange-900/50"
+              >
+                ← Quay trở lại blog
+              </Link>
+            </div>
           </div>
         </div>
       </article>

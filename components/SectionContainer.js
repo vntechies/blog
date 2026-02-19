@@ -1,3 +1,7 @@
-export default function SectionContainer({ children }) {
-  return <div className="mx-auto max-w-4xl px-4 sm:px-6 xl:max-w-6xl xl:px-0">{children}</div>
+export default function SectionContainer({ children, className = '' }) {
+  return (
+    <div className={`mx-auto w-full max-w-[84rem] px-4 sm:px-6 lg:px-10 ${className}`.trim()}>
+      {children}
+    </div>
+  )
 }

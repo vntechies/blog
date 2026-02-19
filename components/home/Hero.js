@@ -15,7 +15,7 @@ const Hero = () => {
         <div className="text-center">
           {/* Badge */}
           <div className="mb-4 inline-flex items-center rounded-full bg-orange-100 px-4 py-2 text-sm font-semibold text-orange-800 dark:bg-orange-900/30 dark:text-orange-300">
-            <span className="mr-2">🚀</span>5 khoá học AWS mới đã ra mắt
+            <span className="mr-2">🔥</span>Khoá học Data mới đã ra mắt
           </div>
 
           {/* Main heading */}
@@ -24,6 +24,10 @@ const Hero = () => {
             <br />
             <span className="bg-gradient-to-r from-orange-500 to-orange-600 bg-clip-text text-transparent">
               AWS Certification
+            </span>
+            {', '}
+            <span className="bg-gradient-to-r from-purple-500 to-purple-600 bg-clip-text text-transparent">
+              Data
             </span>{' '}
             và{' '}
             <span className="bg-gradient-to-r from-blue-500 to-blue-600 bg-clip-text text-transparent">
@@ -66,7 +70,7 @@ const Hero = () => {
               </svg>
             </a>
             <a
-              href="https://www.tiktok.com/@vntechies.dev"
+              href="https://www.tiktok.com/@vntechies"
               target="_blank"
               rel="noopener noreferrer"
               className="group flex h-12 w-12 items-center justify-center rounded-xl bg-black text-white shadow-lg transition-all hover:-translate-y-1 hover:bg-gray-800 hover:shadow-xl"
@@ -100,10 +104,10 @@ const Hero = () => {
           {/* CTA Buttons */}
           <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:justify-center">
             <Link
-              href="/courses/aws/saa/gioi-thieu"
-              className="inline-flex items-center justify-center rounded-lg bg-orange-500 px-8 py-3 text-base font-semibold text-white shadow-lg transition-all focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 hover:bg-orange-600 hover:shadow-xl"
+              href="/courses/data-engineer-bootcamp/gioi-thieu"
+              className="inline-flex items-center justify-center rounded-lg bg-purple-500 px-8 py-3 text-base font-semibold text-white shadow-lg transition-all focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 hover:bg-purple-600 hover:shadow-xl"
             >
-              Khoá học AWS SAA
+              Data Engineer Bootcamp
               <svg className="ml-2 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path
                   strokeLinecap="round"
@@ -114,16 +118,16 @@ const Hero = () => {
               </svg>
             </Link>
             <Link
-              href="/aws-certification-paths"
+              href="/courses/aws/saa/gioi-thieu"
               className="inline-flex items-center justify-center rounded-lg border border-orange-300 bg-orange-50 px-8 py-3 text-base font-semibold text-orange-700 shadow-sm transition-all hover:bg-orange-100 dark:border-orange-600 dark:bg-orange-900/20 dark:text-orange-300 dark:hover:bg-orange-900/30"
             >
-              Định hướng AWS
+              Khoá học AWS SAA
               <svg className="ml-2 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
                   strokeWidth={2}
-                  d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"
+                  d="M13 7l5 5m0 0l-5 5m5-5H6"
                 />
               </svg>
             </Link>
@@ -137,7 +141,7 @@ const Hero = () => {
         </div>
 
         {/* Featured Courses */}
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
           {[
             {
               title: 'Solution Architect',
@@ -171,11 +175,24 @@ const Hero = () => {
               link: '/courses/devops/gioi-thieu',
               image: '/static/images/courses/vde.png',
             },
+            {
+              title: 'Data Engineer Bootcamp',
+              code: 'VDT-C01',
+              level: '9 tuần (18 buổi)',
+              color: 'from-purple-500 to-purple-600',
+              link: '/courses/data-engineer-bootcamp/gioi-thieu',
+              image: '/static/images/courses/vdt.png',
+              featured: true,
+            },
           ].map((course, index) => (
-            <Link key={index} href={course.link} className="group">
+            <Link key={index} href={course.link} className="group h-full">
               <div
-                className={`relative overflow-hidden rounded-xl bg-white p-6 shadow-lg transition-all hover:-translate-y-1 hover:shadow-xl dark:bg-gray-800 ${
-                  course.title === 'Solution Architect' ? 'ring-2 ring-orange-400' : ''
+                className={`relative h-full overflow-hidden rounded-xl bg-white p-6 shadow-lg transition-all hover:-translate-y-1 hover:shadow-xl dark:bg-gray-800 ${
+                  course.featured
+                    ? 'ring-2 ring-purple-400'
+                    : course.title === 'Solution Architect'
+                    ? 'ring-2 ring-orange-400'
+                    : ''
                 }`}
               >
                 <div className="mb-4 flex h-16 w-16 items-center justify-center">
@@ -185,6 +202,8 @@ const Hero = () => {
                       alt={
                         course.code === 'VDE-C01'
                           ? 'DevOps Engineer'
+                          : course.code === 'VDT-C01'
+                          ? 'Data Engineer Bootcamp'
                           : `AWS ${course.title} certification`
                       }
                       width={48}
@@ -201,19 +220,25 @@ const Hero = () => {
                     </div>
                   )}
                 </div>
-                <h3 className="mb-2 font-semibold text-gray-900 dark:text-white">
-                  {course.code === 'VDE-C01'
-                    ? 'Course DevOps Engineer VDE-C01'
-                    : `AWS ${course.title} certification`}
-                </h3>
-                <p className="mb-3 text-sm text-gray-600 dark:text-gray-400">{course.level}</p>
-                <div className="flex items-center justify-between">
-                  <span className="text-sm font-medium text-orange-500 group-hover:text-orange-600">
-                    Xem chi tiết →
-                  </span>
-                  <span className="text-xs rounded bg-gray-100 px-2 py-1 font-mono text-gray-600 dark:bg-gray-700 dark:text-gray-400">
-                    {course.code}
-                  </span>
+                <div className="flex h-full flex-col justify-between">
+                  <div>
+                    <h3 className="mb-2 min-h-[2.5rem] font-semibold text-gray-900 dark:text-white">
+                      {course.code === 'VDE-C01'
+                        ? 'Course DevOps Engineer VDE-C01'
+                        : course.code === 'VDT-C01'
+                        ? 'Data Engineer Bootcamp VDT-C01'
+                        : `AWS ${course.title} certification`}
+                    </h3>
+                    <p className="mb-3 text-sm text-gray-600 dark:text-gray-400">{course.level}</p>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm font-medium text-orange-500 group-hover:text-orange-600">
+                      Xem chi tiết →
+                    </span>
+                    <span className="text-xs rounded bg-gray-100 px-2 py-1 font-mono text-gray-600 dark:bg-gray-700 dark:text-gray-400">
+                      {course.code}
+                    </span>
+                  </div>
                 </div>
               </div>
             </Link>

@@ -26,7 +26,7 @@ const AWSCert = () => {
           </p>
         </div>
 
-        <div className="-m-4 flex flex-wrap justify-center">
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
           <Card
             title="Kinh nghiệm thi chứng chỉ AWS Certified Solutions Architect - Associate SAA-C03"
             description="Quá trình ôn tập cho kỳ thi AWSSA-A (Amazon AWS Certified Solutions Architect - Associate) - phiên bản SAA-C03"

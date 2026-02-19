@@ -9,9 +9,10 @@ import Image from '@/components/Image'
 import HorizontalCard from '@/components/HorizontalCard'
 import SummaryButton from '@/components/SummaryButton'
 
-export default function PostLayout({ frontMatter, authorDetails, next, prev, children }) {
+export default function PostLayout({ frontMatter, next, prev, children }) {
   const { date, title, images } = frontMatter
   const postDateTemplate = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }
+  const cover = images?.[0] || '/static/images/default-ogp.png'
 
   return (
     <SectionContainer>
@@ -22,64 +23,61 @@ export default function PostLayout({ frontMatter, authorDetails, next, prev, chi
           typeof children === 'string' ? children : children?.props?.children?.toString() || title
         }
       />
-      <article>
-        <div>
-          <header>
-            <div className="space-y-1 border-b border-gray-200 pb-10 text-center dark:border-gray-700">
-              <dl>
-                <div>
-                  <dd className="text-base font-medium leading-6 text-gray-500 dark:text-gray-400">
-                    <time dateTime={date}>
-                      {new Date(date).toLocaleDateString(siteMetadata.locale, postDateTemplate)}
-                    </time>
-                  </dd>
-                </div>
-              </dl>
-              <div>
-                <PageTitle>{title}</PageTitle>
-              </div>
+
+      <article className="surface-panel overflow-hidden px-4 py-8 sm:px-8 lg:px-10">
+        <header className="mx-auto max-w-3xl text-center">
+          <span className="page-eyebrow mx-auto">
+            <time dateTime={date}>
+              {new Date(date).toLocaleDateString(siteMetadata.locale, postDateTemplate)}
+            </time>
+          </span>
+          <PageTitle>{title}</PageTitle>
+        </header>
+
+        <div className="mx-auto mt-8 max-w-4xl overflow-hidden rounded-2xl">
+          <Image
+            alt={title}
+            className="h-auto w-full object-cover"
+            src={cover}
+            width={1200}
+            height={760}
+            loading="lazy"
+          />
+        </div>
+
+        <div className="mx-auto mt-10 max-w-4xl">
+          <div className="prose prose-neutral max-w-none pb-8 dark:prose-dark">{children}</div>
+          <Comments frontMatter={frontMatter} />
+        </div>
+
+        {(prev || next) && (
+          <footer className="mx-auto mt-8 max-w-4xl">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+              {prev && (
+                <HorizontalCard
+                  title={prev.title}
+                  image={prev.images[0]}
+                  href={`/blog/${prev.slug}`}
+                />
+              )}
+              {next && (
+                <HorizontalCard
+                  title={next.title}
+                  image={next.images[0]}
+                  href={`/blog/${next.slug}`}
+                />
+              )}
             </div>
-          </header>
-          <div className="mb-8 mt-4">
-            <Image
-              alt={title}
-              className="rounded object-cover"
-              src={images[0]}
-              layout="responsive"
-              width={640}
-              height={400}
-              loading="lazy"
-            />
-          </div>
-          <div
-            className="divide-y divide-gray-200 pb-8 dark:divide-gray-700 xl:divide-y-0 "
-            style={{ gridTemplateRows: 'auto 1fr' }}
+          </footer>
+        )}
+
+        <div className="mx-auto mt-8 max-w-4xl">
+          <Link
+            href="/blog"
+            className="inline-flex items-center rounded-lg border border-orange-200 bg-orange-50 px-4 py-2 text-sm font-semibold text-orange-700 hover:bg-orange-100 dark:border-orange-700/60 dark:bg-orange-900/30 dark:text-orange-300 dark:hover:bg-orange-900/50"
           >
-            <div className="grid grid-cols-6 gap-4 divide-y divide-gray-200 dark:divide-gray-700 xl:col-span-3 xl:row-span-2 xl:pb-0">
-              <div className="prose prose-neutral col-span-6 max-w-none pt-10 pb-8 dark:prose-dark md:col-span-4 md:col-start-2">
-                {children}
-              </div>
-            </div>
-            <Comments frontMatter={frontMatter} />
-            <footer>
-              <div className="flex grid flex-col gap-5 text-sm font-medium sm:flex-row sm:justify-between sm:text-base md:grid-cols-2">
-                {prev && (
-                  <HorizontalCard
-                    title={prev.title}
-                    image={prev.images[0]}
-                    href={`/blog/${prev.slug}`}
-                  />
-                )}
-                {next && (
-                  <HorizontalCard
-                    title={next.title}
-                    image={next.images[0]}
-                    href={`/blog/${next.slug}`}
-                  />
-                )}
-              </div>
-            </footer>
-          </div>
+            ← Quay trở lại blog
+          </Link>
         </div>
       </article>
     </SectionContainer>

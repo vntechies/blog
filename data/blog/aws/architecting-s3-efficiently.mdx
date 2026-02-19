@@ -37,7 +37,7 @@ Vấn đề cơ bản với object store là **chi phí listing**. Khi bạn có
 
 ### Các Scheme Phân Vùng
 
-**Hive-style partitioning** vẫn là pattern chủ lực. Bằng cách mã hóa giá trị partition trong key prefix (`s3://bucket/table/year=2024/month=01/day=15/`), bạn cho phép query planner loại bỏ toàn bộ cây thư mục trước khi thực hiện bất kỳ lệnh gọi LIST nào [1]. Điều này hoạt động tuyệt vời khi các predicate của query phù hợp với các cột partition.
+**Hive-style partitioning** vẫn là pattern chủ lực. Bằng cách mã hóa giá trị partition trong key prefix (`s3://bucket/table/year=2024/month=01/day=15/`), bạn cho phép query planner loại bỏ toàn bộ cây thư mục trước khi thực hiện bất kỳ lệnh gọi LIST nào [^1]. Điều này hoạt động tuyệt vời khi các predicate của query phù hợp với các cột partition.
 
 ```
 # Tốt: Phù hợp với các pattern query phổ biến
@@ -49,9 +49,9 @@ s3://data-lake/events/
         part-00001.parquet
 ```
 
-**Date-based partitioning** là một dạng chuyên biệt được tối ưu hóa cho workload time-series. Hầu hết các analytical query đều lọc theo cửa sổ thời gian, khiến phân vùng theo thời gian trở nên phù hợp tự nhiên. Các table format tối ưu hóa rõ ràng cho việc pruning partition theo ngày [1][2].
+**Date-based partitioning** là một dạng chuyên biệt được tối ưu hóa cho workload time-series. Hầu hết các analytical query đều lọc theo cửa sổ thời gian, khiến phân vùng theo thời gian trở nên phù hợp tự nhiên. Các table format tối ưu hóa rõ ràng cho việc pruning partition theo ngày [^1][^2].
 
-**Hash-based partitioning** (bucketing) giải quyết một vấn đề khác: write hotspot và kích thước partition không giới hạn. Bằng cách phân phối dữ liệu qua các bucket cố định sử dụng hàm hash, bạn giới hạn số lượng file trên mỗi logical partition và phân tán tải I/O qua các prefix [3]:
+**Hash-based partitioning** (bucketing) giải quyết một vấn đề khác: write hotspot và kích thước partition không giới hạn. Bằng cách phân phối dữ liệu qua các bucket cố định sử dụng hàm hash, bạn giới hạn số lượng file trên mỗi logical partition và phân tán tải I/O qua các prefix [^3]:
 
 ```
 # Hash bucketing trong date partition
@@ -76,7 +76,7 @@ Vấn đề lớn hơn là **chi phí listing**. Với hàng tỷ object, ngay c
 
 Đây là nơi các table format thể hiện giá trị. Thay vì listing S3 để phát hiện data file, hãy duy trì một **transaction log compact** hoặc **cấu trúc manifest**:
 
-**Delta Lake** sử dụng transaction log append-only được compact định kỳ thành các Parquet checkpoint. Khi bạn query một bảng, bạn đọc log (thường là một vài file JSON nhỏ) thay vì listing bucket. Điều này tăng tốc các thao tác metadata theo bậc độ lớn [1].
+**Delta Lake** sử dụng transaction log append-only được compact định kỳ thành các Parquet checkpoint. Khi bạn query một bảng, bạn đọc log (thường là một vài file JSON nhỏ) thay vì listing bucket. Điều này tăng tốc các thao tác metadata theo bậc độ lớn [^1].
 
 ```
 s3://bucket/table/
@@ -87,7 +87,7 @@ s3://bucket/table/
     00000000000000000020.checkpoint.parquet  # Metadata đã compact
 ```
 
-**Apache Iceberg** sử dụng mô hình manifest-of-manifests. File metadata cấp cao nhất trỏ đến manifest list, từ đó trỏ đến manifest, cuối cùng mô tả các data file. Hệ thống phân cấp này cho phép planner prune ở nhiều cấp độ mà không cần chạm vào data object [4]:
+**Apache Iceberg** sử dụng mô hình manifest-of-manifests. File metadata cấp cao nhất trỏ đến manifest list, từ đó trỏ đến manifest, cuối cùng mô tả các data file. Hệ thống phân cấp này cho phép planner prune ở nhiều cấp độ mà không cần chạm vào data object [^4]:
 
 ```
 metadata/
@@ -105,7 +105,7 @@ Insight chính: **coi metadata như một concern hạng nhất**. Listing S3 kh
 
 1. **Căn chỉnh physical layout với query predicate**: Nếu người dùng luôn lọc theo `customer_id`, hãy partition theo nó
 2. **Tránh hệ thống phân cấp sâu**: Hơn 3-4 cấp partition tạo ra độ phức tạp mà không có lợi ích
-3. **Đặt các update liên quan gần nhau**: Giữ các file delta nhỏ gần dữ liệu chúng sửa đổi để đơn giản hóa compaction [5]
+3. **Đặt các update liên quan gần nhau**: Giữ các file delta nhỏ gần dữ liệu chúng sửa đổi để đơn giản hóa compaction [^5]
 
 ---
 
@@ -122,7 +122,7 @@ Nhiều file nhỏ là nỗi ác mộng của object-store analytics:
 - **Opening overhead**: Thiết lập kết nối và đọc header cho mỗi file nhỏ tích lũy lại
 - **Giảm throughput**: Engine dành nhiều thời gian cho coordination hơn là xử lý dữ liệu
 
-Các table format được phát minh phần lớn để giải quyết điều này. Bằng cách theo dõi file trong metadata compact thay vì dựa vào LIST, chúng giảm chi phí planning. Nhưng chúng không loại bỏ hoàn toàn vấn đề—reader vẫn phải mở mọi file [1][3].
+Các table format được phát minh phần lớn để giải quyết điều này. Bằng cách theo dõi file trong metadata compact thay vì dựa vào LIST, chúng giảm chi phí planning. Nhưng chúng không loại bỏ hoàn toàn vấn đề—reader vẫn phải mở mọi file [^1][^3].
 
 ### Vấn Đề File Lớn
 
@@ -139,7 +139,7 @@ _Hình 3: Vấn đề kích thước file - So sánh file nhỏ, file lớn và 
 
 ### Sweet Spot (Tùy Thuộc Vào Workload)
 
-Nghiên cứu về cloud-optimized columnar storage nhấn mạnh việc tối ưu hóa **cấu trúc within-file** (row group, stripe) hơn là chỉ kích thước file [6][7]. Tuy nhiên, hướng dẫn thực tế:
+Nghiên cứu về cloud-optimized columnar storage nhấn mạnh việc tối ưu hóa **cấu trúc within-file** (row group, stripe) hơn là chỉ kích thước file [^6][^7]. Tuy nhiên, hướng dẫn thực tế:
 
 **Cho OLAP scan workload:**
 
@@ -151,7 +151,7 @@ Nghiên cứu về cloud-optimized columnar storage nhấn mạnh việc tối �
 
 - Chấp nhận file nhỏ hơn (10MB-100MB) từ việc ghi thường xuyên
 - Compact mạnh mẽ để ngăn tích tụ
-- Sử dụng adaptive buffering để batch các micro-batch [5]
+- Sử dụng adaptive buffering để batch các micro-batch [^5]
 
 **Cho mixed workload:**
 
@@ -187,14 +187,14 @@ Compaction là quá trình ghi lại các file nhỏ hoặc phân mảnh thành 
 - Merge 10-100 file nhỏ gần đây thành một vài file lớn hơn
 - Chạy liên tục trong background
 - Chi phí tài nguyên thấp, lợi ích ngay lập tức cho read performance
-- Giảm áp lực metadata mà không cần ghi lại toàn bộ partition [5]
+- Giảm áp lực metadata mà không cần ghi lại toàn bộ partition [^5]
 
 **Major compaction** là không thường xuyên và toàn cục:
 
 - Ghi lại toàn bộ partition để có layout tối ưu
 - Áp dụng các tối ưu hóa nâng cao (Z-ordering, clustering)
 - Tốn nhiều tài nguyên, thường được lên lịch trong giờ thấp điểm
-- Cung cấp hiệu suất đọc tối đa và metadata compaction [1][5]
+- Cung cấp hiệu suất đọc tối đa và metadata compaction [^1][^5]
 
 ### Kỹ Thuật Lấy Cảm Hứng Từ LSM-Tree
 
@@ -205,14 +205,14 @@ Mô hình LSM-tree ánh xạ tuyệt vời với object storage:
 3. **Merge các file L1 vào L2** khi đạt ngưỡng (major compaction)
 4. **Giữ kích thước tier bị giới hạn** để kiểm soát write amplification
 
-Cách tiếp cận phân tầng này giới hạn số lượng file mà reader phải quét trong khi giữ công việc compaction ở mức tăng dần [9][3].
+Cách tiếp cận phân tầng này giới hạn số lượng file mà reader phải quét trong khi giữ công việc compaction ở mức tăng dần [^9][^3].
 
 ![LSM-Tree Compaction](/static/images/assets/data-engineering/lsm_tree_compaction.png)
 _Hình 4: Quá trình compaction theo kiểu LSM-Tree với các tier từ L0 đến L3+_
 
-**Delta Lake** compact chính transaction log của nó—khi log phát triển quá lớn, nó được compact thành Parquet checkpoint. Metadata compaction này quan trọng không kém data compaction [1].
+**Delta Lake** compact chính transaction log của nó—khi log phát triển quá lớn, nó được compact thành Parquet checkpoint. Metadata compaction này quan trọng không kém data compaction [^1].
 
-**Apache Iceberg** hỗ trợ các thao tác file rewrite rõ ràng và manifest-level pruning. Nó có thể compact manifest riêng biệt với data file, tối ưu hóa metadata độc lập [4].
+**Apache Iceberg** hỗ trợ các thao tác file rewrite rõ ràng và manifest-level pruning. Nó có thể compact manifest riêng biệt với data file, tối ưu hóa metadata độc lập [^4].
 
 ### Lên Lịch Compaction và Quản Lý Tài Nguyên
 
@@ -224,7 +224,7 @@ Compaction tốn nhiều I/O và CPU. Best practice:
 4. **Sử dụng cluster compute riêng** cho compaction nếu có thể
 5. **Làm cho compaction policy có thể cấu hình** theo table/partition
 
-Các hệ thống production coi compaction như một **mối quan tâm về capacity planning**, không phải là điều suy nghĩ sau [5][3].
+Các hệ thống production coi compaction như một **mối quan tâm về capacity planning**, không phải là điều suy nghĩ sau [^5][^3].
 
 ### Write Amplification vs Read Performance
 
@@ -237,7 +237,7 @@ Sự cân bằng thực tế được sử dụng bởi các lakehouse system:
 
 - **Incremental compaction** cho dữ liệu gần đây (write amplification thấp)
 - **Occasional major rewrite** cho tối ưu hóa dài hạn
-- **Partition-level policy** compact các hot partition mạnh mẽ hơn [1][5]
+- **Partition-level policy** compact các hot partition mạnh mẽ hơn [^1][^5]
 
 ---
 
@@ -251,7 +251,7 @@ Read amplification—quét nhiều dữ liệu hơn cần thiết—là kẻ th�
 
 1. **Push column projection** vào file reader để chỉ các cột cần thiết được deserialize
 2. **Push filter predicate** xuống để bỏ qua các row group không khớp
-3. **Sử dụng file footer metadata** để tránh mở các file không thể chứa kết quả [6][8]
+3. **Sử dụng file footer metadata** để tránh mở các file không thể chứa kết quả [^6][^8]
 
 Parquet và ORC được thiết kế cho điều này, nhưng **bạn phải điều chỉnh kích thước row group** để có được lợi ích. Row group quá lớn giảm độ chi tiết pruning; quá nhỏ tăng footer overhead.
 
@@ -272,14 +272,14 @@ Parquet và ORC được thiết kế cho điều này, nhưng **bạn phải đ
 
 Nếu một query lọc `user_id > 60000`, planner bỏ qua file này hoàn toàn.
 
-**Bloom filter** mở rộng điều này cho equality predicate. Iceberg và Hudi hỗ trợ per-file bloom filter cho các cột high-cardinality, cho phép kiểm tra membership nhanh [4][10].
+**Bloom filter** mở rộng điều này cho equality predicate. Iceberg và Hudi hỗ trợ per-file bloom filter cho các cột high-cardinality, cho phép kiểm tra membership nhanh [^4][^10].
 
 **Zone map** (min/max index) được duy trì ở cả:
 
 - **File level** (trong table metadata)
 - **Row group level** (trong Parquet footer)
 
-Cách tiếp cận hai tầng này cho phép pruning thô trong quá trình planning và pruning tinh trong quá trình scanning [7].
+Cách tiếp cận hai tầng này cho phép pruning thô trong quá trình planning và pruning tinh trong quá trình scanning [^7].
 
 ![Read Amplification Optimization](/static/images/assets/data-engineering/read_amplification_optimization.png)
 _Hình 5: Tối ưu hóa Read Amplification - Pruning ở cấp file, row group và column_
@@ -291,7 +291,7 @@ _Hình 5: Tối ưu hóa Read Amplification - Pruning ở cấp file, row group 
 - **Row group lớn hơn** → Footer overhead ít hơn, nén tốt hơn
 - **Row group nhỏ hơn** → Pruning chi tiết hơn, selectivity tốt hơn
 
-Nghiên cứu cho thấy rằng tối ưu hóa layout **trong và qua các ranh giới row group** cung cấp lợi ích throughput đáng kể trên cloud object storage [6]. Khuyến nghị thực tế:
+Nghiên cứu cho thấy rằng tối ưu hóa layout **trong và qua các ranh giới row group** cung cấp lợi ích throughput đáng kể trên cloud object storage [^6]. Khuyến nghị thực tế:
 
 - **128MB row group** cho general-purpose analytics
 - **256MB row group** cho scan-heavy workload
@@ -301,7 +301,7 @@ Cũng xem xét **row group alignment**:
 
 - Sắp xếp dữ liệu trước khi ghi để cluster các giá trị liên quan
 - Sử dụng Z-ordering hoặc Hilbert curve cho multi-dimensional clustering
-- Lệnh OPTIMIZE của Delta Lake triển khai điều này [1]
+- Lệnh OPTIMIZE của Delta Lake triển khai điều này [^1]
 
 ### Metadata-First Planning
 
@@ -314,7 +314,7 @@ Các table format hiện đại lưu trữ:
 - Partition information
 - Schema evolution history
 
-Metadata này được lưu trữ trong các file Avro hoặc Parquet compact, không phải trong chính data file. Planner đọc metadata trước, prune mạnh mẽ, sau đó chỉ đọc tập hợp tối thiểu các data file [4][1].
+Metadata này được lưu trữ trong các file Avro hoặc Parquet compact, không phải trong chính data file. Planner đọc metadata trước, prune mạnh mẽ, sau đó chỉ đọc tập hợp tối thiểu các data file [^4][^1].
 
 ---
 
@@ -330,7 +330,7 @@ Hãy xem các table format chính áp dụng các nguyên tắc này như thế 
 
 - Transaction log theo dõi tất cả file mà không cần S3 listing
 - Log compaction hợp nhất các entry thành Parquet checkpoint
-- Lệnh OPTIMIZE trigger data file compaction [1]
+- Lệnh OPTIMIZE trigger data file compaction [^1]
 
 **Thuật toán compaction**:
 
@@ -342,7 +342,7 @@ Hãy xem các table format chính áp dụng các nguyên tắc này như thế 
 
 - Append-only JSON log cho atomicity
 - Periodic Parquet checkpoint cho fast read
-- Time travel qua log replay [1]
+- Time travel qua log replay [^1]
 
 **Tốt nhất cho**: Team muốn operation đơn giản với ACID guarantee
 
@@ -354,19 +354,19 @@ Hãy xem các table format chính áp dụng các nguyên tắc này như thế 
 
 - Manifest theo dõi file, tránh các thao tác LIST lặp lại
 - Manifest compaction tách biệt với data compaction
-- File-level statistic cho phép aggressive pruning [4]
+- File-level statistic cho phép aggressive pruning [^4]
 
 **Thuật toán compaction**:
 
 - Explicit rewrite operation qua API
 - Hỗ trợ cả copy-on-write và merge-on-read
-- Deletion vector cho delete hiệu quả [10]
+- Deletion vector cho delete hiệu quả [^10]
 
 **Quản lý metadata**:
 
 - Immutable metadata file với snapshot pointer
 - Manifest list cho hierarchical pruning
-- Extensive per-file statistic (min/max, null count, bloom filter) [4]
+- Extensive per-file statistic (min/max, null count, bloom filter) [^4]
 
 **Tốt nhất cho**: Team cần kiểm soát chi tiết và multi-engine compatibility
 
@@ -377,19 +377,19 @@ Hãy xem các table format chính áp dụng các nguyên tắc này như thế 
 **Xử lý file nhỏ**:
 
 - COW: Ghi lại file ngay lập tức, tránh tích tụ file nhỏ
-- MOR: Chấp nhận delta log nhỏ, compact bất đồng bộ [3][11]
+- MOR: Chấp nhận delta log nhỏ, compact bất đồng bộ [^3][^11]
 
 **Thuật toán compaction**:
 
 - MOR: Incremental log được merge vào base file định kỳ
 - COW: Không cần compaction, file đã được tối ưu hóa
-- Configurable compaction strategy theo table [3]
+- Configurable compaction strategy theo table [^3]
 
 **Quản lý metadata**:
 
 - Timeline service theo dõi commit và compaction
 - File-level index cho upsert và incremental read
-- Metadata table cho fast query [11]
+- Metadata table cho fast query [^11]
 
 **Tốt nhất cho**: Team với streaming ingestion và update-heavy workload
 
@@ -537,7 +537,7 @@ Theo dõi các metric này:
 
 ## 8. Performance Benchmark và Kỳ Vọng
 
-Dựa trên LST-Bench và các triển khai thực tế [3]:
+Dựa trên LST-Bench và các triển khai thực tế [^3]:
 
 **Metadata operation:**
 
@@ -583,27 +583,17 @@ Cuộc cách mạng lakehouse đã cho thấy rằng object storage có thể s�
 
 ## Tài Liệu Tham Khảo
 
-[1] Armbrust, M., Das, T., Sun, L., et al. (2020). Delta lake: high-performance ACID table storage over cloud object stores. _Proceedings of the VLDB Endowment_, 13(12). DOI: 10.14778/3415478.3415560
-
-[2] Towards Optimizing Storage Costs on the Cloud (2023). arXiv:2305.14818
-
-[3] Camacho-Rodríguez, J., Agrawal, A., Gruenheid, A., et al. (2023). LST-Bench: Benchmarking Log-Structured Tables in the Cloud. arXiv:2305.01120
-
-[4] Bringhurst, R., & Vuppalapati, R. (2024). _Apache Iceberg: The Definitive Guide_. O'Reilly Media.
-
-[5] Okolnychyi, A., Sun, C., Tanimura, K., et al. (2024). Petabyte-Scale Row-Level Operations in Data Lakehouses. _Proceedings of the VLDB Endowment_, 17(11). DOI: 10.14778/3685800.3685834
-
-[6] Bian, H., & Ailamaki, A. (2022). Pixels: An Efficient Column Store for Cloud Data Lakes. _Proceedings of ICDE 2022_. DOI: 10.1109/icde53745.2022.00276
-
-[7] FlatStor: An Efficient Embedded-Index Based Columnar Data Layout for Multimodal Data Workloads. _Proceedings of the VLDB Endowment_, 2024.
-
-[8] Durner, D., Leis, V., & Neumann, T. (2023). Exploiting Cloud Object Storage for High-Performance Analytics. _Proceedings of the VLDB Endowment_, 16(11). DOI: 10.14778/3611479.3611486
-
-[9] Kalmuk, D., Garcia-Arellano, C., Barber, R., et al. (2024). Native Cloud Object Storage in Db2 Warehouse: Implementing a Fast and Cost-Efficient Cloud Storage Architecture. _Proceedings of ACM SIGMOD 2024_. DOI: 10.1145/3626246.3653393
-
-[10] High Performance Read Operations in Merge-On-Read with Deletion Vectors in Apache Iceberg (2025). SAR Council Technical Report.
-
-[11] Jain, P., Kraft, P., Power, C., et al. (2024). Analyzing and Comparing Lakehouse Storage Systems. Technical Report.
+[^1]: Armbrust, M., Das, T., Sun, L., et al. (2020). Delta lake: high-performance ACID table storage over cloud object stores. _Proceedings of the VLDB Endowment_, 13(12). DOI: 10.14778/3415478.3415560
+[^2]: Towards Optimizing Storage Costs on the Cloud (2023). arXiv:2305.14818
+[^3]: Camacho-Rodríguez, J., Agrawal, A., Gruenheid, A., et al. (2023). LST-Bench: Benchmarking Log-Structured Tables in the Cloud. arXiv:2305.01120
+[^4]: Bringhurst, R., & Vuppalapati, R. (2024). _Apache Iceberg: The Definitive Guide_. O'Reilly Media.
+[^5]: Okolnychyi, A., Sun, C., Tanimura, K., et al. (2024). Petabyte-Scale Row-Level Operations in Data Lakehouses. _Proceedings of the VLDB Endowment_, 17(11). DOI: 10.14778/3685800.3685834
+[^6]: Bian, H., & Ailamaki, A. (2022). Pixels: An Efficient Column Store for Cloud Data Lakes. _Proceedings of ICDE 2022_. DOI: 10.1109/icde53745.2022.00276
+[^7]: FlatStor: An Efficient Embedded-Index Based Columnar Data Layout for Multimodal Data Workloads. _Proceedings of the VLDB Endowment_, 2024.
+[^8]: Durner, D., Leis, V., & Neumann, T. (2023). Exploiting Cloud Object Storage for High-Performance Analytics. _Proceedings of the VLDB Endowment_, 16(11). DOI: 10.14778/3611479.3611486
+[^9]: Kalmuk, D., Garcia-Arellano, C., Barber, R., et al. (2024). Native Cloud Object Storage in Db2 Warehouse: Implementing a Fast and Cost-Efficient Cloud Storage Architecture. _Proceedings of ACM SIGMOD 2024_. DOI: 10.1145/3626246.3653393
+[^10]: High Performance Read Operations in Merge-On-Read with Deletion Vectors in Apache Iceberg (2025). SAR Council Technical Report.
+[^11]: Jain, P., Kraft, P., Power, C., et al. (2024). Analyzing and Comparing Lakehouse Storage Systems. Technical Report.
 
 ---
 

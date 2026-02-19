@@ -28,40 +28,48 @@ export default function Courses({ courses }) {
         title={`Khoá học - ${siteMetadata.headerTitle}`}
         description={siteMetadata.descriptions.courses}
       />
-      <div className="divide-y divide-gray-200 dark:divide-gray-700">
-        <div className="space-y-2 pt-6 pb-8 md:space-y-5">
-          <h1 className="md:text-6xl text-3xl font-extrabold leading-9 tracking-tight text-gray-900 dark:text-gray-100 sm:text-4xl sm:leading-10 md:leading-14">
-            📚 Khoá học
-          </h1>
-        </div>
-        <div className="container py-12">
-          {/* Tabs */}
-          <div className="mb-8 flex space-x-1 rounded-lg bg-gray-100 p-1 dark:bg-gray-800">
+      <div className="space-y-10">
+        <header className="pt-2">
+          <span className="page-eyebrow">Học tập có hướng dẫn</span>
+          <h1 className="page-heading text-slate-900 dark:text-slate-100">Khóa học</h1>
+          <p className="page-lead">
+            Chọn lộ trình phù hợp với mục tiêu của bạn. Các khoá premium chuyên sâu và các khóa miễn
+            để bắt đầu nhanh.
+          </p>
+        </header>
+
+        <section className="surface-panel p-3 sm:p-4">
+          <div className="grid grid-cols-2 gap-2">
             <button
               onClick={() => setActiveTab('premium')}
-              className={`flex-1 rounded-md px-4 py-2 text-sm font-medium transition-colors ${
+              className={`rounded-xl px-4 py-3 text-sm font-semibold transition-colors ${
                 activeTab === 'premium'
-                  ? 'bg-orange-500 text-white shadow-sm'
-                  : 'text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100'
+                  ? 'bg-orange-500 text-white'
+                  : 'bg-slate-100 text-slate-600 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700'
               }`}
             >
-              💎 Premium ({paidCourses.length})
+              Premium ({paidCourses.length})
             </button>
             <button
               onClick={() => setActiveTab('free')}
-              className={`flex-1 rounded-md px-4 py-2 text-sm font-medium transition-colors ${
+              className={`rounded-xl px-4 py-3 text-sm font-semibold transition-colors ${
                 activeTab === 'free'
-                  ? 'bg-green-500 text-white shadow-sm'
-                  : 'text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100'
+                  ? 'bg-emerald-500 text-white'
+                  : 'bg-slate-100 text-slate-600 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700'
               }`}
             >
-              🆓 Miễn phí ({freeCourses.length})
+              Miễn phí ({freeCourses.length})
             </button>
           </div>
+        </section>
 
-          {/* Course Grid */}
-          <div className="-m-4 flex flex-wrap">
-            {displayCourses.length === 0 && 'Không có khoá học nào.'}
+        <section>
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
+            {displayCourses.length === 0 && (
+              <div className="surface-panel col-span-full p-8 text-center text-sm text-slate-600 dark:text-slate-300">
+                Không có khóa học nào.
+              </div>
+            )}
             {displayCourses.map((course) => {
               return (
                 <Card
@@ -75,7 +83,7 @@ export default function Courses({ courses }) {
               )
             })}
           </div>
-        </div>
+        </section>
       </div>
     </>
   )
