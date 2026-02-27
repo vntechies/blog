@@ -493,7 +493,7 @@ export default function AWSCertificationPaths() {
             <div>
               <div className="mb-4 inline-flex items-center rounded-full bg-orange-100 px-4 py-2 text-sm font-semibold text-orange-800 dark:bg-orange-900/30 dark:text-orange-300">
                 <FaCertificate className="mr-2 h-4 w-4" />
-                Cập nhật 2025
+                Cập nhật 2026
               </div>
               <h1 className="lg:text-6xl text-4xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-5xl">
                 AWS{' '}
