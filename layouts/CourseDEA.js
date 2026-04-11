@@ -81,8 +81,8 @@ const courseInfo = {
   duration: 'Khoảng 40 giờ nội dung (theo outline chuẩn ~2.400 phút), tối thiểu 8 tuần triển khai',
   schedule: 'Live online + lab thực hành trên AWS (tần suất theo từng khóa)',
   location: 'Online qua Google Meet + môi trường lab AWS',
-  price: '8.000.000 VNĐ',
-  earlyBird: 'Liên hệ ưu đãi sớm',
+  price: '10.000.000 VNĐ',
+  earlyBird: '9.000.000đ · Early Bird −10%',
   registrationLink: 'https://m.me/vntechies',
 }
 
@@ -262,6 +262,14 @@ const curriculum = [
 ]
 
 export default function CourseDEA({ frontMatter, mentorDetails, otherCourses = [] }) {
+  const smoothScrollTo = (e, targetId) => {
+    e.preventDefault()
+    const element = document.querySelector(targetId)
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    }
+  }
+
   const info = {
     title: frontMatter?.title || courseInfo.title,
     subtitle: frontMatter?.subtitle || courseInfo.subtitle,
@@ -364,6 +372,7 @@ export default function CourseDEA({ frontMatter, mentorDetails, otherCourses = [
 
             <a
               href="#registration-form"
+              onClick={(e) => smoothScrollTo(e, '#registration-form')}
               className="text-lg inline-flex items-center rounded-lg px-8 py-4 font-semibold transition-colors hover:opacity-90"
               style={{ backgroundColor: '#FF9900', color: '#000' }}
             >
@@ -428,6 +437,152 @@ export default function CourseDEA({ frontMatter, mentorDetails, otherCourses = [
         </div>
       </section>
 
+      <section id="hoc-phi-dea" className="bg-white py-20 dark:bg-gray-900">
+        <div className="mx-auto max-w-6xl px-4">
+          <div className="mb-16 text-center">
+            <h2 className="mb-4 text-4xl font-bold text-gray-900 dark:text-gray-100">
+              Học phí đầu tư cho tương lai
+            </h2>
+            <p className="text-xl text-gray-600 dark:text-gray-300">
+              Cùng cách tính như khóa Data Engineer Bootcamp: Standard · Early Bird (−10%) · Group
+              (2+ người)
+            </p>
+          </div>
+
+          <div className="grid gap-8 lg:grid-cols-3">
+            <div className="group relative rounded-2xl bg-white p-8 shadow-lg transition hover:shadow-2xl dark:bg-gray-800">
+              <div className="mb-8 text-center">
+                <h3 className="mb-2 text-2xl font-bold text-gray-900 dark:text-gray-100">
+                  Standard
+                </h3>
+                <p className="text-gray-600 dark:text-gray-400">Học phí tiêu chuẩn</p>
+              </div>
+              <div className="mb-8 space-y-4">
+                <div className="rounded-xl bg-gray-50 p-6 text-center dark:bg-gray-700">
+                  <div className="text-sm font-medium text-gray-600 dark:text-gray-400">
+                    Người đi làm
+                  </div>
+                  <div className="text-3xl font-bold text-gray-900 dark:text-gray-100">
+                    10.000.000₫
+                  </div>
+                </div>
+                <div className="rounded-xl bg-purple-50 p-4 text-center dark:bg-purple-900/30">
+                  <div className="text-sm font-medium text-purple-600 dark:text-purple-400">
+                    Sinh viên
+                  </div>
+                  <div className="text-2xl font-bold text-purple-700 dark:text-purple-300">
+                    9.500.000₫
+                  </div>
+                  <div className="text-xs mt-2 text-purple-600 dark:text-purple-400">
+                    Giảm 500.000đ so với mức người đi làm
+                  </div>
+                  <Link
+                    href="/pricing#financial-aid"
+                    className="text-xs mt-1 inline-block font-semibold text-purple-700 hover:underline dark:text-purple-300"
+                  >
+                    Financial Aid Program
+                  </Link>
+                </div>
+              </div>
+              <a
+                href="#registration-form"
+                onClick={(e) => smoothScrollTo(e, '#registration-form')}
+                className="block w-full rounded-xl bg-slate-900 py-4 text-center font-semibold text-white transition hover:scale-105 hover:bg-slate-800"
+              >
+                Đăng ký ngay
+              </a>
+            </div>
+
+            <div className="group relative scale-105 rounded-2xl bg-purple-600 p-8 text-white shadow-2xl">
+              <div className="absolute -top-4 left-1/2 -translate-x-1/2 rounded-full bg-purple-400 px-4 py-2 text-sm font-bold text-white">
+                HẤP DẪN
+              </div>
+              <div className="mb-8 text-center">
+                <h3 className="mb-2 text-2xl font-bold">Early Bird</h3>
+                <p className="opacity-90">Đăng ký sớm — tiết kiệm 10%</p>
+              </div>
+              <div className="mb-8 space-y-4">
+                <div className="rounded-xl bg-white/20 p-6 text-center backdrop-blur">
+                  <div className="text-sm font-medium opacity-90">Người đi làm</div>
+                  <div className="text-3xl font-bold">9.000.000₫</div>
+                  <div className="text-sm line-through opacity-75">10.000.000₫</div>
+                </div>
+                <div className="rounded-xl bg-white/10 p-4 text-center backdrop-blur">
+                  <div className="text-sm font-medium opacity-90">Sinh viên</div>
+                  <div className="text-2xl font-bold">8.500.000₫</div>
+                  <div className="text-sm line-through opacity-75">9.500.000₫</div>
+                  <div className="text-xs mt-2 opacity-90">Hỗ trợ học phí lên tới 500.000đ</div>
+                  <Link
+                    href="/pricing#financial-aid"
+                    className="text-xs font-semibold opacity-90 hover:underline"
+                  >
+                    Financial Aid Program
+                  </Link>
+                </div>
+              </div>
+              <a
+                href="#registration-form"
+                onClick={(e) => smoothScrollTo(e, '#registration-form')}
+                className="block w-full rounded-xl bg-white py-4 text-center font-bold text-purple-600 transition hover:scale-105 hover:bg-gray-50"
+              >
+                Đăng ký ngay
+              </a>
+            </div>
+
+            <div className="group relative rounded-2xl bg-white p-8 shadow-lg transition hover:shadow-2xl dark:bg-gray-800">
+              <div className="text-xs absolute -top-3 right-4 rounded-full bg-purple-500 px-3 py-1 font-bold text-white">
+                PHỔ BIẾN
+              </div>
+              <div className="mb-8 text-center">
+                <h3 className="mb-2 text-2xl font-bold text-gray-900 dark:text-gray-100">Group</h3>
+                <p className="text-gray-600 dark:text-gray-400">2+ người cùng đăng ký</p>
+              </div>
+              <div className="mb-8 space-y-4">
+                <div className="rounded-xl bg-purple-50 p-6 text-center dark:bg-purple-900/30">
+                  <div className="text-sm font-medium text-purple-600 dark:text-purple-400">
+                    Người đi làm
+                  </div>
+                  <div className="text-3xl font-bold text-purple-700 dark:text-purple-300">
+                    8.800.000₫
+                  </div>
+                  <div className="text-sm text-gray-500 line-through dark:text-gray-400">
+                    10.000.000₫
+                  </div>
+                </div>
+                <div className="rounded-xl bg-purple-50 p-4 text-center dark:bg-purple-900/20">
+                  <div className="text-sm font-medium text-purple-600 dark:text-purple-400">
+                    Sinh viên
+                  </div>
+                  <div className="text-2xl font-bold text-purple-700 dark:text-purple-300">
+                    8.300.000₫
+                  </div>
+                  <div className="text-sm text-gray-500 line-through dark:text-gray-400">
+                    9.500.000₫
+                  </div>
+                </div>
+              </div>
+              <a
+                href="#registration-form"
+                onClick={(e) => smoothScrollTo(e, '#registration-form')}
+                className="block w-full rounded-xl bg-purple-600 py-4 text-center font-semibold text-white transition hover:scale-105 hover:bg-purple-700"
+              >
+                Đăng ký ngay
+              </a>
+            </div>
+          </div>
+
+          <p className="mt-10 text-center text-sm text-gray-600 dark:text-gray-400">
+            <span className="font-semibold text-gray-900 dark:text-gray-100">
+              Giới thiệu học viên:
+            </span>{' '}
+            giảm thêm{' '}
+            <span className="font-semibold text-purple-700 dark:text-purple-300">500.000đ</span> khi
+            bạn giới thiệu học viên mới đăng ký và hoàn tất học phí cùng khóa (áp dụng theo chính
+            sách từng đợt — xác nhận khi tư vấn).
+          </p>
+        </div>
+      </section>
+
       <section className="bg-gray-50 py-16 px-4 dark:bg-gray-900">
         <div className="mx-auto max-w-6xl">
           <div className="grid grid-cols-1 gap-12 lg:grid-cols-2">
@@ -456,7 +611,28 @@ export default function CourseDEA({ frontMatter, mentorDetails, otherCourses = [
                   <div>
                     <h3 className="font-semibold text-gray-900 dark:text-white">Học phí</h3>
                     <p className="text-gray-600 dark:text-gray-300">
-                      <span>{info.price}</span>
+                      Tiêu chuẩn:{' '}
+                      <span className="font-semibold text-gray-900 dark:text-white">
+                        10.000.000đ
+                      </span>{' '}
+                      (người đi làm) ·{' '}
+                      <span className="font-semibold text-purple-700 dark:text-purple-300">
+                        9.500.000đ
+                      </span>{' '}
+                      (sinh viên, giảm 500.000đ so với mức đi làm).
+                    </p>
+                    <p className="mt-2 text-sm text-gray-600 dark:text-gray-300">
+                      Early Bird −10%, ưu đãi nhóm 2+ người và{' '}
+                      <span className="font-semibold">giảm thêm 500.000đ</span> khi giới thiệu học
+                      viên mới — xem{' '}
+                      <a
+                        href="#hoc-phi-dea"
+                        onClick={(e) => smoothScrollTo(e, '#hoc-phi-dea')}
+                        className="font-semibold text-purple-600 hover:underline dark:text-purple-400"
+                      >
+                        bảng học phí
+                      </a>
+                      .
                     </p>
                     <div className="text-xs mt-2 text-green-600 dark:text-green-400">
                       Hỗ trợ học phí lên tới 500.000đ
@@ -810,6 +986,7 @@ export default function CourseDEA({ frontMatter, mentorDetails, otherCourses = [
           <div className="flex flex-col justify-center gap-4 sm:flex-row">
             <a
               href="#registration-form"
+              onClick={(e) => smoothScrollTo(e, '#registration-form')}
               className="text-lg inline-flex items-center rounded-lg bg-white px-8 py-4 font-semibold text-purple-700 transition-colors hover:bg-gray-100"
             >
               <FaRocket className="mr-2" />
