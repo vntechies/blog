@@ -71,7 +71,7 @@ const testimonials = [
 ]
 
 const courseInfo = {
-  title: 'AWS Academy Cloud Developing - Phát triển ứng dụng Cloud',
+  title: 'AWS Cloud Developing - Phát triển ứng dụng Cloud',
   subtitle: 'Học lập trình & phát triển ứng dụng thực tế trên AWS',
   image: '/static/images/courses/awsdvac02-hero.png',
   startDate: '10/09/2025',

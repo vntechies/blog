@@ -141,7 +141,7 @@ const Hero = () => {
         </div>
 
         {/* Featured Courses */}
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-6">
           {[
             {
               title: 'Solution Architect',
@@ -166,6 +166,14 @@ const Hero = () => {
               color: 'from-cyan-500 to-cyan-600',
               link: '/courses/aws/dva/gioi-thieu',
               image: '/static/images/courses/dva.png',
+            },
+            {
+              title: 'Data Engineer',
+              code: 'DEA-C01',
+              level: 'Associate',
+              color: 'from-violet-500 to-violet-600',
+              link: '/courses/aws/dea/gioi-thieu',
+              image: '/courses/aws/logos/dea.png',
             },
             {
               title: 'DevOps Engineer',
@@ -204,6 +212,8 @@ const Hero = () => {
                           ? 'DevOps Engineer'
                           : course.code === 'VDT-C01'
                           ? 'Data Engineer Bootcamp'
+                          : course.code === 'DEA-C01'
+                          ? 'AWS Certified Data Engineer Associate DEA-C01'
                           : `AWS ${course.title} certification`
                       }
                       width={48}
@@ -227,6 +237,8 @@ const Hero = () => {
                         ? 'Course DevOps Engineer VDE-C01'
                         : course.code === 'VDT-C01'
                         ? 'Data Engineer Bootcamp VDT-C01'
+                        : course.code === 'DEA-C01'
+                        ? 'AWS Certified Data Engineer – Associate (DEA-C01)'
                         : `AWS ${course.title} certification`}
                     </h3>
                     <p className="mb-3 text-sm text-gray-600 dark:text-gray-400">{course.level}</p>

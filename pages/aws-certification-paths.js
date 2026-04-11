@@ -175,6 +175,7 @@ const certificationPaths = {
         cost: '$150',
         prerequisites: 'Cloud Practitioner (khuyến nghị)',
         audience: 'Data Engineers, Data Architects',
+        courseHref: '/courses/aws/dea/gioi-thieu',
       },
     ],
   },

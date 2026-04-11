@@ -50,6 +50,13 @@ const COURSE_META = {
     theme: 'purple',
     order: 6,
   },
+  'aws/dea': {
+    name: 'AWS Certified Data Engineer – Associate',
+    code: 'DEA-C01',
+    badge: 'AWS Data',
+    theme: 'purple',
+    order: 7,
+  },
 }
 
 const THEME_STYLES = {

@@ -36,6 +36,13 @@ const heroCourseLinks = [
     href: '/courses/data-engineer-bootcamp/gioi-thieu',
     icon: '/static/images/icons/data-icon.svg',
   },
+  {
+    label: 'AWS DEA-C01',
+    title: 'AWS Certified Data Engineer – Associate',
+    subtitle: '12 module, lab thực hành & luyện thi DEA-C01',
+    href: '/courses/aws/dea/gioi-thieu',
+    icon: '/static/images/icons/aws-icon.svg',
+  },
 ]
 
 const uspPillars = [
@@ -122,6 +129,17 @@ const learningTracks = [
     href: '/courses/data-engineer-bootcamp/gioi-thieu',
     cta: 'Xem khoá Data Engineer',
     image: '/static/images/courses/vdt.png',
+  },
+  {
+    title: 'AWS Certified Data Engineer – Associate',
+    summary:
+      'Mười hai module: pipeline dữ liệu trên AWS (S3, Glue, Athena, EMR, Redshift, Kinesis, Step Functions…) và chuẩn bị DEA-C01.',
+    audience:
+      'Phù hợp cho engineer/analyst đã có nền tảng cloud hoặc SQL, muốn làm data pipeline trên AWS và thi chứng chỉ DEA-C01.',
+    badge: 'DEA-C01',
+    href: '/courses/aws/dea/gioi-thieu',
+    cta: 'Xem khóa DEA-C01',
+    image: '/static/images/courses/awsdeac01.png',
   },
 ]
 
