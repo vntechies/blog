@@ -11,10 +11,8 @@ import {
   FaDollarSign,
   FaChartLine,
   FaLightbulb,
-  FaCloud,
+  FaDatabase,
   FaCode,
-  FaUserTie,
-  FaHandshake,
 } from 'react-icons/fa'
 import Link from 'next/link'
 import CourseRegistrationForm from '../components/CourseRegistrationForm'
@@ -75,204 +73,203 @@ const testimonials = [
 ]
 
 const courseInfo = {
-  title: 'Khoá học AWS Certified Cloud Practitioner (CLF-C02)',
-  subtitle: 'Bước đầu tiên vào thế giới Cloud Computing - Từ Zero đến AWS Certified',
-  image: '/static/images/courses/awsclfc02Info.png',
-  startDate: '08/09/2025',
-  duration: '8 buổi học (16 giờ)',
-  location: 'Online qua Google',
-  price: '5.000.000 VNĐ',
-  earlyBird: '2.499.000 VNĐ',
+  title: 'Khoá học AWS Certified Data Engineer – Associate (DEA-C01)',
+  subtitle:
+    'Pipeline dữ liệu trên AWS: thu thập, lưu trữ, xử lý, phân tích, trực quan hóa — chuẩn bị thi DEA-C01',
+  image: '/static/images/courses/awsdeac01Info.png',
+  startDate: 'Liên hệ tư vấn lịch khai giảng',
+  duration: 'Khoảng 40 giờ nội dung (theo outline chuẩn ~2.400 phút), tối thiểu 8 tuần triển khai',
+  schedule: 'Live online + lab thực hành trên AWS (tần suất theo từng khóa)',
+  location: 'Online qua Google Meet + môi trường lab AWS',
+  price: '10.000.000 VNĐ',
+  earlyBird: '9.000.000đ · Early Bird −10%',
   registrationLink: 'https://m.me/vntechies',
 }
 
-// Statistics data - Aligned with AWS Cloud Foundations
 const stats = [
-  { number: '100+', label: 'Học viên đã tham gia' },
-  { number: '99%', label: 'Tỷ lệ pass chứng chỉ' },
-  { number: '10', label: 'Modules theo chuẩn giáo trình quốc tế' },
-  { number: '585', label: 'Phút thực hành lab (49% thời lượng)' },
+  { number: '12', label: 'Module trong chương trình' },
+  { number: '40h', label: 'Thời lượng outline chuẩn' },
+  { number: 'Lab+', label: 'Bài lab & demo thực hành' },
+  { number: 'DEA', label: 'Định hướng DEA-C01' },
 ]
 
-// Course highlights - Aligned with AWS Cloud Foundations
 const highlights = [
   {
-    icon: <FaRocket className="text-2xl text-blue-500" />,
-    title: '🎯 Entry-level Friendly',
-    description: 'Không cần background IT - Phù hợp cho người mới hoặc chuyển nghành IT',
+    icon: <FaDatabase className="text-2xl text-purple-500" />,
+    title: '12 module lộ trình rõ ràng',
+    description:
+      'Từ tổ chức data-driven, thiết kế pipeline, bảo mật & scale đến ingestion, lưu trữ, big data, ML, phân tích và tự động hóa',
   },
   {
     icon: <FaAward className="text-2xl text-yellow-500" />,
-    title: '🎉 Certification Focused',
-    description: 'Tập trung 100% vào việc pass AWS Cloud Practitioner exam',
+    title: 'Chứng chỉ DEA-C01',
+    description:
+      'Ôn luyện theo các domain kỳ thi AWS Certified Data Engineer – Associate, mock test và Q&A',
   },
   {
     icon: <FaDollarSign className="text-2xl text-green-500" />,
-    title: '💰 Voucher 50%',
-    description: 'Giảm 50% chi phí đăng ký thi chứng chỉ AWS Cloud Practitioner sau khóa học',
+    title: 'Ưu đãi lệ phí thi',
+    description:
+      'Hỗ trợ voucher giảm lệ phí thi chứng chỉ AWS (theo chính sách từng khóa — xác nhận khi đăng ký)',
   },
 ]
 
-// Learning outcomes - Aligned with AWS Cloud Foundations
 const learningOutcomes = [
-  'Hiểu rõ các khái niệm về điện toán đám mây và hệ sinh thái AWS',
-  'Nắm vững 4 domains chính của kỳ thi Cloud Practitioner (CLF - C02)',
-  'Thực hành trực tiếp với hơn 20 dịch vụ cốt lõi của AWS (50% thời lượng là lab thực hành)',
-  'Hiểu về bảo mật và tuân thủ trên AWS',
-  'Vượt qua kỳ thi AWS Cloud Practitioner với mức độ tự tin cao',
-  'Sẵn sàng cho các khóa học chứng chỉ AWS nâng cao (SAA, DVA, AIF, v.v.)',
-  'Giảm 50% chi phí đăng ký thi chứng chỉ AWS Cloud Practitioner sau khóa học',
+  'Tóm tắt vai trò của data science trong tổ chức dữ liệu làm trọng tâm và giá trị của pipeline',
+  'Nhận diện các yếu tố dữ liệu ảnh hưởng tới kiến trúc hạ tầng pipeline',
+  'Minh họa pipeline bằng dịch vụ AWS cho use case tổng quát; bảo mật & governance từng bước',
+  'Thiết kế quy trình thu thập dữ liệu cân nhắc scale, chi phí, fault tolerance và độ trễ',
+  'Chọn lưu trữ phù hợp use case analytics; xử lý structured, semistructured và unstructured',
+  'Giải thích MapReduce và vai trò Amazon EMR; phân biệt ML pipeline và các bước xử lý',
+  'Phân tích dữ liệu bằng công cụ AWS phù hợp; trực quan hóa đúng đối tượng và loại dữ liệu',
+  'Ôn tập và hướng tới kỳ thi AWS Certified Data Engineer – Associate (DEA-C01)',
 ]
 
-// Curriculum overview - 8 buổi học gộp từ 10 modules
 const curriculum = [
   {
-    week: 'Buổi 1',
-    title: 'Cloud Concepts & Economics',
+    week: 'Module 1',
+    title: 'Welcome & course orientation',
     topics: [
-      'Introduction to cloud computing',
-      'Advantages of the cloud',
-      'Introduction to AWS',
-      'Moving to the AWS Cloud',
-      'Fundamentals of pricing',
-      'Total cost of ownership',
-      'Activity: Simple Monthly Calculator',
-      'AWS Organizations',
-      'AWS billing and cost management',
-      'Technical support models',
-      'Activity: Sample Exam Question',
+      'Course prerequisites and objectives',
+      'Course overview',
+      'Knowledge check (theo outline)',
+    ],
+  },
+  {
+    week: 'Module 2',
+    title: 'Data-Driven Organizations',
+    topics: [
+      'Data-driven decisions',
+      'The data pipeline – infrastructure for data-driven decisions',
+      'The role of the data engineer in data-driven organizations',
+      'Modern data strategies',
+      'Lab: Accessing and Analyzing Data by Using Amazon S3',
       'Knowledge check',
     ],
   },
   {
-    week: 'Buổi 2',
-    title: 'AWS Global Infrastructure & Security',
+    week: 'Module 3',
+    title: 'The Elements of Data',
     topics: [
-      'AWS global infrastructures',
-      'Demo: AWS global infrastructure',
-      'AWS services and service categories',
-      'Activity: AWS Management Console Clickthrough',
-      'AWS shared responsibility model',
-      'Activity: AWS Shared Responsibility Model',
-      'AWS IAM',
-      'Demo: AWS IAM Console',
-      'Securing a new AWS account',
-      'Lab: Introduction to AWS IAM',
-      'Securing accounts & data',
-      'Working to ensure compliance',
-      'Activity: Sample Exam Question',
+      'The five Vs of data – volume, velocity, variety, veracity, and value',
+      'Volume and velocity',
+      'Variety – data types and data sources',
+      'Veracity and value; activities to improve veracity and value',
+      'Activity: Planning Your Pipeline',
       'Knowledge check',
     ],
   },
   {
-    week: 'Buổi 3',
-    title: 'Networking and Content Delivery',
+    week: 'Module 4',
+    title: 'Design Principles and Patterns for Data Pipelines',
     topics: [
-      'Networking basics',
-      'Amazon VPC',
-      'VPC networking',
-      'Activity: Label This diagram',
-      'Demo: Amazon VPC Console',
-      'VPC security',
-      'Activity: Design a VPC',
-      'Lab: Build a VPC and Launch a Web Server',
-      'Route 53',
-      'CloudFront',
-      'Activity: Sample Exam Question',
+      'AWS Well-Architected Framework and Lenses',
+      'Activity: Using the Well-Architected Framework',
+      'The evolution of data architectures; modern data architecture on AWS',
+      'Pipeline: ingestion and storage; processing and consumption',
+      'Streaming analytics pipeline',
+      'Lab: Querying Data by Using Athena',
       'Knowledge check',
     ],
   },
   {
-    week: 'Buổi 4',
-    title: 'Compute Services',
+    week: 'Module 5',
+    title: 'Securing and Scaling the Data Pipeline',
     topics: [
-      'Compute services overview',
-      'Amazon EC2 part 1, 2, 3',
-      'Demo: Amazon EC2',
-      'Lab: Introduction to Amazon EC2',
-      'Activity: Amazon EC2 Versus Managed Services',
-      'Demo: Amazon EC2 Part Console',
-      'Amazon EC2 cost optimization',
-      'Container services',
-      'Introduction to AWS Lambda',
-      'Activity: AWS Lambda',
-      'Introduction to AWS Elastic Beanstalk',
-      'Activity: Sample Exam Question',
+      'Cloud security review',
+      'Security of analytics workloads',
+      'ML security',
+      'Scaling: overview; scalable infrastructure and components',
       'Knowledge check',
     ],
   },
   {
-    week: 'Buổi 5',
-    title: 'Storage Services',
+    week: 'Module 6',
+    title: 'Ingesting and Preparing Data',
     topics: [
-      'AWS EBS',
-      'Demo: Amazon Elastic Block Store Console',
-      'Lab: Working with EBS',
-      'AWS S3',
-      'Demo: AWS S3 Console',
-      'AWS EFS',
-      'Demo: AWS EFS Console',
-      'AWS S3 Glacier',
-      'Demo: AWS S3 Glacier Console',
-      'Activity: Storage Technology Selection',
-      'Activity: Sample Exam Question',
+      'ETL and ELT comparison',
+      'Data wrangling: discovery, structuring, cleaning, enriching, validating, publishing',
       'Knowledge check',
     ],
   },
   {
-    week: 'Buổi 6',
-    title: 'Database Services',
+    week: 'Module 7',
+    title: 'Ingesting by Batch or by Stream',
     topics: [
-      'Amazon RDS',
-      'Demo: Amazon RDS Console',
-      'Lab: Build a Database Server',
-      'Amazon DynamoDB',
-      'Demo: Amazon DynamoDB',
-      'Amazon Redshift',
-      'Amazon Aurora',
-      'Activity: Database case study',
-      'Activity: Sample Exam Question',
+      'Comparing batch and stream ingestion',
+      'Batch ingestion processing; purpose-built ingestion tools',
+      'AWS Glue for batch ingestion processing; scaling batch',
+      'Lab: Performing ETL on a Dataset by Using AWS Glue',
+      'Kinesis for stream processing; scaling streams; ingesting IoT data by stream',
       'Knowledge check',
     ],
   },
   {
-    week: 'Buổi 7',
-    title: 'Cloud Architecture & Well-Architected Framework',
+    week: 'Module 8',
+    title: 'Storing and Organizing Data',
     topics: [
-      'AWS Well-Architected Framework design principles',
-      'Activity: AWS Well-Architected Framework Design Principles',
-      'Operational excellence',
-      'Security',
-      'Reliability',
-      'Performance efficiency',
-      'Cost optimization',
-      'Reliability & high availability',
-      'AWS Trusted Advisor',
-      'Activity: Interpret AWS Trusted Advisor Recommendations',
-      'Activity: Sample Exam Question',
+      'Storage in the modern data architecture',
+      'Data lake storage; data warehouse storage; purpose-built databases',
+      'Storage in support of the pipeline; securing storage',
+      'Lab: Storing and Analyzing Data by Using Amazon Redshift',
       'Knowledge check',
     ],
   },
   {
-    week: 'Buổi 8',
-    title: 'Auto Scaling, Monitoring & Exam Prep',
+    week: 'Module 9',
+    title: 'Processing Big Data',
     topics: [
-      'Elastic Load Balancing',
-      'Activity: Elastic Load Balancing',
-      'Amazon CloudWatch',
-      'Activity: Amazon CloudWatch',
-      'Amazon EC2 auto scaling',
-      'Lab: Scale & Load Balance your Architecture',
-      'Exam preparation & review',
-      'Mock exam practice',
-      'Final Q&A session',
-      'Activity: Sample Exam Question',
+      'Big data processing concepts; Apache Hadoop; Apache Spark',
+      'Amazon EMR; managing EMR clusters',
+      'Lab: Processing Logs by Using Amazon EMR',
+      'Apache Hudi',
+      'Lab: Updating Dynamic Data in Place',
+      'Knowledge check',
+    ],
+  },
+  {
+    week: 'Module 10',
+    title: 'Processing Data for ML',
+    topics: [
+      'ML concepts; the ML lifecycle; framing the ML problem',
+      'Collecting data; labeling with SageMaker Ground Truth',
+      'Preprocessing; feature engineering; developing and deploying a model',
+      'ML infrastructure on AWS; SageMaker demos; AI/ML services on AWS',
+      'Knowledge check',
+    ],
+  },
+  {
+    week: 'Module 11',
+    title: 'Analyzing and Visualizing Data',
+    topics: [
+      'Factors that influence tool selection; comparing AWS tools and services',
+      'Demo: AWS IoT Analytics and QuickSight',
+      'Selecting tools for a gaming analytics use case',
+      'Lab: Kinesis Data Firehose, OpenSearch Service, and OpenSearch Dashboards',
+      'Knowledge check',
+    ],
+  },
+  {
+    week: 'Module 12',
+    title: 'Automating the Pipeline',
+    topics: [
+      'Automating infrastructure deployment; CI/CD',
+      'Automating with Step Functions',
+      'Lab: Building and Orchestrating ETL Pipelines by Using Athena and Step Functions',
       'Knowledge check',
     ],
   },
 ]
 
-export default function CourseSpecial({ frontMatter, mentorDetails, otherCourses = [] }) {
+export default function CourseDEA({ frontMatter, mentorDetails, otherCourses = [] }) {
+  const smoothScrollTo = (e, targetId) => {
+    e.preventDefault()
+    const element = document.querySelector(targetId)
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    }
+  }
+
   const info = {
     title: frontMatter?.title || courseInfo.title,
     subtitle: frontMatter?.subtitle || courseInfo.subtitle,
@@ -281,11 +278,11 @@ export default function CourseSpecial({ frontMatter, mentorDetails, otherCourses
     duration: frontMatter?.duration || courseInfo.duration,
     schedule: frontMatter?.schedule || courseInfo.schedule,
     location: frontMatter?.location || courseInfo.location,
-    price: courseInfo.price,
+    price: frontMatter?.price || courseInfo.price,
     earlyBirdPrice: frontMatter?.earlyBirdPrice || courseInfo.earlyBird,
     registrationLink: frontMatter?.registrationLink || courseInfo.registrationLink,
   }
-  const mentors = mentorDetails
+  const mentors = mentorDetails || []
 
   return (
     <div
@@ -303,13 +300,11 @@ export default function CourseSpecial({ frontMatter, mentorDetails, otherCourses
         }
       `}</style>
 
-      {/* Hero Section */}
       <section className="flex min-h-screen items-center justify-center p-4">
         <div
           className="flex w-full max-w-6xl flex-col overflow-hidden rounded-2xl border border-gray-700 shadow-2xl md:flex-row"
           style={{ backgroundColor: '#161b22' }}
         >
-          {/* Left Content */}
           <div className="z-10 w-full p-8 text-white md:w-3/5 md:p-10">
             <div className="mb-6 flex items-center">
               <Image
@@ -326,10 +321,10 @@ export default function CourseSpecial({ frontMatter, mentorDetails, otherCourses
             <h1 className="my-2 text-3xl font-black uppercase md:text-4xl">
               AWS Certified <br />
               <span className="text-glow" style={{ color: '#FF9900' }}>
-                Cloud Practitioner
+                Data Engineer
               </span>
             </h1>
-            <p className="mb-8 text-xl font-bold text-gray-500">(CLF-C02)</p>
+            <p className="mb-8 text-xl font-bold text-gray-500">Associate (DEA-C01)</p>
 
             <div className="mb-8 space-y-4 text-gray-300">
               <div className="flex items-start">
@@ -338,7 +333,8 @@ export default function CourseSpecial({ frontMatter, mentorDetails, otherCourses
                   style={{ color: '#FF9900' }}
                 />
                 <span>
-                  <b>Nền tảng vững chắc:</b> Lộ trình tinh gọn, bám sát đề thi thật.
+                  <b>Chương trình 12 module:</b> Bám sát outline chuẩn (~40 giờ), có lab và{' '}
+                  knowledge check.
                 </span>
               </div>
               <div className="flex items-start">
@@ -347,7 +343,8 @@ export default function CourseSpecial({ frontMatter, mentorDetails, otherCourses
                   style={{ color: '#FF9900' }}
                 />
                 <span>
-                  <b>Thực chiến:</b> 50% thời lượng là Lab & miễn phí tài khoản thực hành.
+                  <b>Thực chiến pipeline:</b> Data lake, Glue, Athena, Redshift, orchestration — làm
+                  trên môi trường lab.
                 </span>
               </div>
               <div className="flex items-start">
@@ -356,13 +353,12 @@ export default function CourseSpecial({ frontMatter, mentorDetails, otherCourses
                   style={{ color: '#FF9900' }}
                 />
                 <span>
-                  <b>Ưu đãi đặc biệt:</b> Giảm 50% chi phí đăng ký thi chứng chỉ AWS Cloud
-                  Practitioner sau khóa học.
+                  <b>Lộ trình chứng chỉ:</b> Ôn tập hướng tới AWS Certified Data Engineer –
+                  Associate (DEA-C01).
                 </span>
               </div>
             </div>
 
-            {/* Key Stats */}
             <div className="mb-8 grid grid-cols-2 gap-4 md:grid-cols-4">
               {stats.map((stat, index) => (
                 <div key={index} className="text-center">
@@ -374,14 +370,14 @@ export default function CourseSpecial({ frontMatter, mentorDetails, otherCourses
               ))}
             </div>
 
-            {/* CTA Button */}
             <a
               href="#registration-form"
+              onClick={(e) => smoothScrollTo(e, '#registration-form')}
               className="text-lg inline-flex items-center rounded-lg px-8 py-4 font-semibold transition-colors hover:opacity-90"
               style={{ backgroundColor: '#FF9900', color: '#000' }}
             >
               <FaRocket className="mr-2" />
-              Đăng Ký Ngay - Chỉ {info.earlyBirdPrice}
+              Đăng ký tư vấn — {info.earlyBirdPrice}
             </a>
             <div className="text-sm text-gray-600 dark:text-gray-400">
               <span className="font-semibold">Tư vấn:</span>{' '}
@@ -396,7 +392,6 @@ export default function CourseSpecial({ frontMatter, mentorDetails, otherCourses
             </div>
           </div>
 
-          {/* Right Image */}
           <div className="bg-grid-pattern relative flex w-full items-center justify-center overflow-hidden bg-gray-50 p-6 dark:bg-gray-700 md:w-2/5">
             <div
               className="absolute -bottom-24 -right-20 h-80 w-80 rounded-full opacity-20 blur-3xl dark:opacity-10"
@@ -404,7 +399,7 @@ export default function CourseSpecial({ frontMatter, mentorDetails, otherCourses
             ></div>
             <div
               className="absolute -top-20 -left-24 h-72 w-72 rounded-full opacity-20 blur-3xl dark:opacity-10"
-              style={{ backgroundColor: '#2563eb' }}
+              style={{ backgroundColor: '#7c3aed' }}
             ></div>
 
             <div className="relative flex h-full w-full items-center justify-center">
@@ -420,12 +415,10 @@ export default function CourseSpecial({ frontMatter, mentorDetails, otherCourses
         </div>
       </section>
 
-      {/* Course Highlights */}
       <section className="py-22 bg-slate-100 dark:bg-gray-900">
         <div className="rounded-2xl p-8 text-white dark:bg-slate-900">
           <h2 className="mb-12 text-center text-3xl font-bold text-gray-800 dark:text-white">
-            Tại Sao Chọn Học Cloud Practitioner Với{' '}
-            <span className="text-purple-600">VNTechies</span>?
+            Tại Sao Chọn DEA-C01 Với <span className="text-purple-600">VNTechies</span>?
           </h2>
           <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
             {highlights.map((highlight, index) => (
@@ -443,18 +436,163 @@ export default function CourseSpecial({ frontMatter, mentorDetails, otherCourses
           </div>
         </div>
       </section>
-      {/* Course Information */}
+
+      <section id="hoc-phi-dea" className="bg-white py-20 dark:bg-gray-900">
+        <div className="mx-auto max-w-6xl px-4">
+          <div className="mb-16 text-center">
+            <h2 className="mb-4 text-4xl font-bold text-gray-900 dark:text-gray-100">
+              Học phí đầu tư cho tương lai
+            </h2>
+            <p className="text-xl text-gray-600 dark:text-gray-300">
+              Cùng cách tính như khóa Data Engineer Bootcamp: Standard · Early Bird (−10%) · Group
+              (2+ người)
+            </p>
+          </div>
+
+          <div className="grid gap-8 lg:grid-cols-3">
+            <div className="group relative rounded-2xl bg-white p-8 shadow-lg transition hover:shadow-2xl dark:bg-gray-800">
+              <div className="mb-8 text-center">
+                <h3 className="mb-2 text-2xl font-bold text-gray-900 dark:text-gray-100">
+                  Standard
+                </h3>
+                <p className="text-gray-600 dark:text-gray-400">Học phí tiêu chuẩn</p>
+              </div>
+              <div className="mb-8 space-y-4">
+                <div className="rounded-xl bg-gray-50 p-6 text-center dark:bg-gray-700">
+                  <div className="text-sm font-medium text-gray-600 dark:text-gray-400">
+                    Người đi làm
+                  </div>
+                  <div className="text-3xl font-bold text-gray-900 dark:text-gray-100">
+                    10.000.000₫
+                  </div>
+                </div>
+                <div className="rounded-xl bg-purple-50 p-4 text-center dark:bg-purple-900/30">
+                  <div className="text-sm font-medium text-purple-600 dark:text-purple-400">
+                    Sinh viên
+                  </div>
+                  <div className="text-2xl font-bold text-purple-700 dark:text-purple-300">
+                    9.500.000₫
+                  </div>
+                  <div className="text-xs mt-2 text-purple-600 dark:text-purple-400">
+                    Giảm 500.000đ so với mức người đi làm
+                  </div>
+                  <Link
+                    href="/pricing#financial-aid"
+                    className="text-xs mt-1 inline-block font-semibold text-purple-700 hover:underline dark:text-purple-300"
+                  >
+                    Financial Aid Program
+                  </Link>
+                </div>
+              </div>
+              <a
+                href="#registration-form"
+                onClick={(e) => smoothScrollTo(e, '#registration-form')}
+                className="block w-full rounded-xl bg-slate-900 py-4 text-center font-semibold text-white transition hover:scale-105 hover:bg-slate-800"
+              >
+                Đăng ký ngay
+              </a>
+            </div>
+
+            <div className="group relative scale-105 rounded-2xl bg-purple-600 p-8 text-white shadow-2xl">
+              <div className="absolute -top-4 left-1/2 -translate-x-1/2 rounded-full bg-purple-400 px-4 py-2 text-sm font-bold text-white">
+                HẤP DẪN
+              </div>
+              <div className="mb-8 text-center">
+                <h3 className="mb-2 text-2xl font-bold">Early Bird</h3>
+                <p className="opacity-90">Đăng ký sớm — tiết kiệm 10%</p>
+              </div>
+              <div className="mb-8 space-y-4">
+                <div className="rounded-xl bg-white/20 p-6 text-center backdrop-blur">
+                  <div className="text-sm font-medium opacity-90">Người đi làm</div>
+                  <div className="text-3xl font-bold">9.000.000₫</div>
+                  <div className="text-sm line-through opacity-75">10.000.000₫</div>
+                </div>
+                <div className="rounded-xl bg-white/10 p-4 text-center backdrop-blur">
+                  <div className="text-sm font-medium opacity-90">Sinh viên</div>
+                  <div className="text-2xl font-bold">8.500.000₫</div>
+                  <div className="text-sm line-through opacity-75">9.500.000₫</div>
+                  <div className="text-xs mt-2 opacity-90">Hỗ trợ học phí lên tới 500.000đ</div>
+                  <Link
+                    href="/pricing#financial-aid"
+                    className="text-xs font-semibold opacity-90 hover:underline"
+                  >
+                    Financial Aid Program
+                  </Link>
+                </div>
+              </div>
+              <a
+                href="#registration-form"
+                onClick={(e) => smoothScrollTo(e, '#registration-form')}
+                className="block w-full rounded-xl bg-white py-4 text-center font-bold text-purple-600 transition hover:scale-105 hover:bg-gray-50"
+              >
+                Đăng ký ngay
+              </a>
+            </div>
+
+            <div className="group relative rounded-2xl bg-white p-8 shadow-lg transition hover:shadow-2xl dark:bg-gray-800">
+              <div className="text-xs absolute -top-3 right-4 rounded-full bg-purple-500 px-3 py-1 font-bold text-white">
+                PHỔ BIẾN
+              </div>
+              <div className="mb-8 text-center">
+                <h3 className="mb-2 text-2xl font-bold text-gray-900 dark:text-gray-100">Group</h3>
+                <p className="text-gray-600 dark:text-gray-400">2+ người cùng đăng ký</p>
+              </div>
+              <div className="mb-8 space-y-4">
+                <div className="rounded-xl bg-purple-50 p-6 text-center dark:bg-purple-900/30">
+                  <div className="text-sm font-medium text-purple-600 dark:text-purple-400">
+                    Người đi làm
+                  </div>
+                  <div className="text-3xl font-bold text-purple-700 dark:text-purple-300">
+                    8.800.000₫
+                  </div>
+                  <div className="text-sm text-gray-500 line-through dark:text-gray-400">
+                    10.000.000₫
+                  </div>
+                </div>
+                <div className="rounded-xl bg-purple-50 p-4 text-center dark:bg-purple-900/20">
+                  <div className="text-sm font-medium text-purple-600 dark:text-purple-400">
+                    Sinh viên
+                  </div>
+                  <div className="text-2xl font-bold text-purple-700 dark:text-purple-300">
+                    8.300.000₫
+                  </div>
+                  <div className="text-sm text-gray-500 line-through dark:text-gray-400">
+                    9.500.000₫
+                  </div>
+                </div>
+              </div>
+              <a
+                href="#registration-form"
+                onClick={(e) => smoothScrollTo(e, '#registration-form')}
+                className="block w-full rounded-xl bg-purple-600 py-4 text-center font-semibold text-white transition hover:scale-105 hover:bg-purple-700"
+              >
+                Đăng ký ngay
+              </a>
+            </div>
+          </div>
+
+          <p className="mt-10 text-center text-sm text-gray-600 dark:text-gray-400">
+            <span className="font-semibold text-gray-900 dark:text-gray-100">
+              Giới thiệu học viên:
+            </span>{' '}
+            giảm thêm{' '}
+            <span className="font-semibold text-purple-700 dark:text-purple-300">500.000đ</span> khi
+            bạn giới thiệu học viên mới đăng ký và hoàn tất học phí cùng khóa (áp dụng theo chính
+            sách từng đợt — xác nhận khi tư vấn).
+          </p>
+        </div>
+      </section>
+
       <section className="bg-gray-50 py-16 px-4 dark:bg-gray-900">
         <div className="mx-auto max-w-6xl">
           <div className="grid grid-cols-1 gap-12 lg:grid-cols-2">
-            {/* Course Details */}
             <div>
               <h2 className="mb-8 text-3xl font-bold text-gray-900 dark:text-white">
                 Thông Tin Khóa Học
               </h2>
               <div className="space-y-6">
                 <div className="flex items-start space-x-4">
-                  <FaClock className="mt-1 text-blue-600" />
+                  <FaClock className="mt-1 text-purple-600" />
                   <div>
                     <h3 className="font-semibold text-gray-900 dark:text-white">Thời gian học</h3>
                     <p className="text-gray-600 dark:text-gray-300">{info.duration}</p>
@@ -462,18 +600,39 @@ export default function CourseSpecial({ frontMatter, mentorDetails, otherCourses
                   </div>
                 </div>
                 <div className="flex items-start space-x-4">
-                  <FaGlobe className="mt-1 text-blue-600" />
+                  <FaGlobe className="mt-1 text-purple-600" />
                   <div>
                     <h3 className="font-semibold text-gray-900 dark:text-white">Hình thức học</h3>
                     <p className="text-gray-600 dark:text-gray-300">{info.location}</p>
                   </div>
                 </div>
                 <div className="flex items-start space-x-4">
-                  <FaDollarSign className="mt-1 text-blue-600" />
+                  <FaDollarSign className="mt-1 text-purple-600" />
                   <div>
                     <h3 className="font-semibold text-gray-900 dark:text-white">Học phí</h3>
                     <p className="text-gray-600 dark:text-gray-300">
-                      <span>{info.price}</span>
+                      Tiêu chuẩn:{' '}
+                      <span className="font-semibold text-gray-900 dark:text-white">
+                        10.000.000đ
+                      </span>{' '}
+                      (người đi làm) ·{' '}
+                      <span className="font-semibold text-purple-700 dark:text-purple-300">
+                        9.500.000đ
+                      </span>{' '}
+                      (sinh viên, giảm 500.000đ so với mức đi làm).
+                    </p>
+                    <p className="mt-2 text-sm text-gray-600 dark:text-gray-300">
+                      Early Bird −10%, ưu đãi nhóm 2+ người và{' '}
+                      <span className="font-semibold">giảm thêm 500.000đ</span> khi giới thiệu học
+                      viên mới — xem{' '}
+                      <a
+                        href="#hoc-phi-dea"
+                        onClick={(e) => smoothScrollTo(e, '#hoc-phi-dea')}
+                        className="font-semibold text-purple-600 hover:underline dark:text-purple-400"
+                      >
+                        bảng học phí
+                      </a>
+                      .
                     </p>
                     <div className="text-xs mt-2 text-green-600 dark:text-green-400">
                       Hỗ trợ học phí lên tới 500.000đ
@@ -487,7 +646,7 @@ export default function CourseSpecial({ frontMatter, mentorDetails, otherCourses
                   </div>
                 </div>
                 <div className="flex items-start space-x-4">
-                  <FaUsers className="mt-1 text-blue-600" />
+                  <FaUsers className="mt-1 text-purple-600" />
                   <div>
                     <h3 className="font-semibold text-gray-900 dark:text-white">Khai giảng</h3>
                     <p className="text-gray-600 dark:text-gray-300">{info.startDate}</p>
@@ -496,7 +655,6 @@ export default function CourseSpecial({ frontMatter, mentorDetails, otherCourses
               </div>
             </div>
 
-            {/* Learning Outcomes */}
             <div>
               <h2 className="mb-8 text-3xl font-bold text-gray-900 dark:text-white">
                 Sau Khóa Học Bạn Sẽ
@@ -514,12 +672,15 @@ export default function CourseSpecial({ frontMatter, mentorDetails, otherCourses
         </div>
       </section>
 
-      {/* Curriculum */}
       <section className="bg-white py-16 px-4 dark:bg-gray-800">
         <div className="mx-auto max-w-6xl">
           <h2 className="mb-12 text-center text-3xl font-bold text-gray-900 dark:text-white">
             Chương Trình Học Chi Tiết
           </h2>
+          <p className="mx-auto mb-10 max-w-3xl text-center text-gray-600 dark:text-gray-300">
+            Mười hai module theo outline khóa (tổ chức data-driven đến tự động hóa pipeline). Ngoài
+            ra có capstone, module ôn chứng chỉ và đánh giá cuối khóa trong lộ trình đầy đủ.
+          </p>
           <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
             {curriculum.map((module, index) => (
               <div
@@ -527,7 +688,7 @@ export default function CourseSpecial({ frontMatter, mentorDetails, otherCourses
                 className="rounded-lg bg-gray-50 p-6 shadow-lg transition hover:shadow-xl dark:bg-gray-700"
               >
                 <div className="mb-4 flex items-center justify-between">
-                  <span className="rounded-full bg-blue-600 px-3 py-1 text-sm font-semibold text-white">
+                  <span className="rounded-full bg-purple-600 px-3 py-1 text-sm font-semibold text-white">
                     {module.week}
                   </span>
                 </div>
@@ -548,7 +709,6 @@ export default function CourseSpecial({ frontMatter, mentorDetails, otherCourses
         </div>
       </section>
 
-      {/* Testimonials */}
       <section className="bg-slate-50 py-20 dark:bg-slate-800">
         <div className="mx-auto max-w-6xl px-4">
           <div className="mb-16 text-center">
@@ -569,7 +729,7 @@ export default function CourseSpecial({ frontMatter, mentorDetails, otherCourses
                   ))}
                 </div>
                 <blockquote className="mb-4 text-gray-700 dark:text-gray-300">
-                  "{t.comment}"
+                  &quot;{t.comment}&quot;
                 </blockquote>
                 <div className="flex items-center gap-3">
                   <Image
@@ -589,7 +749,6 @@ export default function CourseSpecial({ frontMatter, mentorDetails, otherCourses
         </div>
       </section>
 
-      {/* Mentor Section */}
       <section className="bg-gray-100 px-4 py-16 dark:bg-gray-900">
         <div className="mx-auto max-w-6xl">
           <h2 className="mb-4 text-center text-3xl font-bold text-gray-900 dark:text-gray-100">
@@ -599,7 +758,6 @@ export default function CourseSpecial({ frontMatter, mentorDetails, otherCourses
             100% là chuyên gia AWS tại các công ty nước ngoài (MNC), giàu kinh nghiệm dự án thực tế
           </p>
 
-          {/* Instructor Stats */}
           <div className="mb-12 grid grid-cols-2 gap-8 md:grid-cols-4">
             <div className="text-center">
               <div className="mb-2 text-3xl font-bold text-blue-600 dark:text-blue-400">4+</div>
@@ -681,7 +839,7 @@ export default function CourseSpecial({ frontMatter, mentorDetails, otherCourses
           </div>
         </div>
       </section>
-      {/* Student Benefits Section */}
+
       <section className="bg-gray-50 px-4 py-16 dark:bg-gray-900">
         <div className="mx-auto max-w-6xl">
           <h2 className="mb-12 text-center text-3xl font-bold text-gray-900 dark:text-gray-100">
@@ -690,15 +848,15 @@ export default function CourseSpecial({ frontMatter, mentorDetails, otherCourses
 
           <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
             <div className="rounded-xl bg-white p-8 shadow-lg dark:bg-gray-800">
-              <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-blue-100 dark:bg-blue-900">
-                <FaRocket className="h-8 w-8 text-blue-600 dark:text-blue-400" />
+              <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-purple-100 dark:bg-purple-900">
+                <FaCode className="h-8 w-8 text-purple-600 dark:text-purple-400" />
               </div>
               <h3 className="mb-4 text-xl font-bold text-gray-900 dark:text-gray-100">
-                LAB THỰC HÀNH 50%
+                LAB &amp; PIPELINE THỰC TẾ
               </h3>
               <p className="text-gray-600 dark:text-gray-300">
-                50% thời lượng khóa học là lab thực hành trực tiếp trên AWS Console với tài khoản
-                thật
+                Thực hành Glue, Athena, S3, EMR, Redshift, Kinesis, Step Functions và các dịch vụ
+                liên quan trên môi trường lab AWS
               </p>
             </div>
 
@@ -707,10 +865,10 @@ export default function CourseSpecial({ frontMatter, mentorDetails, otherCourses
                 <FaDollarSign className="h-8 w-8 text-green-600 dark:text-green-400" />
               </div>
               <h3 className="mb-4 text-xl font-bold text-gray-900 dark:text-gray-100">
-                VOUCHER 50% LỆ PHÍ THI
+                ƯU ĐÃI LỆ PHÍ THI
               </h3>
               <p className="text-gray-600 dark:text-gray-300">
-                Giảm 50% chi phí đăng ký thi chứng chỉ sau khi hoàn thành khóa học
+                Hỗ trợ voucher giảm lệ phí thi chứng chỉ AWS sau khóa (theo chính sách từng đợt)
               </p>
             </div>
 
@@ -756,7 +914,7 @@ export default function CourseSpecial({ frontMatter, mentorDetails, otherCourses
                 <div className="flex items-start space-x-2">
                   <FaCheckCircle className="mt-1 h-4 w-4 text-yellow-500" />
                   <span>
-                    <strong>Cộng đồng Q&A:</strong> Hỏi đáp, tư vấn kiến thức và công việc 24/7
+                    <strong>Cộng đồng Q&amp;A:</strong> Hỏi đáp, tư vấn kiến thức và công việc 24/7
                   </span>
                 </div>
               </div>
@@ -776,7 +934,7 @@ export default function CourseSpecial({ frontMatter, mentorDetails, otherCourses
                 </div>
                 <div className="flex items-start space-x-2">
                   <FaCheckCircle className="mt-1 h-4 w-4 text-red-500" />
-                  <span>Alumni's Support và Office Hour với chuyên gia</span>
+                  <span>Alumni&apos;s Support và Office Hour với chuyên gia</span>
                 </div>
                 <div className="flex items-start space-x-2">
                   <FaCheckCircle className="mt-1 h-4 w-4 text-red-500" />
@@ -811,35 +969,36 @@ export default function CourseSpecial({ frontMatter, mentorDetails, otherCourses
         </div>
       </section>
 
-      {/* Registration Form */}
-      <CourseRegistrationForm courseTitle="AWS CLF-C02" theme="blue" />
+      <CourseRegistrationForm
+        courseTitle="AWS Certified Data Engineer – Associate (DEA-C01)"
+        theme="purple"
+      />
 
-      {/* Final CTA */}
-      <section className="bg-gradient-to-r from-blue-600 to-purple-600 py-16 px-4">
+      <section className="bg-gradient-to-r from-purple-600 to-indigo-600 py-16 px-4">
         <div className="mx-auto max-w-4xl text-center">
           <h2 className="mb-6 text-3xl font-bold text-white">
-            🚀 Đừng Bỏ Lỡ Cơ Hội Thay Đổi Sự Nghiệp!
+            Bắt đầu hành trình Data Engineer trên AWS
           </h2>
-          <p className="mb-8 text-xl text-blue-100">
-            Chỉ còn 20 suất với giá ưu đãi 50%. Đăng ký ngay để bắt đầu hành trình lên mây của bạn!
+          <p className="mb-8 text-xl text-purple-100">
+            Đăng ký để nhận lịch khai giảng, học phí ưu đãi và lộ trình phù hợp với mục tiêu DEA-C01
+            của bạn.
           </p>
           <div className="flex flex-col justify-center gap-4 sm:flex-row">
             <a
               href="#registration-form"
-              className="text-lg inline-flex items-center rounded-lg bg-white px-8 py-4 font-semibold text-blue-600 transition-colors hover:bg-gray-100"
+              onClick={(e) => smoothScrollTo(e, '#registration-form')}
+              className="text-lg inline-flex items-center rounded-lg bg-white px-8 py-4 font-semibold text-purple-700 transition-colors hover:bg-gray-100"
             >
               <FaRocket className="mr-2" />
-              Đăng Ký Ngay - Chỉ {info.earlyBirdPrice}
+              Đăng ký ngay — {info.earlyBirdPrice}
             </a>
           </div>
-          <p className="mt-4 text-sm text-blue-100">
-            💰 Giảm 50% lệ phí thi chứng chỉ | Thực hành miễn phí trên tài khoản AWS | 📚 Tài liệu
-            học tập trọn đời
+          <p className="mt-4 text-sm text-purple-100">
+            AWS Certified Data Engineer – Associate (DEA-C01) · Lab thực hành · 12 module + capstone
           </p>
         </div>
       </section>
 
-      {/* Other Courses Section */}
       <OtherCoursesSection otherCourses={otherCourses} />
     </div>
   )
