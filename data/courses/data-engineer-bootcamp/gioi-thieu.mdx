@@ -8,16 +8,16 @@ layout: CourseData
 date: '2026-01-15'
 isFree: false
 index: 0
-price: '8.000.000 VNĐ'
-duration: '9 tuần (18 buổi)'
-startDate: '2026-03-02'
-schedule: '19:00 - 21:00 - UTC+7'
+price: '10.000.000 VNĐ'
+duration: '8 tuần (16 buổi)'
+startDate: '2026-05-05'
+schedule: '19:00 - 21:30 - UTC+7'
 location: 'Online qua Google Meet'
 ---
 
-## Data Engineer Bootcamp (VDT-C01) – 9 Tuần (18 Buổi)
+## Data Engineer Bootcamp (VDT-C01) – 8 Tuần (16 Buổi)
 
-Khóa học **Data Engineer Bootcamp** được thiết kế để trang bị cho học viên các kỹ năng cần thiết để trở thành Data Engineer chuyên nghiệp. Khóa học tập trung vào việc xây dựng các pipeline xử lý dữ liệu từ cơ bản đến nâng cao, bao gồm batch processing, streaming, và data lakehouse architecture.
+Khóa học **Data Engineer Bootcamp** được thiết kế để trang bị cho học viên các kỹ năng cần thiết để trở thành Data Engineer chuyên nghiệp. Khóa học bao gồm 3 giai đoạn: Engineering Foundations, Data Engineering Core, và Advanced & Production — giúp bạn xây dựng nền tảng vững chắc và sẵn sàng cho môi trường thực tế.
 
 ### Đối tượng phù hợp
 
@@ -29,281 +29,287 @@ Khóa học **Data Engineer Bootcamp** được thiết kế để trang bị ch
 
 Khóa học sẽ trang bị cho bạn các công nghệ hàng đầu trong ngành Data Engineering:
 
-- **Docker, Linux, Git** - Nền tảng cơ bản
-- **PostgreSQL, SQL** - Database và truy vấn dữ liệu
-- **Python + Pandas + Great Expectations** - Xử lý và validation dữ liệu
-- **Trino + Hive Metastore + MinIO** - Data Lakehouse architecture
-- **Spark (batch)** - Xử lý dữ liệu batch
-- **Flink hoặc Spark Streaming** - Xử lý dữ liệu real-time
-- **Kafka + Debezium** - Change Data Capture (CDC)
-- **Airflow** - Orchestration và scheduling
-- **DataHub** - Metadata management
-- **Feast** - Feature Store
+- **Linux, Bash, Docker, Docker Compose** — Nền tảng & Dev Environment
+- **Python, FastAPI, Pydantic, pytest** — Lập trình & API
+- **PostgreSQL, SQL, SQLAlchemy, DBeaver** — Database & truy vấn dữ liệu
+- **Apache Kafka, Debezium** — Ingestion & Change Data Capture (CDC)
+- **MinIO, Delta Lake, Trino, Hive Metastore** — Data Lakehouse architecture
+- **Apache Spark, PySpark** — Batch processing
+- **Apache Flink, Flink SQL** — Stream processing
+- **ClickHouse, Apache Pinot** — OLAP engines
+- **dbt** — Analytics Engineering
+- **Apache Airflow** — Orchestration & scheduling
+- **Great Expectations, Soda** — Data Quality
+- **DataHub** — Metadata management & Lineage
+- **Feast** — Feature Store
+- **Terraform, GitHub Actions** — Infrastructure as Code & CI/CD
+- **Prometheus, Grafana** — Monitoring & Alerting
 
-### Tổng quan theo tuần
+### Tổng quan theo Phase
 
-| Tuần       | Chủ đề                                          | Output                     |
-| ---------- | ----------------------------------------------- | -------------------------- |
-| **Week 1** | Big Data + SQL + Data Modeling                  | Data Mart + SQL            |
-| **Week 2** | Python + ETL + Data Warehouse                   | Mini ETL pipeline          |
-| **Week 3** | Data Lakehouse (Trino–Hive–MinIO) + Spark Batch | Lakehouse + Batch Pipeline |
-| **Week 4** | Kafka + Debezium + Streaming (Flink/Spark)      | Real-time CDC pipeline     |
-| **Week 5** | Airflow + Data Quality + Governance             | Orchestrated pipeline      |
-| **Week 6** | Feature Store + Capstone                        | End-to-end project         |
+| Phase                                  | Buổi      | Chủ đề                                                                  | Output                                  |
+| -------------------------------------- | --------- | ----------------------------------------------------------------------- | --------------------------------------- |
+| **Phase 1: Engineering Foundations**   | B1 – B5   | Linux, Python, SQL, FastAPI, Docker                                     | Dev environment + API + ETL pipeline    |
+| **Phase 2: Data Engineering Core**     | B6 – B12  | Kafka, CDC, Lakehouse, Spark, Flink, OLAP, Airflow, Data Quality       | End-to-end data pipeline                |
+| **Phase 3: Advanced & Production**     | B13 – B16 | dbt, Terraform, CI/CD, Capstone Project                                 | Production-ready project + Demo Day     |
 
-### Syllabus chi tiết theo buổi (18 buổi)
+### Syllabus chi tiết theo buổi (16 buổi)
 
-#### WEEK 1 — Big Data Foundations, SQL, Data Modeling
+#### PHASE 1 — Engineering Foundations (Buổi 1–5)
 
-**Buổi 1 — Big Data Engineer Overview**
-
-_Lý thuyết:_
-
-- Vai trò Data Engineer trong hệ Big Data
-- OLTP vs OLAP, ACID
-- Kiến trúc DW, Data Lake, Lakehouse
-- Lambda vs Kappa
-
-_Lab:_
-
-- ✔ Docker Compose: cài PostgreSQL
-- ✔ Load sample dataset (retail / ecommerce)
-
-**Buổi 2 — SQL từ Cơ Bản → Nâng Cao**
+**Buổi 1 — Linux, Shell & Dev Environment**
 
 _Lý thuyết:_
 
-- SQL joins, subquery, CTE
-- Window functions
-- Index, partitioning
+- GNU/Linux core commands, Bash scripting
+- Makefile, Cron, SSH, tmux
 
 _Lab:_
 
-- ✔ 25 bài SQL challenge
-- ✔ Optimization query
+- ✔ Cài Ubuntu trên WSL2/EC2; viết CLI crawler thu thập dữ liệu text từ web
 
-**Buổi 3 — Data Modeling**
+_Tech stack: Ubuntu, Bash, Makefile, AWS EC2_
+
+**Buổi 2 — Python cho Data Engineering**
 
 _Lý thuyết:_
 
-- Star Schema, Snowflake
-- SCD (1,2,6)
-- Data Vault 2.0 overview
+- Syntax, data structures, error handling, argparse
+- File I/O, context managers
+- venv / uv; async vs sync
 
 _Lab:_
 
-- ✔ Model 1 data mart
-- ✔ Thiết kế bảng dimension + fact + SCD2 bằng SQL
+- ✔ Setup môi trường ảo; viết ETL script đơn giản xử lý CSV và JSON
 
-#### WEEK 2 — Python, ETL, DW, UNIX
+_Tech stack: Python, uv virtualenv_
 
-**Buổi 4 — Python for Data Engineering**
-
-_Lý thuyết:_ Pandas, typing, error handling
-
-_Lab:_
-
-- ✔ Build mini ETL pipeline: CSV → clean → load PostgreSQL
-- ✔ Unit test bằng pytest
-
-**Buổi 5 — Unix/Linux & Shell Scripting**
+**Buổi 3 — Database & SQL**
 
 _Lý thuyết:_
 
-- File system
-- Bash commands
-- Cron jobs
+- Relational vs NoSQL concepts
+- DDL/DML/DQL/DCL/TCL
+- Indexing, query plan, EXPLAIN
+- Transactions & ACID
 
 _Lab:_
 
-- ✔ Viết shell script tự động ingest raw data
-- ✔ Cronjob schedule ETL
+- ✔ Tạo schema PostgreSQL, tối ưu câu query, dùng SQLAlchemy ORM
 
-**Buổi 6 — ETL/ELT & Data Warehouse**
+_Tech stack: PostgreSQL, SQLAlchemy, DBeaver_
+
+**Buổi 4 — Web API & FastAPI**
 
 _Lý thuyết:_
 
-- Kimball vs Inmon
-- ETL vs ELT
-- Slowly Changing Dimensions
+- REST vs GraphQL
+- Auth (JWT, API key, OAuth2)
+- Request validation, API healthcheck
+- Performance testing (Locust)
 
 _Lab:_
 
-- ✔ Docker Compose: PostgreSQL + Metabase
-- ✔ Build dashboard đầu tiên
+- ✔ Xây dựng API serving dữ liệu với auth; chạy load test Locust
 
-#### WEEK 3 — Data Lakehouse & Spark Batch
+_Tech stack: FastAPI, Pydantic, Locust_
 
-**Buổi 7 — Data Lakehouse Architecture**
+**Buổi 5 — Testing, Docker & Docker Compose**
 
 _Lý thuyết:_
 
-- Object Storage
-- Delta Lake vs Iceberg vs Hudi
-- Trino vs Presto vs Hive
+- TDD, pytest, unittest
+- Docker architecture, images, volumes, network
+- Docker Compose, private registry
 
 _Lab:_
 
-- ✔ Deploy MinIO + Trino + Hive Metastore
-- ✔ Tạo 3 zones: bronze / silver / gold
+- ✔ Containerize FastAPI app; viết test suite; deploy local stack với Compose
 
-**Buổi 8 — Spark Batch Processing**
+_Tech stack: Docker, Docker Compose, pytest_
+
+#### PHASE 2 — Data Engineering Core (Buổi 6–12)
+
+**Buổi 6 — Ingestion Layer: Kafka & CDC**
 
 _Lý thuyết:_
 
-- Spark RDD → DataFrame API
-- Catalyst optimizer
-- Tung độ reading/writing Lakehouse tables
+- Source systems (files, OLAP/OLTP, CDC, logs)
+- Kafka internals (producer/consumer, partitions, offsets, KRaft)
+- Debezium CDC
 
 _Lab:_
 
-- ✔ Spark batch job: raw → clean → silver
-- ✔ Benchmark Parquet vs CSV
+- ✔ End-to-end CDC pipeline: PostgreSQL → Debezium → Kafka topic
 
-**Buổi 9 — Table Format & Optimization**
+_Tech stack: Apache Kafka, Debezium, PostgreSQL_
+
+**Buổi 7 — Storage Layer: Lakehouse Architecture**
 
 _Lý thuyết:_
 
-- Partitioning
-- Compaction, Z-order
-- ACID transaction
+- Data Warehouse vs Data Lake vs Data Swamp
+- Lakehouse pattern, multi-hop (Bronze/Silver/Gold)
+- Table formats (Delta Lake, Iceberg, Hudi)
 
 _Lab:_
 
-- ✔ Delta/Iceberg table: partition + vacuum
-- ✔ Optimize large dataset
+- ✔ Xây Lakehouse từ đầu: MinIO (S3-compatible) + Delta Lake + Hive Metastore + Trino
 
-#### WEEK 4 — Kafka, Debezium, Streaming
+_Tech stack: Delta Lake, MinIO, Trino, Hive_
 
-**Buổi 10 — Kafka Fundamentals**
+**Buổi 8 — Batch Processing: Spark (Phần 1)**
 
 _Lý thuyết:_
 
-- Broker, Topic, Consumer Group
-- Offset, partitions
+- Spark architecture & execution model
+- RDD vs DataFrame
+- Catalyst Optimizer, Project Tungsten, serialization
 
 _Lab:_
 
-- ✔ Deploy Kafka + Zookeeper với Docker
-- ✔ Producer & Consumer CLI + Python
+- ✔ Viết Spark batch job xử lý dữ liệu Bronze → Silver (cleansing, dedup, schema enforcement)
 
-**Buổi 11 — CDC with Debezium**
+_Tech stack: Apache Spark, PySpark, Delta Lake_
+
+**Buổi 9 — Batch Processing: Spark (Phần 2)**
 
 _Lý thuyết:_
 
-- Change Data Capture
-- Debezium: binlog, WAL
+- AQE, join strategies (broadcast, shuffle sort merge, bucket join)
+- Data skew handling
+- Spark UI phân tích, dynamic allocation, compaction
 
 _Lab:_
 
-- ✔ CDC PostgreSQL → Kafka
-- ✔ Stream change events to bronze layer
+- ✔ Tối ưu pipeline Silver → Gold: xử lý skew, tune memory, compact small files
 
-**Buổi 12 — Streaming (Flink hoặc Spark Streaming)**
+_Tech stack: Apache Spark, PySpark, Spark UI_
+
+**Buổi 10 — Stream Processing: Flink**
 
 _Lý thuyết:_
 
-- Stateless vs Stateful
-- Time semantics, watermark
+- Streaming concepts & notions of time
+- Flink DataStream API, Table API, Flink SQL
+- Window strategies, watermarks, late data
+- State & fault tolerance, backpressure
 
 _Lab:_
 
-- ✔ Build real-time streaming pipeline Kafka → Flink → MinIO
-- ✔ Realtime dashboard bằng Superset
+- ✔ Real-time pipeline: Kafka → Flink stateful aggregation → sink vào Delta Lake
 
-#### WEEK 5 — Airflow, Data Quality, Governance
+_Tech stack: Apache Flink, Flink SQL, Kafka_
 
-**Buổi 13 — Airflow Orchestration**
+**Buổi 11 — Consumption Layer: DWH, OLAP & Feature Store**
 
 _Lý thuyết:_
 
-- DAG, Operators, Sensors
-- Airflow vs Cron
+- Dimensional modeling, SCD Type 1/2/3
+- OLAP engines (ClickHouse, Apache Pinot)
+- Materialized views
+- Feature Store concepts & ML integration
 
 _Lab:_
 
-- ✔ Deploy Airflow with Docker
-- ✔ Build DAG: ingest → clean → load → validate
+- ✔ Xây dimensional model, tạo materialized views; implement feature pipeline với Feast
 
-**Buổi 14 — Data Quality (Great Expectations + Deequ)**
+_Tech stack: ClickHouse, Apache Pinot, Feast, dbt_
+
+**Buổi 12 — Orchestration, Lineage & Data Quality**
 
 _Lý thuyết:_
 
-- Data profiling
-- Validations & rules
+- Airflow architecture, operators, XCom, backfill, idempotency
+- Dynamic DAGs, task concurrency
+- Data validation (Great Expectations, Soda)
+- Circuit breaker, data contracts
+- Lineage với DataHub
 
 _Lab:_
 
-- ✔ GE Validator: null check, range check
-- ✔ Deequ anomaly detection
+- ✔ Deploy Airflow trên Docker; viết multi-step DAG với data quality checks và lineage tracking
 
-**Buổi 15 — Data Governance & Metadata (DataHub)**
+_Tech stack: Apache Airflow, Great Expectations, DataHub_
+
+#### PHASE 3 — Advanced & Production (Buổi 13–16)
+
+**Buổi 13 — Analytics Engineering & dbt**
 
 _Lý thuyết:_
 
-- Lineage, catalog
-- Data governance frameworks
+- Analytics Engineering role
+- dbt project structure, models, tests, docs
+- Incremental models, snapshots (SCD)
+- Deployment (dbt Cloud / self-hosted), CI integration
 
 _Lab:_
 
-- ✔ Deploy DataHub
-- ✔ Ingest metadata từ PostgreSQL, Kafka, Airflow
+- ✔ Build dbt project trên top của Gold layer; viết tests và tạo documentation site
 
-#### WEEK 6 — Feature Store & Capstone
+_Tech stack: dbt, DuckDB, GitHub Actions_
 
-**Buổi 16 — Feature Store Fundamentals**
+**Buổi 14 — Infrastructure as Code & DataOps**
 
 _Lý thuyết:_
 
-- Offline vs Online Store
-- Feast architecture
+- Terraform cho data infra (S3, MSK, EMR, Redshift, MWAA)
+- CI/CD với GitHub Actions
+- Docker image build pipeline
+- Secrets management
+- Monitoring & alerting (Prometheus, Grafana)
 
 _Lab:_
 
-- ✔ Deploy Feast + Redis + PostgreSQL
-- ✔ Build feature view
-- ✔ Materialize online store
+- ✔ Provision toàn bộ data stack trên AWS bằng Terraform; setup CI/CD pipeline tự động test và deploy
 
-**Buổi 17 — Cloud Integration (Optional AWS)**
+_Tech stack: Terraform, GitHub Actions, Prometheus, Grafana_
 
-_Nội dung tùy chọn:_
+**Buổi 15 — End-to-End Capstone Project (Phần 1)**
 
-- S3 as Data Lake
-- MSK, Glue, Athena, EMR
+_Lý thuyết:_
+
+- Thiết kế kiến trúc hệ thống dữ liệu end-to-end
+- Requirements analysis
+- Infra provisioning
+- Ingestion setup (Kafka + CDC)
+- Lakehouse setup (S3 + Delta Lake)
 
 _Lab:_
 
-- ✔ Move Bronze/Silver/Gold layers → S3
-- ✔ Query bằng Athena hoặc Trino
-  (hoặc bỏ nếu muốn 100% local)
+- ✔ Project thực tế (e-commerce / fintech dataset) — ingestion layer + storage layer hoàn chỉnh
 
-**Buổi 18 — Capstone Project**
+_Tech stack: Kafka, Delta Lake, Terraform_
 
-_Yêu cầu:_
+**Buổi 16 — End-to-End Capstone Project (Phần 2) + Demo Day**
 
-- ✔ Build End-to-end Pipeline:
-  - Source (PostgreSQL)
-  - CDC → Kafka
-  - Streaming → Silver table
-  - Batch Spark → Gold
-  - Data Validation
-  - Orchestrated bằng Airflow
-  - Metadata tracking bằng DataHub
-  - Feature Store
-- ✔ Final Presentation
+_Lý thuyết:_
+
+- Transformation pipelines (Spark batch + Flink stream)
+- Consumption layer (ClickHouse + dbt)
+- Dashboard, data quality, lineage
+- Performance tuning
+
+_Lab:_
+
+- ✔ Hoàn thiện toàn bộ pipeline, present architecture, Q&A và career roadmap
+
+_Tech stack: Spark, Flink, dbt, ClickHouse, DataHub, Superset, Airflow_
 
 ### Bonus
 
-- Docker Compose full stack: PostgreSQL, Kafka, Debezium, Spark, MinIO, Trino, Airflow, DataHub
+- Docker Compose full stack: PostgreSQL, Kafka, Debezium, Spark, MinIO, Trino, Airflow, DataHub, ClickHouse
 - Data Engineer Handbook (PDF)
 - SQL Cheat Sheet
 - Spark Cheat Sheet
 - Flink Concept Map
+- dbt Best Practices Guide
+- Terraform Templates cho Data Infra
 - Project Template (cookiecutter DE project)
 
 ### Đăng ký khóa học
 
-Khóa học sẽ khai giảng vào **15/02/2025**. Để đăng ký hoặc nhận tư vấn, vui lòng liên hệ:
+Khóa học sẽ khai giảng vào **05/05/2026**. Để đăng ký hoặc nhận tư vấn, vui lòng liên hệ:
 
 - 💬 Messenger: [m.me/vntechies](https://m.me/vntechies)
 - 📧 Email: info@vntechies.dev
@@ -311,4 +317,3 @@ Khóa học sẽ khai giảng vào **15/02/2025**. Để đăng ký hoặc nhậ
 ---
 
 _Khóa học được thiết kế bởi đội ngũ chuyên gia Data Engineering với nhiều năm kinh nghiệm làm việc tại các công ty công nghệ hàng đầu._
-\*/
