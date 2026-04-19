@@ -45,225 +45,184 @@ const testimonials = [
 ]
 
 const courseInfo = {
-  title: 'Data Engineer Bootcamp (VDT-C01) – 9 Tuần (18 Buổi)',
+  title: 'Data Engineer Bootcamp (VDT-C01) – 8 Tuần (16 Buổi)',
   subtitle: 'Từ Zero đến Hero với Data Engineering - Lộ trình đào tạo toàn diện',
   image: '/static/images/courses/dae-hero.png',
-  startDate: '02/03/2025',
-  duration: '9 tuần (18 buổi)',
-  schedule: 'Tối Thứ 2 & Thứ 4 (19:00 - 21:00)',
+  startDate: '05/05/2026',
+  duration: '8 tuần (16 buổi)',
+  schedule: '19:00 - 21:30 - UTC+7',
   location: 'Online qua Google Meet',
-  price: '8.000.000 VNĐ',
-  earlyBird: '7.200.000 VNĐ (giảm 10%)',
+  price: '10.000.000 VNĐ',
+  earlyBird: '9.000.000 VNĐ (giảm 10%)',
   registrationLink: 'https://m.me/vntechies',
   modules: [
     {
-      title: 'Week 1: Big Data Foundations + SQL Foundations',
+      title: 'Phase 1: Engineering Foundations (Buổi 1–5)',
       lessons: [
         {
-          title: 'Buổi 1: Big Data Engineer Overview',
+          title: 'Buổi 1: Linux, Shell & Dev Environment',
           topics: [
-            'Vai trò Data Engineer trong hệ Big Data',
-            'OLTP vs OLAP, ACID',
-            'Kiến trúc DW, Data Lake, Lakehouse',
-            'Lambda vs Kappa',
-            'Lab: Docker Compose cài PostgreSQL',
-            'Lab: Load sample dataset (retail / ecommerce)',
+            'GNU/Linux core commands, Bash scripting',
+            'Makefile, Cron, SSH, tmux',
+            'Lab: Cài Ubuntu trên WSL2/EC2; viết CLI crawler thu thập dữ liệu text từ web',
+            'Tech stack: Ubuntu, Bash, Makefile, AWS EC2',
           ],
         },
         {
-          title: 'Buổi 2: SQL từ Cơ Bản → Nâng Cao',
+          title: 'Buổi 2: Python cho Data Engineering',
           topics: [
-            'SQL joins, subquery, CTE',
-            'Window functions',
-            'Index, partitioning',
-            'Lab: 25 bài SQL challenge',
-            'Lab: Optimization query',
+            'Syntax, data structures, error handling, argparse',
+            'File I/O, context managers; venv / uv; async vs sync',
+            'Lab: Setup môi trường ảo; viết ETL script đơn giản xử lý CSV và JSON',
+            'Tech stack: Python, uv virtualenv',
+          ],
+        },
+        {
+          title: 'Buổi 3: Database & SQL',
+          topics: [
+            'Relational vs NoSQL concepts',
+            'DDL/DML/DQL/DCL/TCL; indexing, query plan, EXPLAIN',
+            'Transactions & ACID',
+            'Lab: Tạo schema PostgreSQL, tối ưu câu query, dùng SQLAlchemy ORM',
+            'Tech stack: PostgreSQL, SQLAlchemy, DBeaver',
+          ],
+        },
+        {
+          title: 'Buổi 4: Web API & FastAPI',
+          topics: [
+            'REST vs GraphQL; auth (JWT, API key, OAuth2)',
+            'Request validation, API healthcheck',
+            'Performance testing (Locust)',
+            'Lab: Xây dựng API serving dữ liệu với auth; chạy load test Locust',
+            'Tech stack: FastAPI, Pydantic, Locust, AWS API Gateway',
+          ],
+        },
+        {
+          title: 'Buổi 5: Testing, Docker & Docker Compose',
+          topics: [
+            'TDD, pytest, unittest',
+            'Docker architecture, images, volumes, network',
+            'Docker Compose, private registry',
+            'Lab: Containerize FastAPI app; viết test suite; deploy local stack với Compose',
+            'Tech stack: Docker, Docker Compose, pytest, AWS ECR',
           ],
         },
       ],
     },
     {
-      title: 'Week 2: Python, ETL, DW, UNIX',
+      title: 'Phase 2: Data Engineering Core (Buổi 6–12)',
       lessons: [
         {
-          title: 'Buổi 3: Data Modeling',
+          title: 'Buổi 6: Ingestion Layer — Kafka & CDC',
           topics: [
-            'Star Schema, Snowflake',
-            'SCD (1,2,6)',
-            'Data Vault 2.0 overview',
-            'Lab: Model 1 data mart',
-            'Lab: Thiết kế bảng dimension + fact + SCD2 bằng SQL',
+            'Source systems (files, OLAP/OLTP, CDC, logs)',
+            'Kafka internals (producer/consumer, partitions, offsets, KRaft)',
+            'Debezium CDC',
+            'Lab: End-to-end CDC pipeline: PostgreSQL → Debezium → Kafka topic',
+            'Tech stack: Apache Kafka, Debezium, PostgreSQL, AWS MSK',
           ],
         },
         {
-          title: 'Buổi 4: Ôn SQL + Mini case study Data Mart',
+          title: 'Buổi 7: Storage Layer — Lakehouse Architecture',
           topics: [
-            'Review SQL nâng cao (window, CTE, performance)',
-            'Best practices viết SQL trong ETL',
-            'Lab: Hoàn thiện Data Mart tuần 1 & Bài tập SQL business case thực tế',
+            'Data Warehouse vs Data Lake vs Data Swamp',
+            'Lakehouse pattern; multi-hop (Bronze/Silver/Gold); table formats',
+            'Lab: Xây Lakehouse từ đầu: MinIO + Delta Lake + Hive Metastore + Trino',
+            'Tech stack: Delta Lake, MinIO, Trino, Hive, AWS S3',
+          ],
+        },
+        {
+          title: 'Buổi 8: Batch Processing — Spark (Phần 1)',
+          topics: [
+            'Spark architecture & execution model',
+            'RDD vs DataFrame; Catalyst Optimizer; Project Tungsten; serialization',
+            'Lab: Viết Spark batch job xử lý dữ liệu Bronze → Silver (cleansing, dedup, schema enforcement)',
+            'Tech stack: Apache Spark, PySpark, AWS EMR, Delta Lake',
+          ],
+        },
+        {
+          title: 'Buổi 9: Batch Processing — Spark (Phần 2)',
+          topics: [
+            'AQE, join strategies (broadcast, shuffle sort merge, bucket join)',
+            'Data skew handling; Spark UI phân tích; dynamic allocation; compaction',
+            'Lab: Tối ưu pipeline Silver → Gold: xử lý skew, tune memory, compact small files',
+            'Tech stack: Apache Spark, PySpark, Spark UI, AWS EMR',
+          ],
+        },
+        {
+          title: 'Buổi 10: Stream Processing — Flink',
+          topics: [
+            'Streaming concepts & notions of time',
+            'Flink DataStream API, Table API, Flink SQL',
+            'Window strategies, watermarks, late data; state & fault tolerance; backpressure',
+            'Lab: Real-time pipeline: Kafka → Flink stateful aggregation → sink vào Delta Lake',
+            'Tech stack: Apache Flink, Flink SQL, Kafka, AWS Kinesis',
+          ],
+        },
+        {
+          title: 'Buổi 11: Consumption Layer — DWH, OLAP & Feature Store',
+          topics: [
+            'Dimensional modeling; SCD Type 1/2/3',
+            'OLAP engines (ClickHouse, Apache Pinot); materialized views',
+            'Feature Store concepts & ML integration',
+            'Lab: Xây dimensional model, tạo materialized views; implement feature pipeline với Feast',
+            'Tech stack: ClickHouse, Apache Pinot, Feast, dbt, AWS Redshift',
+          ],
+        },
+        {
+          title: 'Buổi 12: Orchestration, Lineage & Data Quality',
+          topics: [
+            'Airflow architecture, operators, XCom, backfill, idempotency',
+            'Dynamic DAGs; task concurrency',
+            'Data validation (Great Expectations, Soda); circuit breaker; data contracts',
+            'Lineage với DataHub',
+            'Lab: Deploy Airflow trên Docker; viết multi-step DAG với data quality checks và lineage tracking',
+            'Tech stack: Apache Airflow, Great Expectations, DataHub, AWS MWAA',
           ],
         },
       ],
     },
     {
-      title: 'Week 3: Python for Data Engineering + Shell',
+      title: 'Phase 3: Advanced & Production (Buổi 13–16)',
       lessons: [
         {
-          title: 'Buổi 5: Python for Data Engineering',
+          title: 'Buổi 13: Analytics Engineering & dbt',
           topics: [
-            'Pandas, typing, error handling',
-            'Lab: Build mini ETL pipeline: CSV → clean → load PostgreSQL',
-            'Lab: Unit test bằng pytest',
+            'Analytics Engineering role',
+            'dbt project structure, models, tests, docs',
+            'Incremental models; snapshots (SCD); deployment; CI integration',
+            'Lab: Build dbt project trên top của Gold layer; viết tests và tạo documentation site',
+            'Tech stack: dbt, DuckDB, BigQuery, AWS Redshift, GitHub Actions',
           ],
         },
         {
-          title: 'Buổi 6: Unix/Linux & Shell Scripting',
+          title: 'Buổi 14: Infrastructure as Code & DataOps',
           topics: [
-            'File system',
-            'Bash commands',
-            'Cron jobs',
-            'Lab: Viết shell script tự động ingest raw data',
-            'Lab: Cronjob schedule ETL',
-          ],
-        },
-      ],
-    },
-    {
-      title: 'Week 4: ETL/ELT + Data Warehouse',
-      lessons: [
-        {
-          title: 'Buổi 7:  ETL/ELT & Data Warehouse',
-          topics: [
-            'Kimball vs Inmon',
-            'ETL vs ELT',
-            'Slowly Changing Dimensions',
-            'Lab: Docker Compose: PostgreSQL + Metabase',
-            'Lab: Build dashboard đầu tiên',
+            'Terraform cho data infra (S3, MSK, EMR, Redshift, MWAA)',
+            'CI/CD với GitHub Actions; Docker image build pipeline',
+            'Secrets management; monitoring & alerting (Prometheus, Grafana)',
+            'Lab: Provision toàn bộ data stack trên AWS bằng Terraform; setup CI/CD pipeline tự động test và deploy',
+            'Tech stack: Terraform, AWS, GitHub Actions, Prometheus, Grafana',
           ],
         },
         {
-          title: 'Buổi 8: Mini Project ETL + Dashboarding',
+          title: 'Buổi 15: End-to-End Capstone Project (Phần 1)',
           topics: [
-            'Review ETL best practices',
-            'Data modeling for dashboard (materialized tables)',
-            'Lab: ETL pipeline CSV → PostgreSQL → Data mart',
-            'Lab: Dashboard Metabase nâng cao',
-            'Recap',
-          ],
-        },
-      ],
-    },
-    {
-      title: 'Week 5:  Data Lakehouse Architecture + Spark Batch',
-      lessons: [
-        {
-          title: 'Buổi 9: Data Lakehouse Architecture',
-          topics: [
-            'Object Storage',
-            'Delta Lake vs Iceberg vs Hudi',
-            'Trino vs Presto vs Hive',
-            'Lab: Deploy MinIO + Trino + Hive Metastore',
-            'Lab: Tạo 3 zones: bronze / silver / gold',
+            'Thiết kế kiến trúc hệ thống dữ liệu end-to-end',
+            'Requirements analysis; infra provisioning',
+            'Ingestion setup (Kafka + CDC); Lakehouse setup (S3 + Delta Lake)',
+            'Lab: Project thực tế (e-commerce / fintech dataset) — ingestion layer + storage layer hoàn chỉnh',
+            'Tech stack: AWS, Kafka, Delta Lake, Terraform',
           ],
         },
         {
-          title: 'Buổi 10: Spark Batch Processing',
+          title: 'Buổi 16: End-to-End Capstone Project (Phần 2) + Demo Day',
           topics: [
-            'Spark RDD → DataFrame API',
-            'Catalyst optimizer',
-            'Tung độ reading/writing Lakehouse tables',
-            'Lab: Spark batch job: raw → clean → silver',
-            'Lab: Benchmark Parquet vs CSV',
-          ],
-        },
-      ],
-    },
-    {
-      title: 'Week 6: Table Formats + Kafka Fundamentals',
-      lessons: [
-        {
-          title: 'Buổi 11: Table Format & Optimization',
-          topics: [
-            'Partitioning',
-            'Compaction, Z-order',
-            'ACID transaction',
-            'Lab: Delta/Iceberg table: partition + vacuum',
-            'Lab: Optimize large dataset',
-          ],
-        },
-        {
-          title: 'Buổi 12: Kafka Fundamentals',
-          topics: [
-            'Broker, Topic, Consumer Group',
-            'Offset, partitions',
-            'Lab: Deploy Kafka + Zookeeper với Docker',
-            'Lab: Producer & Consumer CLI + Python',
-          ],
-        },
-      ],
-    },
-    {
-      title: 'Week 7: Table Formats + Kafka Fundamentals',
-      lessons: [
-        {
-          title: 'Buổi 13: CDC with Debezium',
-          topics: [
-            'Change Data Capture',
-            'Debezium: binlog, WAL',
-            'Lab: CDC PostgreSQL → Kafka',
-            'Lab: Stream change events to bronze layer',
-          ],
-        },
-        {
-          title: 'Buổi 14: Streaming (Flink/Spark Structured Streaming)',
-          topics: [
-            'Stateless vs Stateful',
-            'Time semantics, watermark',
-            'Lab: Build real-time streaming pipeline Kafka → Flink → MinIO',
-            'Lab: Realtime dashboard bằng Superset',
-          ],
-        },
-      ],
-    },
-    {
-      title: 'Week 8: Airflow + Data Quality + Governance',
-      lessons: [
-        {
-          title: 'Buổi 15: Airflow Orchestration',
-          topics: [
-            'DAG, Operators, Sensors',
-            'Airflow vs Cron',
-            'Lab: Deploy Airflow with Docker',
-            'Lab: Build DAG: ingest → clean → load → validate',
-          ],
-        },
-        {
-          title: 'Buổi 16: Data Quality (Great Expectations + Deequ)',
-          topics: [
-            'Data Quality (GE, Deequ) &  Demo GE',
-            'Metadata & Data Governance (DataHub) & Demo DataHub ',
-          ],
-        },
-      ],
-    },
-    {
-      title: 'Week 9: Feature Store + Cloud + Capstone',
-      lessons: [
-        {
-          title: 'Buổi 17:  Feature Store Fundamentals + Cloud Integration',
-          topics: [
-            'Feature Store lý thuyết & Feast demo',
-            'S3, Glue, Athena, EMR mapping',
-            'Lab: Deploy Feast + Redis',
-            'Lab: Move Bronze/Silver/Gold → S3 / Query Athena',
-          ],
-        },
-        {
-          title: 'Buổi 18: Capstone Project',
-          topics: [
-            'End-to-end architecture review',
-            'Build final pipeline',
-            'Presentation & Feedback',
+            'Transformation pipelines (Spark batch + Flink stream)',
+            'Consumption layer (ClickHouse + dbt); dashboard; data quality; lineage',
+            'Performance tuning; demo & peer review',
+            'Lab: Hoàn thiện toàn bộ pipeline, present architecture, Q&A và career roadmap',
+            'Tech stack: Spark, Flink, dbt, ClickHouse, DataHub, Power BI / Superset, Airflow',
           ],
         },
       ],
@@ -272,9 +231,9 @@ const courseInfo = {
 }
 
 const stats = [
-  { number: '18', label: 'Buổi học' },
-  { number: '60%', label: 'Thực hành' },
-  { number: '30+', label: 'Lab thực tế' },
+  { number: '16', label: 'Buổi học' },
+  { number: '3', label: 'Phase đào tạo' },
+  { number: '20+', label: 'Công nghệ thực tế' },
   { number: '7+', label: 'Mentor kinh nghiệm' },
 ]
 
@@ -355,121 +314,165 @@ export default function CourseData({ frontMatter, mentorDetails, otherCourses = 
   return (
     <div className="mx-auto w-full max-w-7xl">
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-white to-slate-50 px-4 py-24 dark:from-gray-900 dark:to-slate-800">
+      <section className="bg-gradient-to-br from-white to-slate-50 px-4 py-16 dark:from-gray-900 dark:to-slate-800">
         <div className="mx-auto max-w-7xl">
           <div className="flex flex-col items-center">
-            <div className="mb-16 max-w-4xl text-center">
-              <h1 className="md:text-6xl lg:text-7xl mb-8 text-center text-4xl font-black leading-none tracking-tight text-gray-900 dark:text-gray-100 sm:text-5xl">
+            <div className="mb-10 max-w-4xl text-center">
+              <h1 className="md:text-6xl mb-4 text-center text-4xl font-black leading-tight tracking-tight text-gray-900 dark:text-gray-100 sm:text-5xl">
                 <span className="bg-gradient-to-r from-gray-900 to-slate-700 bg-clip-text text-transparent dark:from-gray-100 dark:to-slate-300">
-                  Data Engineer
+                  Data Engineer{' '}
                 </span>
-                <br />
-                <span className="lg:text-6xl bg-gradient-to-r from-purple-600 to-indigo-500 bg-clip-text text-3xl text-transparent sm:text-4xl md:text-5xl">
+                <span className="bg-gradient-to-r from-purple-600 to-indigo-500 bg-clip-text text-transparent">
                   Bootcamp
                 </span>
               </h1>
-              <p className="text-xl font-bold text-gray-500 sm:text-2xl">(VDT-C01)</p>
+              <p className="text-lg font-bold text-gray-500 sm:text-xl">(VDT-C01)</p>
             </div>
 
-            <div className="grid items-center gap-16 lg:grid-cols-2">
-              <div className="relative w-full">
-                <div className="absolute -inset-4 rounded-3xl bg-gradient-to-r from-purple-500/20 to-indigo-600/20 blur-xl"></div>
-                <Image
-                  src={info.image}
-                  alt={info.title}
-                  width={650}
-                  height={450}
-                  className="relative mx-auto rounded-3xl object-cover shadow-2xl"
-                />
-              </div>
-
-              <div className="flex flex-col space-y-8">
-                <div className="inline-flex items-center rounded-full bg-gradient-to-r from-purple-100 to-purple-50 px-6 py-3 text-purple-700 shadow-sm dark:from-purple-900/30 dark:to-purple-800/20 dark:text-purple-400">
-                  <FaRocket className="mr-3 h-5 w-5" />
-                  <span className="font-semibold">Học để làm - Không chỉ lý thuyết</span>
-                </div>
-                {/* Special Offer Highlight */}
-                <div className="rounded-2xl bg-gradient-to-r from-purple-600 to-indigo-600 p-6 text-white shadow-xl">
-                  <div className="text-center">
-                    <div className="mb-4">
-                      <h3 className="text-lg mb-2 font-bold">
-                        🎁 Khoá học độc quyền với hơn 50% THỜI LƯỢNG LAB
-                      </h3>
-                    </div>
-                    <div className="space-y-3">
-                      <div className="flex flex-col items-center justify-center gap-2 rounded-lg bg-white/10 p-3">
-                        <div className="flex items-center gap-3">
-                          <FaDatabase className="h-5 w-5 flex-shrink-0 text-yellow-300" />
-                          <span className="text-sm font-medium">
-                            Mở rộng cơ hội nghề nghiệp trong lĩnh vực Data Engineering
-                          </span>
+            <div className="grid w-full items-start gap-10 lg:grid-cols-5">
+              {/* Left: Data Engineering Visual - 2 cols */}
+              <div className="lg:col-span-2">
+                <div className="rounded-2xl bg-gradient-to-br from-slate-900 to-indigo-900 p-6 shadow-xl">
+                  <div className="mb-4 text-center text-sm font-semibold uppercase tracking-wider text-purple-400">
+                    Tech Stack Coverage
+                  </div>
+                  <div className="space-y-3">
+                    {[
+                      {
+                        label: 'Foundations',
+                        items: 'Linux · Python · SQL · FastAPI · Docker',
+                        color: 'from-purple-500 to-purple-600',
+                      },
+                      {
+                        label: 'Ingestion',
+                        items: 'Kafka · Debezium · CDC',
+                        color: 'from-blue-500 to-blue-600',
+                      },
+                      {
+                        label: 'Storage',
+                        items: 'MinIO · Delta Lake · Trino · Hive',
+                        color: 'from-cyan-500 to-cyan-600',
+                      },
+                      {
+                        label: 'Processing',
+                        items: 'Spark · Flink · PySpark',
+                        color: 'from-green-500 to-green-600',
+                      },
+                      {
+                        label: 'Serving',
+                        items: 'ClickHouse · Pinot · Feast · dbt',
+                        color: 'from-yellow-500 to-orange-500',
+                      },
+                      {
+                        label: 'Orchestration',
+                        items: 'Airflow · DataHub · Great Expectations',
+                        color: 'from-orange-500 to-red-500',
+                      },
+                      {
+                        label: 'DevOps',
+                        items: 'Terraform · GitHub Actions · Grafana',
+                        color: 'from-red-500 to-pink-500',
+                      },
+                    ].map((layer, idx) => (
+                      <div key={idx} className="flex items-center gap-3">
+                        <div
+                          className={`h-2 w-2 rounded-full bg-gradient-to-r ${layer.color}`}
+                        ></div>
+                        <div className="flex-1">
+                          <div className="text-xs font-bold text-gray-300">{layer.label}</div>
+                          <div className="text-xs text-gray-400">{layer.items}</div>
                         </div>
                       </div>
-                      <div className="flex items-center justify-center gap-3 rounded-lg bg-white/10 p-3">
-                        <FaStream className="h-5 w-5 flex-shrink-0 text-yellow-300" />
-                        <span className="text-sm font-medium">
-                          Hơn 30+ bài LAB thực hành với công nghệ thực tế
-                        </span>
-                      </div>
+                    ))}
+                  </div>
+                  <div className="mt-5 rounded-lg bg-white/5 p-3 text-center">
+                    <div className="text-2xl font-black text-white">20+</div>
+                    <div className="text-xs text-gray-400">công nghệ thực tế trong 16 buổi</div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Right: Info cards - 3 cols */}
+              <div className="flex flex-col space-y-5 lg:col-span-3">
+                <div className="inline-flex items-center rounded-full bg-gradient-to-r from-purple-100 to-purple-50 px-5 py-2.5 text-purple-700 shadow-sm dark:from-purple-900/30 dark:to-purple-800/20 dark:text-purple-400">
+                  <FaRocket className="mr-2 h-4 w-4" />
+                  <span className="text-sm font-semibold">Học để làm - Không chỉ lý thuyết</span>
+                </div>
+
+                {/* Special Offer Highlight */}
+                <div className="rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 p-5 text-white shadow-xl">
+                  <h3 className="mb-3 text-center text-base font-bold">
+                    🎁 3 Phase, 16 buổi từ Zero đến Production
+                  </h3>
+                  <div className="space-y-2">
+                    <div className="flex items-center gap-3 rounded-lg bg-white/10 px-3 py-2">
+                      <FaDatabase className="h-4 w-4 flex-shrink-0 text-yellow-300" />
+                      <span className="text-sm">
+                        Từ Linux, Python, SQL, FastAPI đến Spark, Flink, Kafka, dbt, Terraform
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-3 rounded-lg bg-white/10 px-3 py-2">
+                      <FaStream className="h-4 w-4 flex-shrink-0 text-yellow-300" />
+                      <span className="text-sm">
+                        Capstone Project end-to-end với CDC, Lakehouse, Streaming & DataOps
+                      </span>
                     </div>
                   </div>
                 </div>
 
                 {/* Key Features */}
-                <div className="rounded-2xl bg-gradient-to-br from-slate-900 to-slate-800 p-8 text-white shadow-xl">
-                  <div className="mb-6">
-                    <h3 className="text-md text-center font-bold text-purple-400">
-                      Xây dựng hệ thống Data Engineering từ cơ bản đến nâng cao
-                    </h3>
-                  </div>
-                  <div className="grid gap-4 sm:grid-cols-2">
-                    <div className="flex items-start gap-3">
-                      <FaCheckCircle className="mt-1 h-5 w-5 flex-shrink-0 text-purple-500" />
-                      <span className="text-sm leading-relaxed">
-                        Hơn 60% thời lượng thực hành lab
+                <div className="rounded-xl bg-gradient-to-br from-slate-900 to-slate-800 p-5 text-white shadow-xl">
+                  <h3 className="mb-4 text-center text-sm font-bold text-purple-400">
+                    Xây dựng hệ thống Data Engineering từ cơ bản đến nâng cao
+                  </h3>
+                  <div className="grid gap-3 sm:grid-cols-2">
+                    <div className="flex items-start gap-2">
+                      <FaCheckCircle className="mt-0.5 h-4 w-4 flex-shrink-0 text-purple-500" />
+                      <span className="text-xs leading-relaxed">
+                        Phase 1: Nền tảng Engineering — Linux, Python, SQL, FastAPI, Docker
                       </span>
                     </div>
-                    <div className="flex items-start gap-3">
-                      <FaCheckCircle className="mt-1 h-5 w-5 flex-shrink-0 text-purple-500" />
-                      <span className="text-sm leading-relaxed">
-                        Giảng viên đến từ các công ty đa quốc gia
+                    <div className="flex items-start gap-2">
+                      <FaCheckCircle className="mt-0.5 h-4 w-4 flex-shrink-0 text-purple-500" />
+                      <span className="text-xs leading-relaxed">
+                        Phase 2: Data Engineering Core — Kafka, Lakehouse, Spark, Flink, Airflow
                       </span>
                     </div>
-                    <div className="flex items-start gap-3">
-                      <FaCheckCircle className="mt-1 h-5 w-5 flex-shrink-0 text-purple-500" />
-                      <span className="text-sm leading-relaxed">
-                        Nội dung bài lab thực tế với Spark, Kafka, Airflow, Trino, AWS
+                    <div className="flex items-start gap-2">
+                      <FaCheckCircle className="mt-0.5 h-4 w-4 flex-shrink-0 text-purple-500" />
+                      <span className="text-xs leading-relaxed">
+                        Phase 3: Advanced — dbt, Terraform, CI/CD, Capstone Project
                       </span>
                     </div>
-                    <div className="flex items-start gap-3">
-                      <FaCheckCircle className="mt-1 h-5 w-5 flex-shrink-0 text-purple-500" />
-                      <span className="text-sm leading-relaxed">
-                        Hỗ trợ nghề nghiệp & CV, phỏng vấn cuối khoá học
+                    <div className="flex items-start gap-2">
+                      <FaCheckCircle className="mt-0.5 h-4 w-4 flex-shrink-0 text-purple-500" />
+                      <span className="text-xs leading-relaxed">
+                        20+ công nghệ thực tế: Spark, Flink, Kafka, ClickHouse, dbt, Terraform
                       </span>
                     </div>
-                    <div className="flex items-start gap-3">
-                      <FaCheckCircle className="mt-1 h-5 w-5 flex-shrink-0 text-purple-500" />
-                      <span className="text-sm leading-relaxed">
-                        Tham gia cộng đồng Data Engineering 3000+ thành viên
+                    <div className="flex items-start gap-2">
+                      <FaCheckCircle className="mt-0.5 h-4 w-4 flex-shrink-0 text-purple-500" />
+                      <span className="text-xs leading-relaxed">
+                        Giảng viên Senior/Lead từ các công ty đa quốc gia
                       </span>
                     </div>
-                    <div className="flex items-start gap-3">
-                      <FaCheckCircle className="mt-1 h-5 w-5 flex-shrink-0 text-purple-500" />
-                      <span className="text-sm leading-relaxed">
-                        Giáo án và kho tài liệu độc quyền
+                    <div className="flex items-start gap-2">
+                      <FaCheckCircle className="mt-0.5 h-4 w-4 flex-shrink-0 text-purple-500" />
+                      <span className="text-xs leading-relaxed">
+                        Định hướng lộ trình phát triển nghề nghiệp cuối khoá
                       </span>
                     </div>
                   </div>
                 </div>
 
-                <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
+                <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
                   <a
                     href="#registration-form"
                     onClick={(e) => smoothScrollTo(e, '#registration-form')}
-                    className="text-lg inline-flex items-center justify-center rounded-xl bg-gradient-to-r from-purple-600 to-indigo-500 px-8 py-4 font-bold text-white shadow-xl transition hover:scale-105 hover:from-purple-700 hover:to-indigo-600 hover:shadow-2xl"
+                    className="inline-flex items-center justify-center rounded-xl bg-gradient-to-r from-purple-600 to-indigo-500 px-7 py-3.5 text-base font-bold text-white shadow-xl transition hover:scale-105 hover:from-purple-700 hover:to-indigo-600 hover:shadow-2xl"
                   >
                     Đăng ký ngay
-                    <FaRocket className="ml-3 h-5 w-5" />
+                    <FaRocket className="ml-2 h-4 w-4" />
                   </a>
                   <div className="text-sm text-gray-600 dark:text-gray-400">
                     <span className="font-semibold">Tư vấn:</span>{' '}
@@ -499,24 +502,24 @@ export default function CourseData({ frontMatter, mentorDetails, otherCourses = 
           </div>
           <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
             <div className="rounded-xl bg-purple-50 p-6 text-center dark:bg-purple-900/20">
-              <div className="mb-3 text-3xl font-bold text-purple-600">18</div>
+              <div className="mb-3 text-3xl font-bold text-purple-600">16</div>
               <div className="text-sm font-medium text-gray-700 dark:text-gray-300">Buổi học</div>
-              <div className="text-xs text-gray-500 dark:text-gray-400">Mỗi buổi 2 tiếng</div>
+              <div className="text-xs text-gray-500 dark:text-gray-400">Mỗi buổi 2.5 tiếng</div>
             </div>
             <div className="rounded-xl bg-purple-50 p-6 text-center dark:bg-purple-900/20">
-              <div className="mb-3 text-3xl font-bold text-purple-600">36h</div>
+              <div className="mb-3 text-3xl font-bold text-purple-600">40h</div>
               <div className="text-sm font-medium text-gray-700 dark:text-gray-300">
                 Tổng thời lượng
               </div>
-              <div className="text-xs text-gray-500 dark:text-gray-400">9 tuần học</div>
+              <div className="text-xs text-gray-500 dark:text-gray-400">8 tuần học</div>
             </div>
             <div className="rounded-xl bg-purple-50 p-6 text-center dark:bg-purple-900/20">
               <div className="mb-3 text-2xl font-bold text-purple-600">02 buổi/tuần</div>
               <div className="text-sm font-medium text-gray-700 dark:text-gray-300">Lịch học</div>
-              <div className="text-xs text-gray-500 dark:text-gray-400">19:00 - 21:00</div>
+              <div className="text-xs text-gray-500 dark:text-gray-400">19:00 - 21:30</div>
             </div>
             <div className="rounded-xl bg-purple-50 p-6 text-center dark:bg-purple-900/20">
-              <div className="mb-3 text-2xl font-bold text-purple-600">02/03/26</div>
+              <div className="mb-3 text-2xl font-bold text-purple-600">05/05/26</div>
               <div className="text-sm font-medium text-gray-700 dark:text-gray-300">Khai giảng</div>
               <div className="text-xs text-gray-500 dark:text-gray-400">Online Google Meet</div>
             </div>
@@ -692,7 +695,7 @@ export default function CourseData({ frontMatter, mentorDetails, otherCourses = 
               Lộ trình đào tạo chi tiết
             </h2>
             <p className="text-xl text-gray-600 dark:text-gray-300">
-              18 buổi học với nội dung được thiết kế kỹ lưỡng, tập trung vào thực hành
+              16 buổi học với nội dung được thiết kế kỹ lưỡng, tập trung vào thực hành
             </p>
             {expandedLessons.size > 0 && (
               <p className="mt-4 text-sm text-purple-600 dark:text-purple-400">
