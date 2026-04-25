@@ -650,7 +650,7 @@ export default function CourseSpecial({ frontMatter, mentorDetails, otherCourses
           {/* Mentor Stats */}
           <div className="mb-16 grid grid-cols-2 gap-8 md:grid-cols-4">
             <div className="text-center">
-              <div className="mb-2 text-4xl font-bold text-orange-600">4+</div>
+              <div className="mb-2 text-4xl font-bold text-orange-600">9+</div>
               <div className="text-sm font-medium text-gray-600 dark:text-gray-400">
                 Mentor tham gia giảng dạy
               </div>
