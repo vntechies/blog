@@ -7,6 +7,8 @@ github: https://github.com/nbthanh98
 website: https://blog.devopsviet.com
 startYear: 2017
 isMentor: true
+studentCount: 300
+successRate: 93
 ---
 
 **Kinh nghiệm:**
