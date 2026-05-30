@@ -1,0 +1,157 @@
+---
+title: 'Ngày 24 - Ký xác thực (Signing)'
+images: ['/static/images/ogps/90daysofdevopsv2d24.png']
+summary: 'Tìm hiểu về quá trình ký xác thực (Signing).'
+date: '2025-05-30'
+index: 24
+chapter: 'Tuần 4'
+---
+
+<TOCInline toc={props.toc} asDisclosure />
+
+# Ký xác thực (Signing)
+
+Quá trình ký xác thực bao gồm... việc ký một artifact (thành phần phần mềm) bằng một khóa (key), và sau đó xác minh xem artifact này có bị giả mạo hay không.
+
+Một "artifact" trong trường hợp này có thể là bất cứ thứ gì:
+
+- [code](https://venafi.com/machine-identity-basics/what-is-code-signing/#item-1)
+- [git commit](https://docs.github.com/en/authentication/managing-commit-signature-verification/signing-commits)
+- [container images](https://docs.sigstore.dev/cosign/overview/)
+
+Việc ký và xác minh chữ ký đảm bảo rằng artifact (container) mà chúng ta kéo (pull) về từ registry giống hệt với thứ mà chúng ta đã đẩy (push) lên.
+Điều này giúp chúng ta an toàn trước các cuộc tấn công chuỗi cung ứng (supply chain attack) và tấn công trung gian (man-in-the-middle attack), nơi chúng ta có thể tải xuống một thứ khác với những gì mình muốn.
+
+Quy trình làm việc (workflow) của CI sẽ trông như thế này:
+
+0. Lập trình viên đẩy mã nguồn lên Git.
+1. CI đóng gói (build) mã nguồn thành một container.
+2. **CI ký container bằng khóa riêng tư (private key) của chúng ta.
+3. CI đẩy container đã được ký lên registry của chúng ta.
+
+Và sau đó, khi chúng ta muốn triển khai (deploy) image này:
+
+1. Pull image về.
+2. **Xác minh chữ ký bằng khóa công khai (public key) của chúng ta.
+   1. Nếu chữ ký không khớp, dừng việc triển khai - image rất có thể đã bị xâm phạm.
+3. Nếu chữ ký khớp, tiến hành triển khai.
+
+Quy trình này dựa trên mật mã khóa công khai - khóa riêng tư (public-private key cryptography).
+Khi bạn ký một thứ gì đó bằng khóa riêng tư của mình, bất kỳ ai có quyền truy cập vào khóa công khai của bạn đều có thể xác minh rằng nó được ký bởi chính bạn.
+
+Và vì khóa công khai là... công khai, điều đó có nghĩa là tất cả mọi người đều có thể làm được.
+
+## Mối nguy hiểm khi KHÔNG ký các image của bạn
+
+Nếu bạn không ký các container image của mình, sẽ có nguy cơ ai đó thay thế một image trong repository (kho lưu trữ) của bạn bằng một image độc hại khác.
+
+Ví dụ: bạn có thể đẩy `my-repo/my-image:1.0.0` lên repo của mình, nhưng các tag (thẻ) của image, ngay cả những tag có đánh số phiên bản (như `1.0.0`) đều có thể bị thay đổi (mutable).
+Do đó, một kẻ tấn công có quyền truy cập vào repo của bạn có thể đẩy một image khác lên, gắn tag tương tự, và bằng cách này, chúng sẽ ghi đè lên image của bạn.
+Sau đó, khi bạn tiến hành triển khai image này, image được triển khai lại chính là cái mà kẻ tấn công đã giả mạo.
+Khả năng cao đây sẽ là một image độc hại.
+Ví dụ: chứa phần mềm độc hại (malware), đánh cắp dữ liệu hoặc sử dụng cơ sở hạ tầng của bạn để đào tiền ảo.
+
+Vấn đề này có thể được giải quyết bằng cách ký các image của bạn, vì khi bạn ký một image, sau này bạn có thể xác minh rằng thứ bạn pull về chính xác là thứ bạn đã upload lên ngay từ đầu.
+Vì vậy, hãy cùng xem cách chúng ta có thể thực hiện điều này thông qua một công cụ có tên là [cosign](https://docs.sigstore.dev/cosign/overview/).
+
+## Ký các container image
+
+Trước tiên, hãy tải xuống công cụ, làm theo hướng dẫn dành cho hệ điều hành của bạn tại đây.
+
+Tạo một cặp khóa (key-pair) nếu bạn chưa có:
+
+```shell
+consign generate-key-pair
+```
+
+Lệnh này sẽ tạo ra hai file trong thư mục hiện tại:
+
+- `cosign.key` -  khóa riêng tư (Private Key) của bạn.
+KHÔNG CHIA SẺ VỚI BẤT KỲ AI.
+- `cosign.pub` - khóa công khai (Public Key) của bạn.
+Chia sẻ với bất kỳ ai cần nó.
+
+Chúng ta có thể sử dụng khóa riêng tư để ký một image:
+
+```shell
+$ cosign sign --key cosign.key asankov/signed
+Enter password for private key:
+
+Pushing signature to: index.docker.io/asankov/signed
+```
+Lệnh này đã ký container image `asankov/signed` và đẩy chữ ký lên container repo.
+
+## Xác minh chữ ký
+
+Bây giờ chúng ta đã ký image, hãy tiến hành xác minh chữ ký.
+
+Để làm điều đó, chúng ta cần khóa công khai của mình:
+
+```shell
+$ cosign verify --key=cosign.pub asankov/signed | jq
+
+Verification for index.docker.io/asankov/signed:latest --
+The following checks were performed on each of these signatures:
+  - The cosign claims were validated
+  - The signatures were verified against the specified public key
+[
+  {
+    "critical": {
+      "identity": {
+        "docker-reference": "index.docker.io/asankov/signed"
+      },
+      "image": {
+        "docker-manifest-digest": "sha256:93d62c92b70efc512379cf89317eaf41b8ce6cba84a5e69507a95a7f15708506"
+      },
+      "type": "cosign container image signature"
+    },
+    "optional": null
+  }
+]
+```
+
+Đầu ra (output) của lệnh này cho chúng ta thấy rằng image đã được ký bởi đúng khóa mà chúng ta mong đợi.
+Vì chúng ta là những người duy nhất có quyền truy cập vào khóa riêng tư của mình, điều này có nghĩa là không ai khác ngoài chúng ta có thể đẩy image và chữ ký này lên container repo.
+Do đó, nội dung của image này không hề bị giả mạo kể từ khi chúng ta đẩy nó lên.
+
+Hãy thử xác minh một image mà chúng ta CHƯA từng ký.
+
+```shell
+$ cosign verify --key=cosign.pub asankov/not-signed
+Error: no matching signatures:
+
+main.go:62: error during command execution: no matching signatures:
+```
+Đúng như dự đoán, `cosign` không thể xác minh chữ ký của image này (bởi vì làm gì có chữ ký nào).
+
+Trong ví dụ này, image (`asankov/not-signed`) hoàn toàn không được ký, nhưng chúng ta cũng sẽ nhận được lỗi tương tự nếu ai đó đã ký image này bằng một khóa khác với khóa mà chúng ta đang sử dụng để xác minh.
+
+### Xác minh chữ ký trong Kubernetes
+
+Trong ví dụ trước, chúng ta đã xác minh chữ ký bằng phương pháp thủ công.
+Tuy nhiên, cách đó chỉ tốt cho mục đích demo hoặc để vọc vạch công cụ.
+
+Trong kịch bản thực tế, bạn sẽ muốn quá trình xác minh này được thực hiện tự động tại thời điểm triển khai.
+
+May mắn thay, có rất nhiều tiện ích tích hợp (integration) của `cosign` để làm việc đó.
+
+Ví dụ: nếu đang sử dụng Kubernetes, chúng ta có thể triển khai một validating webhook để kiểm tra (audit) tất cả các bản triển khai mới và xác minh rằng các container image mà chúng sử dụng đều đã được ký.
+
+Đối với Kubernetes, bạn có thể chọn từ 3 tích hợp hiện có - [Gatekeeper](https://github.com/sigstore/cosign-gatekeeper-provider), [Kyverno](https://kyverno.io/docs/writing-policies/verify-images/) or [Conaisseur](https://github.com/sse-secure-systems/connaisseur#what-is-connaisseur).
+Bạn có thể chọn một trong ba tùy thuộc vào sở thích của mình hoặc nếu bạn đã sử dụng chúng cho mục đích khác.
+
+## Những rủi ro cần lưu ý
+
+Giống như mọi thứ khác, việc ký các image không phải là giải pháp vạn năng (silver bullet) và sẽ không giải quyết được tất cả các vấn đề bảo mật của bạn.
+
+Vẫn có rủi ro là khóa riêng tư của bạn có thể bị rò rỉ, trong trường hợp đó, bất kỳ ai cũng có thể ký mọi thứ và nó vẫn sẽ vượt qua bước kiểm tra chữ ký của bạn.
+
+Tuy nhiên, việc tích hợp ký xác thực vào quy trình làm việc của bạn sẽ bổ sung thêm một lớp phòng thủ và thêm một chướng ngại vật nữa mà những kẻ tấn công phải vượt qua.
+
+## Tóm tắt
+
+Việc ký xác thực các artifact giúp ngăn chặn các cuộc tấn công chuỗi cung ứng và tấn công trung gian, bằng cách cho phép bạn xác minh tính toàn vẹn của các artifact của mình.
+
+[Sigstore](https://sigstore.dev/) và [cosign](https://docs.sigstore.dev/cosign/overview/) là những công cụ hữu ích để ký các artifact của bạn và chúng đi kèm với nhiều tiện ích tích hợp để bạn lựa chọn.
+
+Hẹn gặp lại bạn ở Ngày 25.
