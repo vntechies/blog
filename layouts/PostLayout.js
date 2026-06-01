@@ -135,14 +135,14 @@ export default function PostLayout({ frontMatter, authorDetails, next, prev, chi
                 {prev && (
                   <HorizontalCard
                     title={prev.title}
-                    image={prev.images[0]}
+                    image={prev.images?.[0]}
                     href={`/blog/${prev.slug}`}
                   />
                 )}
                 {next && (
                   <HorizontalCard
                     title={next.title}
-                    image={next.images[0]}
+                    image={next.images?.[0]}
                     href={`/blog/${next.slug}`}
                   />
                 )}
