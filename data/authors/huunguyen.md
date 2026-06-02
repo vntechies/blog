@@ -16,3 +16,11 @@ successRate: 95
 **Chứng chỉ chuyên môn:**
 
 - AWS Certified Solution Architect - Associate
+<div className="cert-grid">
+  <div className="cert-row" style={{display: "flex", justifyContent: "center", flexWrap: "wrap", gap: "5px", margin: "5px 0"}}>
+    <div style={{width: "160px", textAlign: "center"}}>
+      <img src="/static/images/authors/certs/huunguyen/SAA.png" alt="AWS Certified Solutions Architect - Associate" style={{width: "100%", border: "1px solid #eaeaea", borderRadius: "8px", padding: "5px"}}/>
+      <p style={{fontSize: "0.8rem", marginTop: "5px"}}>AWS Certified Solution Architect - Associate</p>
+    </div>
+  </div>
+</div>
