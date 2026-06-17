@@ -88,7 +88,7 @@ const courseInfo = {
 
 const stats = [
   { number: '12', label: 'Module trong chương trình' },
-  { number: '40h', label: 'Thời lượng outline chuẩn' },
+  { number: '32h', label: 'Thời lượng khoá học' },
   { number: 'Lab+', label: 'Bài lab & demo thực hành' },
   { number: 'DEA', label: 'Định hướng DEA-C01' },
 ]
@@ -319,7 +319,10 @@ export default function CourseDEA({ frontMatter, mentorDetails, otherCourses = [
 
             <p className="text-lg text-gray-400">Khoá học</p>
             <h1 className="my-2 text-3xl font-black uppercase md:text-4xl">
-              AWS Certified <br />
+              <span className="text-glow" style={{ color: '#FF9900' }}>
+                AWS Certified
+              </span>{' '}
+              <br />
               <span className="text-glow" style={{ color: '#FF9900' }}>
                 Data Engineer
               </span>
@@ -333,8 +336,8 @@ export default function CourseDEA({ frontMatter, mentorDetails, otherCourses = [
                   style={{ color: '#FF9900' }}
                 />
                 <span>
-                  <b>Chương trình 12 module:</b> Bám sát outline chuẩn (~40 giờ), có lab và{' '}
-                  knowledge check.
+                  <b>Chương trình 12 module:</b> Từ tư duy thiết kế, làm sạch dữ liệu cho đến tự
+                  động hóa hệ thống pipeline hoàn chỉnh.
                 </span>
               </div>
               <div className="flex items-start">
