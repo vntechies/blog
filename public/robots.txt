@@ -1,5 +1,13 @@
+# Content Signals (https://contentsignals.org/)
+# Declares preferences for how this site's content may be used by automated systems.
+# search=yes  - allow indexing for search results
+# ai-input=yes - allow use as live retrieval input for AI assistants (with attribution)
+# ai-train=no  - do not use for training generative AI models
+Content-Signal: search=yes, ai-input=yes, ai-train=no
+
 User-agent: *
 Allow: /
 Disallow: /user
-Sitemap: https://vntechies.dev/sitemap.xml
 Disallow: /*feed.xml$
+
+Sitemap: https://vntechies.dev/sitemap.xml

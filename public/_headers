@@ -1,0 +1,15 @@
+# Cloudflare Pages headers file
+# https://developers.cloudflare.com/pages/configuration/headers/
+
+# RFC 8288 Link headers for agent/automated discovery on the homepage
+/
+  Link: </sitemap.xml>; rel="sitemap"; type="application/xml"
+  Link: </feed.xml>; rel="alternate"; type="application/rss+xml"; title="VNTechies Dev Blog RSS"
+  Link: </robots.txt>; rel="describedby"; type="text/plain"
+
+# Same Link headers for all blog post pages
+/blog/*
+  Link: </sitemap.xml>; rel="sitemap"; type="application/xml"
+  Link: </feed.xml>; rel="alternate"; type="application/rss+xml"; title="VNTechies Dev Blog RSS"
+
+

@@ -262,6 +262,22 @@ export default function About({ mentors, contributors, stats }) {
           </div>
         </section>
       )}
+
+      <section className="pb-12 sm:pb-16">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="surface-panel-muted p-6 sm:p-8">
+            <span className="page-eyebrow">Liên hệ</span>
+            <h2 className="text-3xl font-black text-slate-900 dark:text-slate-100 sm:text-4xl">
+              Địa chỉ
+            </h2>
+            <address className="mt-4 text-sm font-semibold not-italic leading-6 text-slate-600 dark:text-slate-300">
+              Lô 59 - TT4, Tổ 4, Phường Từ Liêm
+              <br />
+              Thành phố Hà Nội 100000, Việt Nam
+            </address>
+          </div>
+        </div>
+      </section>
     </>
   )
 }
