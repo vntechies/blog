@@ -142,6 +142,28 @@ export default function CourseRegistrationForm({
 
       // Consider it successful if at least one system worked
       if (successCount > 0) {
+        // Track lead generation event in GA4
+        const eventParams = {
+          form_name: 'tu_van_khoa_hoc',
+          course: courseTitle,
+          student_type: formData.studentType,
+          is_alumni: formData.isAlumni,
+          group_registration: formData.groupRegistration,
+          has_coupon: !!formData.couponCode,
+        }
+
+        if (typeof window !== 'undefined') {
+          if (typeof window.gtag === 'function') {
+            // gtag.js GA4 đã load — bắn trực tiếp
+            window.gtag('event', 'generate_lead', eventParams)
+          } else {
+            // Fallback: gtag chưa load (lazyOnload) hoặc site dùng GTM
+            // dataLayer.push vẫn được GA4 nhận khi gtag init sau
+            window.dataLayer = window.dataLayer || []
+            window.dataLayer.push({ event: 'generate_lead', ...eventParams })
+          }
+        }
+
         setSubmitStatus('success')
         setFormData({
           name: '',
