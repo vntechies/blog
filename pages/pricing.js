@@ -94,19 +94,19 @@ export default function Pricing() {
                 }`}
               >
                 {pkg.popular && (
-                  <div className="text-xs absolute -top-3 left-4 rounded-full bg-orange-500 px-3 py-1 font-medium text-white">
+                  <div className="absolute -top-3 left-4 rounded-full bg-orange-500 px-3 py-1 text-xs font-medium text-white">
                     PHỔ BIẾN
                   </div>
                 )}
                 {pkg.premium && (
-                  <div className="text-xs absolute -top-3 left-4 rounded-full bg-yellow-500 px-3 py-1 font-medium text-white">
+                  <div className="absolute -top-3 left-4 rounded-full bg-yellow-500 px-3 py-1 text-xs font-medium text-white">
                     TỐT NHẤT
                   </div>
                 )}
 
                 <div className="mb-6 text-center">
                   <div className="mb-3 text-2xl">{pkg.icon}</div>
-                  <h3 className="text-lg mb-2 font-semibold text-gray-900 dark:text-white">
+                  <h3 className="mb-2 text-lg font-semibold text-gray-900 dark:text-white">
                     {pkg.title}
                   </h3>
                   <p className="text-sm text-gray-600 dark:text-gray-400">{pkg.description}</p>
@@ -115,7 +115,7 @@ export default function Pricing() {
                 <div className="text-center">
                   <div className="mb-2 flex items-center justify-center gap-2">
                     <span className="text-sm text-gray-500 line-through">{pkg.originalPrice}</span>
-                    <span className="text-xs rounded-md bg-red-100 px-2 py-1 font-medium text-red-600 dark:bg-red-900/30 dark:text-red-400">
+                    <span className="rounded-md bg-red-100 px-2 py-1 text-xs font-medium text-red-600 dark:bg-red-900/30 dark:text-red-400">
                       -{pkg.discount}
                     </span>
                   </div>
@@ -130,7 +130,7 @@ export default function Pricing() {
           <div className="mt-12">
             <div className="grid gap-6 md:grid-cols-2">
               <div className="rounded-xl bg-blue-50 p-6 dark:bg-blue-900/20">
-                <h3 className="text-lg mb-4 font-semibold text-blue-900 dark:text-blue-100">
+                <h3 className="mb-4 text-lg font-semibold text-blue-900 dark:text-blue-100">
                   Lợi ích combo
                 </h3>
                 <ul className="space-y-3 text-blue-800 dark:text-blue-200">
@@ -162,7 +162,7 @@ export default function Pricing() {
               </div>
 
               <div className="rounded-xl bg-amber-50 p-6 dark:bg-amber-900/20">
-                <h3 className="text-lg mb-4 font-semibold text-amber-900 dark:text-amber-100">
+                <h3 className="mb-4 text-lg font-semibold text-amber-900 dark:text-amber-100">
                   Điều kiện áp dụng
                 </h3>
                 <ul className="space-y-3 text-amber-800 dark:text-amber-200">
@@ -205,7 +205,7 @@ export default function Pricing() {
               Chính sách trả góp
             </h2>
             <div className="mx-auto max-w-2xl rounded-xl bg-green-50 p-6 dark:bg-green-900/20">
-              <h3 className="text-lg mb-3 font-semibold text-green-900 dark:text-green-100">
+              <h3 className="mb-3 text-lg font-semibold text-green-900 dark:text-green-100">
                 Khuyến khích thanh toán một lần
               </h3>
               <p className="text-green-800 dark:text-green-200">
@@ -216,7 +216,7 @@ export default function Pricing() {
 
           <div className="grid gap-6 md:grid-cols-2">
             <div className="rounded-xl bg-gray-50 p-6 dark:bg-gray-800">
-              <h3 className="text-lg mb-4 font-semibold text-gray-900 dark:text-white">
+              <h3 className="mb-4 text-lg font-semibold text-gray-900 dark:text-white">
                 Gói hỗ trợ trả góp
               </h3>
               <div className="space-y-4">
@@ -234,8 +234,8 @@ export default function Pricing() {
                     <li>
                       • <strong>Gói hỗ trợ: 3%</strong> bao gồm:
                     </li>
-                    <li class="text-xs ml-4">✓ Nhắc nhở thanh toán qua SMS/Email</li>
-                    <li class="text-xs ml-4">✓ Gia hạn thanh toán 1 lần</li>
+                    <li class="ml-4 text-xs">✓ Nhắc nhở thanh toán qua SMS/Email</li>
+                    <li class="ml-4 text-xs">✓ Gia hạn thanh toán 1 lần</li>
                   </ul>
                 </div>
                 <div className="rounded-lg bg-white p-4 dark:bg-gray-700">
@@ -272,7 +272,7 @@ export default function Pricing() {
             </div>
 
             <div className="rounded-xl bg-blue-50 p-6 dark:bg-blue-900/20">
-              <h3 className="text-lg mb-4 font-semibold text-blue-900 dark:text-blue-100">
+              <h3 className="mb-4 text-lg font-semibold text-blue-900 dark:text-blue-100">
                 Lợi ích khi cọc tiền
               </h3>
               <ul className="space-y-3 text-blue-800 dark:text-blue-200">
@@ -293,7 +293,7 @@ export default function Pricing() {
           </div>
 
           <div className="mt-8 rounded-xl bg-white p-6 dark:bg-gray-800">
-            <h3 className="text-lg mb-6 font-semibold text-gray-900 dark:text-white">
+            <h3 className="mb-6 text-lg font-semibold text-gray-900 dark:text-white">
               Quy trình đăng ký
             </h3>
             <div className="space-y-4">
@@ -360,7 +360,7 @@ export default function Pricing() {
           </div>
 
           <div className="mt-8 rounded-xl bg-red-50 p-6 dark:bg-red-900/20">
-            <h3 className="text-lg mb-4 font-semibold text-red-900 dark:text-red-100">
+            <h3 className="mb-4 text-lg font-semibold text-red-900 dark:text-red-100">
               Lưu ý quan trọng
             </h3>
             <ul className="space-y-2 text-red-800 dark:text-red-200">
@@ -392,7 +392,7 @@ export default function Pricing() {
           <div className="rounded-xl bg-purple-50 p-8 dark:bg-purple-900/20">
             <div className="mb-8 grid gap-6 md:grid-cols-2">
               <div>
-                <h3 className="text-lg mb-4 font-semibold text-purple-900 dark:text-purple-100">
+                <h3 className="mb-4 text-lg font-semibold text-purple-900 dark:text-purple-100">
                   Ưu đãi
                 </h3>
                 <ul className="space-y-3 text-purple-800 dark:text-purple-200">
@@ -412,7 +412,7 @@ export default function Pricing() {
                 </ul>
               </div>
               <div>
-                <h3 className="text-lg mb-4 font-semibold text-purple-900 dark:text-purple-100">
+                <h3 className="mb-4 text-lg font-semibold text-purple-900 dark:text-purple-100">
                   Điều kiện tham gia
                 </h3>
                 <ul className="space-y-3 text-purple-800 dark:text-purple-200">
@@ -433,7 +433,7 @@ export default function Pricing() {
             </div>
 
             <div className="rounded-xl bg-white p-6 dark:bg-gray-800">
-              <h3 className="text-lg mb-6 font-semibold text-gray-900 dark:text-white">
+              <h3 className="mb-6 text-lg font-semibold text-gray-900 dark:text-white">
                 Cách thức tham gia
               </h3>
               <div className="space-y-4">
@@ -496,7 +496,7 @@ export default function Pricing() {
           <div className="rounded-xl bg-green-50 p-8 dark:bg-green-900/20">
             <div className="mb-8 grid gap-6 md:grid-cols-2">
               <div>
-                <h3 className="text-lg mb-4 font-semibold text-green-900 dark:text-green-100">
+                <h3 className="mb-4 text-lg font-semibold text-green-900 dark:text-green-100">
                   Ưu đãi đặc biệt
                 </h3>
                 <ul className="space-y-3 text-green-800 dark:text-green-200">
@@ -521,7 +521,7 @@ export default function Pricing() {
                 </ul>
               </div>
               <div>
-                <h3 className="text-lg mb-4 font-semibold text-green-900 dark:text-green-100">
+                <h3 className="mb-4 text-lg font-semibold text-green-900 dark:text-green-100">
                   Điều kiện áp dụng
                 </h3>
                 <ul className="space-y-3 text-green-800 dark:text-green-200">
@@ -542,7 +542,7 @@ export default function Pricing() {
             </div>
 
             <div className="rounded-xl bg-white p-6 dark:bg-gray-800">
-              <h3 className="text-lg mb-4 font-semibold text-gray-900 dark:text-white">
+              <h3 className="mb-4 text-lg font-semibold text-gray-900 dark:text-white">
                 Quyền lợi bổ sung
               </h3>
               <div className="grid gap-4 md:grid-cols-3">
@@ -577,7 +577,7 @@ export default function Pricing() {
           <div className="rounded-xl bg-red-50 p-8 dark:bg-red-900/20">
             <div className="mb-8 grid gap-6 md:grid-cols-2">
               <div>
-                <h3 className="text-lg mb-4 font-semibold text-red-900 dark:text-red-100">
+                <h3 className="mb-4 text-lg font-semibold text-red-900 dark:text-red-100">
                   Điều kiện hoàn tiền
                 </h3>
                 <ul className="space-y-3 text-red-800 dark:text-red-200">
@@ -604,7 +604,7 @@ export default function Pricing() {
                 </ul>
               </div>
               <div>
-                <h3 className="text-lg mb-4 font-semibold text-red-900 dark:text-red-100">
+                <h3 className="mb-4 text-lg font-semibold text-red-900 dark:text-red-100">
                   Trường hợp không được hoàn tiền
                 </h3>
                 <ul className="space-y-3 text-red-800 dark:text-red-200">
@@ -633,7 +633,7 @@ export default function Pricing() {
             </div>
 
             <div className="rounded-xl bg-white p-6 dark:bg-gray-800">
-              <h3 className="text-lg mb-6 font-semibold text-gray-900 dark:text-white">
+              <h3 className="mb-6 text-lg font-semibold text-gray-900 dark:text-white">
                 Quy trình hoàn tiền
               </h3>
               <div className="space-y-4">
@@ -709,7 +709,7 @@ export default function Pricing() {
             </div>
 
             <div className="mb-8">
-              <h3 className="text-lg mb-4 font-semibold text-blue-900 dark:text-blue-100">
+              <h3 className="mb-4 text-lg font-semibold text-blue-900 dark:text-blue-100">
                 Đối tượng áp dụng
               </h3>
               <div className="space-y-3 text-blue-800 dark:text-blue-200">
@@ -735,7 +735,7 @@ export default function Pricing() {
             </div>
 
             <div className="rounded-xl bg-white p-6 dark:bg-gray-800">
-              <h3 className="text-lg mb-4 font-semibold text-gray-900 dark:text-white">
+              <h3 className="mb-4 text-lg font-semibold text-gray-900 dark:text-white">
                 Cách thức đăng ký
               </h3>
               <p className="mb-4 text-gray-700 dark:text-gray-300">
@@ -793,7 +793,7 @@ export default function Pricing() {
                 Discord
               </Link>
             </div>
-            <p className="text-xs mt-6 text-gray-500 dark:text-gray-400">
+            <p className="mt-6 text-xs text-gray-500 dark:text-gray-400">
               VNTechies có quyền thay đổi chính sách bất cứ lúc nào • Cập nhật: 21/08/2025
             </p>
           </div>

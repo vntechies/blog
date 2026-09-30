@@ -52,7 +52,7 @@ export default function AuthorLayout({ children, frontMatter, authorPosts = [], 
               <div className="flex-1 text-center md:text-left">
                 <h1 className="mb-2 text-3xl font-bold md:text-4xl">{name}</h1>
                 <p className="mb-2 text-xl text-gray-100">{occupation}</p>
-                {company && <p className="text-lg mb-4 text-gray-200">@ {company}</p>}
+                {company && <p className="mb-4 text-lg text-gray-200">@ {company}</p>}
 
                 {/* Social Icons */}
                 <div className="mb-4 flex justify-center gap-3 md:justify-start">
@@ -138,7 +138,7 @@ export default function AuthorLayout({ children, frontMatter, authorPosts = [], 
               <div className={`${isMentor ? 'md:col-span-2' : ''}`}>
                 {/* Bio Section */}
                 <div className="mb-8">
-                  <div className="prose prose-lg max-w-none dark:prose-dark">{children}</div>
+                  <div className="prose prose-lg max-w-none">{children}</div>
                 </div>
 
                 {/* Expertise Tags */}

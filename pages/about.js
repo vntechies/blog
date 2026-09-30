@@ -111,7 +111,7 @@ function ProfileCard({ person, isMentor = false }) {
             </p>
           )}
           {person.company && (
-            <p className="text-xs mt-1 text-slate-500 dark:text-slate-400">{person.company}</p>
+            <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">{person.company}</p>
           )}
         </div>
       </div>
@@ -147,7 +147,7 @@ function ProfileCard({ person, isMentor = false }) {
               href={social.href}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-xs rounded-lg border border-slate-200 bg-white px-2.5 py-1 font-semibold text-slate-600 hover:border-orange-300 hover:text-orange-600 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300 dark:hover:border-orange-600 dark:hover:text-orange-300"
+              className="rounded-lg border border-slate-200 bg-white px-2.5 py-1 text-xs font-semibold text-slate-600 hover:border-orange-300 hover:text-orange-600 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300 dark:hover:border-orange-600 dark:hover:text-orange-300"
             >
               {social.label}
             </a>

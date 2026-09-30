@@ -22,7 +22,7 @@ const FreeCourses = () => {
             </span>{' '}
             miễn phí
           </h2>
-          <p className="text-lg mx-auto mt-4 max-w-2xl text-gray-600 dark:text-gray-300">
+          <p className="mx-auto mt-4 max-w-2xl text-lg text-gray-600 dark:text-gray-300">
             Hành trình học tập DevOps toàn diện từ cơ bản đến nâng cao, hoàn toàn miễn phí
           </p>
         </div>
@@ -61,7 +61,7 @@ const FreeCourses = () => {
         <div className="mt-16 text-center">
           <Link href="/courses" role="alert" aria-label="Toàn bộ các khoá học miễn phí">
             <button className="inline-flex items-center justify-center rounded-lg border border-gray-300 bg-white px-8 py-3 text-base font-semibold text-gray-700 shadow-lg transition-all hover:bg-gray-50 hover:shadow-xl dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700">
-              <span className="text-xs mr-3 rounded-full bg-green-500 px-3 py-1 font-bold text-white">
+              <span className="mr-3 rounded-full bg-green-500 px-3 py-1 text-xs font-bold text-white">
                 FREE
               </span>
               Toàn bộ các khoá học miễn phí

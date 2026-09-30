@@ -406,7 +406,7 @@ export default function CourseRegistrationForm({
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className={`text-lg inline-flex items-center rounded-xl px-8 py-4 font-bold text-white shadow-xl transition disabled:opacity-50 ${currentTheme.button}`}
+                className={`inline-flex items-center rounded-xl px-8 py-4 text-lg font-bold text-white shadow-xl transition disabled:opacity-50 ${currentTheme.button}`}
               >
                 {isSubmitting ? (
                   <>

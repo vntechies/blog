@@ -35,7 +35,7 @@ export default function Tags({ tags }) {
                 <Link
                   key={t}
                   href={`/tags/${kebabCase(t)}`}
-                  className="text-xs inline-flex items-center gap-2 rounded-full border border-slate-200 bg-slate-100 px-3 py-1.5 font-semibold uppercase tracking-wide text-slate-700 hover:bg-slate-200 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700"
+                  className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-slate-100 px-3 py-1.5 text-xs font-semibold uppercase tracking-wide text-slate-700 hover:bg-slate-200 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700"
                 >
                   <span>{t.split(' ').join('-')}</span>
                   <span className="rounded-full bg-slate-200 px-2 py-0.5 text-[10px] text-slate-600 dark:bg-slate-700 dark:text-slate-300">

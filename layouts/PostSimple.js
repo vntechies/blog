@@ -34,7 +34,7 @@ export default function PostLayout({ frontMatter, next, prev, children }) {
           <PageTitle>{title}</PageTitle>
         </header>
 
-        <div className="mx-auto mt-8 max-w-4xl overflow-hidden rounded-2xl">
+        <div className="mx-auto mt-8 max-w-4xl overflow-hidden rounded-2xl border border-line">
           <Image
             alt={title}
             className="h-auto w-full object-cover"
@@ -45,13 +45,13 @@ export default function PostLayout({ frontMatter, next, prev, children }) {
           />
         </div>
 
-        <div className="mx-auto mt-10 max-w-4xl">
-          <div className="prose prose-neutral max-w-none pb-8 dark:prose-dark">{children}</div>
+        <div className="mx-auto mt-10 max-w-3xl">
+          <div className="prose max-w-none pb-8">{children}</div>
           <Comments frontMatter={frontMatter} />
         </div>
 
         {(prev || next) && (
-          <footer className="mx-auto mt-8 max-w-4xl">
+          <footer className="mx-auto mt-8 max-w-3xl">
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               {prev && (
                 <HorizontalCard
@@ -71,11 +71,8 @@ export default function PostLayout({ frontMatter, next, prev, children }) {
           </footer>
         )}
 
-        <div className="mx-auto mt-8 max-w-4xl">
-          <Link
-            href="/blog"
-            className="inline-flex items-center rounded-lg border border-orange-200 bg-orange-50 px-4 py-2 text-sm font-semibold text-orange-700 hover:bg-orange-100 dark:border-orange-700/60 dark:bg-orange-900/30 dark:text-orange-300 dark:hover:bg-orange-900/50"
-          >
+        <div className="mx-auto mt-8 max-w-3xl">
+          <Link href="/blog" className="action-btn-secondary action-btn-sm">
             ← Quay trở lại blog
           </Link>
         </div>

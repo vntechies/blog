@@ -376,7 +376,7 @@ export default function CourseDEA({ frontMatter, mentorDetails, otherCourses = [
             <a
               href="#registration-form"
               onClick={(e) => smoothScrollTo(e, '#registration-form')}
-              className="text-lg inline-flex items-center rounded-lg px-8 py-4 font-semibold transition-colors hover:opacity-90"
+              className="inline-flex items-center rounded-lg px-8 py-4 text-lg font-semibold transition-colors hover:opacity-90"
               style={{ backgroundColor: '#FF9900', color: '#000' }}
             >
               <FaRocket className="mr-2" />
@@ -476,12 +476,12 @@ export default function CourseDEA({ frontMatter, mentorDetails, otherCourses = [
                   <div className="text-2xl font-bold text-purple-700 dark:text-purple-300">
                     9.500.000₫
                   </div>
-                  <div className="text-xs mt-2 text-purple-600 dark:text-purple-400">
+                  <div className="mt-2 text-xs text-purple-600 dark:text-purple-400">
                     Giảm 500.000đ so với mức người đi làm
                   </div>
                   <Link
                     href="/pricing#financial-aid"
-                    className="text-xs mt-1 inline-block font-semibold text-purple-700 hover:underline dark:text-purple-300"
+                    className="mt-1 inline-block text-xs font-semibold text-purple-700 hover:underline dark:text-purple-300"
                   >
                     Financial Aid Program
                   </Link>
@@ -514,7 +514,7 @@ export default function CourseDEA({ frontMatter, mentorDetails, otherCourses = [
                   <div className="text-sm font-medium opacity-90">Sinh viên</div>
                   <div className="text-2xl font-bold">8.500.000₫</div>
                   <div className="text-sm line-through opacity-75">9.500.000₫</div>
-                  <div className="text-xs mt-2 opacity-90">Hỗ trợ học phí lên tới 500.000đ</div>
+                  <div className="mt-2 text-xs opacity-90">Hỗ trợ học phí lên tới 500.000đ</div>
                   <Link
                     href="/pricing#financial-aid"
                     className="text-xs font-semibold opacity-90 hover:underline"
@@ -533,7 +533,7 @@ export default function CourseDEA({ frontMatter, mentorDetails, otherCourses = [
             </div>
 
             <div className="group relative rounded-2xl bg-white p-8 shadow-lg transition hover:shadow-2xl dark:bg-gray-800">
-              <div className="text-xs absolute -top-3 right-4 rounded-full bg-purple-500 px-3 py-1 font-bold text-white">
+              <div className="absolute -top-3 right-4 rounded-full bg-purple-500 px-3 py-1 text-xs font-bold text-white">
                 PHỔ BIẾN
               </div>
               <div className="mb-8 text-center">
@@ -637,7 +637,7 @@ export default function CourseDEA({ frontMatter, mentorDetails, otherCourses = [
                       </a>
                       .
                     </p>
-                    <div className="text-xs mt-2 text-green-600 dark:text-green-400">
+                    <div className="mt-2 text-xs text-green-600 dark:text-green-400">
                       Hỗ trợ học phí lên tới 500.000đ
                     </div>
                     <Link
@@ -810,11 +810,11 @@ export default function CourseDEA({ frontMatter, mentorDetails, otherCourses = [
                         </div>
                       )}
                       {m.occupation && (
-                        <div className="text-xs mb-2 text-center text-gray-500 dark:text-gray-400">
+                        <div className="mb-2 text-center text-xs text-gray-500 dark:text-gray-400">
                           {m.occupation}
                         </div>
                       )}
-                      <div className="text-lg text-center font-bold">{m.name}</div>
+                      <div className="text-center text-lg font-bold">{m.name}</div>
                       <div className="text-center text-sm text-gray-600 dark:text-gray-300">
                         {m.title}
                       </div>
@@ -990,7 +990,7 @@ export default function CourseDEA({ frontMatter, mentorDetails, otherCourses = [
             <a
               href="#registration-form"
               onClick={(e) => smoothScrollTo(e, '#registration-form')}
-              className="text-lg inline-flex items-center rounded-lg bg-white px-8 py-4 font-semibold text-purple-700 transition-colors hover:bg-gray-100"
+              className="inline-flex items-center rounded-lg bg-white px-8 py-4 text-lg font-semibold text-purple-700 transition-colors hover:bg-gray-100"
             >
               <FaRocket className="mr-2" />
               Đăng ký ngay — {info.earlyBirdPrice}

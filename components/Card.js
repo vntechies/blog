@@ -4,21 +4,17 @@ import Link from './Link'
 const Card = ({ title, description, imgSrc, href, showMore = true, isFree }) => {
   const badge =
     isFree === undefined ? null : isFree ? (
-      <span className="text-xs inline-flex w-fit items-center rounded-full border border-emerald-200 bg-emerald-50 px-2.5 py-1 font-semibold tracking-wide text-emerald-700 dark:border-emerald-700/60 dark:bg-emerald-900/30 dark:text-emerald-300">
-        MIỄN PHÍ
-      </span>
+      <span className="chip tone-success w-fit tracking-wide">MIỄN PHÍ</span>
     ) : (
-      <span className="text-xs inline-flex w-fit items-center rounded-full border border-orange-200 bg-orange-50 px-2.5 py-1 font-semibold tracking-wide text-orange-700 dark:border-orange-700/60 dark:bg-orange-900/30 dark:text-orange-300">
-        PREMIUM
-      </span>
+      <span className="chip w-fit tracking-wide">PREMIUM</span>
     )
 
   return (
     <div className="h-full">
-      <Link alt={`Link tới ${title}`} href={href} className="group block h-full">
-        <article className="surface-panel flex h-full flex-col overflow-hidden transition-all duration-300 hover:-translate-y-1">
+      <Link alt={`Link tới ${title}`} href={href} className="group block h-full rounded-2xl">
+        <article className="surface-panel surface-panel-interactive flex h-full flex-col overflow-hidden">
           {imgSrc && (
-            <div className="aspect-[16/10] overflow-hidden border-b border-slate-200 dark:border-slate-700">
+            <div className="aspect-[16/10] overflow-hidden border-b border-line">
               <Image
                 alt={title}
                 src={imgSrc}
@@ -32,16 +28,20 @@ const Card = ({ title, description, imgSrc, href, showMore = true, isFree }) => 
 
           <div className="flex flex-1 flex-col p-5 sm:p-6">
             {badge && <div className="mb-3">{badge}</div>}
-            <h2 className="text-xl font-bold leading-tight text-slate-900 transition-colors group-hover:text-orange-600 dark:text-slate-100 dark:group-hover:text-orange-300">
+            <h2 className="text-xl font-bold leading-snug text-fg transition-colors group-hover:text-brand-strong">
               {title}
             </h2>
-            <p className="mt-3 flex-1 text-sm leading-7 text-slate-600 dark:text-slate-300">
-              {description}
-            </p>
+            <p className="mt-3 flex-1 text-sm leading-6 text-fg-muted">{description}</p>
             {showMore && (
-              <span className="mt-5 inline-flex items-center text-sm font-semibold text-orange-600 dark:text-orange-300">
+              <span className="action-link mt-5">
                 Xem chi tiết
-                <svg className="ml-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg
+                  className="h-4 w-4 transition-transform group-hover:translate-x-1"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  aria-hidden="true"
+                >
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"

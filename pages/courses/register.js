@@ -201,13 +201,13 @@ export default function Register({ paidCourses = [], freeCourses = [] }) {
       <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-50 dark:from-[#091428] dark:via-[#101b30] dark:to-[#1a2540]">
         <section className="border-b border-slate-300/80 bg-white dark:border-slate-800 dark:bg-slate-800/80">
           <div className="mx-auto max-w-6xl px-4 py-12 sm:py-16">
-            <span className="text-xs inline-flex rounded-full border border-orange-300/80 bg-orange-50 px-4 py-2 font-semibold uppercase tracking-wide text-orange-700 dark:border-orange-500/40 dark:bg-orange-500/10 dark:text-orange-200">
+            <span className="inline-flex rounded-full border border-orange-300/80 bg-orange-50 px-4 py-2 text-xs font-semibold uppercase tracking-wide text-orange-700 dark:border-orange-500/40 dark:bg-orange-500/10 dark:text-orange-200">
               VNTechies Career Launchpad
             </span>
             <h1 className="mt-4 max-w-3xl text-3xl font-extrabold leading-tight text-slate-900 dark:text-slate-100 sm:text-5xl">
               Chọn khoá học và đăng ký tư vấn trong 2 phút
             </h1>
-            <p className="sm:text-lg mt-4 max-w-3xl text-base leading-relaxed text-slate-600 dark:text-slate-300">
+            <p className="mt-4 max-w-3xl text-base leading-relaxed text-slate-600 dark:text-slate-300 sm:text-lg">
               Đội ngũ mentor sẽ liên hệ để tư vấn lộ trình phù hợp với mục tiêu của bạn.
             </p>
 
@@ -284,17 +284,17 @@ export default function Register({ paidCourses = [], freeCourses = [] }) {
                           aria-pressed={isSelected}
                         >
                           <div>
-                            <h3 className="sm:text-lg text-base font-bold text-slate-900 dark:text-slate-100">
+                            <h3 className="text-base font-bold text-slate-900 dark:text-slate-100 sm:text-lg">
                               {course.name}
                             </h3>
                             <div className="mt-1 flex items-center gap-2">
                               {course.code && (
-                                <span className="text-xs rounded-md bg-slate-50 px-2 py-1 font-semibold text-slate-700 dark:bg-slate-700 dark:text-slate-200">
+                                <span className="rounded-md bg-slate-50 px-2 py-1 text-xs font-semibold text-slate-700 dark:bg-slate-700 dark:text-slate-200">
                                   {course.code}
                                 </span>
                               )}
                               <span
-                                className={`text-xs rounded-full px-2.5 py-1 font-semibold ${currentThemeStyles.badge}`}
+                                className={`rounded-full px-2.5 py-1 text-xs font-semibold ${currentThemeStyles.badge}`}
                               >
                                 {course.badge}
                               </span>
@@ -341,7 +341,7 @@ export default function Register({ paidCourses = [], freeCourses = [] }) {
                             {selectedCourse.name}
                           </h3>
                           {selectedCourse.code && (
-                            <span className="text-xs rounded-full bg-slate-200 px-2.5 py-1 font-semibold text-slate-700 dark:bg-slate-700 dark:text-slate-200">
+                            <span className="rounded-full bg-slate-200 px-2.5 py-1 text-xs font-semibold text-slate-700 dark:bg-slate-700 dark:text-slate-200">
                               {selectedCourse.code}
                             </span>
                           )}

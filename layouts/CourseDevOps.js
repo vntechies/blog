@@ -405,7 +405,7 @@ export default function CourseDevOps({ frontMatter, mentorDetails, otherCourses 
                 <div className="rounded-2xl bg-gradient-to-r from-blue-600 to-indigo-600 p-6 text-white shadow-xl">
                   <div className="text-center">
                     <div className="mb-4">
-                      <h3 className="text-lg mb-2 font-bold">
+                      <h3 className="mb-2 text-lg font-bold">
                         🎁 Khoá học độc quyền với hơn 50% THỜI LƯỢNG LAB
                       </h3>
                     </div>
@@ -476,7 +476,7 @@ export default function CourseDevOps({ frontMatter, mentorDetails, otherCourses 
                 <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
                   <a
                     href="#registration-form"
-                    className="text-lg inline-flex items-center justify-center rounded-xl bg-gradient-to-r from-blue-600 to-blue-500 px-8 py-4 font-bold text-white shadow-xl transition hover:from-blue-700 hover:to-blue-600 hover:shadow-2xl"
+                    className="inline-flex items-center justify-center rounded-xl bg-gradient-to-r from-blue-600 to-blue-500 px-8 py-4 text-lg font-bold text-white shadow-xl transition hover:from-blue-700 hover:to-blue-600 hover:shadow-2xl"
                   >
                     Đăng ký ngay
                     <FaRocket className="ml-3 h-5 w-5" />
@@ -572,7 +572,7 @@ export default function CourseDevOps({ frontMatter, mentorDetails, otherCourses 
                   <div className="text-2xl font-bold text-blue-700 dark:text-blue-300">
                     7.500.000₫
                   </div>
-                  <div className="text-xs mt-2 text-blue-600 dark:text-blue-400">
+                  <div className="mt-2 text-xs text-blue-600 dark:text-blue-400">
                     Hỗ trợ học phí lên tới 500.000đ
                   </div>
                   <Link
@@ -613,7 +613,7 @@ export default function CourseDevOps({ frontMatter, mentorDetails, otherCourses 
                   <div className="text-sm font-medium opacity-90">Sinh viên</div>
                   <div className="text-2xl font-bold">6.700.000₫</div>
                   <div className="text-sm line-through opacity-75">7.500.000₫</div>
-                  <div className="text-xs mt-2 opacity-90">Hỗ trợ học phí lên tới 500.000đ</div>
+                  <div className="mt-2 text-xs opacity-90">Hỗ trợ học phí lên tới 500.000đ</div>
                   <Link
                     href="/pricing#financial-aid"
                     className="text-xs font-semibold opacity-90 hover:underline"
@@ -633,7 +633,7 @@ export default function CourseDevOps({ frontMatter, mentorDetails, otherCourses 
 
             {/* Group Plan */}
             <div className="group relative rounded-2xl bg-white p-8 shadow-lg transition hover:shadow-2xl dark:bg-gray-800">
-              <div className="text-xs absolute -top-3 right-4 rounded-full bg-blue-500 px-3 py-1 font-bold text-white">
+              <div className="absolute -top-3 right-4 rounded-full bg-blue-500 px-3 py-1 text-xs font-bold text-white">
                 PHỔ BIẾN
               </div>
 
@@ -807,11 +807,11 @@ export default function CourseDevOps({ frontMatter, mentorDetails, otherCourses 
                         </div>
                       )}
                       {m.occupation && (
-                        <div className="text-xs mb-2 text-center text-gray-500 dark:text-gray-400">
+                        <div className="mb-2 text-center text-xs text-gray-500 dark:text-gray-400">
                           {m.occupation}
                         </div>
                       )}
-                      <div className="text-lg text-center font-bold">{m.name}</div>
+                      <div className="text-center text-lg font-bold">{m.name}</div>
                       <div className="text-center text-sm text-gray-600 dark:text-gray-300">
                         {m.title}
                       </div>

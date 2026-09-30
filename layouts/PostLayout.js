@@ -30,7 +30,8 @@ export default function PostLayout({ frontMatter, authorDetails, next, prev, chi
         }
       />
 
-      <article className="surface-panel overflow-hidden px-4 py-8 sm:px-8 lg:px-10">
+      {/* overflow-x-clip (not hidden) so the sidebar can stick */}
+      <article className="surface-panel overflow-x-clip px-4 py-8 sm:px-8 lg:px-10">
         <header className="mx-auto max-w-3xl text-center">
           <span className="page-eyebrow mx-auto">
             <time dateTime={date}>
@@ -40,12 +41,11 @@ export default function PostLayout({ frontMatter, authorDetails, next, prev, chi
           <PageTitle>{title}</PageTitle>
         </header>
 
-        <div className="mt-10 grid gap-8 xl:grid-cols-[230px,1fr]">
-          <aside className="space-y-5 xl:sticky xl:top-28 xl:self-start">
+        {/* Stacked below xl: sidebar and text share one centred ~72ch column */}
+        <div className="mx-auto mt-10 grid max-w-3xl gap-8 xl:max-w-none xl:grid-cols-[230px,1fr]">
+          <aside className="space-y-5 xl:sticky xl:top-24 xl:self-start">
             <div className="surface-panel-muted p-4 sm:p-5">
-              <h2 className="text-xs mb-4 font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">
-                Tác giả
-              </h2>
+              <h2 className="panel-label mb-4">Tác giả</h2>
               <ul className="space-y-4">
                 {authorDetails &&
                   authorDetails.map((author) => (
@@ -53,7 +53,7 @@ export default function PostLayout({ frontMatter, authorDetails, next, prev, chi
                       {author.slug ? (
                         <Link
                           href={`/authors/${author.slug}`}
-                          className="flex min-w-0 items-center space-x-3"
+                          className="flex min-w-0 items-center space-x-3 rounded-lg"
                         >
                           {author.avatar && (
                             <Image
@@ -67,7 +67,7 @@ export default function PostLayout({ frontMatter, authorDetails, next, prev, chi
                             />
                           )}
                           <dl className="min-w-0 text-sm font-medium">
-                            <dd className="truncate text-slate-900 hover:text-orange-600 dark:text-slate-100 dark:hover:text-orange-300">
+                            <dd className="truncate text-fg hover:text-brand-strong">
                               {author.name}
                             </dd>
                           </dl>
@@ -86,9 +86,7 @@ export default function PostLayout({ frontMatter, authorDetails, next, prev, chi
                             />
                           )}
                           <dl className="min-w-0 text-sm font-medium">
-                            <dd className="truncate text-slate-900 dark:text-slate-100">
-                              {author.name}
-                            </dd>
+                            <dd className="truncate text-fg">{author.name}</dd>
                           </dl>
                         </>
                       )}
@@ -97,7 +95,7 @@ export default function PostLayout({ frontMatter, authorDetails, next, prev, chi
                           {author.facebook && (
                             <Link
                               href={author.facebook}
-                              className="text-orange-600 hover:text-orange-500 dark:text-orange-300 dark:hover:text-orange-200"
+                              className="text-brand-strong hover:text-brand-soft"
                             >
                               {author.facebook.replace('https://fb.me/', '@')}
                             </Link>
@@ -111,9 +109,7 @@ export default function PostLayout({ frontMatter, authorDetails, next, prev, chi
 
             {tags && (
               <div className="surface-panel-muted p-4 sm:p-5">
-                <h2 className="text-xs mb-4 font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">
-                  Chủ đề
-                </h2>
+                <h2 className="panel-label mb-4">Chủ đề</h2>
                 <div className="flex flex-wrap">
                   {tags.map((tag) => (
                     <Tag key={tag} text={tag} />
@@ -123,8 +119,8 @@ export default function PostLayout({ frontMatter, authorDetails, next, prev, chi
             )}
           </aside>
 
-          <div>
-            <div className="prose max-w-none pb-8 pt-2 dark:prose-dark">{children}</div>
+          <div className="min-w-0 xl:max-w-3xl">
+            <div className="prose max-w-none pb-8 pt-2">{children}</div>
             <Share fileName={frontMatter.fileName} href={`/blog/${frontMatter.slug}`} />
             <div className="mt-8">
               <Comments frontMatter={frontMatter} />
@@ -150,10 +146,7 @@ export default function PostLayout({ frontMatter, authorDetails, next, prev, chi
             )}
 
             <div className="pt-8">
-              <Link
-                href="/blog"
-                className="inline-flex items-center rounded-lg border border-orange-200 bg-orange-50 px-4 py-2 text-sm font-semibold text-orange-700 hover:bg-orange-100 dark:border-orange-700/60 dark:bg-orange-900/30 dark:text-orange-300 dark:hover:bg-orange-900/50"
-              >
+              <Link href="/blog" className="action-btn-secondary action-btn-sm">
                 ← Quay trở lại blog
               </Link>
             </div>

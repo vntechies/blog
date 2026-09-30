@@ -377,7 +377,7 @@ export default function CourseSpecial({ frontMatter, mentorDetails, otherCourses
             {/* CTA Button */}
             <a
               href="#registration-form"
-              className="text-lg inline-flex items-center rounded-lg px-8 py-4 font-semibold transition-colors hover:opacity-90"
+              className="inline-flex items-center rounded-lg px-8 py-4 text-lg font-semibold transition-colors hover:opacity-90"
               style={{ backgroundColor: '#FF9900', color: '#000' }}
             >
               <FaRocket className="mr-2" />
@@ -475,7 +475,7 @@ export default function CourseSpecial({ frontMatter, mentorDetails, otherCourses
                     <p className="text-gray-600 dark:text-gray-300">
                       <span>{info.price}</span>
                     </p>
-                    <div className="text-xs mt-2 text-green-600 dark:text-green-400">
+                    <div className="mt-2 text-xs text-green-600 dark:text-green-400">
                       Hỗ trợ học phí lên tới 500.000đ
                     </div>
                     <Link
@@ -649,11 +649,11 @@ export default function CourseSpecial({ frontMatter, mentorDetails, otherCourses
                         </div>
                       )}
                       {m.occupation && (
-                        <div className="text-xs mb-2 text-center text-gray-500 dark:text-gray-400">
+                        <div className="mb-2 text-center text-xs text-gray-500 dark:text-gray-400">
                           {m.occupation}
                         </div>
                       )}
-                      <div className="text-lg text-center font-bold">{m.name}</div>
+                      <div className="text-center text-lg font-bold">{m.name}</div>
                       <div className="text-center text-sm text-gray-600 dark:text-gray-300">
                         {m.title}
                       </div>
@@ -826,7 +826,7 @@ export default function CourseSpecial({ frontMatter, mentorDetails, otherCourses
           <div className="flex flex-col justify-center gap-4 sm:flex-row">
             <a
               href="#registration-form"
-              className="text-lg inline-flex items-center rounded-lg bg-white px-8 py-4 font-semibold text-blue-600 transition-colors hover:bg-gray-100"
+              className="inline-flex items-center rounded-lg bg-white px-8 py-4 text-lg font-semibold text-blue-600 transition-colors hover:bg-gray-100"
             >
               <FaRocket className="mr-2" />
               Đăng Ký Ngay - Chỉ {info.earlyBirdPrice}

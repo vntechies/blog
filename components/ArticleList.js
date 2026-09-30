@@ -6,40 +6,37 @@ const ArticleList = ({ slug, title, summary, tags, image }) => {
 
   return (
     <div className="group h-full">
-      <Link href={`/blog/${slug}`} className="block h-full">
-        <article className="surface-panel relative flex h-full flex-col overflow-hidden transition-all duration-300 hover:-translate-y-1">
-          <div className="relative overflow-hidden rounded-t-2xl pb-[58%]">
+      <Link href={`/blog/${slug}`} className="block h-full rounded-2xl">
+        <article className="surface-panel surface-panel-interactive relative flex h-full flex-col overflow-hidden">
+          <div className="relative overflow-hidden border-b border-line pb-[58%]">
             <ArticleThumbnail slug={slug} title={title} image={image} />
-            <div className="from-slate-950/30 absolute inset-0 bg-gradient-to-t to-transparent opacity-0 transition-opacity group-hover:opacity-100" />
           </div>
 
           <div className="flex flex-1 flex-col p-5 sm:p-6">
-            <div className="mb-4 flex flex-wrap gap-2">
-              {visibleTags.map((tag) => (
-                <span
-                  key={tag}
-                  className="text-xs inline-flex items-center rounded-full border border-orange-200 bg-orange-50 px-2.5 py-1 font-medium text-orange-700 dark:border-orange-700/60 dark:bg-orange-900/30 dark:text-orange-300"
-                >
-                  {tag}
-                </span>
-              ))}
-            </div>
+            {visibleTags.length > 0 && (
+              <div className="mb-4 flex flex-wrap gap-2">
+                {visibleTags.map((tag) => (
+                  <span key={tag} className="chip">
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            )}
 
-            <h2 className="mb-3 text-xl font-bold leading-tight text-slate-900 transition-colors group-hover:text-orange-600 dark:text-slate-100 dark:group-hover:text-orange-300">
+            <h2 className="mb-3 text-xl font-bold leading-snug text-fg transition-colors group-hover:text-brand-strong">
               {title}
             </h2>
 
-            <p className="line-clamp-3 flex-1 text-sm leading-7 text-slate-600 dark:text-slate-300">
-              {summary}
-            </p>
+            <p className="line-clamp-3 text-sm leading-6 text-fg-muted">{summary}</p>
 
-            <div className="mt-5 inline-flex items-center text-sm font-semibold text-orange-600 dark:text-orange-300">
+            <div className="action-link mt-auto pt-5">
               Đọc thêm
               <svg
-                className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1"
+                className="h-4 w-4 transition-transform group-hover:translate-x-1"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
+                aria-hidden="true"
               >
                 <path
                   strokeLinecap="round"
