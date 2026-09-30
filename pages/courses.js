@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import siteMetadata from '@/data/siteMetadata'
 import Card from '@/components/Card'
 import { PageSEO } from '@/components/SEO'
@@ -20,7 +20,14 @@ export default function Courses({ courses }) {
 
   const paidCourses = courses.filter((course) => !course.isFree)
   const freeCourses = courses.filter((course) => course.isFree)
-  const displayCourses = activeTab === 'premium' ? paidCourses : freeCourses
+  const tabs = [
+    ['premium', paidCourses],
+    ['free', freeCourses],
+  ]
+
+  useEffect(() => {
+    if (window.location.hash === '#mien-phi') setActiveTab('free')
+  }, [])
 
   return (
     <>
@@ -63,15 +70,20 @@ export default function Courses({ courses }) {
           </div>
         </section>
 
-        <section>
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
-            {displayCourses.length === 0 && (
-              <div className="surface-panel col-span-full p-8 text-center text-sm text-slate-600 dark:text-slate-300">
-                Không có khóa học nào.
-              </div>
-            )}
-            {displayCourses.map((course) => {
-              return (
+        {/* Both grids stay in the HTML so crawlers can reach every course */}
+        {tabs.map(([tab, list]) => (
+          <section
+            key={tab}
+            id={tab === 'free' ? 'mien-phi' : undefined}
+            className={activeTab === tab ? '' : 'hidden'}
+          >
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
+              {list.length === 0 && (
+                <div className="surface-panel col-span-full p-8 text-center text-sm text-slate-600 dark:text-slate-300">
+                  Không có khóa học nào.
+                </div>
+              )}
+              {list.map((course) => (
                 <Card
                   isFree={course.isFree}
                   key={course.title}
@@ -80,10 +92,10 @@ export default function Courses({ courses }) {
                   imgSrc={course.images[0]}
                   href={`/courses/${course.slug}`}
                 />
-              )
-            })}
-          </div>
-        </section>
+              ))}
+            </div>
+          </section>
+        ))}
       </div>
     </>
   )

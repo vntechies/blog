@@ -34,11 +34,11 @@ const SummaryButton = ({ content }) => {
 
   return (
     <>
-      <div className="fixed right-4 z-[60] [bottom:calc(4.75rem+env(safe-area-inset-bottom))] sm:right-6 sm:bottom-6 md:right-8 md:bottom-36">
+      <div className="fixed right-4 z-[60] [bottom:calc(4.75rem+env(safe-area-inset-bottom))] sm:right-6 md:right-8 md:bottom-36">
         <button
           onClick={handleSummarize}
           disabled={isLoading}
-          className="flex items-center gap-2 rounded-lg bg-primary-500 px-4 py-2 text-white shadow-lg transition-all focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 hover:bg-primary-600 dark:bg-primary-400 dark:hover:bg-primary-300"
+          className="action-btn-primary action-btn-sm shadow-lg"
           aria-label="Tóm tắt bài viết bằng AI"
         >
           {isLoading ? (

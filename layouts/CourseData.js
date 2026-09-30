@@ -318,7 +318,7 @@ export default function CourseData({ frontMatter, mentorDetails, otherCourses = 
         <div className="mx-auto max-w-7xl">
           <div className="flex flex-col items-center">
             <div className="mb-10 max-w-4xl text-center">
-              <h1 className="md:text-6xl mb-4 text-center text-4xl font-black leading-tight tracking-tight text-gray-900 dark:text-gray-100 sm:text-5xl">
+              <h1 className="mb-4 text-center text-4xl font-black leading-tight tracking-tight text-gray-900 dark:text-gray-100 sm:text-5xl md:text-6xl">
                 <span className="bg-gradient-to-r from-gray-900 to-slate-700 bg-clip-text text-transparent dark:from-gray-100 dark:to-slate-300">
                   Data Engineer{' '}
                 </span>
@@ -582,7 +582,7 @@ export default function CourseData({ frontMatter, mentorDetails, otherCourses = 
                   <div className="text-2xl font-bold text-purple-700 dark:text-purple-300">
                     7.500.000₫
                   </div>
-                  <div className="text-xs mt-2 text-purple-600 dark:text-purple-400">
+                  <div className="mt-2 text-xs text-purple-600 dark:text-purple-400">
                     Hỗ trợ học phí lên tới 500.000đ
                   </div>
                   <Link
@@ -624,7 +624,7 @@ export default function CourseData({ frontMatter, mentorDetails, otherCourses = 
                   <div className="text-sm font-medium opacity-90">Sinh viên</div>
                   <div className="text-2xl font-bold">6.700.000₫</div>
                   <div className="text-sm line-through opacity-75">7.500.000₫</div>
-                  <div className="text-xs mt-2 opacity-90">Hỗ trợ học phí lên tới 500.000đ</div>
+                  <div className="mt-2 text-xs opacity-90">Hỗ trợ học phí lên tới 500.000đ</div>
                   <Link
                     href="/pricing#financial-aid"
                     className="text-xs font-semibold opacity-90 hover:underline"
@@ -645,7 +645,7 @@ export default function CourseData({ frontMatter, mentorDetails, otherCourses = 
 
             {/* Group Plan */}
             <div className="group relative rounded-2xl bg-white p-8 shadow-lg transition hover:shadow-2xl dark:bg-gray-800">
-              <div className="text-xs absolute -top-3 right-4 rounded-full bg-purple-500 px-3 py-1 font-bold text-white">
+              <div className="absolute -top-3 right-4 rounded-full bg-purple-500 px-3 py-1 text-xs font-bold text-white">
                 PHỔ BIẾN
               </div>
 
@@ -844,11 +844,11 @@ export default function CourseData({ frontMatter, mentorDetails, otherCourses = 
                         </div>
                       )}
                       {m.occupation && (
-                        <div className="text-xs mb-2 text-center text-gray-500 dark:text-gray-400">
+                        <div className="mb-2 text-center text-xs text-gray-500 dark:text-gray-400">
                           {m.occupation}
                         </div>
                       )}
-                      <div className="text-lg text-center font-bold">{m.name}</div>
+                      <div className="text-center text-lg font-bold">{m.name}</div>
                       <div className="text-center text-sm text-gray-600 dark:text-gray-300">
                         {m.title}
                       </div>

@@ -10,13 +10,14 @@ export default function Header() {
   const route = `/${router.pathname.split('/')[1]}`
 
   return (
-    <header className="sticky top-0 z-40 py-4 sm:py-5">
-      <div className="surface-panel flex items-center justify-between gap-4 px-4 py-3 sm:px-5 lg:px-6">
+    // Sticky from md up only; on mobile the fixed BottomNav is the navigation
+    <header className="z-40 py-3 md:sticky md:top-0 md:py-4">
+      <div className="surface-panel surface-glass flex h-16 items-center justify-between gap-4 px-4 sm:px-5 lg:px-6">
         <Link
           alt="Trang chủ"
           href="/"
           aria-label={siteMetadata.headerTitle}
-          className="inline-flex items-center"
+          className="inline-flex items-center rounded-lg"
         >
           <Image
             src="/static/images/logo.webp"
@@ -27,36 +28,23 @@ export default function Header() {
             priority
           />
         </Link>
-        <div className="flex items-center gap-2 text-base leading-5 sm:gap-3">
+        <div className="flex items-center gap-2 sm:gap-3">
           <nav className="hidden items-center gap-1 md:flex">
-            {headerNavLinks.map(({ title, href }) => {
-              const isActive = route === href
-              const isFeatured = title === 'Khoá học'
-
-              return (
-                <Link
-                  alt={title}
-                  key={title}
-                  href={href}
-                  className={`rounded-lg px-3 py-2 text-sm font-semibold transition-all duration-200 ${
-                    isActive && isFeatured
-                      ? 'bg-orange-500 text-white shadow-lg shadow-orange-500/30'
-                      : isFeatured
-                      ? 'bg-orange-100 text-orange-700 hover:bg-orange-200 dark:bg-orange-900/50 dark:text-orange-200 dark:hover:bg-orange-900/80'
-                      : isActive
-                      ? 'bg-slate-900 text-white dark:bg-slate-100 dark:text-slate-900'
-                      : 'text-slate-600 hover:bg-slate-200 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-slate-100'
-                  }`}
-                >
-                  {title}
-                </Link>
-              )
-            })}
+            {headerNavLinks.map(({ title, href }) => (
+              <Link
+                alt={title}
+                key={title}
+                href={href}
+                aria-current={route === href ? 'page' : undefined}
+                className={title === 'Khoá học' ? 'nav-link nav-link-featured' : 'nav-link'}
+              >
+                {title}
+              </Link>
+            ))}
           </nav>
           <ThemeSwitch />
         </div>
       </div>
-      <div className="h-3 bg-gradient-to-b from-orange-100/70 to-transparent dark:from-orange-500/10" />
     </header>
   )
 }

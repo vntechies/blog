@@ -63,7 +63,7 @@ const Features = () => {
               VNTechies
             </span>
           </h2>
-          <p className="text-lg mx-auto mt-4 max-w-2xl text-gray-600 dark:text-gray-300">
+          <p className="mx-auto mt-4 max-w-2xl text-lg text-gray-600 dark:text-gray-300">
             Khám phá những tính năng nổi bật giúp bạn thành công trong hành trình học tập
           </p>
         </div>

@@ -12,4 +12,12 @@
   Link: </sitemap.xml>; rel="sitemap"; type="application/xml"
   Link: </feed.xml>; rel="alternate"; type="application/rss+xml"; title="VNTechies Dev Blog RSS"
 
+# Long cache for content-hashed build assets (safe: filename changes on every build)
+/_next/static/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# Static images/fonts/favicons: a week (filenames are stable, so keep it modest)
+/static/*
+  Cache-Control: public, max-age=604800
+
 

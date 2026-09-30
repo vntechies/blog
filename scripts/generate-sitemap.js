@@ -17,10 +17,13 @@ const siteMetadata = require('../data/siteMetadata')
     'data/docs/**/*.mdx',
     'data/series/**/*.md',
     'data/series/**/*.mdx',
+    'data/authors/*.md',
+    'data/authors/*.mdx',
     'public/tags/**/*.xml',
     '!pages/_*.js',
     '!pages/_*.tsx',
     '!pages/api',
+    '!data/authors/default.md',
   ])
 
   const sitemap = `
@@ -28,6 +31,7 @@ const siteMetadata = require('../data/siteMetadata')
         <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
             ${pages
               .map((page) => {
+                let lastmod
                 // Exclude drafts from the sitemap
                 if (page.search('.md') >= 1 && fs.existsSync(page)) {
                   const source = fs.readFileSync(page, 'utf8')
@@ -38,6 +42,18 @@ const siteMetadata = require('../data/siteMetadata')
                   if (fm.data.canonicalUrl) {
                     return
                   }
+                  const modDate = fm.data.lastmod || fm.data.date
+                  if (modDate) {
+                    lastmod = new Date(modDate).toISOString().slice(0, 10)
+                  }
+                }
+                // Skip thin tag feeds (fewer than 3 posts) so near-empty tag
+                // pages stay out of the sitemap (matches noindex in tags/[tag].js).
+                if (page.startsWith('public/tags/')) {
+                  const items = (fs.readFileSync(page, 'utf8').match(/<item>/g) || []).length
+                  if (items < 3) {
+                    return
+                  }
                 }
                 const path = page
                   .replace('pages/', '/')
@@ -45,6 +61,7 @@ const siteMetadata = require('../data/siteMetadata')
                   .replace('data/series', '/series')
                   .replace('data/courses', '/courses')
                   .replace('data/docs', '/docs')
+                  .replace('data/authors', '/authors')
                   .replace('public/', '/')
                   .replace('.js', '')
                   .replace('.tsx', '')
@@ -59,6 +76,7 @@ const siteMetadata = require('../data/siteMetadata')
                 return `
                         <url>
                             <loc>${siteMetadata.siteUrl}${route}</loc>
+                            ${lastmod ? `<lastmod>${lastmod}</lastmod>` : ''}
                         </url>
                     `
               })

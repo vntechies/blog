@@ -21,7 +21,7 @@ const AWSCert = () => {
               chứng chỉ AWS
             </span>
           </h2>
-          <p className="text-lg mx-auto mt-4 max-w-2xl text-gray-600 dark:text-gray-300">
+          <p className="mx-auto mt-4 max-w-2xl text-lg text-gray-600 dark:text-gray-300">
             Kinh nghiệm thực tế và chiến lược ôn thi hiệu quả cho tất cả các kỳ thi chứng chỉ AWS
           </p>
         </div>
@@ -74,7 +74,7 @@ const AWSCert = () => {
         <div className="mt-16 text-center">
           <Link href="/series/chung-chi-aws" aria-label="Tất cả hướng dẫn cho các kỳ thi năm 2025">
             <button className="inline-flex items-center justify-center rounded-lg border border-gray-300 bg-white px-8 py-3 text-base font-semibold text-gray-700 shadow-lg transition-all hover:bg-gray-50 hover:shadow-xl dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700">
-              <span className="text-xs mr-3 rounded-full bg-amber-500 px-3 py-1 font-bold text-white">
+              <span className="mr-3 rounded-full bg-amber-500 px-3 py-1 text-xs font-bold text-white">
                 NEW
               </span>
               Tất cả hướng dẫn cho các kỳ thi năm 2025

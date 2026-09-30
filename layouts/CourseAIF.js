@@ -134,7 +134,7 @@ export default function CourseSpecial({ frontMatter, mentorDetails, otherCourses
                 <span className="font-semibold">Học để làm - Không chỉ lý thuyết</span>
               </div>
 
-              <h1 className="lg:text-6xl mb-8 text-5xl font-bold leading-tight text-gray-900 dark:text-gray-100">
+              <h1 className="mb-8 text-5xl font-bold leading-tight text-gray-900 dark:text-gray-100 lg:text-6xl">
                 <span className="bg-gradient-to-r from-gray-900 to-slate-700 bg-clip-text text-transparent dark:from-gray-100 dark:to-slate-300">
                   AWS AIF-C01
                 </span>
@@ -208,7 +208,7 @@ export default function CourseSpecial({ frontMatter, mentorDetails, otherCourses
               <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
                 <a
                   href="#registration-form"
-                  className="text-lg inline-flex items-center justify-center rounded-xl bg-gradient-to-r from-purple-600 to-pink-500 px-8 py-4 font-bold text-white shadow-xl transition hover:from-purple-700 hover:to-pink-600 hover:shadow-2xl"
+                  className="inline-flex items-center justify-center rounded-xl bg-gradient-to-r from-purple-600 to-pink-500 px-8 py-4 text-lg font-bold text-white shadow-xl transition hover:from-purple-700 hover:to-pink-600 hover:shadow-2xl"
                 >
                   Đăng ký ngay
                   <FaRocket className="ml-3 h-5 w-5" />
@@ -302,11 +302,11 @@ export default function CourseSpecial({ frontMatter, mentorDetails, otherCourses
                   <FaCode className="h-8 w-8" />
                   <h3 className="text-2xl font-bold">Học để làm - Không chỉ lý thuyết</h3>
                 </div>
-                <p className="text-lg mb-6 opacity-90">
+                <p className="mb-6 text-lg opacity-90">
                   Hands-on với các công cụ, kiến thức AI thực tế.
                 </p>
                 <div className="mb-6 rounded-lg bg-white/10 p-4">
-                  <h4 className="text-lg mb-3 font-semibold text-purple-400">
+                  <h4 className="mb-3 text-lg font-semibold text-purple-400">
                     🎯 Giá trị vượt trội
                   </h4>
                   <p className="text-sm opacity-90">
@@ -548,13 +548,13 @@ export default function CourseSpecial({ frontMatter, mentorDetails, otherCourses
             <table className="border-spacing-y-2 min-w-full border-separate rounded-lg border border-gray-300 text-sm dark:border-gray-600 md:text-base">
               <thead>
                 <tr className="bg-purple-50 dark:bg-purple-900/30">
-                  <th className="text-xs w-12 border border-gray-200 px-1 py-2 text-center font-bold text-purple-700 dark:border-gray-600 dark:text-purple-300 sm:w-16 sm:px-3 sm:text-sm md:text-base">
+                  <th className="w-12 border border-gray-200 px-1 py-2 text-center text-xs font-bold text-purple-700 dark:border-gray-600 dark:text-purple-300 sm:w-16 sm:px-3 sm:text-sm md:text-base">
                     Module
                   </th>
-                  <th className="text-xs border border-gray-200 px-2 py-2 text-center font-bold text-purple-700 dark:border-gray-600 dark:text-purple-300 sm:px-3 sm:text-sm md:text-base">
+                  <th className="border border-gray-200 px-2 py-2 text-center text-xs font-bold text-purple-700 dark:border-gray-600 dark:text-purple-300 sm:px-3 sm:text-sm md:text-base">
                     Nội dung
                   </th>
-                  <th className="text-xs border border-gray-200 px-2 py-2 text-center font-bold text-purple-700 dark:border-gray-600 dark:text-purple-300 sm:px-3 sm:text-sm md:text-base">
+                  <th className="border border-gray-200 px-2 py-2 text-center text-xs font-bold text-purple-700 dark:border-gray-600 dark:text-purple-300 sm:px-3 sm:text-sm md:text-base">
                     Domain AIF-C01
                   </th>
                 </tr>
@@ -840,11 +840,11 @@ export default function CourseSpecial({ frontMatter, mentorDetails, otherCourses
                           </div>
                         )}
                         {m.occupation && (
-                          <div className="text-xs mb-2 text-center text-gray-500 dark:text-gray-400">
+                          <div className="mb-2 text-center text-xs text-gray-500 dark:text-gray-400">
                             {m.occupation}
                           </div>
                         )}
-                        <div className="text-lg text-center font-bold text-gray-900 dark:text-gray-100">
+                        <div className="text-center text-lg font-bold text-gray-900 dark:text-gray-100">
                           {m.name}
                         </div>
                         <div className="text-center text-sm text-gray-600 dark:text-gray-300">
@@ -968,7 +968,7 @@ export default function CourseSpecial({ frontMatter, mentorDetails, otherCourses
                   <div className="text-2xl font-bold text-purple-700 dark:text-purple-300">
                     5.500.000₫
                   </div>
-                  <div className="text-xs mt-2 text-purple-600 dark:text-purple-400">
+                  <div className="mt-2 text-xs text-purple-600 dark:text-purple-400">
                     Hỗ trợ học phí lên tới 500.000đ
                   </div>
                   <Link
@@ -1011,7 +1011,7 @@ export default function CourseSpecial({ frontMatter, mentorDetails, otherCourses
                   <div className="text-sm font-medium opacity-90">Sinh viên</div>
                   <div className="text-2xl font-bold">4.900.000₫</div>
                   <div className="text-sm line-through opacity-75">5.500.000₫</div>
-                  <div className="text-xs mt-2 opacity-90">Hỗ trợ học phí lên tới 500.000đ</div>
+                  <div className="mt-2 text-xs opacity-90">Hỗ trợ học phí lên tới 500.000đ</div>
                   <Link
                     href="/pricing#financial-aid"
                     className="text-xs font-semibold opacity-90 hover:underline"
@@ -1031,7 +1031,7 @@ export default function CourseSpecial({ frontMatter, mentorDetails, otherCourses
 
             {/* Group Plan */}
             <div className="group relative rounded-2xl bg-white p-8 shadow-lg transition hover:shadow-2xl dark:bg-gray-800">
-              <div className="text-xs absolute -top-3 right-4 rounded-full bg-purple-500 px-3 py-1 font-bold text-white">
+              <div className="absolute -top-3 right-4 rounded-full bg-purple-500 px-3 py-1 text-xs font-bold text-white">
                 PHỔ BIẾN
               </div>
 

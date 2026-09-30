@@ -33,12 +33,12 @@ export default function OtherCoursesSection({ otherCourses = [] }) {
                       className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
                     />
                     {course.isFree && (
-                      <div className="text-xs absolute top-3 right-3 rounded-full bg-green-500 px-3 py-1 font-bold text-white">
+                      <div className="absolute top-3 right-3 rounded-full bg-green-500 px-3 py-1 text-xs font-bold text-white">
                         MIỄN PHÍ
                       </div>
                     )}
                     {!course.isFree && (
-                      <div className="text-xs absolute top-3 right-3 rounded-full bg-orange-500 px-3 py-1 font-bold text-white">
+                      <div className="absolute top-3 right-3 rounded-full bg-orange-500 px-3 py-1 text-xs font-bold text-white">
                         💎 PREMIUM
                       </div>
                     )}
@@ -46,7 +46,7 @@ export default function OtherCoursesSection({ otherCourses = [] }) {
                 )}
 
                 <div className="p-6">
-                  <h3 className="text-lg mb-2 font-bold text-gray-900 group-hover:text-blue-600 dark:text-gray-100 dark:group-hover:text-blue-400">
+                  <h3 className="mb-2 text-lg font-bold text-gray-900 group-hover:text-blue-600 dark:text-gray-100 dark:group-hover:text-blue-400">
                     {course.title}
                   </h3>
                   {course.summary && (
@@ -68,7 +68,7 @@ export default function OtherCoursesSection({ otherCourses = [] }) {
         <div className="mt-12 text-center">
           <Link
             href="/courses"
-            className="text-lg inline-flex items-center rounded-full bg-blue-600 px-8 py-3 font-semibold text-white transition-colors hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600"
+            className="inline-flex items-center rounded-full bg-blue-600 px-8 py-3 text-lg font-semibold text-white transition-colors hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600"
           >
             🎯 Xem tất cả khóa học
             <svg className="ml-2 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

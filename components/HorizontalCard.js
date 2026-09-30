@@ -5,8 +5,8 @@ const HorizontalCard = ({ title, href, image }) => {
   const cover = image || '/static/images/default-ogp.png'
 
   return (
-    <Link alt={`Toi ${title}`} key={title} href={href} className="group block">
-      <article className="surface-panel-muted grid grid-cols-[88px,1fr] items-stretch overflow-hidden text-sm transition-all duration-300 hover:-translate-y-1">
+    <Link alt={`Toi ${title}`} key={title} href={href} className="group block rounded-2xl">
+      <article className="surface-panel-muted surface-panel-interactive grid min-h-[4.5rem] grid-cols-[88px,1fr] items-stretch overflow-hidden text-sm">
         <span className="relative h-full w-full">
           <Image
             alt={title}
@@ -17,9 +17,11 @@ const HorizontalCard = ({ title, href, image }) => {
             loading="lazy"
           />
         </span>
-        <p className="line-clamp-2 self-center p-3 text-left text-sm font-semibold text-slate-700 group-hover:text-orange-600 dark:text-slate-200 dark:group-hover:text-orange-300 sm:p-4">
-          {title}
-        </p>
+        <div className="self-center p-3 sm:p-4">
+          <p className="line-clamp-2 text-left text-sm font-semibold text-fg transition-colors group-hover:text-brand-strong">
+            {title}
+          </p>
+        </div>
       </article>
     </Link>
   )

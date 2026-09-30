@@ -332,7 +332,7 @@ const CertificationCard = ({ cert, level }) => {
       className={`group relative overflow-hidden rounded-xl border-2 sm:rounded-2xl ${levelConfig.borderColor} ${levelConfig.bgColor} p-4 transition-all hover:scale-105 hover:shadow-xl sm:p-6`}
     >
       {hasVNTechiesCourse && (
-        <div className="text-xs absolute -right-6 top-3 rotate-45 bg-gradient-to-r from-orange-500 to-red-600 px-6 py-1 font-bold text-white sm:-right-8 sm:top-4 sm:px-8">
+        <div className="absolute -right-6 top-3 rotate-45 bg-gradient-to-r from-orange-500 to-red-600 px-6 py-1 text-xs font-bold text-white sm:-right-8 sm:top-4 sm:px-8">
           VNTechies
         </div>
       )}
@@ -345,20 +345,20 @@ const CertificationCard = ({ cert, level }) => {
           height={80}
           className="mx-auto h-16 w-16 object-contain sm:h-20 sm:w-20 lg:h-24 lg:w-24"
         />
-        <span className="text-xs mt-2 inline-block rounded-full bg-white/80 px-3 py-1.5 font-bold text-gray-800 shadow-sm dark:bg-gray-800/80 dark:text-gray-200 sm:mt-3 sm:px-4 sm:py-2 sm:text-sm">
+        <span className="mt-2 inline-block rounded-full bg-white/80 px-3 py-1.5 text-xs font-bold text-gray-800 shadow-sm dark:bg-gray-800/80 dark:text-gray-200 sm:mt-3 sm:px-4 sm:py-2 sm:text-sm">
           {cert.code}
         </span>
       </div>
 
-      <h3 className="sm:text-lg mb-2 text-center text-base font-bold leading-tight text-gray-900 dark:text-white sm:mb-3">
+      <h3 className="mb-2 text-center text-base font-bold leading-tight text-gray-900 dark:text-white sm:mb-3 sm:text-lg">
         {cert.name}
       </h3>
 
-      <p className="text-xs mb-4 text-center text-gray-600 dark:text-gray-400 sm:mb-6 sm:text-sm">
+      <p className="mb-4 text-center text-xs text-gray-600 dark:text-gray-400 sm:mb-6 sm:text-sm">
         {cert.description}
       </p>
 
-      <div className="text-xs mb-4 grid grid-cols-2 gap-2 sm:mb-6 sm:gap-3">
+      <div className="mb-4 grid grid-cols-2 gap-2 text-xs sm:mb-6 sm:gap-3">
         <div className="rounded-lg bg-white/60 p-2 text-center dark:bg-gray-800/60 sm:p-3">
           <div className="text-xs font-semibold text-gray-900 dark:text-white sm:text-sm">
             {cert.duration}
@@ -444,7 +444,7 @@ const CertBadge = ({ cert }) => {
         </div>
       </div>
       {cert.note && (
-        <div className="text-xs max-w-20 mt-2 text-center text-gray-500">{cert.note}</div>
+        <div className="max-w-20 mt-2 text-center text-xs text-gray-500">{cert.note}</div>
       )}
     </div>
   )
@@ -496,13 +496,13 @@ export default function AWSCertificationPaths() {
                 <FaCertificate className="mr-2 h-4 w-4" />
                 Cập nhật 2025
               </div>
-              <h1 className="lg:text-6xl text-4xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-5xl">
+              <h1 className="text-4xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-5xl lg:text-6xl">
                 AWS{' '}
                 <span className="bg-gradient-to-r from-orange-500 to-red-600 bg-clip-text text-transparent">
                   Certification Paths
                 </span>
               </h1>
-              <p className="text-lg mt-6 max-w-2xl text-gray-600 dark:text-gray-300">
+              <p className="mt-6 max-w-2xl text-lg text-gray-600 dark:text-gray-300">
                 Khám phá các lộ trình chứng chỉ AWS phù hợp với vai trò và mục tiêu nghề nghiệp của
                 bạn. Từ Foundational đến Professional và Specialty.
               </p>
@@ -524,7 +524,7 @@ export default function AWSCertificationPaths() {
             <h2 className="mb-3 text-2xl font-bold text-gray-900 dark:text-white sm:mb-4 sm:text-4xl">
               Chọn lộ trình phù hợp với bạn
             </h2>
-            <p className="sm:text-lg text-base text-gray-600 dark:text-gray-400">
+            <p className="text-base text-gray-600 dark:text-gray-400 sm:text-lg">
               VNTechies giúp bạn xác định lộ trình tối ưu dựa trên nền tảng hiện tại
             </p>
           </div>
@@ -533,16 +533,16 @@ export default function AWSCertificationPaths() {
             <div className="group relative overflow-hidden rounded-xl bg-gradient-to-br from-emerald-50 to-teal-100 p-6 transition-all hover:scale-105 dark:from-emerald-900/20 dark:to-teal-900/20 sm:rounded-2xl sm:p-8">
               <div className="absolute -right-4 -top-4 h-16 w-16 rounded-full bg-emerald-200/50 dark:bg-emerald-800/50 sm:h-24 sm:w-24"></div>
               <div className="relative">
-                <div className="text-lg mb-3 inline-flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-500 text-white sm:mb-4 sm:h-12 sm:w-12 sm:text-xl">
+                <div className="mb-3 inline-flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-500 text-lg text-white sm:mb-4 sm:h-12 sm:w-12 sm:text-xl">
                   🌱
                 </div>
-                <h3 className="text-lg mb-2 font-bold text-gray-900 dark:text-white sm:mb-3 sm:text-xl">
+                <h3 className="mb-2 text-lg font-bold text-gray-900 dark:text-white sm:mb-3 sm:text-xl">
                   Mới bắt đầu
                 </h3>
                 <p className="mb-3 text-sm text-gray-600 dark:text-gray-400 sm:mb-4 sm:text-base">
                   Chưa có kinh nghiệm IT/Cloud
                 </p>
-                <div className="text-xs mb-4 space-y-1 sm:mb-6 sm:space-y-2 sm:text-sm">
+                <div className="mb-4 space-y-1 text-xs sm:mb-6 sm:space-y-2 sm:text-sm">
                   <div className="flex items-center text-gray-700 dark:text-gray-300">
                     <span className="mr-2">✓</span> AWS Cloud Practitioner
                   </div>
@@ -561,16 +561,16 @@ export default function AWSCertificationPaths() {
             <div className="group relative overflow-hidden rounded-xl bg-gradient-to-br from-blue-50 to-indigo-100 p-6 transition-all hover:scale-105 dark:from-blue-900/20 dark:to-indigo-900/20 sm:rounded-2xl sm:p-8">
               <div className="absolute -right-4 -top-4 h-16 w-16 rounded-full bg-blue-200/50 dark:bg-blue-800/50 sm:h-24 sm:w-24"></div>
               <div className="relative">
-                <div className="text-lg mb-3 inline-flex h-10 w-10 items-center justify-center rounded-xl bg-blue-500 text-white sm:mb-4 sm:h-12 sm:w-12 sm:text-xl">
+                <div className="mb-3 inline-flex h-10 w-10 items-center justify-center rounded-xl bg-blue-500 text-lg text-white sm:mb-4 sm:h-12 sm:w-12 sm:text-xl">
                   💼
                 </div>
-                <h3 className="text-lg mb-2 font-bold text-gray-900 dark:text-white sm:mb-3 sm:text-xl">
+                <h3 className="mb-2 text-lg font-bold text-gray-900 dark:text-white sm:mb-3 sm:text-xl">
                   Vai trò kinh doanh
                 </h3>
                 <p className="mb-3 text-sm text-gray-600 dark:text-gray-400 sm:mb-4 sm:text-base">
                   Sales, Marketing, Management
                 </p>
-                <div className="text-xs mb-4 space-y-1 sm:mb-6 sm:space-y-2 sm:text-sm">
+                <div className="mb-4 space-y-1 text-xs sm:mb-6 sm:space-y-2 sm:text-sm">
                   <div className="flex items-center text-gray-700 dark:text-gray-300">
                     <span className="mr-2">✓</span> Hiểu biết Cloud cơ bản
                   </div>
@@ -589,16 +589,16 @@ export default function AWSCertificationPaths() {
             <div className="group relative overflow-hidden rounded-xl bg-gradient-to-br from-purple-50 to-pink-100 p-6 transition-all hover:scale-105 dark:from-purple-900/20 dark:to-pink-900/20 sm:rounded-2xl sm:p-8">
               <div className="absolute -right-4 -top-4 h-16 w-16 rounded-full bg-purple-200/50 dark:bg-purple-800/50 sm:h-24 sm:w-24"></div>
               <div className="relative">
-                <div className="text-lg mb-3 inline-flex h-10 w-10 items-center justify-center rounded-xl bg-purple-500 text-white sm:mb-4 sm:h-12 sm:w-12 sm:text-xl">
+                <div className="mb-3 inline-flex h-10 w-10 items-center justify-center rounded-xl bg-purple-500 text-lg text-white sm:mb-4 sm:h-12 sm:w-12 sm:text-xl">
                   🚀
                 </div>
-                <h3 className="text-lg mb-2 font-bold text-gray-900 dark:text-white sm:mb-3 sm:text-xl">
+                <h3 className="mb-2 text-lg font-bold text-gray-900 dark:text-white sm:mb-3 sm:text-xl">
                   Chuyên gia IT
                 </h3>
                 <p className="mb-3 text-sm text-gray-600 dark:text-gray-400 sm:mb-4 sm:text-base">
                   Có kinh nghiệm IT/STEM
                 </p>
-                <div className="text-xs mb-4 space-y-1 sm:mb-6 sm:space-y-2 sm:text-sm">
+                <div className="mb-4 space-y-1 text-xs sm:mb-6 sm:space-y-2 sm:text-sm">
                   <div className="flex items-center text-gray-700 dark:text-gray-300">
                     <span className="mr-2">✓</span> Solutions Architect
                   </div>
@@ -805,7 +805,7 @@ export default function AWSCertificationPaths() {
           </div>
 
           <div className="bg-gradient-to-r from-purple-600 to-pink-600 px-4 py-2 text-white sm:px-6">
-            <h3 id="architecture" className="sm:text-lg text-base font-semibold">
+            <h3 id="architecture" className="text-base font-semibold sm:text-lg">
               Kiến trúc - Architecture
             </h3>
           </div>
@@ -820,7 +820,7 @@ export default function AWSCertificationPaths() {
                 <h3 className="mb-2 text-xl font-bold text-gray-900 dark:text-white">
                   Solutions Architect
                 </h3>
-                <h4 className="text-lg mb-4 font-medium text-gray-700 dark:text-gray-300">
+                <h4 className="mb-4 text-lg font-medium text-gray-700 dark:text-gray-300">
                   Kiến trúc sư giải pháp
                 </h4>
                 <p className="text-sm leading-relaxed text-gray-600 dark:text-gray-400">
@@ -886,7 +886,7 @@ export default function AWSCertificationPaths() {
                 <h3 className="mb-2 text-xl font-bold text-gray-900 dark:text-white">
                   Application Architect
                 </h3>
-                <h4 className="text-lg mb-4 font-medium text-gray-700 dark:text-gray-300">
+                <h4 className="mb-4 text-lg font-medium text-gray-700 dark:text-gray-300">
                   Kiến trúc sư ứng dụng
                 </h4>
                 <p className="text-sm leading-relaxed text-gray-600 dark:text-gray-400">
@@ -969,7 +969,7 @@ export default function AWSCertificationPaths() {
                 <h3 className="mb-2 text-xl font-bold text-gray-900 dark:text-white">
                   Software Development/Full stack Engineer
                 </h3>
-                <h4 className="text-lg mb-4 font-medium text-gray-700 dark:text-gray-300">
+                <h4 className="mb-4 text-lg font-medium text-gray-700 dark:text-gray-300">
                   Kỹ sư phát triển phần mềm
                 </h4>
                 <p className="text-sm leading-relaxed text-gray-600 dark:text-gray-400">
@@ -1038,7 +1038,7 @@ export default function AWSCertificationPaths() {
                 <h3 className="mb-2 text-xl font-bold text-gray-900 dark:text-white">
                   Systems Administrator
                 </h3>
-                <h4 className="text-lg mb-4 font-medium text-gray-700 dark:text-gray-300">
+                <h4 className="mb-4 text-lg font-medium text-gray-700 dark:text-gray-300">
                   Quản trị viên hệ thống
                 </h4>
                 <p className="text-sm leading-relaxed text-gray-600 dark:text-gray-400">
@@ -1092,7 +1092,7 @@ export default function AWSCertificationPaths() {
                 <h3 className="mb-2 text-xl font-bold text-gray-900 dark:text-white">
                   Cloud Engineer
                 </h3>
-                <h4 className="text-lg mb-4 font-medium text-gray-700 dark:text-gray-300">
+                <h4 className="mb-4 text-lg font-medium text-gray-700 dark:text-gray-300">
                   Kỹ sư cloud
                 </h4>
                 <p className="text-sm leading-relaxed text-gray-600 dark:text-gray-400">
@@ -1170,7 +1170,7 @@ export default function AWSCertificationPaths() {
                 <h3 className="mb-2 text-xl font-bold text-gray-900 dark:text-white">
                   Test Engineer
                 </h3>
-                <h4 className="text-lg mb-4 font-medium text-gray-700 dark:text-gray-300">
+                <h4 className="mb-4 text-lg font-medium text-gray-700 dark:text-gray-300">
                   Kỹ sư kiểm thử
                 </h4>
                 <p className="text-sm leading-relaxed text-gray-600 dark:text-gray-400">
@@ -1224,7 +1224,7 @@ export default function AWSCertificationPaths() {
                 <h3 className="mb-2 text-xl font-bold text-gray-900 dark:text-white">
                   Cloud DevOps Engineer
                 </h3>
-                <h4 className="text-lg mb-4 font-medium text-gray-700 dark:text-gray-300">
+                <h4 className="mb-4 text-lg font-medium text-gray-700 dark:text-gray-300">
                   Kỹ sư DevOps cloud
                 </h4>
                 <p className="text-sm leading-relaxed text-gray-600 dark:text-gray-400">
@@ -1294,7 +1294,7 @@ export default function AWSCertificationPaths() {
                 <h3 className="mb-2 text-xl font-bold text-gray-900 dark:text-white">
                   DevSecOps Engineer
                 </h3>
-                <h4 className="text-lg mb-4 font-medium text-gray-700 dark:text-gray-300">
+                <h4 className="mb-4 text-lg font-medium text-gray-700 dark:text-gray-300">
                   Kỹ sư DevSecOps
                 </h4>
                 <p className="text-sm leading-relaxed text-gray-600 dark:text-gray-400">
@@ -1371,7 +1371,7 @@ export default function AWSCertificationPaths() {
                 <h3 className="mb-2 text-xl font-bold text-gray-900 dark:text-white">
                   Cloud Data Engineer
                 </h3>
-                <h4 className="text-lg mb-4 font-medium text-gray-700 dark:text-gray-300">
+                <h4 className="mb-4 text-lg font-medium text-gray-700 dark:text-gray-300">
                   Kỹ sư dữ liệu cloud
                 </h4>
                 <p className="text-sm leading-relaxed text-gray-600 dark:text-gray-400">
@@ -1441,7 +1441,7 @@ export default function AWSCertificationPaths() {
                 <h3 className="mb-2 text-xl font-bold text-gray-900 dark:text-white">
                   Cloud Security Engineer
                 </h3>
-                <h4 className="text-lg mb-4 font-medium text-gray-700 dark:text-gray-300">
+                <h4 className="mb-4 text-lg font-medium text-gray-700 dark:text-gray-300">
                   Kỹ sư bảo mật cloud
                 </h4>
                 <p className="text-sm leading-relaxed text-gray-600 dark:text-gray-400">
@@ -1520,7 +1520,7 @@ export default function AWSCertificationPaths() {
                 <h3 className="mb-2 text-xl font-bold text-gray-900 dark:text-white">
                   Cloud Security Architect
                 </h3>
-                <h4 className="text-lg mb-4 font-medium text-gray-700 dark:text-gray-300">
+                <h4 className="mb-4 text-lg font-medium text-gray-700 dark:text-gray-300">
                   Kiến trúc sư bảo mật cloud
                 </h4>
                 <p className="text-sm leading-relaxed text-gray-600 dark:text-gray-400">
@@ -1590,7 +1590,7 @@ export default function AWSCertificationPaths() {
                 <h3 className="mb-2 text-xl font-bold text-gray-900 dark:text-white">
                   Network Engineer
                 </h3>
-                <h4 className="text-lg mb-4 font-medium text-gray-700 dark:text-gray-300">
+                <h4 className="mb-4 text-lg font-medium text-gray-700 dark:text-gray-300">
                   Kỹ sư mạng
                 </h4>
                 <p className="text-sm leading-relaxed text-gray-600 dark:text-gray-400">
@@ -1652,7 +1652,7 @@ export default function AWSCertificationPaths() {
                 <h3 className="mb-2 text-xl font-bold text-gray-900 dark:text-white">
                   Prompt Engineer
                 </h3>
-                <h4 className="text-lg mb-4 font-medium text-gray-700 dark:text-gray-300">
+                <h4 className="mb-4 text-lg font-medium text-gray-700 dark:text-gray-300">
                   Kỹ sư prompt
                 </h4>
                 <p className="text-sm leading-relaxed text-gray-600 dark:text-gray-400">
@@ -1706,7 +1706,7 @@ export default function AWSCertificationPaths() {
                 <h3 className="mb-2 text-xl font-bold text-gray-900 dark:text-white">
                   Machine Learning Engineer
                 </h3>
-                <h4 className="text-lg mb-4 font-medium text-gray-700 dark:text-gray-300">
+                <h4 className="mb-4 text-lg font-medium text-gray-700 dark:text-gray-300">
                   Kỹ sư Machine Learning
                 </h4>
                 <p className="text-sm leading-relaxed text-gray-600 dark:text-gray-400">
@@ -1776,7 +1776,7 @@ export default function AWSCertificationPaths() {
                 <h3 className="mb-2 text-xl font-bold text-gray-900 dark:text-white">
                   Machine Learning Ops Engineer
                 </h3>
-                <h4 className="text-lg mb-4 font-medium text-gray-700 dark:text-gray-300">
+                <h4 className="mb-4 text-lg font-medium text-gray-700 dark:text-gray-300">
                   Kỹ sư MLOps
                 </h4>
                 <p className="text-sm leading-relaxed text-gray-600 dark:text-gray-400">
@@ -1846,7 +1846,7 @@ export default function AWSCertificationPaths() {
                 <h3 className="mb-2 text-xl font-bold text-gray-900 dark:text-white">
                   Data Scientist
                 </h3>
-                <h4 className="text-lg mb-4 font-medium text-gray-700 dark:text-gray-300">
+                <h4 className="mb-4 text-lg font-medium text-gray-700 dark:text-gray-300">
                   Nhà khoa học dữ liệu
                 </h4>
                 <p className="text-sm leading-relaxed text-gray-600 dark:text-gray-400">
@@ -2035,12 +2035,12 @@ export default function AWSCertificationPaths() {
                       Học để làm - Không chỉ lý thuyết
                     </h3>
                   </div>
-                  <p className="sm:text-lg mb-4 text-sm opacity-90 sm:mb-6">
+                  <p className="mb-4 text-sm opacity-90 sm:mb-6 sm:text-lg">
                     50% thời lượng là thực hành lab. Mục tiêu: Sau khóa học, bạn có kiến thức để tự
                     tin ứng tuyển và làm việc với AWS ngay lập tức.
                   </p>
                   <div className="mb-4 rounded-lg bg-white/10 p-3 sm:mb-6 sm:p-4">
-                    <h4 className="sm:text-lg mb-2 text-base font-semibold text-orange-400 sm:mb-3">
+                    <h4 className="mb-2 text-base font-semibold text-orange-400 sm:mb-3 sm:text-lg">
                       🎯 Giá trị vượt trội
                     </h4>
                     <p className="text-xs opacity-90 sm:text-sm">
@@ -2049,13 +2049,13 @@ export default function AWSCertificationPaths() {
                     </p>
                   </div>
                   <div className="flex flex-wrap gap-2 sm:gap-4">
-                    <div className="text-xs rounded-lg bg-white/20 px-3 py-1.5 font-medium sm:px-4 sm:py-2 sm:text-sm">
+                    <div className="rounded-lg bg-white/20 px-3 py-1.5 text-xs font-medium sm:px-4 sm:py-2 sm:text-sm">
                       ✓ Account lab free, giảm giá 50% thi chứng chỉ
                     </div>
-                    <div className="text-xs rounded-lg bg-white/20 px-3 py-1.5 font-medium sm:px-4 sm:py-2 sm:text-sm">
+                    <div className="rounded-lg bg-white/20 px-3 py-1.5 text-xs font-medium sm:px-4 sm:py-2 sm:text-sm">
                       ✓ Chia sẻ kinh nghiệm thực chiến từ mentor
                     </div>
-                    <div className="text-xs rounded-lg bg-white/20 px-3 py-1.5 font-medium sm:px-4 sm:py-2 sm:text-sm">
+                    <div className="rounded-lg bg-white/20 px-3 py-1.5 text-xs font-medium sm:px-4 sm:py-2 sm:text-sm">
                       ✓ Portfolio và side projects mạnh mẽ
                     </div>
                   </div>
@@ -2068,7 +2068,7 @@ export default function AWSCertificationPaths() {
                     height={225}
                     className="mx-auto mb-3 h-auto max-w-full rounded-lg sm:mb-4"
                   />
-                  <p className="sm:text-lg text-sm font-medium italic opacity-90">
+                  <p className="text-sm font-medium italic opacity-90 sm:text-lg">
                     "Không có con đường tắt để thành công, chỉ có trải nghiệm thực tế mới giúp bạn
                     vững vàng trên hành trình Cloud!"
                   </p>
@@ -2082,7 +2082,7 @@ export default function AWSCertificationPaths() {
                 <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-orange-100 dark:bg-orange-900 sm:mb-6 sm:h-16 sm:w-16">
                   <FaUserTie className="h-6 w-6 text-orange-600 dark:text-orange-400 sm:h-8 sm:w-8" />
                 </div>
-                <h3 className="text-lg mb-3 font-bold text-gray-900 dark:text-gray-100 sm:mb-4 sm:text-xl">
+                <h3 className="mb-3 text-lg font-bold text-gray-900 dark:text-gray-100 sm:mb-4 sm:text-xl">
                   Mentor thực chiến 100% MNC
                 </h3>
                 <p className="text-sm text-gray-600 dark:text-gray-300 sm:text-base">
@@ -2095,7 +2095,7 @@ export default function AWSCertificationPaths() {
                 <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-orange-100 dark:bg-orange-900 sm:mb-6 sm:h-16 sm:w-16">
                   <FaHandshake className="h-6 w-6 text-orange-600 dark:text-orange-400 sm:h-8 sm:w-8" />
                 </div>
-                <h3 className="text-lg mb-3 font-bold text-gray-900 dark:text-gray-100 sm:mb-4 sm:text-xl">
+                <h3 className="mb-3 text-lg font-bold text-gray-900 dark:text-gray-100 sm:mb-4 sm:text-xl">
                   Cam kết đồng hành
                 </h3>
                 <p className="text-sm text-gray-600 dark:text-gray-300 sm:text-base">
@@ -2108,7 +2108,7 @@ export default function AWSCertificationPaths() {
                 <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-orange-100 dark:bg-orange-900 sm:mb-6 sm:h-16 sm:w-16">
                   <FaUsers className="h-6 w-6 text-orange-600 dark:text-orange-400 sm:h-8 sm:w-8" />
                 </div>
-                <h3 className="text-lg mb-3 font-bold text-gray-900 dark:text-gray-100 sm:mb-4 sm:text-xl">
+                <h3 className="mb-3 text-lg font-bold text-gray-900 dark:text-gray-100 sm:mb-4 sm:text-xl">
                   Cộng đồng & Network
                 </h3>
                 <p className="text-sm text-gray-600 dark:text-gray-300 sm:text-base">
@@ -2126,7 +2126,7 @@ export default function AWSCertificationPaths() {
             <h2 className="mb-3 text-2xl font-bold text-gray-900 dark:text-white sm:mb-4 sm:text-3xl">
               Câu chuyện thành công
             </h2>
-            <p className="sm:text-lg text-base text-gray-600 dark:text-gray-400">
+            <p className="text-base text-gray-600 dark:text-gray-400 sm:text-lg">
               Học viên VNTechies đã thành công như thế nào?
             </p>
           </div>
@@ -2175,18 +2175,18 @@ export default function AWSCertificationPaths() {
 
           <div className="mb-6 flex flex-col gap-3 px-4 sm:mb-8 sm:flex-row sm:justify-center sm:gap-4">
             <Link href="/courses">
-              <button className="sm:text-lg w-full rounded-xl bg-orange-500 px-6 py-3 text-base font-bold text-white transition-all hover:bg-orange-600 sm:w-auto sm:px-8 sm:py-4">
+              <button className="w-full rounded-xl bg-orange-500 px-6 py-3 text-base font-bold text-white transition-all hover:bg-orange-600 sm:w-auto sm:px-8 sm:py-4 sm:text-lg">
                 🚀 Xem tất cả khóa học
               </button>
             </Link>
             <Link href="https://www.facebook.com/groups/acevntechies/">
-              <button className="sm:text-lg w-full rounded-xl border-2 border-gray-400 px-6 py-3 text-base font-semibold text-white transition-all hover:bg-gray-700 sm:w-auto sm:px-8 sm:py-4">
+              <button className="w-full rounded-xl border-2 border-gray-400 px-6 py-3 text-base font-semibold text-white transition-all hover:bg-gray-700 sm:w-auto sm:px-8 sm:py-4 sm:text-lg">
                 💬 Tham gia cộng đồng
               </button>
             </Link>
           </div>
 
-          <div className="text-xs flex flex-col items-center justify-center gap-4 text-gray-400 sm:flex-row sm:gap-8 sm:text-sm">
+          <div className="flex flex-col items-center justify-center gap-4 text-xs text-gray-400 sm:flex-row sm:gap-8 sm:text-sm">
             <p className="mt-6 text-sm opacity-75">
               Liên hệ ngay qua{' '}
               <Link

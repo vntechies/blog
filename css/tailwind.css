@@ -2,37 +2,74 @@
 @tailwind components;
 @tailwind utilities;
 
+/*
+ * VNTechies design tokens: the single source of truth for color and elevation.
+ * Colors are space-separated RGB channels so Tailwind can add opacity. They are
+ * exposed as utilities (bg-surface, text-fg-muted, border-line, bg-brand/10, ...)
+ * by token() in tailwind.config.js, so they switch with .dark without dark: pairs.
+ * Ratios are WCAG 2 contrast against --app-surface unless noted.
+ */
 @layer base {
   :root {
     color-scheme: light;
-    --app-bg: #f3f5f9;
-    --app-bg-soft: #e9edf5;
-    --app-surface: #ffffff;
-    --app-surface-muted: #f8fafc;
-    --app-border: #e2e8f0;
-    --app-border-strong: #cbd5e1;
-    --app-text: #0f172a;
-    --app-text-muted: #475569;
-    --app-accent: #f97316;
-    --app-accent-strong: #ea580c;
-    --app-shadow: 0 16px 36px rgba(15, 23, 42, 0.08);
-    --font-body: 'InterVariable', 'Inter', 'Segoe UI', sans-serif;
-    --font-display: 'InterVariable', 'Inter', 'Segoe UI', sans-serif;
+    --app-bg: 243 245 249; /* #f3f5f9 page canvas */
+    --app-bg-soft: 233 237 245; /* #e9edf5 top of the page gradient */
+    --app-surface: 255 255 255; /* #ffffff panels, cards */
+    --app-surface-muted: 248 250 252; /* #f8fafc secondary panels */
+    --app-border: 226 232 240; /* #e2e8f0 card edges, dividers */
+    --app-border-strong: 203 213 225; /* #cbd5e1 secondary buttons */
+    --app-border-control: 124 138 160; /* #7c8aa0 form controls, 3.5:1 */
+    --app-text: 15 23 42; /* #0f172a 17.9:1 */
+    --app-text-prose: 51 65 85; /* #334155 article body, 10.4:1 */
+    --app-text-muted: 71 85 105; /* #475569 7.6:1 */
+    --app-text-subtle: 95 110 134; /* #5f6e86 dates, captions, 5.2:1 (4.7:1 on canvas) */
+    --app-accent: 249 115 22; /* #f97316 brand fills, glows, decoration */
+    --app-accent-hover: 234 88 12; /* #ea580c primary button hover */
+    --app-accent-strong: 194 65 12; /* #c2410c orange text, links, focus ring, 5.2:1 */
+    --app-accent-soft-fg: 154 52 18; /* #9a3412 text on orange tints, 5.9:1+ */
+    --app-on-accent: 15 23 42; /* #0f172a label on brand fills (AWS-style), 6.4:1 */
+    --app-info: 3 105 161; /* #0369a1 cool accent, 5.9:1 */
+    --app-info-soft-fg: 7 89 133; /* #075985 text on sky tints, 6.3:1+ */
+    --app-success: 4 120 87; /* #047857 5.5:1, 4.6:1+ on its tint */
+    --app-danger: 185 28 28; /* #b91c1c 6.5:1 */
+    --app-glow-warm: rgb(249 115 22 / 0.16);
+    --app-glow-cool: rgb(14 165 233 / 0.14);
+    --app-shadow-sm: 0 1px 2px rgb(15 23 42 / 0.06);
+    --app-shadow: 0 1px 2px rgb(15 23 42 / 0.04), 0 12px 32px -12px rgb(15 23 42 / 0.14);
+    --app-shadow-lg: 0 1px 2px rgb(15 23 42 / 0.04), 0 24px 48px -16px rgb(15 23 42 / 0.22);
   }
 
   .dark {
     color-scheme: dark;
-    --app-bg: #090d16;
-    --app-bg-soft: #111827;
-    --app-surface: #111827;
-    --app-surface-muted: #161f2f;
-    --app-border: #23324a;
-    --app-border-strong: #334155;
-    --app-text: #e2e8f0;
-    --app-text-muted: #94a3b8;
-    --app-accent: #fb923c;
-    --app-accent-strong: #f97316;
-    --app-shadow: 0 18px 38px rgba(2, 6, 23, 0.45);
+    --app-bg: 9 13 22; /* #090d16 */
+    --app-bg-soft: 17 24 39; /* #111827 */
+    --app-surface: 17 24 39; /* #111827 */
+    --app-surface-muted: 22 31 47; /* #161f2f */
+    --app-border: 35 50 74; /* #23324a */
+    --app-border-strong: 51 65 85; /* #334155 */
+    --app-border-control: 107 122 144; /* #6b7a90 4.1:1 */
+    --app-text: 226 232 240; /* #e2e8f0 14.4:1 */
+    --app-text-prose: 203 213 225; /* #cbd5e1 12:1 */
+    --app-text-muted: 148 163 184; /* #94a3b8 6.9:1 */
+    --app-text-subtle: 131 145 167; /* #8391a7 5.6:1 */
+    --app-accent: 251 146 60; /* #fb923c */
+    --app-accent-hover: 249 115 22; /* #f97316 */
+    --app-accent-strong: 251 146 60; /* #fb923c 7.8:1 */
+    --app-accent-soft-fg: 253 186 116; /* #fdba74 8:1+ */
+    --app-info: 56 189 248; /* #38bdf8 8.3:1 */
+    --app-info-soft-fg: 125 211 252; /* #7dd3fc */
+    --app-success: 52 211 153; /* #34d399 */
+    --app-danger: 248 113 113; /* #f87171 */
+    --app-shadow-sm: 0 1px 2px rgb(0 0 0 / 0.4);
+    --app-shadow: inset 0 1px 0 rgb(255 255 255 / 0.04), 0 12px 32px -12px rgb(0 0 0 / 0.6);
+    --app-shadow-lg: inset 0 1px 0 rgb(255 255 255 / 0.05), 0 24px 48px -16px rgb(0 0 0 / 0.7);
+  }
+
+  /* Keep anchor targets clear of the sticky header (md and up) */
+  @screen md {
+    html {
+      scroll-padding-top: 7rem;
+    }
   }
 
   html,
@@ -41,13 +78,21 @@
     min-height: 100%;
   }
 
+  /* html has no background of its own, so this propagates to the whole canvas and
+     the .app-shell::before glow can paint above it */
   body {
-    font-family: var(--font-body);
-    color: var(--app-text);
-    background: radial-gradient(1400px 420px at 12% -8%, rgba(249, 115, 22, 0.16), transparent 55%),
-      radial-gradient(1200px 420px at 92% -12%, rgba(14, 165, 233, 0.14), transparent 56%),
-      linear-gradient(180deg, var(--app-bg-soft) 0%, var(--app-bg) 32%, var(--app-bg) 100%);
-    @apply antialiased selection:bg-orange-200 selection:text-slate-900 dark:selection:bg-orange-500/40 dark:selection:text-orange-50;
+    color: rgb(var(--app-text));
+    background-color: rgb(var(--app-bg));
+    /* Brand glow anchored to the top of every page, whatever its length */
+    background-image: radial-gradient(
+        1400px 420px at 12% -60px,
+        var(--app-glow-warm),
+        transparent 55%
+      ),
+      radial-gradient(1200px 420px at 92% -90px, var(--app-glow-cool), transparent 56%),
+      linear-gradient(180deg, rgb(var(--app-bg-soft)) 0, rgb(var(--app-bg)) 640px);
+    background-repeat: no-repeat;
+    @apply font-sans antialiased selection:bg-orange-200 selection:text-slate-900 dark:selection:bg-orange-500/40 dark:selection:text-orange-50;
   }
 
   h1,
@@ -56,9 +101,8 @@
   h4,
   h5,
   h6 {
-    font-family: var(--font-display);
     letter-spacing: -0.015em;
-    color: var(--app-text);
+    color: rgb(var(--app-text));
   }
 
   a {
@@ -66,14 +110,27 @@
   }
 
   *:focus-visible {
-    outline: 2px solid rgba(249, 115, 22, 0.65);
+    outline: 2px solid rgb(var(--app-accent-strong));
     outline-offset: 2px;
   }
 }
 
+/*
+ * Scale: radius xl (12px) controls, 2xl (16px) panels and cards, 3xl (24px) feature
+ * panels, full for chips. Controls are 44px tall (52px with .action-btn-lg).
+ */
 @layer components {
   .app-shell {
-    @apply relative overflow-hidden;
+    position: relative;
+    overflow-x: hidden;
+  }
+
+  /* clip trims decorative overflow without creating a scroll container, so the
+     sticky header and sidebars work. Safari < 16 keeps the hidden fallback. */
+  @supports (overflow-x: clip) {
+    .app-shell {
+      overflow-x: clip;
+    }
   }
 
   .app-shell::before {
@@ -81,64 +138,298 @@
     position: absolute;
     pointer-events: none;
     inset: 0;
-    background: radial-gradient(700px 220px at 50% 0%, rgba(249, 115, 22, 0.09), transparent 65%),
-      linear-gradient(180deg, rgba(255, 255, 255, 0.1) 0%, transparent 10%);
+    background: radial-gradient(
+        700px 220px at 50% 0%,
+        rgb(var(--app-accent) / 0.09),
+        transparent 65%
+      ),
+      linear-gradient(180deg, rgb(255 255 255 / 0.1) 0%, transparent 10%);
     z-index: -1;
   }
 
+  /* Surfaces */
   .surface-panel {
-    background: var(--app-surface);
-    border: 1px solid var(--app-border);
-    box-shadow: var(--app-shadow);
-    @apply rounded-2xl;
+    @apply rounded-2xl border border-line bg-surface shadow-md;
   }
 
   .surface-panel-muted {
-    background: var(--app-surface-muted);
-    border: 1px solid var(--app-border);
-    @apply rounded-2xl;
+    @apply rounded-2xl border border-line bg-surface-muted;
   }
 
-  .soft-divider {
-    border-color: var(--app-border);
+  /* Large homepage panels: pair with .surface-panel */
+  .surface-panel-lg {
+    @apply rounded-3xl p-6 sm:p-8 lg:p-10;
+  }
+
+  /* Cards that are links: pair with .surface-panel or .surface-panel-muted */
+  .surface-panel-interactive {
+    @apply transition duration-200 ease-out;
+  }
+
+  .surface-panel-interactive:hover {
+    @apply -translate-y-0.5 border-line-strong shadow-xl;
+  }
+
+  /* Translucent chrome: sticky header, mobile bottom nav */
+  .surface-glass {
+    background-color: rgb(var(--app-surface) / 0.8);
+    -webkit-backdrop-filter: blur(16px);
+    backdrop-filter: blur(16px);
+  }
+
+  @supports not ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
+    .surface-glass {
+      background-color: rgb(var(--app-surface));
+    }
+  }
+
+  /* Brand-filled panel (CTA banner): dark text on orange, like the primary button */
+  .surface-brand {
+    @apply rounded-3xl text-brand-on shadow-xl;
+    background-color: rgb(var(--app-accent));
+    background-image: radial-gradient(
+        40rem 16rem at 100% 0%,
+        rgb(255 255 255 / 0.28),
+        transparent 70%
+      ),
+      linear-gradient(135deg, rgb(var(--app-accent)), rgb(var(--app-accent-hover)));
+  }
+
+  /* The accent focus ring would disappear on orange */
+  .surface-brand :focus-visible {
+    outline-color: rgb(var(--app-on-accent));
+  }
+
+  /* Hero glow. closest-side circles fade out before the box edge, so it never
+     shows a hard line at any width. Parent needs `relative isolate`. */
+  .page-glow {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background: radial-gradient(
+        circle closest-side at 28% 38%,
+        rgb(var(--app-accent) / 0.14),
+        transparent
+      ),
+      radial-gradient(circle closest-side at 74% 58%, rgb(var(--app-info) / 0.12), transparent);
+  }
+
+  /* Small uppercase label for sidebar panels and card sections */
+  .panel-label {
+    @apply text-xs font-semibold uppercase tracking-wider text-fg-subtle;
+  }
+
+  /* Page typography */
+  .page-display {
+    @apply text-4xl font-extrabold sm:text-5xl lg:text-6xl;
+    letter-spacing: -0.025em;
+    text-wrap: balance;
   }
 
   .page-heading {
-    @apply text-3xl font-extrabold leading-tight sm:text-4xl lg:text-5xl;
+    @apply text-3xl font-extrabold sm:text-4xl lg:text-5xl;
+    text-wrap: balance;
+  }
+
+  /* Headings inside half-width panels */
+  .panel-heading {
+    @apply text-2xl font-extrabold sm:text-3xl;
+    text-wrap: balance;
   }
 
   .page-eyebrow {
-    @apply mb-4 inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-sm font-semibold;
-    background: rgba(249, 115, 22, 0.12);
-    color: var(--app-accent-strong);
-    border: 1px solid rgba(249, 115, 22, 0.25);
+    @apply mb-4 inline-flex items-center gap-2 rounded-full border border-brand/25 bg-brand/10 px-3.5 py-1 text-sm font-semibold text-brand-soft;
   }
 
   .page-lead {
-    color: var(--app-text-muted);
-    @apply mt-4 max-w-3xl text-base leading-8 sm:text-xl;
+    @apply mt-4 max-w-3xl text-lg text-fg-muted sm:text-xl;
+    text-wrap: pretty;
   }
 
+  .page-section {
+    @apply py-12 sm:py-16 lg:py-20;
+  }
+
+  /* Orange gradient for display-size text only (3:1 large-text contrast, both modes) */
+  .page-highlight {
+    background-image: linear-gradient(
+      90deg,
+      rgb(var(--app-accent-hover)),
+      rgb(var(--app-accent-strong))
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  /* Actions. Primary is AWS-style: brand orange with a dark label. */
   .action-btn-primary {
-    @apply inline-flex items-center justify-center rounded-xl px-5 py-2.5 text-sm font-semibold text-white transition-transform duration-200 sm:px-6 sm:py-3 sm:text-base;
-    background: linear-gradient(135deg, #f97316, #ea580c);
-    box-shadow: 0 14px 30px rgba(234, 88, 12, 0.3);
+    @apply inline-flex min-h-[2.75rem] items-center justify-center gap-2 rounded-xl bg-brand px-5 py-2 text-sm font-semibold text-brand-on transition duration-200 sm:text-base;
+    box-shadow: 0 8px 20px -8px rgb(var(--app-accent) / 0.6);
   }
 
   .action-btn-primary:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 18px 30px rgba(234, 88, 12, 0.36);
+    @apply bg-brand-hover;
+  }
+
+  .action-btn-primary:active {
+    transform: translateY(1px);
   }
 
   .action-btn-secondary {
-    @apply inline-flex items-center justify-center rounded-xl px-5 py-2.5 text-sm font-semibold transition-colors duration-200 sm:px-6 sm:py-3 sm:text-base;
-    background: var(--app-surface);
-    border: 1px solid var(--app-border-strong);
-    color: var(--app-text);
+    @apply inline-flex min-h-[2.75rem] items-center justify-center gap-2 rounded-xl border border-line-strong bg-surface px-5 py-2 text-sm font-semibold text-fg shadow-sm transition duration-200 sm:text-base;
   }
 
   .action-btn-secondary:hover {
-    background: var(--app-surface-muted);
+    @apply border-brand/50 text-brand-strong;
+  }
+
+  /* Buttons for .surface-brand panels (dark label/fill on orange in both themes) */
+  .action-btn-inverse {
+    @apply inline-flex min-h-[2.75rem] items-center justify-center gap-2 rounded-xl bg-brand-on px-5 py-2 text-sm font-semibold text-white shadow-md transition duration-200 sm:text-base;
+  }
+
+  .action-btn-inverse:hover {
+    @apply bg-slate-800;
+  }
+
+  .action-btn-on-brand {
+    @apply inline-flex min-h-[2.75rem] items-center justify-center gap-2 rounded-xl border border-brand-on/25 bg-white/25 px-5 py-2 text-sm font-semibold text-brand-on transition duration-200 sm:text-base;
+  }
+
+  .action-btn-on-brand:hover {
+    @apply bg-white/40;
+  }
+
+  /* Size modifiers: keep after every variant so they win the cascade */
+  .action-btn-lg {
+    @apply min-h-[3.25rem] px-7 text-base sm:text-lg;
+  }
+
+  .action-btn-sm {
+    @apply min-h-[2.5rem] px-3.5 text-sm sm:text-sm;
+  }
+
+  .action-link {
+    @apply inline-flex items-center gap-1.5 text-sm font-semibold text-brand-strong transition-colors duration-200;
+  }
+
+  .action-link:hover,
+  .group:hover .action-link {
+    @apply text-brand-soft;
+  }
+
+  /* Navigation. Mark the current page with aria-current="page". */
+  .nav-link {
+    @apply relative inline-flex items-center rounded-xl px-3 py-2 text-sm font-semibold text-fg-muted transition-colors duration-200;
+  }
+
+  .nav-link:hover {
+    @apply bg-fg/5 text-fg;
+  }
+
+  .nav-link[aria-current='page'] {
+    @apply text-fg;
+  }
+
+  .nav-link[aria-current='page']::after {
+    content: '';
+    @apply absolute inset-x-3 bottom-1 h-0.5 rounded-full bg-brand-strong;
+  }
+
+  .nav-link-featured {
+    @apply bg-brand/10 text-brand-soft;
+  }
+
+  .nav-link-featured:hover {
+    @apply bg-brand/20 text-brand-soft;
+  }
+
+  .nav-link-featured[aria-current='page'] {
+    @apply bg-brand text-brand-on;
+  }
+
+  /* Vertical lists (course lessons): tinted row instead of an underline */
+  .nav-link-stacked {
+    @apply flex w-full font-medium leading-6;
+  }
+
+  .nav-link-stacked[aria-current='page'] {
+    @apply bg-brand/10 font-semibold text-brand-soft;
+  }
+
+  .nav-link-featured[aria-current='page']::after,
+  .nav-link-stacked[aria-current='page']::after {
+    content: none;
+  }
+
+  .icon-btn {
+    @apply inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-line bg-surface text-fg-muted transition-colors duration-200;
+  }
+
+  .icon-btn:hover {
+    @apply border-line-strong bg-surface-muted text-fg;
+  }
+
+  .icon-tile {
+    @apply inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-brand/10 text-brand-strong;
+  }
+
+  .chip {
+    @apply inline-flex items-center gap-1 rounded-full border border-brand/25 bg-brand/10 px-2.5 py-0.5 text-xs font-semibold text-brand-soft;
+  }
+
+  a.chip:hover {
+    @apply bg-brand/20;
+  }
+
+  /* Tones recolor .chip, .page-eyebrow and .icon-tile (orange is the default).
+     info: cert codes, quotes. success/danger: status only. */
+  .tone-info {
+    @apply border-info/25 bg-info/10 text-info-soft;
+  }
+
+  .tone-success {
+    @apply border-success/25 bg-success/10 text-success;
+  }
+
+  .tone-danger {
+    @apply border-danger/25 bg-danger/10 text-danger;
+  }
+
+  /* 16px on mobile so iOS does not zoom on focus */
+  .input-field {
+    @apply block min-h-[2.75rem] w-full rounded-xl border border-line-control bg-surface px-4 py-2 text-base text-fg transition-colors duration-200 sm:text-sm;
+  }
+
+  .input-field::placeholder {
+    @apply text-fg-subtle opacity-100;
+  }
+
+  /* Overrides the blue ring from @tailwindcss/forms: 2px accent edge plus a soft halo */
+  .input-field:focus {
+    @apply border-brand-strong;
+    outline: 2px solid transparent;
+    outline-offset: 2px;
+    box-shadow: 0 0 0 1px rgb(var(--app-accent-strong)), 0 0 0 4px rgb(var(--app-accent) / 0.2);
+  }
+}
+
+/* line-clamp ships with Tailwind only from v3.3 */
+@layer utilities {
+  .line-clamp-2 {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+  }
+
+  .line-clamp-3 {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    overflow: hidden;
   }
 }
 
@@ -151,7 +442,7 @@
 }
 
 .footnotes {
-  @apply mt-12 border-t border-gray-200 pt-8 dark:border-gray-700;
+  @apply mt-12 border-t border-line pt-8;
 }
 
 .csl-entry {
@@ -164,12 +455,26 @@ input:-webkit-autofill:focus {
   transition: background-color 600000s 0s, color 600000s 0s;
 }
 
-.prose a:any-link {
-  text-decoration: none !important;
-  border-bottom: 0.75px dotted;
-}
-
 /* Center all images in blog posts */
 .prose img {
   @apply mx-auto;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto !important;
+  }
+
+  *,
+  ::before,
+  ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .surface-panel-interactive:hover,
+  .action-btn-primary:active {
+    transform: none;
+  }
 }

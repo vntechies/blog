@@ -18,9 +18,11 @@ export default function CourseSimple({
 }) {
   const router = useRouter()
   const { title, slug, summary, date, readingTime, images, fileName } = frontMatter
+  const disabledNav =
+    'inline-flex min-h-[2.5rem] items-center justify-center rounded-xl border border-line px-3.5 text-sm font-semibold text-fg-subtle'
 
   const renderCourseLinks = () => (
-    <ul className="mt-3 space-y-1.5">
+    <ul className="mt-3 space-y-1">
       {posts.map((post) => {
         const isActive = router.asPath === `/courses/${post.slug}`
         return (
@@ -35,11 +37,8 @@ export default function CourseSimple({
             }
           >
             <a
-              className={`block rounded-lg px-3 py-2 text-sm leading-6 transition-colors ${
-                isActive
-                  ? 'bg-orange-100 font-semibold text-orange-700 dark:bg-orange-900/40 dark:text-orange-300'
-                  : 'text-slate-700 hover:bg-slate-200 dark:text-slate-300 dark:hover:bg-slate-700'
-              }`}
+              className="nav-link nav-link-stacked"
+              aria-current={isActive ? 'page' : undefined}
               href={`/courses/${post.slug}`}
             >
               {post.title}
@@ -53,41 +52,37 @@ export default function CourseSimple({
   return (
     <SectionContainer>
       <ScrollTopAndComment />
-      <article className="surface-panel overflow-hidden px-3 py-6 sm:px-6 lg:px-8">
+      {/* overflow-x-clip (not hidden) so the lesson sidebar can stick */}
+      <article className="surface-panel overflow-x-clip px-3 py-6 sm:px-6 lg:px-8">
         <header className="pb-4 text-center">
           <span className="page-eyebrow mx-auto">Bài học</span>
-          <h1 className="page-heading text-slate-900 dark:text-slate-100">{title}</h1>
+          <h1 className="page-heading">{title}</h1>
           {summary && <p className="page-lead mx-auto mt-3 max-w-3xl">{summary}</p>}
-          <div className="mt-4 flex flex-wrap items-center justify-center gap-2 text-sm font-semibold text-slate-600 dark:text-slate-300">
+          <div className="mt-4 flex flex-wrap items-center justify-center gap-2 text-sm font-semibold text-fg-muted">
             <time dateTime={date}>{formatDate(date)}</time>
             {readingTime && <span>- {readingTime.text.replace('min read', 'phút đọc')}</span>}
           </div>
         </header>
 
-        <div className="md:hidden">
+        {/* Sidebar from lg; tablets keep a full-width reading column */}
+        <div className="lg:hidden">
           <div className="surface-panel-muted mb-6 p-4">
-            <h3 className="text-sm font-bold uppercase tracking-wide text-slate-700 dark:text-slate-200">
-              Nội dung khóa học
-            </h3>
+            <h3 className="panel-label">Nội dung khóa học</h3>
             {renderCourseLinks()}
           </div>
         </div>
 
-        <div className="grid gap-6 md:grid-cols-[290px,1fr]">
-          <aside className="hidden md:block">
+        <div className="grid gap-6 lg:grid-cols-[290px,1fr]">
+          <aside className="hidden lg:block">
             <div className="sticky top-24 space-y-6">
               <div className="surface-panel-muted max-h-[calc(100vh-8rem)] overflow-y-auto p-4">
-                <h3 className="text-sm font-bold uppercase tracking-wide text-slate-700 dark:text-slate-200">
-                  Nội dung khóa học
-                </h3>
+                <h3 className="panel-label">Nội dung khóa học</h3>
                 {renderCourseLinks()}
               </div>
 
               {otherCourses.length > 0 && (
                 <div className="surface-panel-muted p-4">
-                  <h3 className="text-sm font-bold uppercase tracking-wide text-slate-700 dark:text-slate-200">
-                    Khóa học khác
-                  </h3>
+                  <h3 className="panel-label">Khóa học khác</h3>
                   <div className="mt-3 flex flex-col gap-3">
                     {otherCourses.map((course) => (
                       <HorizontalCard
@@ -105,7 +100,7 @@ export default function CourseSimple({
 
           <div className="min-w-0">
             {images?.[0] && (
-              <div className="mb-6 overflow-hidden rounded-2xl border border-slate-200 dark:border-slate-700">
+              <div className="mb-6 overflow-hidden rounded-2xl border border-line">
                 <Image
                   alt={title}
                   className="h-auto w-full object-cover"
@@ -119,33 +114,23 @@ export default function CourseSimple({
             )}
 
             <Share fileName={fileName} href={`/courses/${slug}`} />
-            <div className="prose mt-8 max-w-none text-base dark:prose-dark">{children}</div>
+            <div className="prose mt-8 max-w-none">{children}</div>
 
-            <footer className="mt-10 flex flex-col gap-3 text-sm font-semibold sm:flex-row sm:justify-between sm:text-base">
+            <footer className="mt-10 flex flex-col gap-3 sm:flex-row sm:justify-between">
               {prev ? (
-                <Link
-                  href={`/courses/${prev.slug}`}
-                  className="inline-flex items-center rounded-lg border border-orange-200 bg-orange-50 px-4 py-2 text-orange-700 hover:bg-orange-100 dark:border-orange-700/60 dark:bg-orange-900/30 dark:text-orange-300 dark:hover:bg-orange-900/50"
-                >
+                <Link href={`/courses/${prev.slug}`} className="action-btn-secondary action-btn-sm">
                   ← {prev.title}
                 </Link>
               ) : (
-                <span className="inline-flex items-center rounded-lg border border-slate-200 bg-slate-100 px-4 py-2 text-slate-400 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-500">
-                  ← Bài trước
-                </span>
+                <span className={disabledNav}>← Bài trước</span>
               )}
 
               {next ? (
-                <Link
-                  href={`/courses/${next.slug}`}
-                  className="inline-flex items-center rounded-lg border border-orange-200 bg-orange-50 px-4 py-2 text-orange-700 hover:bg-orange-100 dark:border-orange-700/60 dark:bg-orange-900/30 dark:text-orange-300 dark:hover:bg-orange-900/50"
-                >
+                <Link href={`/courses/${next.slug}`} className="action-btn-secondary action-btn-sm">
                   {next.title} →
                 </Link>
               ) : (
-                <span className="inline-flex items-center rounded-lg border border-slate-200 bg-slate-100 px-4 py-2 text-slate-400 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-500">
-                  Bài sau →
-                </span>
+                <span className={disabledNav}>Bài sau →</span>
               )}
             </footer>
 

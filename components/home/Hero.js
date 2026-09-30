@@ -19,7 +19,7 @@ const Hero = () => {
           </div>
 
           {/* Main heading */}
-          <h1 className="lg:text-6xl mb-4 text-4xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-5xl">
+          <h1 className="mb-4 text-4xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-5xl lg:text-6xl">
             Chinh phục
             <br />
             <span className="bg-gradient-to-r from-orange-500 to-orange-600 bg-clip-text text-transparent">
@@ -247,7 +247,7 @@ const Hero = () => {
                     <span className="text-sm font-medium text-orange-500 group-hover:text-orange-600">
                       Xem chi tiết →
                     </span>
-                    <span className="text-xs rounded bg-gray-100 px-2 py-1 font-mono text-gray-600 dark:bg-gray-700 dark:text-gray-400">
+                    <span className="rounded bg-gray-100 px-2 py-1 font-mono text-xs text-gray-600 dark:bg-gray-700 dark:text-gray-400">
                       {course.code}
                     </span>
                   </div>

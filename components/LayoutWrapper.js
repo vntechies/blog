@@ -11,7 +11,8 @@ const LayoutWrapper = ({ children }) => {
   return (
     <>
       <SectionContainer className="app-shell">
-        <div className="relative flex min-h-screen flex-col pb-20 md:pb-0">
+        {/* Clears the fixed mobile BottomNav (h-16) plus the iOS home-bar inset */}
+        <div className="relative flex min-h-screen flex-col pb-[calc(5rem+env(safe-area-inset-bottom))] md:pb-0">
           <Header />
           <main className={`mb-auto flex-1 ${isHomePage ? '' : 'pb-4 pt-4 sm:pt-8'}`}>
             {children}

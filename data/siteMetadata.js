@@ -1,5 +1,6 @@
 const siteMetadata = {
   title: 'VNTechies Dev Blog 🇻🇳 - Kho tài nguyên về Cloud ☁️ / DevOps 🚀',
+  siteName: 'VNTechies',
   author: 'VNTechies',
   headerTitle: 'VNTechies Dev Blog',
   description:
