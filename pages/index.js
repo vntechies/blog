@@ -5,6 +5,7 @@ import siteMetadata from '@/data/siteMetadata'
 import { getAllFilesFrontMatter } from '@/lib/mdx'
 import ArticleList from '@/components/ArticleList'
 import FAQ from '@/components/home/FAQ'
+import FreeCourses from '@/components/home/FreeCourses'
 
 const MAX_DISPLAY = 6
 
@@ -170,6 +171,26 @@ const testimonials = [
   },
 ]
 
+const s = siteMetadata
+const structuredData = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'EducationalOrganization',
+    name: s.siteName,
+    url: s.siteUrl,
+    logo: `${s.siteUrl}${s.siteLogo}`,
+    email: s.email,
+    sameAs: [s.facebook, s.youtube, s.tiktok, s.linkedin, s.github, s.twitter, s.instagram],
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    name: s.siteName,
+    alternateName: s.headerTitle,
+    url: `${s.siteUrl}/`,
+  },
+]
+
 export async function getStaticProps() {
   const posts = await getAllFilesFrontMatter('blog')
   return { props: { posts } }
@@ -179,7 +200,8 @@ export default function Home({ posts }) {
   return (
     <>
       <PageSEO
-        title={siteMetadata.title}
+        title={`Khóa học AWS, DevOps, Data Engineer thực chiến | ${siteMetadata.siteName}`}
+        structuredData={structuredData}
         description="VNTechies giúp bạn học để làm: mentor từ tập đoàn đa quốc gia, lab miễn phí, lộ trình Cloud/DevOps/Data thực chiến và hỗ trợ giảm giá thi chứng chỉ AWS."
       />
 
@@ -654,6 +676,8 @@ export default function Home({ posts }) {
           </div>
         </div>
       </section>
+
+      <FreeCourses />
 
       {/* Free resources: latest posts */}
       <section className="page-section">

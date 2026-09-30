@@ -130,6 +130,7 @@ export const TagSEO = ({ title, description, images = [], noindex = false }) => 
 export const BlogSEO = ({
   authorDetails,
   title,
+  headline = title,
   summary,
   date,
   lastmod,
@@ -137,7 +138,6 @@ export const BlogSEO = ({
   images = [],
   canonicalUrl,
 }) => {
-  const router = useRouter()
   const publishedAt = new Date(date).toISOString()
   const modifiedAt = new Date(lastmod || date).toISOString()
   let imagesArr =
@@ -154,21 +154,22 @@ export const BlogSEO = ({
     }
   })
 
-  let authorList
-  if (authorDetails) {
-    authorList = authorDetails.map((author) => {
-      return {
-        '@type': 'Person',
-        name: author.name,
-        url: author.url,
-      }
-    })
-  } else {
-    authorList = {
-      '@type': 'Person',
-      name: siteMetadata.author,
-    }
+  const organization = {
+    '@type': 'Organization',
+    name: siteMetadata.siteName,
+    url: siteMetadata.siteUrl,
   }
+  // The 'default' author is the site itself, not a person
+  const authorList = (authorDetails || []).map((a) =>
+    !a.slug || a.slug === 'default'
+      ? organization
+      : {
+          '@type': 'Person',
+          name: a.name,
+          url: `${siteMetadata.siteUrl}/authors/${a.slug}`,
+          sameAs: [a.linkedin, a.github, a.twitter, a.website].filter(Boolean),
+        }
+  )
 
   const structuredData = {
     '@context': 'https://schema.org',
@@ -177,14 +178,15 @@ export const BlogSEO = ({
       '@type': 'WebPage',
       '@id': url,
     },
-    headline: title,
+    headline,
     image: featuredImages,
     datePublished: publishedAt,
     dateModified: modifiedAt,
-    author: authorList,
+    author: authorList.length ? authorList : organization,
     publisher: {
       '@type': 'Organization',
-      name: siteMetadata.author,
+      name: siteMetadata.siteName,
+      url: siteMetadata.siteUrl,
       logo: {
         '@type': 'ImageObject',
         url: `${siteMetadata.siteUrl}${siteMetadata.siteLogo}`,
@@ -221,130 +223,65 @@ export const BlogSEO = ({
 
 export const CourseSEO = ({
   title,
-  courseItems,
+  name,
   summary,
   url,
-  lastmod,
-  date,
   canonicalUrl,
   images = [],
   showCanonical,
+  isFree,
   price,
-  duration,
+  startDate,
 }) => {
-  const router = useRouter()
-  const publishedAt = new Date(date).toISOString()
-  const modifiedAt = new Date(lastmod || date).toISOString()
-  let imagesArr =
-    images.length === 0
-      ? [siteMetadata.socialBanner]
-      : typeof images === 'string'
-      ? [images]
-      : images
-  const featuredImages = imagesArr.map((img) => {
-    return {
-      '@type': 'ImageObject',
-      url: img.includes('http') ? img : siteMetadata.siteUrl + img,
-    }
-  })
+  const imagesArr = typeof images === 'string' ? [images] : images
+  const featuredImages = (imagesArr.length ? imagesArr : [siteMetadata.socialBanner]).map((img) =>
+    img.includes('http') ? img : siteMetadata.siteUrl + img
+  )
+  const priceNumber = Number(String(price || '').replace(/[^0-9]/g, '')) // "8.000.000 VNĐ" -> 8000000
 
-  const provider = {
-    '@type': 'Organization',
-    name: `${siteMetadata.author}`,
-    sameAs: `${siteMetadata.siteUrl}`,
+  const structuredData = {
+    '@context': 'https://schema.org',
+    '@type': 'Course',
+    name,
+    description: summary,
+    url,
+    inLanguage: 'vi',
+    image: featuredImages[0],
+    provider: {
+      '@type': 'Organization',
+      name: siteMetadata.siteName,
+      url: siteMetadata.siteUrl,
+      logo: `${siteMetadata.siteUrl}${siteMetadata.siteLogo}`,
+    },
+    ...(isFree
+      ? { isAccessibleForFree: true }
+      : priceNumber > 0 && {
+          offers: {
+            '@type': 'Offer',
+            price: priceNumber,
+            priceCurrency: 'VND',
+            category: 'Paid',
+            url,
+            availability: 'https://schema.org/InStock',
+          },
+        }),
+    ...(startDate && {
+      hasCourseInstance: { '@type': 'CourseInstance', courseMode: 'Online', startDate },
+    }),
   }
-
-  var structuredData = {}
-  if (courseItems) {
-    const items = []
-    courseItems.map((c) => {
-      const item = {
-        '@type': 'ListItem',
-        position: `${c.index}`,
-        item: {
-          '@type': 'Course',
-          url: `${siteMetadata.siteUrl}${router.asPath}`,
-          name: c.title,
-          description: c.summary,
-          provider: provider,
-        },
-      }
-
-      items.push(item)
-    })
-    structuredData = {
-      '@context': 'https://schema.org',
-      '@type': 'ItemList',
-      mainEntityOfPage: {
-        '@type': 'WebPage',
-        '@id': url,
-      },
-      itemListElement: items,
-    }
-  } else {
-    // Parse price from Vietnamese format (e.g., "8.000.000 VNĐ" -> "8000000")
-    const parsedPrice = price ? price.replace(/[^0-9]/g, '') || '0' : '0'
-    const currency = price && price.includes('VNĐ') ? 'VND' : 'USD'
-
-    structuredData = {
-      '@context': 'https://schema.org',
-      '@type': 'Course',
-      mainEntityOfPage: {
-        '@type': 'WebPage',
-        '@id': url,
-      },
-      name: title,
-      description: summary,
-      provider: {
-        '@type': 'Organization',
-        name: 'VNTechies',
-        url: 'https://vntechies.dev',
-        logo: {
-          '@type': 'ImageObject',
-          url: `${siteMetadata.siteUrl}${siteMetadata.siteLogo}`,
-        },
-      },
-      hasCourseInstance: {
-        '@type': 'CourseInstance',
-        courseMode: 'online',
-        startDate: date
-          ? new Date(date).toISOString().split('T')[0]
-          : new Date().toISOString().split('T')[0],
-        location: 'Vietnam',
-        instructor: {
-          '@type': 'Organization',
-          name: 'VNTechies',
-        },
-      },
-      offers: {
-        '@type': 'Offer',
-        url: url,
-        price: parsedPrice,
-        priceCurrency: currency,
-        availability: 'https://schema.org/InStock',
-        validFrom: new Date().toISOString().split('T')[0],
-      },
-      ...(duration && { timeRequired: duration }),
-      ...(featuredImages.length > 0 && { image: featuredImages[0].url }),
-    }
-  }
-  const twImageUrl = featuredImages[0].url
-  const ogImageUrl = featuredImages[0].url
 
   return (
     <>
       <CommonSEO
         title={title}
         description={summary}
-        ogType="course"
-        ogImage={ogImageUrl}
-        twImage={twImageUrl}
+        ogType="website"
+        ogImage={featuredImages[0]}
+        twImage={featuredImages[0]}
         canonicalUrl={canonicalUrl}
         showCanonical={showCanonical}
       />
       <Head>
-        {date && <meta property="course:published_time" content={publishedAt} />}
-        {lastmod && <meta property="course:modified_time" content={modifiedAt} />}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{

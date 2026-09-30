@@ -9,14 +9,18 @@ import Image from '@/components/Image'
 import HorizontalCard from '@/components/HorizontalCard'
 import SummaryButton from '@/components/SummaryButton'
 
-export default function PostLayout({ frontMatter, next, prev, children }) {
+export default function PostLayout({ frontMatter, authorDetails, next, prev, children }) {
   const { date, title, images } = frontMatter
   const postDateTemplate = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }
   const cover = images?.[0] || '/static/images/default-ogp.png'
 
   return (
     <SectionContainer>
-      <BlogSEO url={`${siteMetadata.siteUrl}/blog/${frontMatter.slug}`} {...frontMatter} />
+      <BlogSEO
+        url={`${siteMetadata.siteUrl}/blog/${frontMatter.slug}`}
+        authorDetails={authorDetails}
+        {...frontMatter}
+      />
       <ScrollTopAndComment />
       <SummaryButton
         content={

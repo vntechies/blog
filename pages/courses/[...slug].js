@@ -2,11 +2,14 @@ import fs from 'fs'
 import generateRss from '@/lib/generate-rss'
 import { MDXLayoutRenderer } from '@/components/MDXComponents'
 import { formatSlug, getAllFilesFrontMatter, getFileBySlug, getFiles } from '@/lib/mdx'
-import { CourseSEO } from '@/components/SEO'
+import { BlogSEO, CourseSEO } from '@/components/SEO'
 import siteMetadata from '@/data/siteMetadata'
 import path from 'path'
 
 const DEFAULT_LAYOUT = 'CourseSimple'
+
+// A course is its folder: 'aws/saa/gioi-thieu' -> 'aws/saa'
+const courseOf = (slug) => slug.split('/').slice(0, -1).join('/')
 
 export async function getStaticPaths() {
   const posts = getFiles('courses')
@@ -24,20 +27,20 @@ export async function getStaticProps({ params }) {
   const all = await getAllFilesFrontMatter('courses')
   const allPosts = all.reverse()
   const post = await getFileBySlug('courses', params.slug.join('/'))
-  const course = params.slug[0]
+  const course = params.slug.slice(0, -1).join('/')
   const sameCoursePosts = allPosts
-    .filter((p) => p.draft !== true && p.slug.split('/')[0] === course)
+    .filter((p) => p.draft !== true && courseOf(p.slug) === course)
     .sort((a, b) => a.index - b.index)
   const postIndex = post.frontMatter.index
   const prev =
-    allPosts.filter((p) => p.slug.split('/')[0] === course && p.index === postIndex - 1)[0] || null
+    allPosts.filter((p) => courseOf(p.slug) === course && p.index === postIndex - 1)[0] || null
   const next =
-    allPosts.filter((p) => p.slug.split('/')[0] === course && p.index === postIndex + 1)[0] || null
+    allPosts.filter((p) => courseOf(p.slug) === course && p.index === postIndex + 1)[0] || null
 
   const authorList = post.frontMatter.authors || ['default']
   const authorPromise = authorList.map(async (author) => {
     const authorResults = await getFileBySlug('authors', [author])
-    return authorResults.frontMatter
+    return { ...authorResults.frontMatter, slug: author }
   })
   const authorDetails = await Promise.all(authorPromise)
 
@@ -63,8 +66,9 @@ export async function getStaticProps({ params }) {
     .slice(0, 6) // Limit to 6 courses
 
   // rss
-  if (allPosts.length > 0) {
-    const rss = generateRss(allPosts, `courses/${course}/feed.xml`)
+  const feedPosts = [...sameCoursePosts].sort((a, b) => new Date(b.date) - new Date(a.date))
+  if (feedPosts.length > 0) {
+    const rss = generateRss(feedPosts, `courses/${course}/feed.xml`, 'courses')
     const rssPath = path.join(process.cwd(), 'public', 'courses', course)
     fs.mkdirSync(rssPath, { recursive: true })
     fs.writeFileSync(path.join(rssPath, 'feed.xml'), rss)
@@ -93,29 +97,45 @@ export default function Course({
   next,
 }) {
   const { mdxSource, toc, frontMatter } = post
-  const { title, summary, date, lastmod, images, slug, index, price, startDate, duration } =
+  const { title, summary, date, lastmod, images, slug, index, price, startDate, isFree } =
     frontMatter
 
-  // Generate proper SEO data
   const courseUrl = `${siteMetadata.siteUrl}/courses/${slug}`
   const courseImages = images && images.length > 0 ? images : [siteMetadata.socialBanner]
   const courseDescription = summary || `${title} - Khóa học tại VNTechies`
-  const courseTitle = `${title} | VNTechies`
+
+  // Lessons titled 'Ngày N - Topic' lead with the topic in <title> (the H1 is unchanged)
+  const day = title.match(/^Ngày (\d+)\s*[-:]\s*(.+)$/)
+  const series = (posts.find((p) => p.index === 0)?.title || '').replace(/[^\p{L}\p{N}]+$/u, '')
+  const courseTitle =
+    day && series ? `${day[2].trim()} – ${series} (ngày ${day[1]})` : `${title} | VNTechies`
 
   return (
     <>
-      <CourseSEO
-        title={courseTitle}
-        summary={courseDescription}
-        date={startDate || date}
-        lastmod={lastmod}
-        url={courseUrl}
-        images={courseImages}
-        courseItems={index === 0 ? posts : null}
-        canonicalUrl={courseUrl}
-        price={price}
-        duration={duration}
-      />
+      {index === 0 ? (
+        <CourseSEO
+          title={courseTitle}
+          name={title}
+          summary={courseDescription}
+          url={courseUrl}
+          images={courseImages}
+          canonicalUrl={courseUrl}
+          isFree={isFree}
+          price={price}
+          startDate={startDate}
+        />
+      ) : (
+        <BlogSEO
+          {...frontMatter}
+          title={courseTitle}
+          headline={title}
+          summary={courseDescription}
+          url={courseUrl}
+          images={courseImages}
+          canonicalUrl={courseUrl}
+          authorDetails={authorDetails}
+        />
+      )}
       <MDXLayoutRenderer
         layout={frontMatter.layout || DEFAULT_LAYOUT}
         toc={toc}

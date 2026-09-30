@@ -79,8 +79,7 @@ Done when: the baseline table is complete.
       page.startsWith('public/tags/') &&
       (fs.readFileSync(page, 'utf8').match(/<item>/g) || []).length < 3
     )
-      return
-    // …
+      return // …
     ;`<url><loc>${siteMetadata.siteUrl}${route}</loc>${
       lastmod ? `<lastmod>${new Date(lastmod).toISOString().slice(0, 10)}</lastmod>` : ''
     }</url>`
@@ -118,9 +117,18 @@ Then resubmit the sitemap in GSC.
 
 ---
 
-## Phase 1b – Structured data, courses, internal links (1 PR, ~1 day)
+## Phase 1b – Structured data, courses, internal links (1 PR, ~1 day) — CODE DONE 2026-10-01 (branch `seo/phase-1b`)
 
-- [ ] 1.10 Homepage JSON-LD via `PageSEO structuredData` in `pages/index.js`:
+> Implementation notes / deviations from the text below:
+>
+> - 1.4 (carried over from 1a): the homepage `<title>` is now `Khóa học AWS, DevOps, Data Engineer thực chiến | VNTechies`.
+> - 1.13: lesson Articles use the raw frontmatter title as `headline` (new `headline` prop on `BlogSEO`), while `<title>` keeps the suffix / 1.17 format. The free-text `duration` → `timeRequired` was dropped (not an ISO 8601 duration).
+> - 1.14: an author whose slug is `default` ("Anh Cloud") is output as the VNTechies `Organization`, not a Person with a URL to `/authors/default`. That applies to every post without `authors` until 5.1 fills them in.
+> - 1.16: `FreeCourses` was restyled with the revamp tokens (`page-section`, `action-btn-secondary`). Its link goes to `/courses#mien-phi`, which opens the Free tab (1.15 optional part).
+> - 1.17: also matches `Ngày N: Topic` (used in 90-ngay-devops-v2). The series name is taken from the course landing title, with the trailing emoji stripped, so v2 lessons read "… – 90 Ngày DevOps v2 (ngày N)".
+> - Verified in `out/`: every local "Done when" check below passes. Production checks, Rich Results Test and GSC re-indexing still pending deploy.
+
+- [x] 1.10 Homepage JSON-LD via `PageSEO structuredData` in `pages/index.js`:
   ```js
   const s = siteMetadata
   const structuredData = [
@@ -142,17 +150,17 @@ Then resubmit the sitemap in GSC.
     },
   ]
   ```
-- [ ] 1.11 Course grouping bug in `pages/courses/[...slug].js`. The course key is `params.slug[0]`, so all `aws/*` courses form one group: the CDK course's lesson list shows the SAA/DVA/DEA/CLF landing pages, and the SAA schema lists CDK lessons. Use the folder instead:
+- [x] 1.11 Course grouping bug in `pages/courses/[...slug].js`. The course key is `params.slug[0]`, so all `aws/*` courses form one group: the CDK course's lesson list shows the SAA/DVA/DEA/CLF landing pages, and the SAA schema lists CDK lessons. Use the folder instead:
   ```js
   const courseOf = (slug) => slug.split('/').slice(0, -1).join('/')
   const course = params.slug.slice(0, -1).join('/')
   // use courseOf(p.slug) === course in sameCoursePosts, prev and next
   ```
   Same file: add `slug: author` to each `authorDetails` entry, as `pages/blog/[...slug].js` already does.
-- [ ] 1.12 Course RSS. Today every course feed lists all courses with `/blog/…` links (404).
+- [x] 1.12 Course RSS. Today every course feed lists all courses with `/blog/…` links (404).
   - `lib/generate-rss.js`: add a `basePath = 'blog'` param and use it in `<guid>` and `<link>`.
   - Course pages call `` generateRss(<this course's posts, newest first>, `courses/${course}/feed.xml`, 'courses') ``.
-- [ ] 1.13 Course schema (`CourseSEO` in `components/SEO.js` + the course page)
+- [x] 1.13 Course schema (`CourseSEO` in `components/SEO.js` + the course page)
   - Landing pages (`index === 0`) get one `Course`. Today they get an `ItemList` whose items all share the page URL, and the price branch never runs.
     ```js
     const priceNumber = Number(String(price || '').replace(/[^0-9]/g, '')) // "8.000.000 VNĐ" → 8000000
@@ -189,7 +197,7 @@ Then resubmit the sitemap in GSC.
     ```
   - Lesson pages (`index > 0`): render `BlogSEO` (Article) with `authorDetails` instead of `CourseSEO`, then delete the `ItemList` branch.
   - `og:type` → `website`. Delete the `course:published_time` / `course:modified_time` tags (not real OG properties).
-- [ ] 1.14 Article authors. The 15 `PostSimple` posts (including all 9 `aws-certs` posts) currently publish author = "VNTechies".
+- [x] 1.14 Article authors. The 15 `PostSimple` posts (including all 9 `aws-certs` posts) currently publish author = "VNTechies".
   - `layouts/PostSimple.js`: accept `authorDetails` and pass it to `BlogSEO`.
   - `BlogSEO`: build each Person as below and add `url: siteMetadata.siteUrl` to `publisher`.
     ```js
@@ -200,9 +208,9 @@ Then resubmit the sitemap in GSC.
       sameAs: [a.linkedin, a.github, a.twitter, a.website].filter(Boolean),
     }))
     ```
-- [ ] 1.15 `pages/courses.js`: render both the Premium and the Free grid in the HTML and hide the inactive one with a `hidden` class, e.g. `[['premium', paidCourses], ['free', freeCourses]].map(...)`. Today the free courses only appear after a click, so the 136 free-course URLs have no crawlable entry point. Optional: open the Free tab when the hash is `#mien-phi`.
-- [ ] 1.16 Homepage: import and render `components/home/FreeCourses.js` (built but never used), e.g. before "Đọc trước để bắt đầu nhanh hơn". While there, fix its bottom link's accessibility: remove `role="alert"` and don't nest a `<button>` inside the `<Link>` (style the link instead).
-- [ ] 1.17 Lesson `<title>`: 100 lessons are titled `Ngày N - Topic`. In `pages/courses/[...slug].js`, put the topic first (H1 unchanged):
+- [x] 1.15 `pages/courses.js`: render both the Premium and the Free grid in the HTML and hide the inactive one with a `hidden` class, e.g. `[['premium', paidCourses], ['free', freeCourses]].map(...)`. Today the free courses only appear after a click, so the 136 free-course URLs have no crawlable entry point. Optional: open the Free tab when the hash is `#mien-phi`.
+- [x] 1.16 Homepage: import and render `components/home/FreeCourses.js` (built but never used), e.g. before "Đọc trước để bắt đầu nhanh hơn". While there, fix its bottom link's accessibility: remove `role="alert"` and don't nest a `<button>` inside the `<Link>` (style the link instead).
+- [x] 1.17 Lesson `<title>`: 100 lessons are titled `Ngày N - Topic`. In `pages/courses/[...slug].js`, put the topic first (H1 unchanged):
   ```js
   const m = title.match(/^Ngày (\d+)\s*-\s*(.+)$/)
   const courseTitle = m ? `${m[2].trim()} – 90 Ngày DevOps (ngày ${m[1]})` : `${title} | VNTechies`
