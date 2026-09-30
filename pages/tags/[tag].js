@@ -46,8 +46,9 @@ export default function Tag({ posts, tag }) {
   return (
     <>
       <TagSEO
-        title={`${tag} - ${siteMetadata.headerTitle}`}
-        description={`${tag} tags - ${siteMetadata.title}`}
+        title={`${tag} - ${siteMetadata.siteName}`}
+        description={`Tổng hợp bài viết về ${tag} trên ${siteMetadata.siteName}`}
+        noindex={posts.length < 3}
       />
       <ListLayout posts={posts} title={title} />
     </>

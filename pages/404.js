@@ -5,7 +5,12 @@ import siteMetadata from '@/data/siteMetadata'
 export default function FourZeroFour() {
   return (
     <>
-      <PageSEO title={`Lạc lối - ${siteMetadata.headerTitle}`} />
+      <PageSEO
+        title={`Lạc lối - ${siteMetadata.siteName}`}
+        description="Không tìm thấy trang bạn yêu cầu. Quay lại trang chủ VNTechies để tiếp tục."
+        noindex
+        showCanonical={false}
+      />
       <div className="mx-auto max-w-4xl py-12 sm:py-20">
         <div className="surface-panel grid items-center gap-8 p-8 sm:p-12 md:grid-cols-[180px,1fr]">
           <div className="text-center md:border-r md:border-slate-200 md:pr-8 md:text-left dark:md:border-slate-700">

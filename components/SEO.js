@@ -10,16 +10,22 @@ const CommonSEO = ({
   twImage,
   canonicalUrl,
   showCanonical = true,
+  noindex = false,
 }) => {
   const router = useRouter()
+  // Strip query string and hash so canonical/og:url stay stable across
+  // ?utm_*, ?fbclid, etc. (router.asPath keeps them after hydration).
+  const cleanPath = router.asPath.split(/[?#]/)[0]
+  const pageUrl = `${siteMetadata.siteUrl}${cleanPath}`
+  const twitterHandle = `@${siteMetadata.twitter.split('/').filter(Boolean).pop()}`
   return (
     <Head>
       <title>{title}</title>
-      <meta name="robots" content="follow, index" />
+      <meta name="robots" content={noindex ? 'noindex, follow' : 'index, follow'} />
       <meta name="description" content={description} />
-      <meta property="og:url" content={`${siteMetadata.siteUrl}${router.asPath}`} />
+      <meta property="og:url" content={pageUrl} />
       <meta property="og:type" content={ogType} />
-      <meta property="og:site_name" content={siteMetadata.title} />
+      <meta property="og:site_name" content={siteMetadata.siteName} />
       <meta property="og:description" content={description} />
       <meta property="og:title" content={title} />
       {ogImage.constructor.name === 'Array' ? (
@@ -28,21 +34,24 @@ const CommonSEO = ({
         <meta property="og:image" content={ogImage} key={ogImage} />
       )}
       <meta name="twitter:card" content="summary_large_image" />
-      <meta name="twitter:site" content={siteMetadata.twitter} />
+      <meta name="twitter:site" content={twitterHandle} />
       <meta name="twitter:title" content={title} />
       <meta name="twitter:description" content={description} />
       <meta name="twitter:image" content={twImage} />
-      {showCanonical && (
-        <link
-          rel="canonical"
-          href={canonicalUrl ? canonicalUrl : `${siteMetadata.siteUrl}${router.asPath}`}
-        />
-      )}
+      {showCanonical && <link rel="canonical" href={canonicalUrl ? canonicalUrl : pageUrl} />}
     </Head>
   )
 }
 
-export const PageSEO = ({ title, description, image, showCanonical }) => {
+export const PageSEO = ({
+  title,
+  description,
+  image,
+  showCanonical,
+  canonicalUrl,
+  noindex,
+  structuredData,
+}) => {
   const defaultImage = siteMetadata.siteUrl + siteMetadata.socialBanner
   const customImage = image
     ? image.startsWith('http')
@@ -50,19 +59,35 @@ export const PageSEO = ({ title, description, image, showCanonical }) => {
       : siteMetadata.siteUrl + image
     : defaultImage
   return (
-    <CommonSEO
-      title={title}
-      description={description}
-      ogType="website"
-      ogImage={customImage}
-      twImage={customImage}
-      showCanonical={showCanonical}
-    />
+    <>
+      <CommonSEO
+        title={title}
+        description={description}
+        ogType="website"
+        ogImage={customImage}
+        twImage={customImage}
+        showCanonical={showCanonical}
+        canonicalUrl={canonicalUrl}
+        noindex={noindex}
+      />
+      {structuredData && (
+        <Head>
+          {(Array.isArray(structuredData) ? structuredData : [structuredData]).map((data, i) => (
+            <script
+              key={i}
+              type="application/ld+json"
+              dangerouslySetInnerHTML={{ __html: JSON.stringify(data) }}
+            />
+          ))}
+        </Head>
+      )}
+    </>
   )
 }
 
-export const TagSEO = ({ title, description, images = [] }) => {
+export const TagSEO = ({ title, description, images = [], noindex = false }) => {
   const router = useRouter()
+  const cleanPath = router.asPath.split(/[?#]/)[0]
   let imagesArr =
     images.length === 0
       ? [siteMetadata.socialBanner]
@@ -88,13 +113,14 @@ export const TagSEO = ({ title, description, images = [] }) => {
         ogType="website"
         ogImage={ogImageUrl}
         twImage={twImageUrl}
+        noindex={noindex}
       />
       <Head>
         <link
           rel="alternate"
           type="application/rss+xml"
           title={`${description} - RSS feed`}
-          href={`${siteMetadata.siteUrl}${router.asPath}/feed.xml`}
+          href={`${siteMetadata.siteUrl}${cleanPath}/feed.xml`}
         />
       </Head>
     </>

@@ -1,0 +1,5 @@
+# Cloudflare Pages redirects
+# https://developers.cloudflare.com/pages/configuration/redirects/
+
+# Duplicate pricing page -> canonical /pricing (see plan.md 1.9)
+/docs/pricing /pricing 301

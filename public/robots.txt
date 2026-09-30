@@ -8,6 +8,5 @@ Content-Signal: search=yes, ai-input=yes, ai-train=no
 User-agent: *
 Allow: /
 Disallow: /user
-Disallow: /*feed.xml$
 
 Sitemap: https://vntechies.dev/sitemap.xml
