@@ -5,6 +5,7 @@ import { PageSEO } from '@/components/SEO'
 import Image from '@/components/Image'
 import CourseRegistrationForm from '@/components/CourseRegistrationForm'
 import siteMetadata from '@/data/siteMetadata'
+import { coursesSocialImage } from '@/data/courseSocialImages'
 import { getAllFilesFrontMatter } from '@/lib/mdx'
 
 const COURSE_META = {
@@ -194,6 +195,7 @@ export default function Register({ paidCourses = [], freeCourses = [] }) {
     <>
       <PageSEO
         title={`Đăng ký khóa học - ${siteMetadata.title}`}
+        image={coursesSocialImage}
         description="Đăng ký tham gia các khóa học AWS, DevOps và Data Engineering tại VNTechies. Nhận tư vấn lộ trình phù hợp và ưu đãi dành cho học viên."
         url={`${siteMetadata.siteUrl}/courses/register`}
       />

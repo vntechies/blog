@@ -7,6 +7,7 @@ import ArticleList from '@/components/ArticleList'
 import FAQ from '@/components/home/FAQ'
 import FreeCourses from '@/components/home/FreeCourses'
 import HeroTerminal from '@/components/home/HeroTerminal'
+import EnrollmentCampaign from '@/components/course/EnrollmentCampaign'
 
 const MAX_DISPLAY = 6
 
@@ -113,7 +114,7 @@ const learningTracks = [
     badge: 'SAA-C03',
     href: '/courses/aws/saa/gioi-thieu',
     cta: 'Xem khóa AWS SAA-C03',
-    image: '/static/images/courses/saa.png',
+    image: '/static/images/ogps/courses/aws-saa-ogp.png',
   },
   {
     title: 'DevOps Engineer',
@@ -123,7 +124,7 @@ const learningTracks = [
     badge: 'VDE-C01',
     href: '/courses/devops/gioi-thieu',
     cta: 'Xem khóa DevOps',
-    image: '/static/images/courses/vde.png',
+    image: '/static/images/ogps/courses/devops-ogp.png',
   },
   {
     title: 'Data Engineer',
@@ -133,7 +134,7 @@ const learningTracks = [
     badge: 'VDT-C01',
     href: '/courses/data-engineer-bootcamp/gioi-thieu',
     cta: 'Xem khoá Data Engineer',
-    image: '/static/images/courses/vdt.png',
+    image: '/static/images/ogps/courses/data-engineer-bootcamp-ogp.png',
   },
   {
     title: 'AWS Certified Data Engineer – Associate',
@@ -144,7 +145,7 @@ const learningTracks = [
     badge: 'DEA-C01',
     href: '/courses/aws/dea/gioi-thieu',
     cta: 'Xem khóa DEA-C01',
-    image: '/static/images/courses/awsdeac01.png',
+    image: '/static/images/ogps/courses/aws-dea-ogp.png',
   },
 ]
 
@@ -184,6 +185,7 @@ const structuredData = [
     url: s.siteUrl,
     logo: `${s.siteUrl}${s.siteLogo}`,
     email: s.email,
+    telephone: s.telephone,
     sameAs: [s.facebook, s.youtube, s.tiktok, s.linkedin, s.github, s.twitter, s.instagram],
   },
   {
@@ -417,11 +419,12 @@ export default function Home({ posts }) {
       </section>
 
       {/* Learning tracks */}
+      <EnrollmentCampaign />
       <section className="page-section">
         <div className="mb-10 flex flex-col gap-6 sm:mb-12 lg:flex-row lg:items-end lg:justify-between">
           <div>
             <span className="page-eyebrow">Chọn lộ trình phù hợp</span>
-            <h2 className="page-heading">3 chương trình mũi nhọn để tăng tốc sự nghiệp</h2>
+            <h2 className="page-heading">Chọn chương trình cho bước tiến tiếp theo</h2>
             <p className="page-lead max-w-2xl">
               Mỗi lộ trình đều có đầu ra rõ ràng, mức độ thực hành cao và mentor theo sát để bạn
               không bị bỏ lại giữa chừng.
@@ -454,18 +457,17 @@ export default function Home({ posts }) {
         <div className="grid gap-6 md:grid-cols-2">
           {learningTracks.map((track) => (
             <article key={track.title} className="surface-panel flex h-full flex-col p-6 sm:p-8">
-              <div className="mb-6 flex items-center justify-between gap-4">
+              <div className="mb-4 overflow-hidden border border-line">
+                <Image
+                  src={track.image}
+                  width={1200}
+                  height={630}
+                  alt={track.title}
+                  className="h-auto w-full"
+                />
+              </div>
+              <div className="mb-6">
                 <span className="chip tone-info">{track.badge}</span>
-                {/* Logos are drawn for light backgrounds, so the tile stays white in dark mode */}
-                <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl border border-line bg-white shadow-sm">
-                  <Image
-                    src={track.image}
-                    width={38}
-                    height={38}
-                    alt={track.title}
-                    className="h-9 w-9 object-contain"
-                  />
-                </div>
               </div>
 
               <h3 className="text-2xl font-bold">{track.title}</h3>
@@ -777,6 +779,9 @@ export default function Home({ posts }) {
                 />
               </svg>
             </Link>
+            <Link href={siteMetadata.zalo} className="action-btn-on-brand action-btn-lg">
+              <span>Zalo tư vấn: {siteMetadata.zaloDisplay}</span>
+            </Link>
             <Link href="https://m.me/vntechies" className="action-btn-on-brand action-btn-lg">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -813,13 +818,13 @@ export default function Home({ posts }) {
                     d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
                   />
                 </svg>
-                <span>Cam kết hoàn tiền nếu không hài lòng trong 7 ngày</span>
+                <span>Hoàn 30% học phí trong 3 ngày đầu, 20% trong 7 ngày (theo điều kiện)</span>
                 <span aria-hidden="true">•</span>
                 <Link
                   href="/pricing#hoan-tien"
                   className="font-semibold underline decoration-brand-on/40 underline-offset-2 hover:decoration-brand-on"
                 >
-                  Tham khảo chính sách giá
+                  Xem chính sách hoàn tiền
                 </Link>
               </span>
             </div>

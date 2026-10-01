@@ -436,6 +436,123 @@
     color: rgb(var(--app-danger));
   }
 
+  /* Course landing pages: sans body for 2,000-word sales copy, terminal mono kept for
+     headings, labels, prices and code so the page still reads as the same site */
+  .course-page {
+    font-family: theme('fontFamily.body');
+  }
+
+  .premium-course {
+    color: rgb(var(--app-text));
+    background: rgb(var(--app-bg));
+    padding-bottom: 5rem;
+  }
+
+  .premium-intro {
+    @apply mx-auto max-w-6xl px-4 sm:px-6;
+  }
+
+  .premium-course :is(#registration-form, #course-details) {
+    scroll-margin-top: 6rem;
+  }
+
+  .premium-course #registration-form {
+    padding: 2.5rem 0;
+    background: rgb(var(--app-surface-muted));
+    border-block: 1px solid rgb(var(--app-border));
+  }
+
+  .premium-course #registration-form > div {
+    @apply grid max-w-6xl gap-8 px-4 sm:px-6 lg:grid-cols-2 lg:gap-12;
+  }
+
+  .premium-course .registration-heading {
+    margin: 0;
+    text-align: left;
+  }
+
+  .premium-course .registration-heading h2 {
+    @apply text-2xl leading-tight text-fg sm:text-3xl;
+  }
+
+  .premium-course .registration-heading > p {
+    @apply text-base leading-relaxed text-fg-muted;
+  }
+
+  .premium-course .registration-panel {
+    @apply border border-line bg-surface p-4 sm:p-6;
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  .premium-course-details > section,
+  .premium-course-details > div > section {
+    padding-block: 3rem;
+    border-bottom: 1px solid rgb(var(--app-border));
+    background: rgb(var(--app-bg));
+  }
+
+  .premium-course-details
+    :is(.bg-white, .bg-gray-50, .bg-gray-100, .bg-slate-50, .bg-slate-100, .bg-gray-800, .bg-gray-900, .bg-slate-800, .bg-slate-900) {
+    background-color: rgb(var(--app-surface));
+  }
+
+  .premium-course-details [class*='bg-gradient'] {
+    background-image: none;
+  }
+
+  .premium-course-details
+    :is(h2, h3, h4, .text-white, .text-gray-900, .text-gray-800, .text-gray-700, .bg-clip-text) {
+    color: rgb(var(--app-text));
+  }
+
+  .premium-course-details :is(.text-gray-600, .text-gray-500, .text-gray-400, .text-gray-300) {
+    color: rgb(var(--app-text-muted));
+  }
+
+  .premium-course-details h2 {
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    line-height: 1.3;
+    letter-spacing: -0.025em;
+  }
+
+  .premium-course-details :is(.shadow-xl, .shadow-2xl, .shadow-lg) {
+    box-shadow: none;
+    border: 1px solid rgb(var(--app-border));
+  }
+
+  .premium-course-details :is(.rounded-2xl, .rounded-3xl) {
+    border-radius: 0;
+  }
+
+  .premium-course-details :is(.blur-xl, .blur-3xl) {
+    display: none;
+  }
+
+  .premium-course-details a[href='#registration-form'] {
+    background: rgb(var(--app-accent));
+    color: rgb(var(--app-on-accent));
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  .course-page :is(h1, h2, h3, h4, dt, code, pre, .page-eyebrow, .panel-label, .chip, .font-mono) {
+    font-family: theme('fontFamily.mono');
+  }
+
+  /* FAQ disclosure marker (components/course/SalesSections.js) */
+  .faq-marker::before {
+    content: '+';
+  }
+
+  details[open] .faq-marker::before {
+    content: '−';
+  }
+
+  summary::-webkit-details-marker {
+    display: none;
+  }
+
   /* 16px on mobile so iOS does not zoom on focus */
   .input-field {
     @apply block min-h-[2.75rem] w-full border border-line-control bg-surface px-4 py-2 text-base text-fg transition-colors duration-150 sm:text-sm;

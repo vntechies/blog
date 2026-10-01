@@ -1,4 +1,6 @@
 import { useState, useEffect } from 'react'
+import siteMetadata from '@/data/siteMetadata'
+import { trackCourseEvent } from '@/lib/course-analytics'
 import { FaUser, FaEnvelope, FaPhone, FaGraduationCap, FaSpinner, FaTag } from 'react-icons/fa'
 
 export default function CourseRegistrationForm({
@@ -27,7 +29,17 @@ export default function CourseRegistrationForm({
     if (coupon) {
       setFormData((prev) => ({ ...prev, couponCode: coupon }))
     }
-  }, [])
+    const syncAudience = (event) => {
+      if (
+        courseTitle.includes(event.detail?.code) &&
+        ['student', 'working'].includes(event.detail?.studentType)
+      ) {
+        setFormData((prev) => ({ ...prev, studentType: event.detail.studentType }))
+      }
+    }
+    window.addEventListener('course-audience-change', syncAudience)
+    return () => window.removeEventListener('course-audience-change', syncAudience)
+  }, [courseTitle])
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target
@@ -50,9 +62,11 @@ export default function CourseRegistrationForm({
         ...formData,
         timestamp: new Date().toISOString(),
         course: courseTitle,
+        page: window.location.pathname,
+        utm_source: new URLSearchParams(window.location.search).get('utm_source') || '',
+        utm_medium: new URLSearchParams(window.location.search).get('utm_medium') || '',
+        utm_campaign: new URLSearchParams(window.location.search).get('utm_campaign') || '',
       }
-
-      console.log('Sending data to serverless API Gateway and App Script:', dataToSend)
 
       // 1. Send to AWS Serverless API Gateway (Odoo)
       const serverlessPromise = fetch(
@@ -133,14 +147,11 @@ export default function CourseRegistrationForm({
       // Check Google Script response
       if (googleResponse.status === 'fulfilled') {
         results.google = { status: 'SUCCESS', data: googleResponse.value }
-        successCount++
       } else {
         results.google = { status: 'FAILED', error: googleResponse.reason }
       }
 
-      console.log('Submission results:', results)
-
-      // Consider it successful if at least one system worked
+      // An iframe submission cannot confirm receipt. Only the API response confirms a lead.
       if (successCount > 0) {
         // Track lead generation event in GA4
         const eventParams = {
@@ -152,17 +163,7 @@ export default function CourseRegistrationForm({
           has_coupon: !!formData.couponCode,
         }
 
-        if (typeof window !== 'undefined') {
-          if (typeof window.gtag === 'function') {
-            // gtag.js GA4 đã load — bắn trực tiếp
-            window.gtag('event', 'generate_lead', eventParams)
-          } else {
-            // Fallback: gtag chưa load (lazyOnload) hoặc site dùng GTM
-            // dataLayer.push vẫn được GA4 nhận khi gtag init sau
-            window.dataLayer = window.dataLayer || []
-            window.dataLayer.push({ event: 'generate_lead', ...eventParams })
-          }
-        }
+        trackCourseEvent('generate_lead', eventParams)
 
         setSubmitStatus('success')
         setFormData({
@@ -232,12 +233,13 @@ export default function CourseRegistrationForm({
   return (
     <section id="registration-form" className={`py-20 ${currentTheme.bg}`}>
       <div className="mx-auto max-w-4xl px-4">
-        <div className="mb-12 text-center">
+        <div className="registration-heading mb-12 text-center">
           <h2 className="mb-4 text-4xl font-bold text-gray-900 dark:text-gray-100">
-            Đăng ký tham gia khóa học
+            Nhận lịch học & tư vấn lộ trình
           </h2>
           <p className="text-xl text-gray-600 dark:text-gray-300">
-            Điền thông tin để nhận tư vấn chi tiết và ưu đãi đặc biệt
+            Để lại tên và số điện thoại/Zalo. VNTechies sẽ trao đổi mục tiêu, lịch lớp và học phí
+            với bạn.
           </p>
           <div
             className={`mt-4 inline-flex flex-wrap items-center justify-center gap-2 rounded-full border px-4 py-2 text-sm font-semibold ${currentTheme.courseTag}`}
@@ -245,19 +247,38 @@ export default function CourseRegistrationForm({
             <span>Khóa đang chọn:</span>
             <span>{selectedCourseLabel}</span>
           </div>
+          <ol className="mt-6 space-y-3 text-left text-sm text-fg-muted">
+            <li>
+              <strong className="text-brand-strong">01.</strong> Chia sẻ mục tiêu và kinh nghiệm
+              hiện tại.
+            </li>
+            <li>
+              <strong className="text-brand-strong">02.</strong> Nhận lịch lớp, lộ trình và mức học
+              phí phù hợp.
+            </li>
+            <li>
+              <strong className="text-brand-strong">03.</strong> Quyết định đăng ký sau khi đã rõ
+              thông tin.
+            </li>
+          </ol>
         </div>
 
-        <div className="rounded-2xl bg-white p-8 shadow-xl dark:bg-gray-900">
+        <div className="registration-panel rounded-2xl bg-white p-8 shadow-xl dark:bg-gray-900">
           <form onSubmit={handleSubmit} className="space-y-6">
+            {/* Three required fields; everything else is optional and folded away */}
             <div className="grid gap-6 md:grid-cols-2">
               {/* Name */}
               <div>
-                <label className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">
+                <label
+                  htmlFor="reg-name"
+                  className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300"
+                >
                   Họ và tên *
                 </label>
                 <div className="relative">
                   <FaUser className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
                   <input
+                    id="reg-name"
                     type="text"
                     name="name"
                     value={formData.name}
@@ -270,34 +291,18 @@ export default function CourseRegistrationForm({
                 </div>
               </div>
 
-              {/* Email */}
+              {/* Phone / Zalo */}
               <div>
-                <label className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">
-                  Email *
-                </label>
-                <div className="relative">
-                  <FaEnvelope className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
-                  <input
-                    type="email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleChange}
-                    required
-                    autoComplete="email"
-                    className={`w-full rounded-lg border border-gray-300 bg-white py-3 pl-10 pr-4 text-gray-900 focus:outline-none focus:ring-2 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100 ${currentTheme.focus}`}
-                    placeholder="email@example.com"
-                  />
-                </div>
-              </div>
-
-              {/* Phone */}
-              <div>
-                <label className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">
-                  Số điện thoại *
+                <label
+                  htmlFor="reg-phone"
+                  className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300"
+                >
+                  Số điện thoại / Zalo *
                 </label>
                 <div className="relative">
                   <FaPhone className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
                   <input
+                    id="reg-phone"
                     type="tel"
                     name="phone"
                     value={formData.phone}
@@ -310,103 +315,155 @@ export default function CourseRegistrationForm({
                   />
                 </div>
               </div>
+            </div>
 
-              {/* Student Type */}
-              <div>
-                <label className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">
-                  Đối tượng *
-                </label>
-                <div className="relative">
-                  <FaGraduationCap className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
-                  <select
-                    name="studentType"
-                    value={formData.studentType}
-                    onChange={handleChange}
-                    required
-                    className={`w-full rounded-lg border border-gray-300 bg-white py-3 pl-10 pr-4 text-gray-900 focus:outline-none focus:ring-2 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100 ${currentTheme.focus}`}
+            {/* Student type */}
+            <fieldset>
+              <legend className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">
+                Bạn đang là *
+              </legend>
+              <div className="grid grid-cols-2 gap-3">
+                {[
+                  { value: 'student', label: 'Sinh viên' },
+                  { value: 'working', label: 'Người đi làm' },
+                ].map((option) => (
+                  <label
+                    key={option.value}
+                    className={`flex cursor-pointer items-center justify-center gap-2 rounded-lg border p-3 text-sm font-semibold transition focus-within:ring-2 focus-within:ring-orange-500 ${
+                      formData.studentType === option.value
+                        ? 'border-orange-500 bg-orange-500/10 text-gray-900 dark:text-gray-100'
+                        : `border-gray-300 text-gray-600 dark:border-gray-600 dark:text-gray-300 ${currentTheme.hover}`
+                    }`}
                   >
-                    <option value="working">Người đi làm</option>
-                    <option value="student">Sinh viên</option>
-                  </select>
+                    <input
+                      type="radio"
+                      name="studentType"
+                      value={option.value}
+                      checked={formData.studentType === option.value}
+                      onChange={handleChange}
+                      className="sr-only"
+                    />
+                    {option.value === 'student' && <FaGraduationCap aria-hidden="true" />}
+                    {option.label}
+                  </label>
+                ))}
+              </div>
+            </fieldset>
+
+            {formData.couponCode && (
+              <p className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-300">
+                <FaTag aria-hidden="true" />
+                Mã giảm giá <strong>{formData.couponCode}</strong> đã được áp dụng
+              </p>
+            )}
+
+            <details className="rounded-lg border border-gray-200 dark:border-gray-600">
+              <summary className="cursor-pointer select-none p-4 text-sm font-medium text-gray-700 dark:text-gray-300">
+                Thêm thông tin (không bắt buộc): email, nhóm, mã giảm giá, mục tiêu
+              </summary>
+              <div className="space-y-4 border-t border-gray-200 p-4 dark:border-gray-600">
+                {/* Email */}
+                <div>
+                  <label
+                    htmlFor="reg-email"
+                    className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300"
+                  >
+                    Email
+                  </label>
+                  <div className="relative">
+                    <FaEnvelope className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+                    <input
+                      id="reg-email"
+                      type="email"
+                      name="email"
+                      value={formData.email}
+                      onChange={handleChange}
+                      autoComplete="email"
+                      className={`w-full rounded-lg border border-gray-300 bg-white py-3 pl-10 pr-4 text-gray-900 focus:outline-none focus:ring-2 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100 ${currentTheme.focus}`}
+                      placeholder="email@example.com"
+                    />
+                  </div>
+                </div>
+
+                <label
+                  htmlFor="groupRegistration"
+                  className="flex cursor-pointer items-center text-sm font-medium text-gray-700 dark:text-gray-300"
+                >
+                  <input
+                    id="groupRegistration"
+                    type="checkbox"
+                    name="groupRegistration"
+                    checked={formData.groupRegistration}
+                    onChange={handleChange}
+                    className={`mr-3 h-5 w-5 rounded border-gray-300 ${currentTheme.checkbox}`}
+                  />
+                  Đăng ký theo nhóm (2+ người)
+                </label>
+
+                <label
+                  htmlFor="isAlumni"
+                  className="flex cursor-pointer items-center text-sm font-medium text-gray-700 dark:text-gray-300"
+                >
+                  <input
+                    id="isAlumni"
+                    type="checkbox"
+                    name="isAlumni"
+                    checked={formData.isAlumni}
+                    onChange={handleChange}
+                    className={`mr-3 h-5 w-5 rounded border-gray-300 ${currentTheme.checkbox}`}
+                  />
+                  Cựu học viên của VNTechies
+                </label>
+
+                {/* Coupon Code */}
+                <div>
+                  <label
+                    htmlFor="reg-coupon"
+                    className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300"
+                  >
+                    Mã giảm giá
+                  </label>
+                  <div className="relative">
+                    <FaTag className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+                    <input
+                      id="reg-coupon"
+                      type="text"
+                      name="couponCode"
+                      value={formData.couponCode}
+                      onChange={handleChange}
+                      className={`w-full rounded-lg border border-gray-300 bg-white py-3 pl-10 pr-4 text-gray-900 focus:outline-none focus:ring-2 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100 ${currentTheme.focus}`}
+                      placeholder="Nhập mã giảm giá"
+                    />
+                  </div>
+                </div>
+
+                {/* Motivation */}
+                <div>
+                  <label
+                    htmlFor="reg-motivation"
+                    className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300"
+                  >
+                    Mục tiêu sau khóa học
+                  </label>
+                  <textarea
+                    id="reg-motivation"
+                    name="motivation"
+                    value={formData.motivation}
+                    onChange={handleChange}
+                    rows={3}
+                    className={`w-full rounded-lg border border-gray-300 bg-white py-3 px-4 text-gray-900 focus:outline-none focus:ring-2 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100 ${currentTheme.focus}`}
+                    placeholder="Ví dụ: Lấy chứng chỉ AWS, chuyển ngành Cloud, thăng tiến trong công việc..."
+                  />
                 </div>
               </div>
-            </div>
-
-            {/* Alumni Status */}
-            <label
-              htmlFor="isAlumni"
-              className={`flex cursor-pointer items-center rounded-lg border border-gray-200 p-4 transition dark:border-gray-600 ${currentTheme.hover}`}
-            >
-              <input
-                id="isAlumni"
-                type="checkbox"
-                name="isAlumni"
-                checked={formData.isAlumni}
-                onChange={handleChange}
-                className={`mr-3 h-5 w-5 rounded border-gray-300 ${currentTheme.checkbox}`}
-              />
-              <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                Cựu học viên của VNTechies
-              </span>
-            </label>
-
-            {/* Group Registration */}
-            <label
-              htmlFor="groupRegistration"
-              className={`flex cursor-pointer items-center rounded-lg border border-gray-200 p-4 transition dark:border-gray-600 ${currentTheme.hover}`}
-            >
-              <input
-                id="groupRegistration"
-                type="checkbox"
-                name="groupRegistration"
-                checked={formData.groupRegistration}
-                onChange={handleChange}
-                className={`mr-3 h-5 w-5 rounded border-gray-300 ${currentTheme.checkbox}`}
-              />
-              <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                Đăng ký theo nhóm (2+ người)
-              </span>
-            </label>
-
-            {/* Coupon Code */}
-            <div>
-              <label className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">
-                Coupon Code
-              </label>
-              <div className="relative">
-                <FaTag className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
-                <input
-                  type="text"
-                  name="couponCode"
-                  value={formData.couponCode}
-                  onChange={handleChange}
-                  className={`w-full rounded-lg border border-gray-300 bg-white py-3 pl-10 pr-4 text-gray-900 focus:outline-none focus:ring-2 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100 ${currentTheme.focus}`}
-                  placeholder="Nhập mã giảm giá"
-                />
-              </div>
-            </div>
-
-            {/* Motivation */}
-            <div>
-              <label className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">
-                Mục tiêu sau khóa học
-              </label>
-              <textarea
-                name="motivation"
-                value={formData.motivation}
-                onChange={handleChange}
-                rows={3}
-                className={`w-full rounded-lg border border-gray-300 bg-white py-3 px-4 text-gray-900 focus:outline-none focus:ring-2 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100 ${currentTheme.focus}`}
-                placeholder="Ví dụ: Lấy chứng chỉ AWS, chuyển ngành Cloud, thăng tiến trong công việc..."
-              />
-            </div>
+            </details>
 
             {/* Submit Button */}
             <div className="text-center">
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className={`inline-flex items-center rounded-xl px-8 py-4 text-lg font-bold text-white shadow-xl transition disabled:opacity-50 ${currentTheme.button}`}
+                className="action-btn-primary w-full disabled:cursor-wait disabled:opacity-50"
               >
                 {isSubmitting ? (
                   <>
@@ -414,29 +471,54 @@ export default function CourseRegistrationForm({
                     Đang gửi...
                   </>
                 ) : (
-                  'Đăng ký ngay'
+                  'Nhận lịch học & tư vấn'
                 )}
               </button>
+              <p className="mt-3 text-xs text-fg-muted">
+                Gửi yêu cầu tư vấn, chưa phải thanh toán hay xác nhận nhập học.
+              </p>
             </div>
 
             {/* Status Messages */}
             {submitStatus === 'success' && (
               <div
                 data-success-message
+                role="status"
                 className="rounded-lg bg-green-50 p-4 text-center text-green-800 dark:bg-green-900/20 dark:text-green-400"
               >
-                ✅ Đăng ký thành công! Chúng tôi sẽ liên hệ với bạn trong 24h.
+                ✅ Đăng ký thành công! Tư vấn viên sẽ gọi hoặc nhắn Zalo cho bạn trong 24h.
               </div>
             )}
             {submitStatus === 'error' && (
-              <div className="rounded-lg bg-red-50 p-4 text-center text-red-800 dark:bg-red-900/20 dark:text-red-400">
-                ❌ Có lỗi xảy ra. Vui lòng thử lại hoặc liên hệ qua Messenger.
+              <div
+                role="alert"
+                className="rounded-lg bg-red-50 p-4 text-center text-red-800 dark:bg-red-900/20 dark:text-red-400"
+              >
+                Chưa xác nhận được yêu cầu. Vui lòng thử lại hoặc{' '}
+                <a
+                  href={siteMetadata.zalo}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-bold underline"
+                >
+                  nhắn Zalo {siteMetadata.zaloDisplay}
+                </a>{' '}
+                để được tư vấn.
               </div>
             )}
           </form>
 
           <div className="mt-6 text-center text-sm text-gray-600 dark:text-gray-400">
             Hoặc liên hệ trực tiếp qua{' '}
+            <a
+              href={siteMetadata.zalo}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={`${currentTheme.link} font-semibold hover:underline`}
+            >
+              Zalo {siteMetadata.zaloDisplay}
+            </a>{' '}
+            hoặc{' '}
             <a
               href="https://m.me/vntechies"
               target="_blank"

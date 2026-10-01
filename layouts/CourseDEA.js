@@ -1,3 +1,4 @@
+import PremiumCourseHero from '@/components/course/PremiumCourseHero'
 import React from 'react'
 import Image from '../components/Image'
 import {
@@ -15,69 +16,26 @@ import {
   FaCode,
 } from 'react-icons/fa'
 import Link from 'next/link'
+import siteMetadata from '@/data/siteMetadata'
 import CourseRegistrationForm from '../components/CourseRegistrationForm'
 import OtherCoursesSection from '@/components/OtherCoursesSection'
-
-const testimonials = [
-  {
-    rating: 5,
-    comment: 'Khoá học rất thực tế, mentor tận tâm, mình đã pass SAA-C03 ngay lần đầu!',
-    author: 'Võ Phi Hùng - Division Manager',
-    image: '/static/images/customers/vophihung.jpg',
-  },
-  {
-    rating: 5,
-    comment: 'Nội dung chi tiết, nhiều lab thực hành, cực kỳ hữu ích cho người mới.',
-    author: 'Lê Văn Thắng - Tech Lead',
-    image: '/static/images/customers/lethang.jpg',
-  },
-  {
-    rating: 5,
-    comment:
-      'VNTechies đưa ra nhiều kiến thức bổ ích về DEVOPS, giúp mình càng hiểu rõ hơn hệ thống mình đang làm việc',
-    author: 'Nguyễn Quốc Trường - Developer Lead',
-    image: '/static/images/customers/nguyen quoc truong.jpg',
-  },
-  {
-    rating: 5,
-    comment: '🥰 Thông tin rất cụ thể, dễ tiếp cận. Mình thực sự đã được giúp đỡ',
-    author: 'Lưu Bình Công - Project Manager',
-    image: '/static/images/customers/luubinhcong.jpg',
-  },
-  {
-    rating: 5,
-    comment: 'Khóa học và series hữu ích cho devops beginner 👍',
-    author: 'Đặng Hoàng Linh - Senior BrSE',
-    image: '/static/images/customers/dang hoang linh.jpg',
-  },
-  {
-    rating: 5,
-    comment:
-      'Blog rất chất lượng, series 90 ngày DevOps rất phù hợp với cá nhân mình. Cảm ơn đội ngũ của VNTechies rất nhiều',
-    author: 'Đào Mạnh Nhất - Software Developer',
-    image: '/static/images/customers/daomanhnhat.jpg',
-  },
-  {
-    rating: 5,
-    comment:
-      'Với 5 năm kinh nghiệm IT mình thấy VNTechies rất hữu ích cho các bạn mới làm quen devops . Khoá học dễ học dễ hiểu bổ ích . Recommend cho mọi người',
-    author: 'Nguyễn Tiến Nghiệp - Frontend Developer',
-    image: '/static/images/customers/nguyen tien nghiep.jpg',
-  },
-  {
-    rating: 5,
-    comment: 'Rất nhiều kiến thức chất lượng và hữu ích cho người muốn tìm hiểu về Tech',
-    author: 'Trần Duy Mạnh - Data Engineer',
-    image: '/static/images/customers/tranduymanh.jpg',
-  },
-]
+import { MONTHLY_INTAKE } from '@/data/courseOffers'
+import { pickTestimonials } from '@/data/testimonials'
+import {
+  AudienceFit,
+  CourseFactsStrip,
+  CourseFAQ,
+  SalaryEvidence,
+  StickyEnrollBar,
+  TestimonialGrid,
+} from '@/components/course/SalesSections'
 
 const courseInfo = {
   title: 'Khoá học AWS Certified Data Engineer – Associate (DEA-C01)',
   subtitle:
     'Pipeline dữ liệu trên AWS: thu thập, lưu trữ, xử lý, phân tích, trực quan hóa — chuẩn bị thi DEA-C01',
-  image: '/static/images/courses/awsdeac01Info.png',
-  startDate: 'Liên hệ tư vấn lịch khai giảng',
+  image: '/static/images/ogps/courses/aws-dea-ogp.png',
+  startDate: 'Khai giảng hàng tháng',
   duration: 'Khoảng 40 giờ nội dung (theo outline chuẩn ~2.400 phút), tối thiểu 8 tuần triển khai',
   schedule: 'Live online + lab thực hành trên AWS (tần suất theo từng khóa)',
   location: 'Online qua Google Meet + môi trường lab AWS',
@@ -261,6 +219,122 @@ const curriculum = [
   },
 ]
 
+// Sales content (facts from this page and /pricing; salary figures cited)
+const courseFacts = [
+  { label: 'Lớp mới', value: MONTHLY_INTAKE },
+  { label: 'Thời lượng', value: '~40 giờ · tối thiểu 8 tuần' },
+  { label: 'Hình thức', value: 'Live online + lab trên AWS' },
+  { label: 'Học phí', value: 'Đi làm 10.000.000₫ · SV 9.500.000₫' },
+]
+
+const audience = {
+  student: [
+    <>
+      Học phí sinh viên riêng, thêm{' '}
+      <Link href="/pricing#financial-aid" className="underline underline-offset-2">
+        Financial Aid
+      </Link>{' '}
+      hỗ trợ tới 500.000₫
+    </>,
+    <>
+      <Link href="/pricing#tra-gop" className="underline underline-offset-2">
+        Trả góp 2–3 đợt
+      </Link>
+      , chỉ cần cọc từ 40% khi đăng ký
+    </>,
+    'Phù hợp khi bạn đã có nền tảng SQL hoặc cloud',
+    '12 module + capstone để đưa vào CV',
+  ],
+  working: [
+    'Live online, lab trên môi trường AWS thật',
+    'Pipeline thực tế với S3, Glue, Athena, EMR, Redshift, Kinesis, Step Functions',
+    'Ưu đãi nhóm 2+ người, giảm thêm 500.000₫ khi giới thiệu học viên mới',
+    'Bận đột xuất? Xem lại video record, truy cập trọn đời',
+  ],
+}
+
+const salaryEvidence = [
+  {
+    value: '44,1 triệu ₫',
+    label: 'Lương trung vị/tháng của Data Engineer tại Việt Nam (6 năm kinh nghiệm)',
+    source: {
+      name: 'ITviec, Vietnam IT Salary & Recruitment Market Report 2024–2025',
+      url: 'https://itviec.com/report/vietnam-it-salary-and-recruitment-market-2024-2025',
+    },
+  },
+  {
+    value: '31,3 triệu ₫',
+    label: 'Lương trung vị/tháng của Data Analyst/BI tại Việt Nam (5,5 năm kinh nghiệm)',
+    source: {
+      name: 'ITviec, Vietnam IT Salary & Recruitment Market Report 2024–2025',
+      url: 'https://itviec.com/report/vietnam-it-salary-and-recruitment-market-2024-2025',
+    },
+  },
+  {
+    value: '$150',
+    label: 'Lệ phí thi DEA-C01',
+    source: {
+      name: 'AWS Certification (DEA-C01)',
+      url: 'https://aws.amazon.com/certification/certified-data-engineer-associate/',
+    },
+  },
+]
+
+const faq = [
+  {
+    q: 'Bao giờ khai giảng lớp tiếp theo?',
+    a: (
+      <>
+        Khoá học khai giảng hàng tháng. Bạn đăng ký trước, tư vấn viên sẽ xếp bạn vào lớp gần nhất
+        và gửi lịch học cụ thể. Muốn biết ngay lịch lớp tới, nhắn Zalo{' '}
+        <a
+          href={siteMetadata.zalo}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="underline underline-offset-2"
+        >
+          {siteMetadata.zaloDisplay}
+        </a>
+        .
+      </>
+    ),
+  },
+  {
+    q: 'Mình cần nền tảng gì?',
+    a: 'Khoá phù hợp với engineer hoặc analyst đã có nền tảng cloud hoặc SQL, muốn làm data pipeline trên AWS và thi chứng chỉ DEA-C01.',
+  },
+  {
+    q: 'Lệ phí thi DEA-C01 là bao nhiêu?',
+    a: 'Lệ phí thi do AWS quy định là 150 USD.',
+  },
+  {
+    q: 'Có trả góp không?',
+    a: (
+      <>
+        Có. Gói Comfort 2 đợt (cọc 50%, phí hỗ trợ 3%) hoặc gói Flexible 3 đợt (cọc 40%, phí hỗ trợ
+        5%), áp dụng cho khoá từ 3.000.000₫. Chi tiết tại{' '}
+        <Link href="/pricing#tra-gop" className="underline underline-offset-2">
+          chính sách trả góp
+        </Link>
+        .
+      </>
+    ),
+  },
+  {
+    q: 'Nếu học thử thấy không phù hợp thì sao?',
+    a: (
+      <>
+        Bạn được hoàn 30% học phí trong 3 ngày đầu (chưa truy cập nội dung, hoàn thành dưới 5%) hoặc
+        20% trong 7 ngày (hoàn thành dưới 10%). Xem đầy đủ tại{' '}
+        <Link href="/pricing#hoan-tien" className="underline underline-offset-2">
+          chính sách hoàn tiền
+        </Link>
+        .
+      </>
+    ),
+  },
+]
+
 export default function CourseDEA({ frontMatter, mentorDetails, otherCourses = [] }) {
   const smoothScrollTo = (e, targetId) => {
     e.preventDefault()
@@ -285,10 +359,7 @@ export default function CourseDEA({ frontMatter, mentorDetails, otherCourses = [
   const mentors = mentorDetails || []
 
   return (
-    <div
-      className="min-h-screen"
-      style={{ backgroundColor: '#0d1117', fontFamily: "'Be Vietnam Pro', sans-serif" }}
-    >
+    <div className="course-page premium-course min-h-screen">
       <style jsx>{`
         .text-glow {
           text-shadow: 0 0 8px rgba(255, 153, 0, 0.7), 0 0 12px rgba(255, 153, 0, 0.5);
@@ -300,709 +371,595 @@ export default function CourseDEA({ frontMatter, mentorDetails, otherCourses = [
         }
       `}</style>
 
-      <section className="flex min-h-screen items-center justify-center p-4">
-        <div
-          className="flex w-full max-w-6xl flex-col overflow-hidden rounded-2xl border border-gray-700 shadow-2xl md:flex-row"
-          style={{ backgroundColor: '#161b22' }}
-        >
-          <div className="z-10 w-full p-8 text-white md:w-3/5 md:p-10">
-            <div className="mb-6 flex items-center">
-              <Image
-                src="/static/images/logo.png"
-                alt="Logo VNTECHIES"
-                width={40}
-                height={40}
-                className="mr-3 h-10"
-              />
-              <span className="text-xl font-bold tracking-wider text-gray-300">VNTECHIES</span>
-            </div>
+      <PremiumCourseHero courseKey="aws/dea" />
+      <CourseRegistrationForm
+        courseTitle="AWS Certified Data Engineer – Associate (DEA-C01)"
+        theme="purple"
+      />
+      <div id="course-details" className="premium-course-details">
+        <CourseFactsStrip facts={courseFacts} />
 
-            <p className="text-lg text-gray-400">Khoá học</p>
-            <h1 className="my-2 text-3xl font-black uppercase md:text-4xl">
-              <span className="text-glow" style={{ color: '#FF9900' }}>
-                AWS Certified
-              </span>{' '}
-              <br />
-              <span className="text-glow" style={{ color: '#FF9900' }}>
-                Data Engineer
-              </span>
-            </h1>
-            <p className="mb-8 text-xl font-bold text-gray-500">Associate (DEA-C01)</p>
-
-            <div className="mb-8 space-y-4 text-gray-300">
-              <div className="flex items-start">
-                <FaCheckCircle
-                  className="mr-3 mt-1 h-5 w-5 flex-shrink-0"
-                  style={{ color: '#FF9900' }}
-                />
-                <span>
-                  <b>Chương trình 12 module:</b> Từ tư duy thiết kế, làm sạch dữ liệu cho đến tự
-                  động hóa hệ thống pipeline hoàn chỉnh.
-                </span>
-              </div>
-              <div className="flex items-start">
-                <FaCheckCircle
-                  className="mr-3 mt-1 h-5 w-5 flex-shrink-0"
-                  style={{ color: '#FF9900' }}
-                />
-                <span>
-                  <b>Thực chiến pipeline:</b> Data lake, Glue, Athena, Redshift, orchestration — làm
-                  trên môi trường lab.
-                </span>
-              </div>
-              <div className="flex items-start">
-                <FaCheckCircle
-                  className="mr-3 mt-1 h-5 w-5 flex-shrink-0"
-                  style={{ color: '#FF9900' }}
-                />
-                <span>
-                  <b>Lộ trình chứng chỉ:</b> Ôn tập hướng tới AWS Certified Data Engineer –
-                  Associate (DEA-C01).
-                </span>
-              </div>
-            </div>
-
-            <div className="mb-8 grid grid-cols-2 gap-4 md:grid-cols-4">
-              {stats.map((stat, index) => (
-                <div key={index} className="text-center">
-                  <div className="text-2xl font-bold" style={{ color: '#FF9900' }}>
-                    {stat.number}
-                  </div>
-                  <div className="text-xs text-gray-400">{stat.label}</div>
+        <section className="py-22 bg-slate-100 dark:bg-gray-900">
+          <div className="rounded-2xl p-8 text-white dark:bg-slate-900">
+            <h2 className="mb-12 text-center text-3xl font-bold text-gray-800 dark:text-white">
+              Tại Sao Chọn DEA-C01 Với <span className="text-purple-600">VNTechies</span>?
+            </h2>
+            <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+              {highlights.map((highlight, index) => (
+                <div
+                  key={index}
+                  className="rounded-lg border border-gray-200 p-6 text-center transition-shadow hover:shadow-lg dark:border-gray-900"
+                >
+                  <div className="mb-4 flex justify-center">{highlight.icon}</div>
+                  <h3 className="mb-2 text-xl font-semibold text-gray-900 dark:text-white">
+                    {highlight.title}
+                  </h3>
+                  <p className="text-gray-600 dark:text-gray-300">{highlight.description}</p>
                 </div>
               ))}
             </div>
-
-            <a
-              href="#registration-form"
-              onClick={(e) => smoothScrollTo(e, '#registration-form')}
-              className="inline-flex items-center rounded-lg px-8 py-4 text-lg font-semibold transition-colors hover:opacity-90"
-              style={{ backgroundColor: '#FF9900', color: '#000' }}
-            >
-              <FaRocket className="mr-2" />
-              Đăng ký tư vấn — {info.earlyBirdPrice}
-            </a>
-            <div className="text-sm text-gray-600 dark:text-gray-400">
-              <span className="font-semibold">Tư vấn:</span>{' '}
-              <Link
-                href="https://m.me/vntechies"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-purple-500 hover:underline"
-              >
-                Messenger VNTechies
-              </Link>
-            </div>
           </div>
+        </section>
 
-          <div className="bg-grid-pattern relative flex w-full items-center justify-center overflow-hidden bg-gray-50 p-6 dark:bg-gray-700 md:w-2/5">
-            <div
-              className="absolute -bottom-24 -right-20 h-80 w-80 rounded-full opacity-20 blur-3xl dark:opacity-10"
-              style={{ backgroundColor: '#FF9900' }}
-            ></div>
-            <div
-              className="absolute -top-20 -left-24 h-72 w-72 rounded-full opacity-20 blur-3xl dark:opacity-10"
-              style={{ backgroundColor: '#7c3aed' }}
-            ></div>
+        <AudienceFit student={audience.student} working={audience.working} />
 
-            <div className="relative flex h-full w-full items-center justify-center">
-              <Image
-                src={info.image}
-                alt={info.title}
-                width={400}
-                height={300}
-                className="h-auto max-w-full object-contain drop-shadow-2xl"
-              />
-            </div>
+        <section className="px-4 pb-8">
+          <div className="mx-auto max-w-6xl">
+            <SalaryEvidence
+              title="Data Engineering đáng giá thế nào? Số liệu thị trường"
+              items={salaryEvidence}
+              note="Số liệu khảo sát thị trường để tham khảo. Thu nhập thực tế phụ thuộc kinh nghiệm, vị trí và công ty; VNTechies không cam kết mức lương."
+            />
           </div>
-        </div>
-      </section>
+        </section>
 
-      <section className="py-22 bg-slate-100 dark:bg-gray-900">
-        <div className="rounded-2xl p-8 text-white dark:bg-slate-900">
-          <h2 className="mb-12 text-center text-3xl font-bold text-gray-800 dark:text-white">
-            Tại Sao Chọn DEA-C01 Với <span className="text-purple-600">VNTechies</span>?
-          </h2>
-          <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
-            {highlights.map((highlight, index) => (
-              <div
-                key={index}
-                className="rounded-lg border border-gray-200 p-6 text-center transition-shadow hover:shadow-lg dark:border-gray-900"
-              >
-                <div className="mb-4 flex justify-center">{highlight.icon}</div>
-                <h3 className="mb-2 text-xl font-semibold text-gray-900 dark:text-white">
-                  {highlight.title}
-                </h3>
-                <p className="text-gray-600 dark:text-gray-300">{highlight.description}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section id="hoc-phi-dea" className="bg-white py-20 dark:bg-gray-900">
-        <div className="mx-auto max-w-6xl px-4">
-          <div className="mb-16 text-center">
-            <h2 className="mb-4 text-4xl font-bold text-gray-900 dark:text-gray-100">
-              Học phí đầu tư cho tương lai
-            </h2>
-            <p className="text-xl text-gray-600 dark:text-gray-300">
-              Cùng cách tính như khóa Data Engineer Bootcamp: Standard · Early Bird (−10%) · Group
-              (2+ người)
-            </p>
-          </div>
-
-          <div className="grid gap-8 lg:grid-cols-3">
-            <div className="group relative rounded-2xl bg-white p-8 shadow-lg transition hover:shadow-2xl dark:bg-gray-800">
-              <div className="mb-8 text-center">
-                <h3 className="mb-2 text-2xl font-bold text-gray-900 dark:text-gray-100">
-                  Standard
-                </h3>
-                <p className="text-gray-600 dark:text-gray-400">Học phí tiêu chuẩn</p>
-              </div>
-              <div className="mb-8 space-y-4">
-                <div className="rounded-xl bg-gray-50 p-6 text-center dark:bg-gray-700">
-                  <div className="text-sm font-medium text-gray-600 dark:text-gray-400">
-                    Người đi làm
-                  </div>
-                  <div className="text-3xl font-bold text-gray-900 dark:text-gray-100">
-                    10.000.000₫
-                  </div>
-                </div>
-                <div className="rounded-xl bg-purple-50 p-4 text-center dark:bg-purple-900/30">
-                  <div className="text-sm font-medium text-purple-600 dark:text-purple-400">
-                    Sinh viên
-                  </div>
-                  <div className="text-2xl font-bold text-purple-700 dark:text-purple-300">
-                    9.500.000₫
-                  </div>
-                  <div className="mt-2 text-xs text-purple-600 dark:text-purple-400">
-                    Giảm 500.000đ so với mức người đi làm
-                  </div>
-                  <Link
-                    href="/pricing#financial-aid"
-                    className="mt-1 inline-block text-xs font-semibold text-purple-700 hover:underline dark:text-purple-300"
-                  >
-                    Financial Aid Program
-                  </Link>
-                </div>
-              </div>
-              <a
-                href="#registration-form"
-                onClick={(e) => smoothScrollTo(e, '#registration-form')}
-                className="block w-full rounded-xl bg-slate-900 py-4 text-center font-semibold text-white transition hover:scale-105 hover:bg-slate-800"
-              >
-                Đăng ký ngay
-              </a>
-            </div>
-
-            <div className="group relative scale-105 rounded-2xl bg-purple-600 p-8 text-white shadow-2xl">
-              <div className="absolute -top-4 left-1/2 -translate-x-1/2 rounded-full bg-purple-400 px-4 py-2 text-sm font-bold text-white">
-                HẤP DẪN
-              </div>
-              <div className="mb-8 text-center">
-                <h3 className="mb-2 text-2xl font-bold">Early Bird</h3>
-                <p className="opacity-90">Đăng ký sớm — tiết kiệm 10%</p>
-              </div>
-              <div className="mb-8 space-y-4">
-                <div className="rounded-xl bg-white/20 p-6 text-center backdrop-blur">
-                  <div className="text-sm font-medium opacity-90">Người đi làm</div>
-                  <div className="text-3xl font-bold">9.000.000₫</div>
-                  <div className="text-sm line-through opacity-75">10.000.000₫</div>
-                </div>
-                <div className="rounded-xl bg-white/10 p-4 text-center backdrop-blur">
-                  <div className="text-sm font-medium opacity-90">Sinh viên</div>
-                  <div className="text-2xl font-bold">8.500.000₫</div>
-                  <div className="text-sm line-through opacity-75">9.500.000₫</div>
-                  <div className="mt-2 text-xs opacity-90">Hỗ trợ học phí lên tới 500.000đ</div>
-                  <Link
-                    href="/pricing#financial-aid"
-                    className="text-xs font-semibold opacity-90 hover:underline"
-                  >
-                    Financial Aid Program
-                  </Link>
-                </div>
-              </div>
-              <a
-                href="#registration-form"
-                onClick={(e) => smoothScrollTo(e, '#registration-form')}
-                className="block w-full rounded-xl bg-white py-4 text-center font-bold text-purple-600 transition hover:scale-105 hover:bg-gray-50"
-              >
-                Đăng ký ngay
-              </a>
-            </div>
-
-            <div className="group relative rounded-2xl bg-white p-8 shadow-lg transition hover:shadow-2xl dark:bg-gray-800">
-              <div className="absolute -top-3 right-4 rounded-full bg-purple-500 px-3 py-1 text-xs font-bold text-white">
-                PHỔ BIẾN
-              </div>
-              <div className="mb-8 text-center">
-                <h3 className="mb-2 text-2xl font-bold text-gray-900 dark:text-gray-100">Group</h3>
-                <p className="text-gray-600 dark:text-gray-400">2+ người cùng đăng ký</p>
-              </div>
-              <div className="mb-8 space-y-4">
-                <div className="rounded-xl bg-purple-50 p-6 text-center dark:bg-purple-900/30">
-                  <div className="text-sm font-medium text-purple-600 dark:text-purple-400">
-                    Người đi làm
-                  </div>
-                  <div className="text-3xl font-bold text-purple-700 dark:text-purple-300">
-                    8.800.000₫
-                  </div>
-                  <div className="text-sm text-gray-500 line-through dark:text-gray-400">
-                    10.000.000₫
-                  </div>
-                </div>
-                <div className="rounded-xl bg-purple-50 p-4 text-center dark:bg-purple-900/20">
-                  <div className="text-sm font-medium text-purple-600 dark:text-purple-400">
-                    Sinh viên
-                  </div>
-                  <div className="text-2xl font-bold text-purple-700 dark:text-purple-300">
-                    8.300.000₫
-                  </div>
-                  <div className="text-sm text-gray-500 line-through dark:text-gray-400">
-                    9.500.000₫
-                  </div>
-                </div>
-              </div>
-              <a
-                href="#registration-form"
-                onClick={(e) => smoothScrollTo(e, '#registration-form')}
-                className="block w-full rounded-xl bg-purple-600 py-4 text-center font-semibold text-white transition hover:scale-105 hover:bg-purple-700"
-              >
-                Đăng ký ngay
-              </a>
-            </div>
-          </div>
-
-          <p className="mt-10 text-center text-sm text-gray-600 dark:text-gray-400">
-            <span className="font-semibold text-gray-900 dark:text-gray-100">
-              Giới thiệu học viên:
-            </span>{' '}
-            giảm thêm{' '}
-            <span className="font-semibold text-purple-700 dark:text-purple-300">500.000đ</span> khi
-            bạn giới thiệu học viên mới đăng ký và hoàn tất học phí cùng khóa (áp dụng theo chính
-            sách từng đợt — xác nhận khi tư vấn).
-          </p>
-        </div>
-      </section>
-
-      <section className="bg-gray-50 py-16 px-4 dark:bg-gray-900">
-        <div className="mx-auto max-w-6xl">
-          <div className="grid grid-cols-1 gap-12 lg:grid-cols-2">
-            <div>
-              <h2 className="mb-8 text-3xl font-bold text-gray-900 dark:text-white">
-                Thông Tin Khóa Học
+        <section id="hoc-phi-dea" className="bg-white py-20 dark:bg-gray-900">
+          <div className="mx-auto max-w-6xl px-4">
+            <div className="mb-16 text-center">
+              <h2 className="mb-4 text-4xl font-bold text-gray-900 dark:text-gray-100">
+                Học phí đầu tư cho tương lai
               </h2>
-              <div className="space-y-6">
-                <div className="flex items-start space-x-4">
-                  <FaClock className="mt-1 text-purple-600" />
-                  <div>
-                    <h3 className="font-semibold text-gray-900 dark:text-white">Thời gian học</h3>
-                    <p className="text-gray-600 dark:text-gray-300">{info.duration}</p>
-                    <p className="text-gray-600 dark:text-gray-300">{info.schedule}</p>
-                  </div>
+              <p className="text-xl text-gray-600 dark:text-gray-300">
+                Cùng cách tính như khóa Data Engineer Bootcamp: Standard · Early Bird (−10%) · Group
+                (2+ người)
+              </p>
+            </div>
+
+            <div className="grid gap-8 lg:grid-cols-3">
+              <div className="group relative rounded-2xl bg-white p-8 shadow-lg transition hover:shadow-2xl dark:bg-gray-800">
+                <div className="mb-8 text-center">
+                  <h3 className="mb-2 text-2xl font-bold text-gray-900 dark:text-gray-100">
+                    Standard
+                  </h3>
+                  <p className="text-gray-600 dark:text-gray-400">Học phí tiêu chuẩn</p>
                 </div>
-                <div className="flex items-start space-x-4">
-                  <FaGlobe className="mt-1 text-purple-600" />
-                  <div>
-                    <h3 className="font-semibold text-gray-900 dark:text-white">Hình thức học</h3>
-                    <p className="text-gray-600 dark:text-gray-300">{info.location}</p>
+                <div className="mb-8 space-y-4">
+                  <div className="rounded-xl bg-gray-50 p-6 text-center dark:bg-gray-700">
+                    <div className="text-sm font-medium text-gray-600 dark:text-gray-400">
+                      Người đi làm
+                    </div>
+                    <div className="text-3xl font-bold text-gray-900 dark:text-gray-100">
+                      10.000.000₫
+                    </div>
                   </div>
-                </div>
-                <div className="flex items-start space-x-4">
-                  <FaDollarSign className="mt-1 text-purple-600" />
-                  <div>
-                    <h3 className="font-semibold text-gray-900 dark:text-white">Học phí</h3>
-                    <p className="text-gray-600 dark:text-gray-300">
-                      Tiêu chuẩn:{' '}
-                      <span className="font-semibold text-gray-900 dark:text-white">
-                        10.000.000đ
-                      </span>{' '}
-                      (người đi làm) ·{' '}
-                      <span className="font-semibold text-purple-700 dark:text-purple-300">
-                        9.500.000đ
-                      </span>{' '}
-                      (sinh viên, giảm 500.000đ so với mức đi làm).
-                    </p>
-                    <p className="mt-2 text-sm text-gray-600 dark:text-gray-300">
-                      Early Bird −10%, ưu đãi nhóm 2+ người và{' '}
-                      <span className="font-semibold">giảm thêm 500.000đ</span> khi giới thiệu học
-                      viên mới — xem{' '}
-                      <a
-                        href="#hoc-phi-dea"
-                        onClick={(e) => smoothScrollTo(e, '#hoc-phi-dea')}
-                        className="font-semibold text-purple-600 hover:underline dark:text-purple-400"
-                      >
-                        bảng học phí
-                      </a>
-                      .
-                    </p>
-                    <div className="mt-2 text-xs text-green-600 dark:text-green-400">
-                      Hỗ trợ học phí lên tới 500.000đ
+                  <div className="rounded-xl bg-purple-50 p-4 text-center dark:bg-purple-900/30">
+                    <div className="text-sm font-medium text-purple-600 dark:text-purple-400">
+                      Sinh viên
+                    </div>
+                    <div className="text-2xl font-bold text-purple-700 dark:text-purple-300">
+                      9.500.000₫
+                    </div>
+                    <div className="mt-2 text-xs text-purple-600 dark:text-purple-400">
+                      Giảm 500.000đ so với mức người đi làm
                     </div>
                     <Link
                       href="/pricing#financial-aid"
-                      className="text-xs font-semibold text-green-700 hover:underline dark:text-green-300"
+                      className="mt-1 inline-block text-xs font-semibold text-purple-700 hover:underline dark:text-purple-300"
                     >
                       Financial Aid Program
                     </Link>
                   </div>
                 </div>
-                <div className="flex items-start space-x-4">
-                  <FaUsers className="mt-1 text-purple-600" />
-                  <div>
-                    <h3 className="font-semibold text-gray-900 dark:text-white">Khai giảng</h3>
-                    <p className="text-gray-600 dark:text-gray-300">{info.startDate}</p>
+                <a
+                  href="#registration-form"
+                  onClick={(e) => smoothScrollTo(e, '#registration-form')}
+                  className="block w-full rounded-xl bg-slate-900 py-4 text-center font-semibold text-white transition hover:scale-105 hover:bg-slate-800"
+                >
+                  Đăng ký ngay
+                </a>
+              </div>
+
+              <div className="group relative scale-105 rounded-2xl bg-purple-600 p-8 text-white shadow-2xl">
+                <div className="absolute -top-4 left-1/2 -translate-x-1/2 rounded-full bg-purple-400 px-4 py-2 text-sm font-bold text-white">
+                  HẤP DẪN
+                </div>
+                <div className="mb-8 text-center">
+                  <h3 className="mb-2 text-2xl font-bold">Early Bird</h3>
+                  <p className="opacity-90">Đăng ký sớm — tiết kiệm 10%</p>
+                </div>
+                <div className="mb-8 space-y-4">
+                  <div className="rounded-xl bg-white/20 p-6 text-center backdrop-blur">
+                    <div className="text-sm font-medium opacity-90">Người đi làm</div>
+                    <div className="text-3xl font-bold">9.000.000₫</div>
+                    <div className="text-sm line-through opacity-75">10.000.000₫</div>
+                  </div>
+                  <div className="rounded-xl bg-white/10 p-4 text-center backdrop-blur">
+                    <div className="text-sm font-medium opacity-90">Sinh viên</div>
+                    <div className="text-2xl font-bold">8.500.000₫</div>
+                    <div className="text-sm line-through opacity-75">9.500.000₫</div>
+                    <div className="mt-2 text-xs opacity-90">Hỗ trợ học phí lên tới 500.000đ</div>
+                    <Link
+                      href="/pricing#financial-aid"
+                      className="text-xs font-semibold opacity-90 hover:underline"
+                    >
+                      Financial Aid Program
+                    </Link>
                   </div>
                 </div>
+                <a
+                  href="#registration-form"
+                  onClick={(e) => smoothScrollTo(e, '#registration-form')}
+                  className="block w-full rounded-xl bg-white py-4 text-center font-bold text-purple-600 transition hover:scale-105 hover:bg-gray-50"
+                >
+                  Đăng ký ngay
+                </a>
               </div>
-            </div>
 
-            <div>
-              <h2 className="mb-8 text-3xl font-bold text-gray-900 dark:text-white">
-                Sau Khóa Học Bạn Sẽ
-              </h2>
-              <div className="space-y-3">
-                {learningOutcomes.map((outcome, index) => (
-                  <div key={index} className="flex items-start space-x-3">
-                    <FaCheckCircle className="mt-1 flex-shrink-0 text-green-500" />
-                    <p className="text-gray-700 dark:text-gray-300">{outcome}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section className="bg-white py-16 px-4 dark:bg-gray-800">
-        <div className="mx-auto max-w-6xl">
-          <h2 className="mb-12 text-center text-3xl font-bold text-gray-900 dark:text-white">
-            Chương Trình Học Chi Tiết
-          </h2>
-          <p className="mx-auto mb-10 max-w-3xl text-center text-gray-600 dark:text-gray-300">
-            Mười hai module theo outline khóa (tổ chức data-driven đến tự động hóa pipeline). Ngoài
-            ra có capstone, module ôn chứng chỉ và đánh giá cuối khóa trong lộ trình đầy đủ.
-          </p>
-          <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
-            {curriculum.map((module, index) => (
-              <div
-                key={index}
-                className="rounded-lg bg-gray-50 p-6 shadow-lg transition hover:shadow-xl dark:bg-gray-700"
-              >
-                <div className="mb-4 flex items-center justify-between">
-                  <span className="rounded-full bg-purple-600 px-3 py-1 text-sm font-semibold text-white">
-                    {module.week}
-                  </span>
+              <div className="group relative rounded-2xl bg-white p-8 shadow-lg transition hover:shadow-2xl dark:bg-gray-800">
+                <div className="absolute -top-3 right-4 rounded-full bg-purple-500 px-3 py-1 text-xs font-bold text-white">
+                  PHỔ BIẾN
                 </div>
-                <h3 className="mb-3 text-xl font-bold text-gray-900 dark:text-white">
-                  {module.title}
-                </h3>
-                <ul className="space-y-2">
-                  {module.topics.map((topic, topicIndex) => (
-                    <li key={topicIndex} className="flex items-start space-x-2">
-                      <FaLightbulb className="mt-1 flex-shrink-0 text-yellow-500" />
-                      <span className="text-gray-700 dark:text-gray-300">{topic}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="bg-slate-50 py-20 dark:bg-slate-800">
-        <div className="mx-auto max-w-6xl px-4">
-          <div className="mb-16 text-center">
-            <h2 className="mb-4 text-4xl font-bold text-gray-900 dark:text-gray-100">
-              Học viên nói gì?
-            </h2>
-          </div>
-
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {testimonials.map((t, i) => (
-              <div
-                key={i}
-                className="group rounded-2xl bg-white p-6 shadow-lg transition hover:shadow-xl dark:bg-gray-900"
-              >
-                <div className="mb-4 flex items-center gap-1">
-                  {[...Array(t.rating)].map((_, idx) => (
-                    <FaStar key={idx} className="h-4 w-4 text-yellow-400" />
-                  ))}
+                <div className="mb-8 text-center">
+                  <h3 className="mb-2 text-2xl font-bold text-gray-900 dark:text-gray-100">
+                    Group
+                  </h3>
+                  <p className="text-gray-600 dark:text-gray-400">2+ người cùng đăng ký</p>
                 </div>
-                <blockquote className="mb-4 text-gray-700 dark:text-gray-300">
-                  &quot;{t.comment}&quot;
-                </blockquote>
-                <div className="flex items-center gap-3">
-                  <Image
-                    src={t.image}
-                    alt={t.author}
-                    width={40}
-                    height={40}
-                    className="h-10 w-10 rounded-full object-cover"
-                  />
-                  <div className="text-sm font-semibold text-gray-900 dark:text-gray-100">
-                    {t.author}
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="bg-gray-100 px-4 py-16 dark:bg-gray-900">
-        <div className="mx-auto max-w-6xl">
-          <h2 className="mb-4 text-center text-3xl font-bold text-gray-900 dark:text-gray-100">
-            Đội ngũ Mentor
-          </h2>
-          <p className="mx-auto mb-12 max-w-3xl text-center text-xl text-gray-600 dark:text-gray-300">
-            100% là chuyên gia AWS tại các công ty nước ngoài (MNC), giàu kinh nghiệm dự án thực tế
-          </p>
-
-          <div className="mb-12 grid grid-cols-2 gap-8 md:grid-cols-4">
-            <div className="text-center">
-              <div className="mb-2 text-3xl font-bold text-blue-600 dark:text-blue-400">9+</div>
-              <div className="text-sm text-gray-600 dark:text-gray-400">
-                Mentor tham gia giảng dạy
-              </div>
-            </div>
-            <div className="text-center">
-              <div className="mb-2 text-3xl font-bold text-green-600 dark:text-green-400">100%</div>
-              <div className="text-sm text-gray-600 dark:text-gray-400">
-                Mentor giữ vị trí Senior/Lead/Manager
-              </div>
-            </div>
-            <div className="text-center">
-              <div className="mb-2 text-3xl font-bold text-purple-600 dark:text-purple-400">9+</div>
-              <div className="text-sm text-gray-600 dark:text-gray-400">Năm kinh nghiệm AWS</div>
-            </div>
-            <div className="text-center">
-              <div className="mb-2 text-3xl font-bold text-orange-600 dark:text-orange-400">
-                100%
-              </div>
-              <div className="text-sm text-gray-600 dark:text-gray-400">
-                Mentor có AWS Certification Professional level
-              </div>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-4">
-            {mentors.map((m, idx) => {
-              const slug = m.slug || (m.name ? m.name.toLowerCase().replace(/\s+/g, '-') : '')
-              return (
-                <Link key={idx} href={`/authors/${slug}`} className="block" passHref legacyBehavior>
-                  <a className="flex h-full flex-col items-center justify-between rounded-xl bg-gray-50 p-6 shadow transition hover:bg-indigo-50 dark:bg-gray-800 dark:hover:bg-indigo-700">
-                    <div className="flex flex-col items-center" style={{ minHeight: 260 }}>
-                      <Image
-                        src={m.avatar || m.avatar_url || '/data/authors/default.jpg'}
-                        alt={m.name}
-                        width={240}
-                        height={240}
-                        className="mb-3 rounded-full object-cover shadow-lg"
-                      />
+                <div className="mb-8 space-y-4">
+                  <div className="rounded-xl bg-purple-50 p-6 text-center dark:bg-purple-900/30">
+                    <div className="text-sm font-medium text-purple-600 dark:text-purple-400">
+                      Người đi làm
                     </div>
-                    <div className="flex w-full flex-1 flex-col items-center justify-center">
-                      {m.currentPosition && (
-                        <div className="mb-1 text-center text-sm font-semibold text-indigo-700 dark:text-indigo-300">
-                          {m.currentPosition}
-                        </div>
-                      )}
-                      {m.occupation && (
-                        <div className="mb-2 text-center text-xs text-gray-500 dark:text-gray-400">
-                          {m.occupation}
-                        </div>
-                      )}
-                      <div className="text-center text-lg font-bold">{m.name}</div>
-                      <div className="text-center text-sm text-gray-600 dark:text-gray-300">
-                        {m.title}
+                    <div className="text-3xl font-bold text-purple-700 dark:text-purple-300">
+                      8.800.000₫
+                    </div>
+                    <div className="text-sm text-gray-500 line-through dark:text-gray-400">
+                      10.000.000₫
+                    </div>
+                  </div>
+                  <div className="rounded-xl bg-purple-50 p-4 text-center dark:bg-purple-900/20">
+                    <div className="text-sm font-medium text-purple-600 dark:text-purple-400">
+                      Sinh viên
+                    </div>
+                    <div className="text-2xl font-bold text-purple-700 dark:text-purple-300">
+                      8.300.000₫
+                    </div>
+                    <div className="text-sm text-gray-500 line-through dark:text-gray-400">
+                      9.500.000₫
+                    </div>
+                  </div>
+                </div>
+                <a
+                  href="#registration-form"
+                  onClick={(e) => smoothScrollTo(e, '#registration-form')}
+                  className="block w-full rounded-xl bg-purple-600 py-4 text-center font-semibold text-white transition hover:scale-105 hover:bg-purple-700"
+                >
+                  Đăng ký ngay
+                </a>
+              </div>
+            </div>
+
+            <p className="mt-10 text-center text-sm text-gray-600 dark:text-gray-400">
+              <span className="font-semibold text-gray-900 dark:text-gray-100">
+                Giới thiệu học viên:
+              </span>{' '}
+              giảm thêm{' '}
+              <span className="font-semibold text-purple-700 dark:text-purple-300">500.000đ</span>{' '}
+              khi bạn giới thiệu học viên mới đăng ký và hoàn tất học phí cùng khóa (áp dụng theo
+              chính sách từng đợt — xác nhận khi tư vấn).
+            </p>
+          </div>
+        </section>
+
+        <section className="bg-gray-50 py-16 px-4 dark:bg-gray-900">
+          <div className="mx-auto max-w-6xl">
+            <div className="grid grid-cols-1 gap-12 lg:grid-cols-2">
+              <div>
+                <h2 className="mb-8 text-3xl font-bold text-gray-900 dark:text-white">
+                  Thông Tin Khóa Học
+                </h2>
+                <div className="space-y-6">
+                  <div className="flex items-start space-x-4">
+                    <FaClock className="mt-1 text-purple-600" />
+                    <div>
+                      <h3 className="font-semibold text-gray-900 dark:text-white">Thời gian học</h3>
+                      <p className="text-gray-600 dark:text-gray-300">{info.duration}</p>
+                      <p className="text-gray-600 dark:text-gray-300">{info.schedule}</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start space-x-4">
+                    <FaGlobe className="mt-1 text-purple-600" />
+                    <div>
+                      <h3 className="font-semibold text-gray-900 dark:text-white">Hình thức học</h3>
+                      <p className="text-gray-600 dark:text-gray-300">{info.location}</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start space-x-4">
+                    <FaDollarSign className="mt-1 text-purple-600" />
+                    <div>
+                      <h3 className="font-semibold text-gray-900 dark:text-white">Học phí</h3>
+                      <p className="text-gray-600 dark:text-gray-300">
+                        Tiêu chuẩn:{' '}
+                        <span className="font-semibold text-gray-900 dark:text-white">
+                          10.000.000đ
+                        </span>{' '}
+                        (người đi làm) ·{' '}
+                        <span className="font-semibold text-purple-700 dark:text-purple-300">
+                          9.500.000đ
+                        </span>{' '}
+                        (sinh viên, giảm 500.000đ so với mức đi làm).
+                      </p>
+                      <p className="mt-2 text-sm text-gray-600 dark:text-gray-300">
+                        Early Bird −10%, ưu đãi nhóm 2+ người và{' '}
+                        <span className="font-semibold">giảm thêm 500.000đ</span> khi giới thiệu học
+                        viên mới — xem{' '}
+                        <a
+                          href="#hoc-phi-dea"
+                          onClick={(e) => smoothScrollTo(e, '#hoc-phi-dea')}
+                          className="font-semibold text-purple-600 hover:underline dark:text-purple-400"
+                        >
+                          bảng học phí
+                        </a>
+                        .
+                      </p>
+                      <div className="mt-2 text-xs text-green-600 dark:text-green-400">
+                        Hỗ trợ học phí lên tới 500.000đ
                       </div>
-                      {m.bio && <div className="mt-1 text-center text-sm">{m.bio}</div>}
-                      {m.socials && (
-                        <div className="mt-2 flex justify-center gap-2">
-                          {m.socials.map((s, i) => (
-                            <a key={i} href={s.url} target="_blank" rel="noopener noreferrer">
-                              <Image
-                                src={s.icon}
-                                alt={s.name}
-                                width={24}
-                                height={24}
-                                className="inline h-6 w-6"
-                              />
-                            </a>
-                          ))}
-                        </div>
-                      )}
+                      <Link
+                        href="/pricing#financial-aid"
+                        className="text-xs font-semibold text-green-700 hover:underline dark:text-green-300"
+                      >
+                        Financial Aid Program
+                      </Link>
                     </div>
-                  </a>
-                </Link>
-              )
-            })}
-          </div>
-        </div>
-      </section>
+                  </div>
+                  <div className="flex items-start space-x-4">
+                    <FaUsers className="mt-1 text-purple-600" />
+                    <div>
+                      <h3 className="font-semibold text-gray-900 dark:text-white">Khai giảng</h3>
+                      <p className="text-gray-600 dark:text-gray-300">{info.startDate}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
 
-      <section className="bg-gray-50 px-4 py-16 dark:bg-gray-900">
-        <div className="mx-auto max-w-6xl">
-          <h2 className="mb-12 text-center text-3xl font-bold text-gray-900 dark:text-gray-100">
-            Quyền lợi của học viên
-          </h2>
-
-          <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-            <div className="rounded-xl bg-white p-8 shadow-lg dark:bg-gray-800">
-              <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-purple-100 dark:bg-purple-900">
-                <FaCode className="h-8 w-8 text-purple-600 dark:text-purple-400" />
-              </div>
-              <h3 className="mb-4 text-xl font-bold text-gray-900 dark:text-gray-100">
-                LAB &amp; PIPELINE THỰC TẾ
-              </h3>
-              <p className="text-gray-600 dark:text-gray-300">
-                Thực hành Glue, Athena, S3, EMR, Redshift, Kinesis, Step Functions và các dịch vụ
-                liên quan trên môi trường lab AWS
-              </p>
-            </div>
-
-            <div className="rounded-xl bg-white p-8 shadow-lg dark:bg-gray-800">
-              <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-green-100 dark:bg-green-900">
-                <FaDollarSign className="h-8 w-8 text-green-600 dark:text-green-400" />
-              </div>
-              <h3 className="mb-4 text-xl font-bold text-gray-900 dark:text-gray-100">
-                ƯU ĐÃI LỆ PHÍ THI
-              </h3>
-              <p className="text-gray-600 dark:text-gray-300">
-                Hỗ trợ voucher giảm lệ phí thi chứng chỉ AWS sau khóa (theo chính sách từng đợt)
-              </p>
-            </div>
-
-            <div className="rounded-xl bg-white p-8 shadow-lg dark:bg-gray-800">
-              <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-purple-100 dark:bg-purple-900">
-                <FaClock className="h-8 w-8 text-purple-600 dark:text-purple-400" />
-              </div>
-              <h3 className="mb-4 text-xl font-bold text-gray-900 dark:text-gray-100">
-                TRUY CẬP TRỌN ĐỜI
-              </h3>
-              <div className="space-y-3 text-sm text-gray-600 dark:text-gray-300">
-                <div className="flex items-start space-x-2">
-                  <FaCheckCircle className="mt-1 h-4 w-4 text-purple-500" />
-                  <span>Tài liệu khóa học và video record trọn đời</span>
-                </div>
-                <div className="flex items-start space-x-2">
-                  <FaCheckCircle className="mt-1 h-4 w-4 text-purple-500" />
-                  <span>Cập nhật kiến thức mới nhất từ AWS</span>
-                </div>
-              </div>
-            </div>
-
-            <div className="rounded-xl bg-white p-8 shadow-lg dark:bg-gray-800">
-              <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-yellow-100 dark:bg-yellow-900">
-                <FaUsers className="h-8 w-8 text-yellow-600 dark:text-yellow-400" />
-              </div>
-              <h3 className="mb-4 text-xl font-bold text-gray-900 dark:text-gray-100">
-                CỘNG ĐỒNG HỖ TRỢ
-              </h3>
-              <div className="space-y-3 text-sm text-gray-600 dark:text-gray-300">
-                <div className="flex items-start space-x-2">
-                  <FaCheckCircle className="mt-1 h-4 w-4 text-yellow-500" />
-                  <span>
-                    <strong>Career Center:</strong> Giới thiệu việc làm từ Mentor và cộng đồng
-                  </span>
-                </div>
-                <div className="flex items-start space-x-2">
-                  <FaCheckCircle className="mt-1 h-4 w-4 text-yellow-500" />
-                  <span>
-                    <strong>VNTechies Community:</strong> Kết nối và xây dựng network chuyên nghiệp
-                  </span>
-                </div>
-                <div className="flex items-start space-x-2">
-                  <FaCheckCircle className="mt-1 h-4 w-4 text-yellow-500" />
-                  <span>
-                    <strong>Cộng đồng Q&amp;A:</strong> Hỏi đáp, tư vấn kiến thức và công việc 24/7
-                  </span>
-                </div>
-              </div>
-            </div>
-
-            <div className="rounded-xl bg-white p-8 shadow-lg dark:bg-gray-800">
-              <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-red-100 dark:bg-red-900">
-                <FaAward className="h-8 w-8 text-red-600 dark:text-red-400" />
-              </div>
-              <h3 className="mb-4 text-xl font-bold text-gray-900 dark:text-gray-100">
-                SỰ KIỆN ĐỘC QUYỀN
-              </h3>
-              <div className="space-y-3 text-sm text-gray-600 dark:text-gray-300">
-                <div className="flex items-start space-x-2">
-                  <FaCheckCircle className="mt-1 h-4 w-4 text-red-500" />
-                  <span>Miễn phí tham gia Master Class và Workshop</span>
-                </div>
-                <div className="flex items-start space-x-2">
-                  <FaCheckCircle className="mt-1 h-4 w-4 text-red-500" />
-                  <span>Alumni&apos;s Support và Office Hour với chuyên gia</span>
-                </div>
-                <div className="flex items-start space-x-2">
-                  <FaCheckCircle className="mt-1 h-4 w-4 text-red-500" />
-                  <span>Cập nhật trend và công nghệ mới nhất trong ngành</span>
-                </div>
-              </div>
-            </div>
-
-            <div className="rounded-xl bg-white p-8 shadow-lg dark:bg-gray-800">
-              <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-indigo-100 dark:bg-indigo-900">
-                <FaChartLine className="h-8 w-8 text-indigo-600 dark:text-indigo-400" />
-              </div>
-              <h3 className="mb-4 text-xl font-bold text-gray-900 dark:text-gray-100">
-                HỖ TRỢ THI CHỨNG CHỈ
-              </h3>
-              <div className="space-y-3 text-sm text-gray-600 dark:text-gray-300">
-                <div className="flex items-start space-x-2">
-                  <FaCheckCircle className="mt-1 h-4 w-4 text-indigo-500" />
-                  <span>Mock exams và practice tests miễn phí</span>
-                </div>
-                <div className="flex items-start space-x-2">
-                  <FaCheckCircle className="mt-1 h-4 w-4 text-indigo-500" />
-                  <span>Hướng dẫn đăng ký thi và lịch thi</span>
-                </div>
-                <div className="flex items-start space-x-2">
-                  <FaCheckCircle className="mt-1 h-4 w-4 text-indigo-500" />
-                  <span>Review và feedback trước khi thi thật</span>
+              <div>
+                <h2 className="mb-8 text-3xl font-bold text-gray-900 dark:text-white">
+                  Sau Khóa Học Bạn Sẽ
+                </h2>
+                <div className="space-y-3">
+                  {learningOutcomes.map((outcome, index) => (
+                    <div key={index} className="flex items-start space-x-3">
+                      <FaCheckCircle className="mt-1 flex-shrink-0 text-green-500" />
+                      <p className="text-gray-700 dark:text-gray-300">{outcome}</p>
+                    </div>
+                  ))}
                 </div>
               </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      <CourseRegistrationForm
-        courseTitle="AWS Certified Data Engineer – Associate (DEA-C01)"
-        theme="purple"
+        <section className="bg-white py-16 px-4 dark:bg-gray-800">
+          <div className="mx-auto max-w-6xl">
+            <h2 className="mb-12 text-center text-3xl font-bold text-gray-900 dark:text-white">
+              Chương Trình Học Chi Tiết
+            </h2>
+            <p className="mx-auto mb-10 max-w-3xl text-center text-gray-600 dark:text-gray-300">
+              Mười hai module theo outline khóa (tổ chức data-driven đến tự động hóa pipeline).
+              Ngoài ra có capstone, module ôn chứng chỉ và đánh giá cuối khóa trong lộ trình đầy đủ.
+            </p>
+            <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
+              {curriculum.map((module, index) => (
+                <div
+                  key={index}
+                  className="rounded-lg bg-gray-50 p-6 shadow-lg transition hover:shadow-xl dark:bg-gray-700"
+                >
+                  <div className="mb-4 flex items-center justify-between">
+                    <span className="rounded-full bg-purple-600 px-3 py-1 text-sm font-semibold text-white">
+                      {module.week}
+                    </span>
+                  </div>
+                  <h3 className="mb-3 text-xl font-bold text-gray-900 dark:text-white">
+                    {module.title}
+                  </h3>
+                  <ul className="space-y-2">
+                    {module.topics.map((topic, topicIndex) => (
+                      <li key={topicIndex} className="flex items-start space-x-2">
+                        <FaLightbulb className="mt-1 flex-shrink-0 text-yellow-500" />
+                        <span className="text-gray-700 dark:text-gray-300">{topic}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <TestimonialGrid items={pickTestimonials('data')} />
+
+        <section className="bg-gray-100 px-4 py-16 dark:bg-gray-900">
+          <div className="mx-auto max-w-6xl">
+            <h2 className="mb-4 text-center text-3xl font-bold text-gray-900 dark:text-gray-100">
+              Đội ngũ Mentor
+            </h2>
+            <p className="mx-auto mb-12 max-w-3xl text-center text-xl text-gray-600 dark:text-gray-300">
+              100% là chuyên gia AWS tại các công ty nước ngoài (MNC), giàu kinh nghiệm dự án thực
+              tế
+            </p>
+
+            <div className="mb-12 grid grid-cols-2 gap-8 md:grid-cols-4">
+              <div className="text-center">
+                <div className="mb-2 text-3xl font-bold text-blue-600 dark:text-blue-400">9+</div>
+                <div className="text-sm text-gray-600 dark:text-gray-400">
+                  Mentor tham gia giảng dạy
+                </div>
+              </div>
+              <div className="text-center">
+                <div className="mb-2 text-3xl font-bold text-green-600 dark:text-green-400">
+                  100%
+                </div>
+                <div className="text-sm text-gray-600 dark:text-gray-400">
+                  Mentor giữ vị trí Senior/Lead/Manager
+                </div>
+              </div>
+              <div className="text-center">
+                <div className="mb-2 text-3xl font-bold text-purple-600 dark:text-purple-400">
+                  9+
+                </div>
+                <div className="text-sm text-gray-600 dark:text-gray-400">Năm kinh nghiệm AWS</div>
+              </div>
+              <div className="text-center">
+                <div className="mb-2 text-3xl font-bold text-orange-600 dark:text-orange-400">
+                  100%
+                </div>
+                <div className="text-sm text-gray-600 dark:text-gray-400">
+                  Mentor có AWS Certification Professional level
+                </div>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-4">
+              {mentors.map((m, idx) => {
+                const slug = m.slug || (m.name ? m.name.toLowerCase().replace(/\s+/g, '-') : '')
+                return (
+                  <Link
+                    key={idx}
+                    href={`/authors/${slug}`}
+                    className="block"
+                    passHref
+                    legacyBehavior
+                  >
+                    <a className="flex h-full flex-col items-center justify-between rounded-xl bg-gray-50 p-6 shadow transition hover:bg-indigo-50 dark:bg-gray-800 dark:hover:bg-indigo-700">
+                      <div className="flex flex-col items-center" style={{ minHeight: 260 }}>
+                        <Image
+                          src={m.avatar || m.avatar_url || '/data/authors/default.jpg'}
+                          alt={m.name}
+                          width={240}
+                          height={240}
+                          className="mb-3 rounded-full object-cover shadow-lg"
+                        />
+                      </div>
+                      <div className="flex w-full flex-1 flex-col items-center justify-center">
+                        {m.currentPosition && (
+                          <div className="mb-1 text-center text-sm font-semibold text-indigo-700 dark:text-indigo-300">
+                            {m.currentPosition}
+                          </div>
+                        )}
+                        {m.occupation && (
+                          <div className="mb-2 text-center text-xs text-gray-500 dark:text-gray-400">
+                            {m.occupation}
+                          </div>
+                        )}
+                        <div className="text-center text-lg font-bold">{m.name}</div>
+                        <div className="text-center text-sm text-gray-600 dark:text-gray-300">
+                          {m.title}
+                        </div>
+                        {m.bio && <div className="mt-1 text-center text-sm">{m.bio}</div>}
+                        {m.socials && (
+                          <div className="mt-2 flex justify-center gap-2">
+                            {m.socials.map((s, i) => (
+                              <a key={i} href={s.url} target="_blank" rel="noopener noreferrer">
+                                <Image
+                                  src={s.icon}
+                                  alt={s.name}
+                                  width={24}
+                                  height={24}
+                                  className="inline h-6 w-6"
+                                />
+                              </a>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    </a>
+                  </Link>
+                )
+              })}
+            </div>
+          </div>
+        </section>
+
+        <section className="bg-gray-50 px-4 py-16 dark:bg-gray-900">
+          <div className="mx-auto max-w-6xl">
+            <h2 className="mb-12 text-center text-3xl font-bold text-gray-900 dark:text-gray-100">
+              Quyền lợi của học viên
+            </h2>
+
+            <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+              <div className="rounded-xl bg-white p-8 shadow-lg dark:bg-gray-800">
+                <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-purple-100 dark:bg-purple-900">
+                  <FaCode className="h-8 w-8 text-purple-600 dark:text-purple-400" />
+                </div>
+                <h3 className="mb-4 text-xl font-bold text-gray-900 dark:text-gray-100">
+                  LAB &amp; PIPELINE THỰC TẾ
+                </h3>
+                <p className="text-gray-600 dark:text-gray-300">
+                  Thực hành Glue, Athena, S3, EMR, Redshift, Kinesis, Step Functions và các dịch vụ
+                  liên quan trên môi trường lab AWS
+                </p>
+              </div>
+
+              <div className="rounded-xl bg-white p-8 shadow-lg dark:bg-gray-800">
+                <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-green-100 dark:bg-green-900">
+                  <FaDollarSign className="h-8 w-8 text-green-600 dark:text-green-400" />
+                </div>
+                <h3 className="mb-4 text-xl font-bold text-gray-900 dark:text-gray-100">
+                  ƯU ĐÃI LỆ PHÍ THI
+                </h3>
+                <p className="text-gray-600 dark:text-gray-300">
+                  Hỗ trợ voucher giảm lệ phí thi chứng chỉ AWS sau khóa (theo chính sách từng đợt)
+                </p>
+              </div>
+
+              <div className="rounded-xl bg-white p-8 shadow-lg dark:bg-gray-800">
+                <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-purple-100 dark:bg-purple-900">
+                  <FaClock className="h-8 w-8 text-purple-600 dark:text-purple-400" />
+                </div>
+                <h3 className="mb-4 text-xl font-bold text-gray-900 dark:text-gray-100">
+                  TRUY CẬP TRỌN ĐỜI
+                </h3>
+                <div className="space-y-3 text-sm text-gray-600 dark:text-gray-300">
+                  <div className="flex items-start space-x-2">
+                    <FaCheckCircle className="mt-1 h-4 w-4 text-purple-500" />
+                    <span>Tài liệu khóa học và video record trọn đời</span>
+                  </div>
+                  <div className="flex items-start space-x-2">
+                    <FaCheckCircle className="mt-1 h-4 w-4 text-purple-500" />
+                    <span>Cập nhật kiến thức mới nhất từ AWS</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="rounded-xl bg-white p-8 shadow-lg dark:bg-gray-800">
+                <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-yellow-100 dark:bg-yellow-900">
+                  <FaUsers className="h-8 w-8 text-yellow-600 dark:text-yellow-400" />
+                </div>
+                <h3 className="mb-4 text-xl font-bold text-gray-900 dark:text-gray-100">
+                  CỘNG ĐỒNG HỖ TRỢ
+                </h3>
+                <div className="space-y-3 text-sm text-gray-600 dark:text-gray-300">
+                  <div className="flex items-start space-x-2">
+                    <FaCheckCircle className="mt-1 h-4 w-4 text-yellow-500" />
+                    <span>
+                      <strong>Career Center:</strong> Giới thiệu việc làm từ Mentor và cộng đồng
+                    </span>
+                  </div>
+                  <div className="flex items-start space-x-2">
+                    <FaCheckCircle className="mt-1 h-4 w-4 text-yellow-500" />
+                    <span>
+                      <strong>VNTechies Community:</strong> Kết nối và xây dựng network chuyên
+                      nghiệp
+                    </span>
+                  </div>
+                  <div className="flex items-start space-x-2">
+                    <FaCheckCircle className="mt-1 h-4 w-4 text-yellow-500" />
+                    <span>
+                      <strong>Cộng đồng Q&amp;A:</strong> Hỏi đáp, tư vấn kiến thức và công việc
+                      24/7
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="rounded-xl bg-white p-8 shadow-lg dark:bg-gray-800">
+                <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-red-100 dark:bg-red-900">
+                  <FaAward className="h-8 w-8 text-red-600 dark:text-red-400" />
+                </div>
+                <h3 className="mb-4 text-xl font-bold text-gray-900 dark:text-gray-100">
+                  SỰ KIỆN ĐỘC QUYỀN
+                </h3>
+                <div className="space-y-3 text-sm text-gray-600 dark:text-gray-300">
+                  <div className="flex items-start space-x-2">
+                    <FaCheckCircle className="mt-1 h-4 w-4 text-red-500" />
+                    <span>Miễn phí tham gia Master Class và Workshop</span>
+                  </div>
+                  <div className="flex items-start space-x-2">
+                    <FaCheckCircle className="mt-1 h-4 w-4 text-red-500" />
+                    <span>Alumni&apos;s Support và Office Hour với chuyên gia</span>
+                  </div>
+                  <div className="flex items-start space-x-2">
+                    <FaCheckCircle className="mt-1 h-4 w-4 text-red-500" />
+                    <span>Cập nhật trend và công nghệ mới nhất trong ngành</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="rounded-xl bg-white p-8 shadow-lg dark:bg-gray-800">
+                <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-indigo-100 dark:bg-indigo-900">
+                  <FaChartLine className="h-8 w-8 text-indigo-600 dark:text-indigo-400" />
+                </div>
+                <h3 className="mb-4 text-xl font-bold text-gray-900 dark:text-gray-100">
+                  HỖ TRỢ THI CHỨNG CHỈ
+                </h3>
+                <div className="space-y-3 text-sm text-gray-600 dark:text-gray-300">
+                  <div className="flex items-start space-x-2">
+                    <FaCheckCircle className="mt-1 h-4 w-4 text-indigo-500" />
+                    <span>Mock exams và practice tests miễn phí</span>
+                  </div>
+                  <div className="flex items-start space-x-2">
+                    <FaCheckCircle className="mt-1 h-4 w-4 text-indigo-500" />
+                    <span>Hướng dẫn đăng ký thi và lịch thi</span>
+                  </div>
+                  <div className="flex items-start space-x-2">
+                    <FaCheckCircle className="mt-1 h-4 w-4 text-indigo-500" />
+                    <span>Review và feedback trước khi thi thật</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <CourseFAQ items={faq} />
+
+        <section className="bg-gradient-to-r from-purple-600 to-indigo-600 py-16 px-4">
+          <div className="mx-auto max-w-4xl text-center">
+            <h2 className="mb-6 text-3xl font-bold text-white">
+              Bắt đầu hành trình Data Engineer trên AWS
+            </h2>
+            <p className="mb-8 text-xl text-purple-100">
+              Đăng ký để nhận lịch khai giảng, học phí ưu đãi và lộ trình phù hợp với mục tiêu
+              DEA-C01 của bạn.
+            </p>
+            <div className="flex flex-col justify-center gap-4 sm:flex-row">
+              <a
+                href="#registration-form"
+                onClick={(e) => smoothScrollTo(e, '#registration-form')}
+                className="inline-flex items-center rounded-lg bg-white px-8 py-4 text-lg font-semibold text-purple-700 transition-colors hover:bg-gray-100"
+              >
+                <FaRocket className="mr-2" />
+                Đăng ký ngay — {info.earlyBirdPrice}
+              </a>
+            </div>
+            <p className="mt-4 text-sm text-purple-100">
+              AWS Certified Data Engineer – Associate (DEA-C01) · Lab thực hành · 12 module +
+              capstone
+            </p>
+          </div>
+        </section>
+
+        <OtherCoursesSection otherCourses={otherCourses} />
+      </div>
+      <StickyEnrollBar
+        code="AWS DEA-C01"
+        intake={MONTHLY_INTAKE}
+        fromPrice={8300000}
+        offer={null}
+        active={false}
       />
-
-      <section className="bg-gradient-to-r from-purple-600 to-indigo-600 py-16 px-4">
-        <div className="mx-auto max-w-4xl text-center">
-          <h2 className="mb-6 text-3xl font-bold text-white">
-            Bắt đầu hành trình Data Engineer trên AWS
-          </h2>
-          <p className="mb-8 text-xl text-purple-100">
-            Đăng ký để nhận lịch khai giảng, học phí ưu đãi và lộ trình phù hợp với mục tiêu DEA-C01
-            của bạn.
-          </p>
-          <div className="flex flex-col justify-center gap-4 sm:flex-row">
-            <a
-              href="#registration-form"
-              onClick={(e) => smoothScrollTo(e, '#registration-form')}
-              className="inline-flex items-center rounded-lg bg-white px-8 py-4 text-lg font-semibold text-purple-700 transition-colors hover:bg-gray-100"
-            >
-              <FaRocket className="mr-2" />
-              Đăng ký ngay — {info.earlyBirdPrice}
-            </a>
-          </div>
-          <p className="mt-4 text-sm text-purple-100">
-            AWS Certified Data Engineer – Associate (DEA-C01) · Lab thực hành · 12 module + capstone
-          </p>
-        </div>
-      </section>
-
-      <OtherCoursesSection otherCourses={otherCourses} />
+      <div className="h-16" aria-hidden="true" />
     </div>
   )
 }

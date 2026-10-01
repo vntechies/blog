@@ -27,6 +27,10 @@ const siteMetadata = {
   youtube: 'https://www.youtube.com/@vntechies',
   linkedin: 'https://linkedin.com/company/vntechies',
   messenger: 'https://m.me/vntechies',
+  // Zalo is the default chat app for Vietnamese students and professionals
+  zalo: 'https://zalo.me/0905068885',
+  zaloDisplay: '0905 068 885',
+  telephone: '+84905068885',
   tiktok: 'https://www.tiktok.com/@vntechies',
   discord: 'https://discord.com/invite/YecagKUqpS',
   locale: 'vi-VN',
