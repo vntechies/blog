@@ -6,8 +6,12 @@ import { getAllFilesFrontMatter } from '@/lib/mdx'
 import ArticleList from '@/components/ArticleList'
 import FAQ from '@/components/home/FAQ'
 import FreeCourses from '@/components/home/FreeCourses'
+import HeroTerminal from '@/components/home/HeroTerminal'
 
 const MAX_DISPLAY = 6
+
+// Gruvbox hues for course slugs, one per card
+const courseHues = ['text-orange-400', 'text-cyan-400', 'text-purple-400', 'text-blue-400']
 
 const heroStats = [
   { label: 'Học viên đã tham gia', value: '200+', icon: '/static/images/icons/users-icon.svg' },
@@ -206,116 +210,78 @@ export default function Home({ posts }) {
       />
 
       {/* Hero */}
-      <section className="relative isolate pt-8 pb-12 sm:pt-12 sm:pb-16 lg:pt-16 lg:pb-20">
-        <div className="page-glow" aria-hidden="true" />
+      <section className="pt-10 pb-12 sm:pt-16 sm:pb-16 lg:pt-20 lg:pb-20">
+        <div className="grid items-center gap-12 lg:grid-cols-[1.1fr,1fr] lg:gap-14">
+          <div>
+            <span className="page-eyebrow">Lộ trình học thực chiến cùng mentor chuyên gia</span>
 
-        <div className="flex flex-col items-center text-center">
-          <span className="page-eyebrow">
-            <span className="h-2 w-2 rounded-full bg-brand" aria-hidden="true" />
-            Lộ trình học thực chiến cùng mentor chuyên gia
-          </span>
+            <h1 className="page-display">
+              <span className="block">Từ Zero đến Hero với</span>
+              <span className="page-highlight mt-1 block">
+                Cloud, DevOps &amp; Data
+                <span className="term-cursor ml-2 align-baseline" aria-hidden="true" />
+              </span>
+            </h1>
 
-          <h1 className="page-display mt-2">
-            <span className="block">Từ Zero đến Hero với</span>
-            <span className="page-highlight mt-1 block pb-1">Cloud, DevOps & Data</span>
-          </h1>
+            <p className="page-lead max-w-xl">
+              Học theo lộ trình cá nhân hóa, thực chiến với lab thực tế và mentor đồng hành từ các
+              tập đoàn công nghệ hàng đầu.
+            </p>
 
-          <p className="page-lead mx-auto max-w-2xl">
-            Học theo lộ trình cá nhân hóa, thực chiến với lab thực tế và mentor đồng hành từ các tập
-            đoàn công nghệ hàng đầu.
-          </p>
+            <div className="mt-8 flex w-full flex-col gap-3 sm:w-auto sm:flex-row sm:gap-4">
+              <Link href="/courses/register" className="action-btn-primary action-btn-lg">
+                Đăng ký tư vấn miễn phí →
+              </Link>
+              <Link href="/courses" className="action-btn-secondary action-btn-lg">
+                Khám phá khóa học
+              </Link>
+            </div>
 
-          <div className="mt-8 flex w-full flex-col gap-3 sm:w-auto sm:flex-row sm:gap-4">
-            <Link href="/courses/register" className="action-btn-primary action-btn-lg">
-              Đăng ký tư vấn miễn phí →
-            </Link>
-            <Link href="/courses" className="action-btn-secondary action-btn-lg">
-              Khám phá khóa học
-            </Link>
+            <p className="mt-5 text-xs text-fg-subtle sm:text-sm">
+              <span className="text-success"># </span>
+              Tư vấn trong 15 phút, không ràng buộc, có đề xuất lộ trình phù hợp.
+            </p>
           </div>
 
-          <p className="mt-4 flex items-center gap-1.5 text-sm text-fg-muted">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-4 w-4 shrink-0"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              aria-hidden="true"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-              />
-            </svg>
-            <span>Tư vấn trong 15 phút, không ràng buộc, có đề xuất lộ trình phù hợp.</span>
-          </p>
+          <HeroTerminal stats={heroStats} courses={heroCourseLinks} />
         </div>
 
-        <div className="mx-auto mt-12 grid max-w-6xl gap-4 sm:grid-cols-2 xl:grid-cols-4">
-          {heroCourseLinks.map((course) => (
+        {/* Course cards, styled like theme previews: a mini terminal above the details */}
+        <h2 className="panel-label mt-16 mb-5 sm:mt-20">## Khoá học nổi bật</h2>
+        <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-4">
+          {heroCourseLinks.map((course, i) => (
             <Link
               key={course.title}
               href={course.href}
-              className="surface-panel surface-panel-interactive group flex flex-col p-5 sm:p-6"
+              className="surface-panel surface-panel-interactive group flex flex-col overflow-hidden"
             >
-              <p className="chip tone-info w-fit">{course.label}</p>
-              <p className="mt-3 text-lg font-bold leading-snug text-fg transition-colors group-hover:text-brand-strong">
-                {course.title}
-              </p>
-              <p className="mt-2 text-sm text-fg-muted">{course.subtitle}</p>
-              <span className="action-link mt-auto pt-4">
-                Xem chi tiết
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-4 w-4 transition-transform group-hover:translate-x-1"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  aria-hidden="true"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M9 5l7 7-7 7"
-                  />
-                </svg>
-              </span>
-            </Link>
-          ))}
-        </div>
-
-        <div className="mx-auto mt-10 grid max-w-6xl grid-cols-3 gap-3 sm:gap-4">
-          {heroStats.map((metric) => (
-            <div
-              key={metric.label}
-              className="surface-panel flex flex-col items-center p-4 text-center sm:p-6"
-            >
-              <div className="icon-tile">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-6 w-6"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  aria-hidden="true"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"
-                  />
-                </svg>
+              <div className="dark border-b border-line bg-canvas text-fg">
+                <div className="term-titlebar h-7 px-3" aria-hidden="true">
+                  <span className="flex shrink-0 gap-1.5">
+                    <span className="h-2 w-2 rounded-full bg-red-400" />
+                    <span className="h-2 w-2 rounded-full bg-yellow-400" />
+                    <span className="h-2 w-2 rounded-full bg-green-400" />
+                  </span>
+                </div>
+                <p className="px-3 py-3 text-[0.6875rem] leading-5">
+                  <span className="text-green-400">$</span> vntechies enroll{' '}
+                  <span className={courseHues[i % courseHues.length]}>
+                    {course.label.toLowerCase().replace(/\s+/g, '-')}
+                  </span>
+                  <br />
+                  <span className="text-fg-subtle">→ {course.subtitle}</span>
+                </p>
               </div>
-              <p className="mt-4 text-2xl font-extrabold tabular-nums text-fg sm:text-3xl">
-                {metric.value}
-              </p>
-              <p className="mt-1 text-xs font-medium text-fg-muted sm:text-sm">{metric.label}</p>
-            </div>
+              <div className="flex flex-1 flex-col p-5">
+                <p className="text-base font-bold leading-snug text-fg transition-colors group-hover:text-brand-strong">
+                  {course.title}
+                </p>
+                <div className="mt-auto flex items-center justify-between gap-3 pt-5">
+                  <span className="chip tone-info">{course.label}</span>
+                  <span className="action-link">Xem chi tiết →</span>
+                </div>
+              </div>
+            </Link>
           ))}
         </div>
       </section>
@@ -359,7 +325,9 @@ export default function Home({ posts }) {
           <div className="grid gap-4 sm:grid-cols-2">
             {uspPillars.map((item, index) => (
               <article key={item.title} className="surface-panel p-5 sm:p-6">
-                <div className="icon-tile text-xl font-bold tabular-nums">{index + 1}</div>
+                <div className="icon-tile text-base font-bold tabular-nums">
+                  {String(index + 1).padStart(2, '0')}
+                </div>
                 <h3 className="mt-4 text-lg font-bold leading-snug">{item.title}</h3>
                 <p className="mt-2 text-sm text-fg-muted">{item.description}</p>
               </article>
@@ -399,26 +367,10 @@ export default function Home({ posts }) {
               {painPoints.map((point) => (
                 <li
                   key={point}
-                  className="flex items-start gap-3 rounded-xl border border-line bg-surface-muted p-4"
+                  className="flex items-start gap-3 border-l-2 border-danger bg-danger/5 px-4 py-3"
                 >
-                  <span className="mt-0.5 inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-danger/10 text-danger">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-4 w-4"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                      aria-hidden="true"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M6 18L18 6M6 6l12 12"
-                      />
-                    </svg>
-                  </span>
-                  <span className="text-base text-fg">{point}</span>
+                  <span className="shrink-0 text-xs font-bold leading-6 text-danger">[ERR]</span>
+                  <span className="text-sm text-fg sm:text-base">{point}</span>
                 </li>
               ))}
             </ul>
@@ -452,26 +404,10 @@ export default function Home({ posts }) {
               {programOutcomes.map((item) => (
                 <div
                   key={item.title}
-                  className="flex flex-col rounded-xl border border-line bg-surface-muted p-5"
+                  className="flex flex-col border-l-2 border-success bg-success/5 p-5"
                 >
-                  <span className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-success/10 text-success">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-5 w-5"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                      aria-hidden="true"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M5 13l4 4L19 7"
-                      />
-                    </svg>
-                  </span>
-                  <h3 className="mt-4 text-lg font-bold leading-snug">{item.title}</h3>
+                  <span className="text-xs font-bold text-success">[ OK ]</span>
+                  <h3 className="mt-2 text-base font-bold leading-snug">{item.title}</h3>
                   <p className="mt-2 text-sm text-fg-muted">{item.summary}</p>
                 </div>
               ))}

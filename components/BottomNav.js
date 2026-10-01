@@ -20,15 +20,17 @@ const BottomNav = () => {
                 aria-current={isActive ? 'page' : undefined}
                 className={
                   isHighlighted
-                    ? 'relative -top-4 flex h-14 w-14 flex-col items-center justify-center rounded-full bg-brand text-brand-on shadow-lg ring-4 ring-surface transition-colors hover:bg-brand-hover'
-                    : `flex h-full min-w-[52px] flex-col items-center justify-center gap-1 rounded-xl transition-colors ${
-                        isActive ? 'text-brand-strong' : 'text-fg-muted hover:text-fg'
+                    ? 'relative -top-3 flex h-14 min-w-[4.75rem] flex-col items-center justify-center gap-0.5 border-2 border-canvas bg-brand px-2 text-brand-on outline outline-1 outline-brand transition-colors hover:bg-brand-hover'
+                    : `flex h-full min-w-[52px] flex-col items-center justify-center gap-1 border-t-2 transition-colors ${
+                        isActive
+                          ? 'border-brand text-brand-strong'
+                          : 'border-transparent text-fg-subtle hover:text-fg'
                       }`
                 }
               >
                 {icon}
                 <span
-                  className={`text-xs leading-none ${
+                  className={`text-[0.625rem] uppercase leading-none tracking-wide ${
                     isActive || isHighlighted ? 'font-semibold' : 'font-medium'
                   }`}
                 >
