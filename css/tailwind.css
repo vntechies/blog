@@ -3,72 +3,76 @@
 @tailwind utilities;
 
 /*
- * VNTechies design tokens: the single source of truth for color and elevation.
- * Colors are space-separated RGB channels so Tailwind can add opacity. They are
- * exposed as utilities (bg-surface, text-fg-muted, border-line, bg-brand/10, ...)
- * by token() in tailwind.config.js, so they switch with .dark without dark: pairs.
- * Ratios are WCAG 2 contrast against --app-surface unless noted.
+ * VNTechies design tokens — Gruvbox. Dark is gruvbox-dark-hard (the default theme),
+ * light is gruvbox-light-hard. Colors are space-separated RGB channels so Tailwind can
+ * add opacity; tailwind.config.js exposes them as bg-surface, text-fg-muted,
+ * border-line, bg-brand/10, ... so they switch with .dark without dark: pairs.
+ *
+ * Design language (after cmuxthemes.com): the page is a terminal. One monospace face,
+ * square corners, 1px rules instead of shadows, uppercase tracked labels, window
+ * chrome around featured content and the 16-color palette as the signature motif.
  */
 @layer base {
   :root {
     color-scheme: light;
-    --app-bg: 243 245 249; /* #f3f5f9 page canvas */
-    --app-bg-soft: 233 237 245; /* #e9edf5 top of the page gradient */
-    --app-surface: 255 255 255; /* #ffffff panels, cards */
-    --app-surface-muted: 248 250 252; /* #f8fafc secondary panels */
-    --app-border: 226 232 240; /* #e2e8f0 card edges, dividers */
-    --app-border-strong: 203 213 225; /* #cbd5e1 secondary buttons */
-    --app-border-control: 124 138 160; /* #7c8aa0 form controls, 3.5:1 */
-    --app-text: 15 23 42; /* #0f172a 17.9:1 */
-    --app-text-prose: 51 65 85; /* #334155 article body, 10.4:1 */
-    --app-text-muted: 71 85 105; /* #475569 7.6:1 */
-    --app-text-subtle: 95 110 134; /* #5f6e86 dates, captions, 5.2:1 (4.7:1 on canvas) */
-    --app-accent: 249 115 22; /* #f97316 brand fills, glows, decoration */
-    --app-accent-hover: 234 88 12; /* #ea580c primary button hover */
-    --app-accent-strong: 194 65 12; /* #c2410c orange text, links, focus ring, 5.2:1 */
-    --app-accent-soft-fg: 154 52 18; /* #9a3412 text on orange tints, 5.9:1+ */
-    --app-on-accent: 15 23 42; /* #0f172a label on brand fills (AWS-style), 6.4:1 */
-    --app-info: 3 105 161; /* #0369a1 cool accent, 5.9:1 */
-    --app-info-soft-fg: 7 89 133; /* #075985 text on sky tints, 6.3:1+ */
-    --app-success: 4 120 87; /* #047857 5.5:1, 4.6:1+ on its tint */
-    --app-danger: 185 28 28; /* #b91c1c 6.5:1 */
-    --app-glow-warm: rgb(249 115 22 / 0.16);
-    --app-glow-cool: rgb(14 165 233 / 0.14);
-    --app-shadow-sm: 0 1px 2px rgb(15 23 42 / 0.06);
-    --app-shadow: 0 1px 2px rgb(15 23 42 / 0.04), 0 12px 32px -12px rgb(15 23 42 / 0.14);
-    --app-shadow-lg: 0 1px 2px rgb(15 23 42 / 0.04), 0 24px 48px -16px rgb(15 23 42 / 0.22);
+    --app-bg: 249 245 215; /* #f9f5d7 bg0_h */
+    --app-bg-soft: 242 229 188; /* #f2e5bc */
+    --app-surface: 251 241 199; /* #fbf1c7 bg0 */
+    --app-surface-muted: 242 229 188; /* #f2e5bc bg0_s */
+    --app-border: 213 196 161; /* #d5c4a1 bg2 */
+    --app-border-strong: 189 174 147; /* #bdae93 bg3 */
+    --app-border-control: 124 111 100; /* #7c6f64 bg4, 4.3:1 */
+    --app-text: 40 40 40; /* #282828 fg0 */
+    --app-text-prose: 60 56 54; /* #3c3836 fg1 */
+    --app-text-muted: 80 73 69; /* #504945 fg2 */
+    --app-text-subtle: 102 92 84; /* #665c54 fg3 */
+    --app-accent: 254 128 25; /* #fe8019 fills */
+    --app-accent-hover: 214 93 14; /* #d65d0e */
+    --app-accent-strong: 175 58 3; /* #af3a03 orange text, links, focus ring */
+    --app-accent-soft-fg: 175 58 3; /* #af3a03 */
+    --app-on-accent: 29 32 33; /* #1d2021 label on orange */
+    --app-info: 7 102 120; /* #076678 */
+    --app-info-soft-fg: 7 102 120;
+    --app-success: 121 116 14; /* #79740e */
+    --app-danger: 157 0 6; /* #9d0006 */
+    --app-grid: 60 56 54;
+    --app-shadow-sm: none;
+    --app-shadow: none;
+    --app-shadow-lg: 4px 4px 0 0 rgb(var(--app-border-strong));
   }
 
   .dark {
     color-scheme: dark;
-    --app-bg: 9 13 22; /* #090d16 */
-    --app-bg-soft: 17 24 39; /* #111827 */
-    --app-surface: 17 24 39; /* #111827 */
-    --app-surface-muted: 22 31 47; /* #161f2f */
-    --app-border: 35 50 74; /* #23324a */
-    --app-border-strong: 51 65 85; /* #334155 */
-    --app-border-control: 107 122 144; /* #6b7a90 4.1:1 */
-    --app-text: 226 232 240; /* #e2e8f0 14.4:1 */
-    --app-text-prose: 203 213 225; /* #cbd5e1 12:1 */
-    --app-text-muted: 148 163 184; /* #94a3b8 6.9:1 */
-    --app-text-subtle: 131 145 167; /* #8391a7 5.6:1 */
-    --app-accent: 251 146 60; /* #fb923c */
-    --app-accent-hover: 249 115 22; /* #f97316 */
-    --app-accent-strong: 251 146 60; /* #fb923c 7.8:1 */
-    --app-accent-soft-fg: 253 186 116; /* #fdba74 8:1+ */
-    --app-info: 56 189 248; /* #38bdf8 8.3:1 */
-    --app-info-soft-fg: 125 211 252; /* #7dd3fc */
-    --app-success: 52 211 153; /* #34d399 */
-    --app-danger: 248 113 113; /* #f87171 */
-    --app-shadow-sm: 0 1px 2px rgb(0 0 0 / 0.4);
-    --app-shadow: inset 0 1px 0 rgb(255 255 255 / 0.04), 0 12px 32px -12px rgb(0 0 0 / 0.6);
-    --app-shadow-lg: inset 0 1px 0 rgb(255 255 255 / 0.05), 0 24px 48px -16px rgb(0 0 0 / 0.7);
+    --app-bg: 29 32 33; /* #1d2021 bg0_h */
+    --app-bg-soft: 29 32 33;
+    --app-surface: 29 32 33; /* cards sit on the canvas, separated by rules */
+    --app-surface-muted: 40 40 40; /* #282828 bg0 */
+    --app-border: 60 56 54; /* #3c3836 bg1 */
+    --app-border-strong: 80 73 69; /* #504945 bg2 */
+    --app-border-control: 124 111 100; /* #7c6f64 bg4 */
+    --app-text: 235 219 178; /* #ebdbb2 fg */
+    --app-text-prose: 213 196 161; /* #d5c4a1 fg2 */
+    --app-text-muted: 189 174 147; /* #bdae93 fg3 */
+    --app-text-subtle: 168 153 132; /* #a89984 fg4 */
+    --app-accent: 254 128 25; /* #fe8019 */
+    --app-accent-hover: 250 189 47; /* #fabd2f */
+    --app-accent-strong: 254 128 25; /* #fe8019 */
+    --app-accent-soft-fg: 254 128 25;
+    --app-on-accent: 29 32 33;
+    --app-info: 131 165 152; /* #83a598 */
+    --app-info-soft-fg: 131 165 152;
+    --app-success: 184 187 38; /* #b8bb26 */
+    --app-danger: 251 73 52; /* #fb4934 */
+    --app-grid: 235 219 178;
+    --app-shadow-sm: none;
+    --app-shadow: none;
+    --app-shadow-lg: 4px 4px 0 0 rgb(var(--app-border-strong));
   }
 
   /* Keep anchor targets clear of the sticky header (md and up) */
   @screen md {
     html {
-      scroll-padding-top: 7rem;
+      scroll-padding-top: 6rem;
     }
   }
 
@@ -78,21 +82,18 @@
     min-height: 100%;
   }
 
-  /* html has no background of its own, so this propagates to the whole canvas and
-     the .app-shell::before glow can paint above it */
   body {
     color: rgb(var(--app-text));
     background-color: rgb(var(--app-bg));
-    /* Brand glow anchored to the top of every page, whatever its length */
-    background-image: radial-gradient(
-        1400px 420px at 12% -60px,
-        var(--app-glow-warm),
-        transparent 55%
-      ),
-      radial-gradient(1200px 420px at 92% -90px, var(--app-glow-cool), transparent 56%),
-      linear-gradient(180deg, rgb(var(--app-bg-soft)) 0, rgb(var(--app-bg)) 640px);
-    background-repeat: no-repeat;
-    @apply font-sans antialiased selection:bg-orange-200 selection:text-slate-900 dark:selection:bg-orange-500/40 dark:selection:text-orange-50;
+    /* Faint dot grid, like a terminal's character cells */
+    background-image: radial-gradient(rgb(var(--app-grid) / 0.07) 1px, transparent 1px);
+    background-size: 24px 24px;
+    @apply font-sans antialiased;
+  }
+
+  ::selection {
+    background-color: rgb(var(--app-accent));
+    color: rgb(var(--app-on-accent));
   }
 
   h1,
@@ -101,12 +102,12 @@
   h4,
   h5,
   h6 {
-    letter-spacing: -0.015em;
+    letter-spacing: -0.03em;
     color: rgb(var(--app-text));
   }
 
   a {
-    @apply transition-colors duration-200;
+    @apply transition-colors duration-150;
   }
 
   *:focus-visible {
@@ -115,10 +116,6 @@
   }
 }
 
-/*
- * Scale: radius xl (12px) controls, 2xl (16px) panels and cards, 3xl (24px) feature
- * panels, full for chips. Controls are 44px tall (52px with .action-btn-lg).
- */
 @layer components {
   .app-shell {
     position: relative;
@@ -133,117 +130,152 @@
     }
   }
 
-  .app-shell::before {
-    content: '';
-    position: absolute;
-    pointer-events: none;
-    inset: 0;
-    background: radial-gradient(
-        700px 220px at 50% 0%,
-        rgb(var(--app-accent) / 0.09),
-        transparent 65%
-      ),
-      linear-gradient(180deg, rgb(255 255 255 / 0.1) 0%, transparent 10%);
-    z-index: -1;
-  }
-
-  /* Surfaces */
+  /* Surfaces: a 1px rule, no radius, no shadow */
   .surface-panel {
-    @apply rounded-2xl border border-line bg-surface shadow-md;
+    @apply border border-line bg-surface;
   }
 
   .surface-panel-muted {
-    @apply rounded-2xl border border-line bg-surface-muted;
+    @apply border border-line bg-surface-muted;
   }
 
-  /* Large homepage panels: pair with .surface-panel */
   .surface-panel-lg {
-    @apply rounded-3xl p-6 sm:p-8 lg:p-10;
+    @apply p-6 sm:p-8 lg:p-10;
   }
 
-  /* Cards that are links: pair with .surface-panel or .surface-panel-muted */
+  /* Link cards lift into a hard orange offset shadow */
   .surface-panel-interactive {
-    @apply transition duration-200 ease-out;
+    @apply transition duration-150 ease-out;
   }
 
   .surface-panel-interactive:hover {
-    @apply -translate-y-0.5 border-line-strong shadow-xl;
+    @apply border-brand;
+    transform: translate(-3px, -3px);
+    box-shadow: 3px 3px 0 0 rgb(var(--app-accent));
   }
 
-  /* Translucent chrome: sticky header, mobile bottom nav */
   .surface-glass {
-    background-color: rgb(var(--app-surface) / 0.8);
-    -webkit-backdrop-filter: blur(16px);
-    backdrop-filter: blur(16px);
+    background-color: rgb(var(--app-bg) / 0.88);
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
   }
 
   @supports not ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
     .surface-glass {
-      background-color: rgb(var(--app-surface));
+      background-color: rgb(var(--app-bg));
     }
   }
 
-  /* Brand-filled panel (CTA banner): dark text on orange, like the primary button */
+  /* Solid orange block (CTA banner): dark label, like a highlighted terminal line */
   .surface-brand {
-    @apply rounded-3xl text-brand-on shadow-xl;
+    @apply text-brand-on;
     background-color: rgb(var(--app-accent));
-    background-image: radial-gradient(
-        40rem 16rem at 100% 0%,
-        rgb(255 255 255 / 0.28),
-        transparent 70%
-      ),
-      linear-gradient(135deg, rgb(var(--app-accent)), rgb(var(--app-accent-hover)));
+    background-image: repeating-linear-gradient(
+      -45deg,
+      rgb(var(--app-on-accent) / 0.05) 0 2px,
+      transparent 2px 12px
+    );
   }
 
-  /* The accent focus ring would disappear on orange */
   .surface-brand :focus-visible {
     outline-color: rgb(var(--app-on-accent));
   }
 
-  /* Hero glow. closest-side circles fade out before the box edge, so it never
-     shows a hard line at any width. Parent needs `relative isolate`. */
+  /* Kept for markup that still renders it; the dot grid replaces the glow */
   .page-glow {
-    position: absolute;
-    inset: 0;
-    z-index: -1;
-    pointer-events: none;
-    background: radial-gradient(
-        circle closest-side at 28% 38%,
-        rgb(var(--app-accent) / 0.14),
-        transparent
-      ),
-      radial-gradient(circle closest-side at 74% 58%, rgb(var(--app-info) / 0.12), transparent);
+    display: none;
   }
 
-  /* Small uppercase label for sidebar panels and card sections */
+  /* --- Terminal window chrome (components/Terminal.js) ------------------------ */
+  .term {
+    @apply border border-line bg-surface text-fg;
+  }
+
+  .term-titlebar {
+    @apply flex h-9 items-center gap-2 border-b border-line bg-surface-muted px-3.5;
+  }
+
+  .term-title {
+    @apply min-w-0 flex-1 truncate text-center text-xs text-fg-subtle;
+    margin-right: 3.25rem; /* balances the dots so the title is centred */
+  }
+
+  .term-body {
+    @apply p-4 text-sm leading-relaxed sm:p-5;
+  }
+
+  .term-prompt::before {
+    content: '$ ';
+    color: rgb(var(--app-success));
+  }
+
+  /* Blinking block cursor */
+  .term-cursor {
+    display: inline-block;
+    width: 0.6em;
+    height: 1.1em;
+    vertical-align: text-bottom;
+    background-color: rgb(var(--app-accent));
+    animation: term-blink 1.1s steps(1) infinite;
+  }
+
+  @keyframes term-blink {
+    50% {
+      opacity: 0;
+    }
+  }
+
+  /* Scenario tabs above a terminal */
+  .term-tab {
+    @apply border border-line-strong px-3.5 py-1 text-xs font-medium text-fg-subtle transition-colors duration-150;
+  }
+
+  .term-tab:hover {
+    @apply text-fg;
+  }
+
+  .term-tab[aria-selected='true'] {
+    @apply border-brand text-fg;
+  }
+
+  /* Uppercase tracked label (sidebar panels, meta labels) */
   .panel-label {
-    @apply text-xs font-semibold uppercase tracking-wider text-fg-subtle;
+    @apply text-xs font-medium uppercase tracking-[0.08em] text-fg-subtle;
   }
 
-  /* Page typography */
+  /* --- Page typography ------------------------------------------------------- */
   .page-display {
-    @apply text-4xl font-extrabold sm:text-5xl lg:text-6xl;
-    letter-spacing: -0.025em;
+    @apply text-3xl font-extrabold sm:text-4xl lg:text-6xl;
+    letter-spacing: -0.04em;
+    line-height: 1.12;
     text-wrap: balance;
   }
 
   .page-heading {
-    @apply text-3xl font-extrabold sm:text-4xl lg:text-5xl;
+    @apply text-2xl font-extrabold sm:text-3xl lg:text-4xl;
+    letter-spacing: -0.035em;
     text-wrap: balance;
   }
 
-  /* Headings inside half-width panels */
   .panel-heading {
-    @apply text-2xl font-extrabold sm:text-3xl;
+    @apply text-xl font-extrabold sm:text-2xl;
+    letter-spacing: -0.03em;
     text-wrap: balance;
   }
 
+  /* Section label rendered as a code comment: "// LABEL" */
   .page-eyebrow {
-    @apply mb-4 inline-flex items-center gap-2 rounded-full border border-brand/25 bg-brand/10 px-3.5 py-1 text-sm font-semibold text-brand-soft;
+    @apply mb-4 inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.1em] text-fg-subtle;
+  }
+
+  .page-eyebrow::before {
+    content: '//';
+    color: rgb(var(--app-accent-strong));
+    letter-spacing: 0;
   }
 
   .page-lead {
-    @apply mt-4 max-w-3xl text-lg text-fg-muted sm:text-xl;
+    @apply mt-4 max-w-3xl text-base text-fg-muted sm:text-lg;
     text-wrap: pretty;
   }
 
@@ -251,168 +283,290 @@
     @apply py-12 sm:py-16 lg:py-20;
   }
 
-  /* Orange gradient for display-size text only (3:1 large-text contrast, both modes) */
+  /* Display text in the accent, like a highlighted token */
   .page-highlight {
-    background-image: linear-gradient(
-      90deg,
-      rgb(var(--app-accent-hover)),
-      rgb(var(--app-accent-strong))
-    );
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
+    color: rgb(var(--app-accent-strong));
   }
 
-  /* Actions. Primary is AWS-style: brand orange with a dark label. */
+  /* --- Actions --------------------------------------------------------------- */
   .action-btn-primary {
-    @apply inline-flex min-h-[2.75rem] items-center justify-center gap-2 rounded-xl bg-brand px-5 py-2 text-sm font-semibold text-brand-on transition duration-200 sm:text-base;
-    box-shadow: 0 8px 20px -8px rgb(var(--app-accent) / 0.6);
+    @apply inline-flex min-h-[2.75rem] items-center justify-center gap-2 border border-brand bg-brand px-5 py-2 text-sm font-bold text-brand-on transition duration-150;
   }
 
   .action-btn-primary:hover {
-    @apply bg-brand-hover;
+    transform: translate(-2px, -2px);
+    box-shadow: 2px 2px 0 0 rgb(var(--app-text));
   }
 
   .action-btn-primary:active {
-    transform: translateY(1px);
+    transform: none;
+    box-shadow: none;
   }
 
   .action-btn-secondary {
-    @apply inline-flex min-h-[2.75rem] items-center justify-center gap-2 rounded-xl border border-line-strong bg-surface px-5 py-2 text-sm font-semibold text-fg shadow-sm transition duration-200 sm:text-base;
+    @apply inline-flex min-h-[2.75rem] items-center justify-center gap-2 border border-line-strong bg-transparent px-5 py-2 text-sm font-bold text-fg transition duration-150;
   }
 
   .action-btn-secondary:hover {
-    @apply border-brand/50 text-brand-strong;
+    @apply border-brand text-brand-strong;
   }
 
-  /* Buttons for .surface-brand panels (dark label/fill on orange in both themes) */
+  /* Buttons for .surface-brand panels */
   .action-btn-inverse {
-    @apply inline-flex min-h-[2.75rem] items-center justify-center gap-2 rounded-xl bg-brand-on px-5 py-2 text-sm font-semibold text-white shadow-md transition duration-200 sm:text-base;
+    @apply inline-flex min-h-[2.75rem] items-center justify-center gap-2 border border-brand-on bg-brand-on px-5 py-2 text-sm font-bold text-brand transition duration-150;
   }
 
   .action-btn-inverse:hover {
-    @apply bg-slate-800;
+    transform: translate(-2px, -2px);
+    box-shadow: 2px 2px 0 0 rgb(var(--app-on-accent) / 0.45);
   }
 
   .action-btn-on-brand {
-    @apply inline-flex min-h-[2.75rem] items-center justify-center gap-2 rounded-xl border border-brand-on/25 bg-white/25 px-5 py-2 text-sm font-semibold text-brand-on transition duration-200 sm:text-base;
+    @apply inline-flex min-h-[2.75rem] items-center justify-center gap-2 border border-brand-on bg-transparent px-5 py-2 text-sm font-bold text-brand-on transition duration-150;
   }
 
   .action-btn-on-brand:hover {
-    @apply bg-white/40;
+    @apply bg-brand-on/10;
   }
 
   /* Size modifiers: keep after every variant so they win the cascade */
   .action-btn-lg {
-    @apply min-h-[3.25rem] px-7 text-base sm:text-lg;
+    @apply min-h-[3.25rem] px-7 text-sm sm:text-base;
   }
 
   .action-btn-sm {
-    @apply min-h-[2.5rem] px-3.5 text-sm sm:text-sm;
+    @apply min-h-[2.5rem] px-3.5 text-xs sm:text-xs;
   }
 
   .action-link {
-    @apply inline-flex items-center gap-1.5 text-sm font-semibold text-brand-strong transition-colors duration-200;
+    @apply inline-flex items-center gap-1.5 text-sm font-bold text-brand-strong transition-colors duration-150;
   }
 
   .action-link:hover,
   .group:hover .action-link {
-    @apply text-brand-soft;
-  }
-
-  /* Navigation. Mark the current page with aria-current="page". */
-  .nav-link {
-    @apply relative inline-flex items-center rounded-xl px-3 py-2 text-sm font-semibold text-fg-muted transition-colors duration-200;
-  }
-
-  .nav-link:hover {
-    @apply bg-fg/5 text-fg;
-  }
-
-  .nav-link[aria-current='page'] {
     @apply text-fg;
   }
 
-  .nav-link[aria-current='page']::after {
-    content: '';
-    @apply absolute inset-x-3 bottom-1 h-0.5 rounded-full bg-brand-strong;
+  /* --- Navigation. Mark the current page with aria-current="page". ----------- */
+  .nav-link {
+    @apply relative inline-flex items-center px-3 py-2 text-xs font-bold uppercase tracking-[0.06em] text-fg-subtle transition-colors duration-150;
+  }
+
+  .nav-link:hover {
+    @apply text-fg;
+  }
+
+  .nav-link[aria-current='page'] {
+    @apply text-brand-strong;
+  }
+
+  .nav-link[aria-current='page']::before {
+    content: '>';
+    @apply mr-1.5;
   }
 
   .nav-link-featured {
-    @apply bg-brand/10 text-brand-soft;
+    @apply border border-brand/60 text-brand-strong;
   }
 
-  .nav-link-featured:hover {
-    @apply bg-brand/20 text-brand-soft;
-  }
-
+  .nav-link-featured:hover,
   .nav-link-featured[aria-current='page'] {
-    @apply bg-brand text-brand-on;
+    @apply border-brand bg-brand text-brand-on;
   }
 
-  /* Vertical lists (course lessons): tinted row instead of an underline */
+  /* Vertical lists (course lessons): tinted row with an accent rule */
   .nav-link-stacked {
-    @apply flex w-full font-medium leading-6;
+    @apply flex w-full border-l-2 border-transparent font-medium normal-case leading-6 tracking-normal;
   }
 
   .nav-link-stacked[aria-current='page'] {
-    @apply bg-brand/10 font-semibold text-brand-soft;
+    @apply border-brand bg-brand/10 font-semibold text-brand-strong;
   }
 
-  .nav-link-featured[aria-current='page']::after,
-  .nav-link-stacked[aria-current='page']::after {
+  .nav-link-featured[aria-current='page']::before,
+  .nav-link-stacked[aria-current='page']::before {
     content: none;
   }
 
   .icon-btn {
-    @apply inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-line bg-surface text-fg-muted transition-colors duration-200;
+    @apply inline-flex h-9 w-9 shrink-0 items-center justify-center border border-line-strong bg-transparent text-fg-subtle transition-colors duration-150;
   }
 
   .icon-btn:hover {
-    @apply border-line-strong bg-surface-muted text-fg;
+    @apply border-brand text-brand-strong;
   }
 
   .icon-tile {
-    @apply inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-brand/10 text-brand-strong;
+    @apply inline-flex h-11 w-11 shrink-0 items-center justify-center border border-brand/40 bg-brand/10 text-brand-strong;
   }
 
+  /* Tag: outlined, uppercase, tracked */
   .chip {
-    @apply inline-flex items-center gap-1 rounded-full border border-brand/25 bg-brand/10 px-2.5 py-0.5 text-xs font-semibold text-brand-soft;
+    @apply inline-flex items-center gap-1 border border-line-strong bg-transparent px-2 py-0.5 text-[0.6875rem] font-medium uppercase tracking-[0.06em] text-fg-subtle;
   }
 
   a.chip:hover {
-    @apply bg-brand/20;
+    @apply border-brand text-brand-strong;
   }
 
-  /* Tones recolor .chip, .page-eyebrow and .icon-tile (orange is the default).
-     info: cert codes, quotes. success/danger: status only. */
+  /* Tones recolor .chip, .page-eyebrow and .icon-tile (orange is the default) */
   .tone-info {
-    @apply border-info/25 bg-info/10 text-info-soft;
+    @apply border-info/50 bg-transparent text-info-soft;
   }
 
   .tone-success {
-    @apply border-success/25 bg-success/10 text-success;
+    @apply border-success/50 bg-success/10 text-success;
   }
 
   .tone-danger {
-    @apply border-danger/25 bg-danger/10 text-danger;
+    @apply border-danger/50 bg-danger/10 text-danger;
+  }
+
+  .page-eyebrow.tone-info,
+  .page-eyebrow.tone-success,
+  .page-eyebrow.tone-danger {
+    @apply bg-transparent;
+  }
+
+  .page-eyebrow.tone-success::before {
+    color: rgb(var(--app-success));
+  }
+
+  .page-eyebrow.tone-danger::before {
+    color: rgb(var(--app-danger));
+  }
+
+  /* Course landing pages: sans body for 2,000-word sales copy, terminal mono kept for
+     headings, labels, prices and code so the page still reads as the same site */
+  .course-page {
+    font-family: theme('fontFamily.body');
+  }
+
+  .premium-course {
+    color: rgb(var(--app-text));
+    background: rgb(var(--app-bg));
+    padding-bottom: 5rem;
+  }
+
+  .premium-intro {
+    @apply mx-auto max-w-6xl px-4 sm:px-6;
+  }
+
+  .premium-course :is(#registration-form, #course-details) {
+    scroll-margin-top: 6rem;
+  }
+
+  .premium-course #registration-form {
+    padding: 2.5rem 0;
+    background: rgb(var(--app-surface-muted));
+    border-block: 1px solid rgb(var(--app-border));
+  }
+
+  .premium-course #registration-form > div {
+    @apply grid max-w-6xl gap-8 px-4 sm:px-6 lg:grid-cols-2 lg:gap-12;
+  }
+
+  .premium-course .registration-heading {
+    margin: 0;
+    text-align: left;
+  }
+
+  .premium-course .registration-heading h2 {
+    @apply text-2xl leading-tight text-fg sm:text-3xl;
+  }
+
+  .premium-course .registration-heading > p {
+    @apply text-base leading-relaxed text-fg-muted;
+  }
+
+  .premium-course .registration-panel {
+    @apply border border-line bg-surface p-4 sm:p-6;
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  .premium-course-details > section,
+  .premium-course-details > div > section {
+    padding-block: 3rem;
+    border-bottom: 1px solid rgb(var(--app-border));
+    background: rgb(var(--app-bg));
+  }
+
+  .premium-course-details
+    :is(.bg-white, .bg-gray-50, .bg-gray-100, .bg-slate-50, .bg-slate-100, .bg-gray-800, .bg-gray-900, .bg-slate-800, .bg-slate-900) {
+    background-color: rgb(var(--app-surface));
+  }
+
+  .premium-course-details [class*='bg-gradient'] {
+    background-image: none;
+  }
+
+  .premium-course-details
+    :is(h2, h3, h4, .text-white, .text-gray-900, .text-gray-800, .text-gray-700, .bg-clip-text) {
+    color: rgb(var(--app-text));
+  }
+
+  .premium-course-details :is(.text-gray-600, .text-gray-500, .text-gray-400, .text-gray-300) {
+    color: rgb(var(--app-text-muted));
+  }
+
+  .premium-course-details h2 {
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    line-height: 1.3;
+    letter-spacing: -0.025em;
+  }
+
+  .premium-course-details :is(.shadow-xl, .shadow-2xl, .shadow-lg) {
+    box-shadow: none;
+    border: 1px solid rgb(var(--app-border));
+  }
+
+  .premium-course-details :is(.rounded-2xl, .rounded-3xl) {
+    border-radius: 0;
+  }
+
+  .premium-course-details :is(.blur-xl, .blur-3xl) {
+    display: none;
+  }
+
+  .premium-course-details a[href='#registration-form'] {
+    background: rgb(var(--app-accent));
+    color: rgb(var(--app-on-accent));
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  .course-page :is(h1, h2, h3, h4, dt, code, pre, .page-eyebrow, .panel-label, .chip, .font-mono) {
+    font-family: theme('fontFamily.mono');
+  }
+
+  /* FAQ disclosure marker (components/course/SalesSections.js) */
+  .faq-marker::before {
+    content: '+';
+  }
+
+  details[open] .faq-marker::before {
+    content: '−';
+  }
+
+  summary::-webkit-details-marker {
+    display: none;
   }
 
   /* 16px on mobile so iOS does not zoom on focus */
   .input-field {
-    @apply block min-h-[2.75rem] w-full rounded-xl border border-line-control bg-surface px-4 py-2 text-base text-fg transition-colors duration-200 sm:text-sm;
+    @apply block min-h-[2.75rem] w-full border border-line-control bg-surface px-4 py-2 text-base text-fg transition-colors duration-150 sm:text-sm;
   }
 
   .input-field::placeholder {
     @apply text-fg-subtle opacity-100;
   }
 
-  /* Overrides the blue ring from @tailwindcss/forms: 2px accent edge plus a soft halo */
   .input-field:focus {
     @apply border-brand-strong;
     outline: 2px solid transparent;
     outline-offset: 2px;
-    box-shadow: 0 0 0 1px rgb(var(--app-accent-strong)), 0 0 0 4px rgb(var(--app-accent) / 0.2);
+    box-shadow: 0 0 0 1px rgb(var(--app-accent-strong));
   }
 }
 
@@ -473,8 +627,13 @@ input:-webkit-autofill:focus {
     transition-duration: 0.01ms !important;
   }
 
+  .term-cursor {
+    animation: none;
+  }
+
   .surface-panel-interactive:hover,
-  .action-btn-primary:active {
+  .action-btn-primary:hover,
+  .action-btn-inverse:hover {
     transform: none;
   }
 }

@@ -5,25 +5,25 @@ const freeCourses = [
   {
     title: '90 Ngày DevOps v2 ♾️',
     description: 'Tập trung vào DevSecOps với các kiến thức bảo mật và chuyên sâu trong SDLC',
-    imgSrc: '/static/images/ogps/90daysdevopsv2.png',
+    imgSrc: '/static/images/ogps/courses/90-ngay-devops-v2-ogp.png',
     href: '/courses/90-ngay-devops-v2/gioi-thieu',
   },
   {
     title: '90 Ngày DevOps 🚀',
     description: 'Hành trình học tập, tìm hiểu các kiến thức nền tảng về "DevOps" trong 90 ngày',
-    imgSrc: '/static/images/90daysdevop.png',
+    imgSrc: '/static/images/ogps/courses/90-ngay-devops-ogp.png',
     href: '/courses/90-ngay-devops/gioi-thieu',
   },
   {
     title: 'AWS Cloud Development Kit 😶‍🌫️',
     description: 'Hướng dẫn sử dụng AWS CDK 💪',
-    imgSrc: '/static/images/awscdk.png',
+    imgSrc: '/static/images/ogps/courses/aws-cdk-ogp.png',
     href: '/courses/aws/cdk/gioi-thieu',
   },
   {
     title: 'K8S Springboot 🕸️',
     description: 'Triển khai ứng dụng Spring boot trên Kubernetes 🚀🕸️',
-    imgSrc: '/static/images/ogps/k8s-springboot.png',
+    imgSrc: '/static/images/ogps/courses/k8s-spring-boot-ogp.png',
     href: '/courses/k8s-spring-boot/gioi-thieu',
   },
 ]
@@ -41,7 +41,7 @@ const FreeCourses = () => {
 
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
         {freeCourses.map((course) => (
-          <Card key={course.href} {...course} showMore={false} />
+          <Card key={course.href} {...course} imageAspectRatio="40/21" showMore={false} />
         ))}
       </div>
 

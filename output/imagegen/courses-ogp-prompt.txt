@@ -1,0 +1,10 @@
+Generator: built-in image_gen
+Final asset: public/static/images/ogps/courses-ogp.png (1200 x 630)
+
+Use case: ads-marketing
+Asset type: Open Graph social sharing thumbnail for VNTechies courses catalog.
+Create a finished landscape 1200 × 630 px graphic (1.905:1 aspect ratio).
+Style: sophisticated developer education editorial graphic, Gruvbox dark terminal aesthetic, crisp typography and restrained geometric technical illustration. Background #1d2021 with barely visible dot grid; warm cream #ebdbb2 text; orange #fe8019 primary accent, muted teal #83a598 and yellow #fabd2f secondary accents. Square corners and fine rules.
+Composition: generous 64px safe margins. Small VNTechies wordmark top left in cream with a small orange terminal prompt symbol. Huge bold Vietnamese headline “Khóa học” on left center, below it two comfortably legible lines “Cloud · DevOps” and “Data & AI”. Small footer “vntechies.dev/courses” at bottom left. The right third contains a beautifully composed technical illustration: an outlined cloud above a stack of three floating square server/course tiles, connected by thin orange circuit paths, with simple code brackets and database cylinder motifs. Illustration should feel precise, flat with subtle isometric depth, no glossy 3D. Small terminal window chrome and a short row of Gruvbox color swatches provide understated detail. Clear left/right separation, lots of breathing space, excellent readability at thumbnail size.
+Exact text only: “VNTechies”, “Khóa học”, “Cloud · DevOps”, “Data & AI”, “vntechies.dev/courses”. Vietnamese diacritics must be accurate. Do not add other text.
+Avoid: photography, people, emojis, gradients, neon glow, excessive small details, fake logos, stock watermarks, rounded app cards, promotional claims, prices or dates. Render the complete ready-to-use thumbnail, not a mockup.

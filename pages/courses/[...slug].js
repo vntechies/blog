@@ -4,6 +4,7 @@ import { MDXLayoutRenderer } from '@/components/MDXComponents'
 import { formatSlug, getAllFilesFrontMatter, getFileBySlug, getFiles } from '@/lib/mdx'
 import { BlogSEO, CourseSEO } from '@/components/SEO'
 import siteMetadata from '@/data/siteMetadata'
+import { courseSocialImages, coursesSocialImage } from '@/data/courseSocialImages'
 import path from 'path'
 
 const DEFAULT_LAYOUT = 'CourseSimple'
@@ -101,7 +102,12 @@ export default function Course({
     frontMatter
 
   const courseUrl = `${siteMetadata.siteUrl}/courses/${slug}`
-  const courseImages = images && images.length > 0 ? images : [siteMetadata.socialBanner]
+  const socialImage = courseSocialImages[courseOf(slug)]
+  const courseImages = socialImage
+    ? [socialImage]
+    : images && images.length > 0
+    ? images
+    : [coursesSocialImage]
   const courseDescription = summary || `${title} - Khóa học tại VNTechies`
 
   // Lessons titled 'Ngày N - Topic' lead with the topic in <title> (the H1 is unchanged)

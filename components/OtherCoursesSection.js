@@ -24,12 +24,12 @@ export default function OtherCoursesSection({ otherCourses = [] }) {
             <Link key={course.slug} href={`/courses/${course.slug}`} className="group block">
               <div className="overflow-hidden rounded-xl bg-gray-50 shadow-lg transition-all duration-300 hover:shadow-xl dark:bg-gray-700">
                 {course.images && course.images[0] && (
-                  <div className="relative h-48 overflow-hidden">
+                  <div className="relative aspect-[40/21] overflow-hidden">
                     <Image
                       src={course.images[0]}
                       alt={course.title}
-                      width={400}
-                      height={300}
+                      width={1200}
+                      height={630}
                       className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
                     />
                     {course.isFree && (

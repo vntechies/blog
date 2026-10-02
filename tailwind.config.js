@@ -1,5 +1,5 @@
 const defaultTheme = require('tailwindcss/defaultTheme')
-const colors = require('tailwindcss/colors')
+const { colors: gruvbox } = require('./lib/gruvbox-palette')
 
 // Colors come from the RGB-channel tokens in css/tailwind.css. As functions they
 // support opacity modifiers (bg-brand/10) and follow .dark without dark: variants.
@@ -23,6 +23,21 @@ module.exports = {
   ],
   darkMode: 'class',
   theme: {
+    // Gruvbox replaces Tailwind's palette outright: every legacy color class resolves
+    // to a Gruvbox tone (see lib/gruvbox-palette.js)
+    colors: gruvbox,
+    // Terminal geometry: square corners everywhere; `full` survives for dots and avatars
+    borderRadius: {
+      none: '0',
+      sm: '0',
+      DEFAULT: '0',
+      md: '0',
+      lg: '0',
+      xl: '0',
+      '2xl': '0',
+      '3xl': '0',
+      full: '9999px',
+    },
     // Complete scale with paired line heights (at least 1.15 on large sizes so
     // stacked Vietnamese diacritics do not collide).
     fontSize: {
@@ -33,10 +48,11 @@ module.exports = {
       xl: ['1.25rem', { lineHeight: '1.875rem' }],
       '2xl': ['1.5rem', { lineHeight: '2rem' }],
       '3xl': ['1.875rem', { lineHeight: '2.375rem' }],
-      '4xl': ['2.25rem', { lineHeight: '2.75rem' }],
-      '5xl': ['3rem', { lineHeight: '3.5rem' }],
-      '6xl': ['3.75rem', { lineHeight: '4.375rem' }],
-      '7xl': ['4.5rem', { lineHeight: '5rem' }],
+      // Monospace runs ~15% wider than Inter, so the display end is trimmed
+      '4xl': ['2.125rem', { lineHeight: '2.625rem' }],
+      '5xl': ['2.75rem', { lineHeight: '3.25rem' }],
+      '6xl': ['3.25rem', { lineHeight: '3.875rem' }],
+      '7xl': ['4rem', { lineHeight: '4.625rem' }],
     },
     extend: {
       spacing: {
@@ -49,13 +65,14 @@ module.exports = {
         14: '3.5rem',
       },
       fontFamily: {
-        sans: ['InterVariable', ...defaultTheme.fontFamily.sans],
+        // One typeface, like a terminal: JetBrains Mono carries Vietnamese diacritics
+        sans: ['JetBrains Mono', ...defaultTheme.fontFamily.mono],
         mono: ['JetBrains Mono', ...defaultTheme.fontFamily.mono],
+        // Long-form sales copy on course pages: a sans designed for Vietnamese
+        body: ['Be Vietnam Pro', ...defaultTheme.fontFamily.sans],
       },
       colors: {
-        primary: colors.orange,
-        // One neutral family site-wide: legacy gray-* classes render as slate.
-        gray: colors.slate,
+        primary: gruvbox.orange,
         canvas: token('bg'),
         surface: {
           DEFAULT: token('surface'),
@@ -86,7 +103,7 @@ module.exports = {
         success: token('success'),
         danger: token('danger'),
       },
-      // Three elevation levels defined in css/tailwind.css; they deepen in dark mode.
+      // Flat by default; the large levels are hard offset shadows (css/tailwind.css)
       boxShadow: {
         sm: 'var(--app-shadow-sm)',
         DEFAULT: 'var(--app-shadow-sm)',
@@ -117,8 +134,8 @@ module.exports = {
             '--tw-prose-pre-bg': '#1d2021',
             '--tw-prose-th-borders': 'rgb(var(--app-border-strong))',
             '--tw-prose-td-borders': 'rgb(var(--app-border))',
-            fontSize: '1.0625rem',
-            lineHeight: '1.8',
+            fontSize: '0.96875rem',
+            lineHeight: '1.85',
             a: {
               textDecorationThickness: '1px',
               textUnderlineOffset: '3px',
@@ -138,14 +155,33 @@ module.exports = {
               fontWeight: '700',
               letterSpacing: '-0.02em',
             },
+            // Markdown-source heading markers, like reading the post in an editor
+            'h2::before': {
+              content: '"## "',
+              color: 'rgb(var(--app-accent-strong))',
+              fontWeight: '400',
+            },
+            'h3::before': {
+              content: '"### "',
+              color: 'rgb(var(--app-info))',
+              fontWeight: '400',
+            },
+            blockquote: {
+              fontStyle: 'normal',
+              backgroundColor: 'rgb(var(--app-info) / 0.08)',
+              paddingTop: '0.25rem',
+              paddingBottom: '0.25rem',
+            },
             'h5, h6': {
               color: 'var(--tw-prose-headings)',
               fontWeight: '600',
             },
             code: {
+              color: 'rgb(var(--app-accent-strong))',
               backgroundColor: 'rgb(var(--app-text) / 0.07)',
               padding: '0.125rem 0.375rem',
-              borderRadius: '0.375rem',
+              borderRadius: '0',
+              fontWeight: '500',
             },
             'code::before': {
               content: 'none',
@@ -154,13 +190,13 @@ module.exports = {
               content: 'none',
             },
             pre: {
-              borderRadius: '0.75rem',
+              borderRadius: '0',
               border: '1px solid rgb(var(--app-border))',
             },
             details: {
               backgroundColor: 'rgb(var(--app-surface-muted))',
               border: '1px solid rgb(var(--app-border))',
-              borderRadius: '0.75rem',
+              borderRadius: '0',
               padding: '0.5rem 1rem',
             },
             summary: {

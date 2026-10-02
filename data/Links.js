@@ -12,7 +12,8 @@ export const footerNavLinks = [
   { href: '/pricing', title: 'Chính sách giá' },
   { href: '/docs/privacy', title: 'Chính sách bảo mật' },
   { href: '/docs/tos', title: 'Điều khoản sử dụng' },
-  { href: siteMetadata.messenger, title: 'Liên hệ' },
+  { href: siteMetadata.zalo, title: 'Zalo tư vấn' },
+  { href: siteMetadata.messenger, title: 'Messenger' },
   { href: '/about', title: 'About' },
   { href: '/feed.xml', title: 'RSS Feed' },
 ]

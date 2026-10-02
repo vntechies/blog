@@ -38,11 +38,20 @@ const faqs = [
     question: 'Làm thế nào để liên hệ với VNTechies?',
     answer: (
       <>
-        Các bạn có thể liên hệ trực tiếp qua facebook messenger của VNTechies tại{' '}
+        Nhanh nhất là nhắn Zalo{' '}
+        <a
+          href="https://zalo.me/0905068885"
+          className={answerLink}
+          target="_blank"
+          rel="noreferrer"
+        >
+          0905 068 885
+        </a>
+        , hoặc facebook messenger của VNTechies tại{' '}
         <a href="https://m.me/vntechies" className={answerLink} target="_blank" rel="noreferrer">
           @vntechies
         </a>{' '}
-        để được phản hồi nhanh nhất hoặc liên hệ qua email{' '}
+        hoặc email{' '}
         <a href="mailto:info@vntechies.dev" className={answerLink} target="_blank" rel="noreferrer">
           info@vntechies.dev
         </a>{' '}

@@ -22,32 +22,23 @@ export default function ListLayout({ posts, title, initialDisplayPosts = [], pag
           <h1 className="page-heading">{title}</h1>
           <p className="page-lead">Tìm kiếm bài viết theo tiêu đề, tóm tắt hoặc chủ đề.</p>
         </div>
-        <div className="surface-panel-muted relative max-w-xl p-3">
-          <div className="relative">
-            <input
-              aria-label="Search articles"
-              type="text"
-              onChange={(e) => setSearchValue(e.target.value)}
-              placeholder="Tìm bài viết"
-              className="input-field pr-12"
-            />
-            <svg
-              className="pointer-events-none absolute right-4 top-1/2 h-5 w-5 -translate-y-1/2 text-fg-subtle"
-              aria-hidden="true"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-              />
-            </svg>
-          </div>
-        </div>
+        <label className="relative flex max-w-2xl items-center border border-line-control bg-surface focus-within:border-brand-strong">
+          <span className="pointer-events-none select-none whitespace-nowrap pl-4 text-sm text-success">
+            $ grep -i
+          </span>
+          <input
+            aria-label="Search articles"
+            type="text"
+            onChange={(e) => setSearchValue(e.target.value)}
+            placeholder="tìm bài viết…"
+            className="min-h-[2.75rem] w-full border-0 bg-transparent px-3 py-2 text-base text-fg placeholder:text-fg-subtle focus:ring-0 focus-visible:outline-none sm:text-sm"
+          />
+        </label>
+        <p className="mt-3 text-xs text-fg-subtle">
+          {searchValue
+            ? `${filteredBlogPosts.length} bài viết khớp "${searchValue}"`
+            : `${posts.length} bài viết`}
+        </p>
       </section>
 
       <section className="py-6">

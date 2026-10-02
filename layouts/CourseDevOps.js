@@ -1,3 +1,4 @@
+import PremiumCourseHero from '@/components/course/PremiumCourseHero'
 import React, { useState } from 'react'
 import Image from '../components/Image'
 import {
@@ -15,38 +16,26 @@ import {
   FaChevronUp,
 } from 'react-icons/fa'
 import Link from 'next/link'
+import siteMetadata from '@/data/siteMetadata'
 import CourseRegistrationForm from '../components/CourseRegistrationForm'
 import OtherCoursesSection from '@/components/OtherCoursesSection'
-
-const testimonials = [
-  {
-    rating: 5,
-    comment:
-      'Khoá học rất thực tế, mentor tận tâm, mình đã có thể làm việc với các công cụ DevOps ngay sau khoá học!',
-    author: 'Nguyễn Văn A - DevOps Engineer',
-    image: '/static/images/customers/default.jpg',
-  },
-  {
-    rating: 5,
-    comment:
-      'Nội dung chi tiết, nhiều lab thực hành, cực kỳ hữu ích cho người mới bắt đầu với DevOps.',
-    author: 'Trần Thị B - System Engineer',
-    image: '/static/images/customers/default.jpg',
-  },
-  {
-    rating: 5,
-    comment:
-      'VNTechies đưa ra nhiều kiến thức bổ ích về DevOps, giúp mình hiểu rõ hơn về quy trình CI/CD và các công cụ.',
-    author: 'Lê Văn C - Software Developer',
-    image: '/static/images/customers/default.jpg',
-  },
-]
+import { MONTHLY_INTAKE, octoberOffer, campaignTuition } from '@/data/courseOffers'
+import { OfferBanner, Price, applyOffer, formatVnd, useOffer } from '@/components/course/offer'
+import {
+  AudienceFit,
+  CourseFAQ,
+  QuickFacts,
+  SalaryEvidence,
+  StickyEnrollBar,
+  TestimonialGrid,
+} from '@/components/course/SalesSections'
+import { pickTestimonials } from '@/data/testimonials'
 
 const courseInfo = {
   title: 'ĐỘC QUYỀN: Khoá học DevOps Engineer Bootcamp',
   subtitle: 'Từ Zero đến Hero với DevOps - Lộ trình đào tạo toàn diện',
-  image: '/static/images/courses/devopseng01-hero.png',
-  startDate: '9/10/2025',
+  image: '/static/images/ogps/courses/devops-ogp.png',
+  startDate: 'Khai giảng hàng tháng',
   duration: '8 tuần (16 buổi)',
   schedule: '19:00 - 21:00 - UTC+7',
   location: 'Online qua Google Meet',
@@ -286,6 +275,116 @@ const stats = [
   { number: '4+', label: 'Mentor kinh nghiệm' },
 ]
 
+// Published tuition (VND): working professional / student
+const tuition = campaignTuition
+
+const audience = {
+  student: [
+    <>
+      Học phí sinh viên riêng, thêm{' '}
+      <Link href="/pricing#financial-aid" className="underline underline-offset-2">
+        Financial Aid
+      </Link>{' '}
+      hỗ trợ tới 500.000₫
+    </>,
+    <>
+      <Link href="/pricing#tra-gop" className="underline underline-offset-2">
+        Trả góp 2–3 đợt
+      </Link>
+      , chỉ cần cọc từ 40% khi đăng ký
+    </>,
+    'Đi từ nền tảng: Linux, shell scripting và Git trước khi lên Docker, Kubernetes, AWS',
+    'Ra trường với một capstone project DevOps hoàn chỉnh để đưa vào CV và portfolio',
+  ],
+  working: [
+    'Học online buổi tối 19:00–21:00, 2 buổi/tuần: không ảnh hưởng giờ làm',
+    'Hơn 50% thời lượng là lab với công cụ doanh nghiệp đang dùng: Docker, Kubernetes, Jenkins, Prometheus, Grafana',
+    'Rủ đồng nghiệp đăng ký nhóm 2+ người để nhận giá Group',
+    'Hỗ trợ CV và phỏng vấn cuối khoá cho vị trí DevOps, từ mentor Senior/Lead/Manager tại công ty đa quốc gia',
+  ],
+}
+
+const itviec = {
+  name: 'ITviec, Vietnam IT Salary & Recruitment Market Report 2024–2025',
+  url: 'https://itviec.com/report/vietnam-it-salary-and-recruitment-market-2024-2025',
+}
+
+const salaryEvidence = [
+  {
+    value: '43,6 triệu ₫',
+    label: 'Lương trung vị/tháng của DevOps / DevSecOps Engineer tại Việt Nam (5 năm kinh nghiệm)',
+    source: itviec,
+  },
+  {
+    value: '29,2 triệu ₫',
+    label: 'Lương trung vị/tháng của Cloud Engineer tại Việt Nam (3 năm kinh nghiệm)',
+    source: itviec,
+  },
+]
+
+const faq = [
+  {
+    q: 'Bao giờ khai giảng lớp tiếp theo?',
+    a: (
+      <>
+        Khoá học khai giảng hàng tháng. Bạn đăng ký trước, tư vấn viên sẽ xếp bạn vào lớp gần nhất
+        và gửi lịch học cụ thể. Muốn biết ngay lịch lớp tới, nhắn Zalo{' '}
+        <a
+          href={siteMetadata.zalo}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="underline underline-offset-2"
+        >
+          {siteMetadata.zaloDisplay}
+        </a>
+        .
+      </>
+    ),
+  },
+  {
+    q: 'Mình chưa biết gì về DevOps, cần chuẩn bị gì?',
+    a: 'Không cần kinh nghiệm DevOps. Khoá đi từ Linux, shell scripting và Git (Module 2) trước khi vào Docker, Kubernetes, AWS và CI/CD. Biết dùng dòng lệnh cơ bản sẽ giúp bạn theo nhanh hơn.',
+  },
+  {
+    q: 'Đi làm cả ngày thì học thế nào?',
+    a: 'Lớp học online qua Google Meet, 19:00–21:00 (giờ Việt Nam), 2 buổi/tuần trong 8 tuần, tổng 16 buổi.',
+  },
+  {
+    q: 'Học xong mình làm được gì?',
+    a: 'Bạn tự dựng được một hệ thống DevOps end-to-end: đóng gói ứng dụng với Docker, triển khai lên Kubernetes và AWS, tự động hoá bằng Jenkins pipeline, giám sát bằng Prometheus, Grafana và Loki. Hai buổi cuối là capstone project để bạn trình bày như một dự án thật.',
+  },
+  {
+    q: 'Ưu đãi giảm thêm 10% áp dụng thế nào?',
+    a: 'Đăng ký trước hết ngày 13/10 để được giảm thêm 10% trên mức học phí bạn đủ điều kiện: tiêu chuẩn, Early Bird hoặc nhóm, cho cả sinh viên và người đi làm.',
+  },
+  {
+    q: 'Có trả góp không?',
+    a: (
+      <>
+        Có. Gói Comfort 2 đợt (cọc 50%, phí hỗ trợ 3%) hoặc gói Flexible 3 đợt (cọc 40%, phí hỗ trợ
+        5%). Chi tiết tại{' '}
+        <Link href="/pricing#tra-gop" className="underline underline-offset-2">
+          chính sách trả góp
+        </Link>
+        .
+      </>
+    ),
+  },
+  {
+    q: 'Nếu học thử thấy không phù hợp thì sao?',
+    a: (
+      <>
+        Bạn được hoàn 30% học phí trong 3 ngày đầu (chưa truy cập nội dung, hoàn thành dưới 5%) hoặc
+        20% trong 7 ngày (hoàn thành dưới 10%). Xem đầy đủ tại{' '}
+        <Link href="/pricing#hoan-tien" className="underline underline-offset-2">
+          chính sách hoàn tiền
+        </Link>
+        .
+      </>
+    ),
+  },
+]
+
 export default function CourseDevOps({ frontMatter, mentorDetails, otherCourses = [] }) {
   // State to track which lessons are expanded
   const [expandedLessons, setExpandedLessons] = useState(new Set())
@@ -308,6 +407,9 @@ export default function CourseDevOps({ frontMatter, mentorDetails, otherCourses 
   }
 
   const mentors = mentorDetails
+  const { active: offerActive, daysLeft } = useOffer(octoberOffer)
+  const offerPrice = (amount) =>
+    formatVnd(offerActive ? applyOffer(amount, octoberOffer.percent) : amount)
 
   // Function to toggle lesson expansion
   const toggleLesson = (moduleIndex, lessonIndex) => {
@@ -324,526 +426,449 @@ export default function CourseDevOps({ frontMatter, mentorDetails, otherCourses 
   }
 
   return (
-    <div className="mx-auto w-full max-w-7xl">
+    <div className="course-page premium-course mx-auto w-full max-w-7xl">
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-white to-slate-50 px-4 py-24 dark:from-gray-900 dark:to-slate-800">
-        <div className="mx-auto max-w-7xl">
-          <div className="flex flex-col items-center">
-            {/* Fixed Discount Banner - Left Corner */}
-            {/* <div className="fixed top-40 left-4 z-50">
-              <div className="relative -rotate-45 transform">
-                <div
-                  className="bg-yellow-400 px-12 py-4 text-xl font-bold text-red-600 shadow-lg"
-                  style={{
-                    clipPath: 'polygon(15% 0, 100% 0, 100% 100%, 15% 100%, 0 50%)',
-                    width: '160px',
-                    height: '48px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    whiteSpace: 'nowrap',
-                    overflow: 'hidden',
-                  }}
-                >
-                  Discount 50%*
-                </div>
+      <PremiumCourseHero courseKey="devops" />
+      <CourseRegistrationForm courseTitle="VDE-C01" theme="blue" />
+      <div id="course-details" className="premium-course-details">
+        {/* Course Info Section */}
+        <section className="bg-white py-16 dark:bg-gray-900">
+          <div className="mx-auto max-w-6xl px-4">
+            <div className="mb-12 text-center">
+              <h2 className="mb-4 text-3xl font-bold text-gray-900 dark:text-gray-100">
+                Thông tin khoá học
+              </h2>
+            </div>
+            <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
+              <div className="rounded-xl bg-blue-50 p-6 text-center dark:bg-blue-900/20">
+                <div className="mb-3 text-3xl font-bold text-blue-600">16</div>
+                <div className="text-sm font-medium text-gray-700 dark:text-gray-300">Buổi học</div>
+                <div className="text-xs text-gray-500 dark:text-gray-400">Mỗi buổi 2 tiếng</div>
               </div>
-            </div> */}
-
-            {/* Fixed FREE LAB Banner - Under Discount Flag */}
-            {/* <div className="fixed top-72 left-4 z-50">
-              <div className="relative -rotate-45 transform">
-                <div
-                  className="bg-yellow-400 px-12 py-4 text-xl font-bold text-red-600 shadow-lg"
-                  style={{
-                    clipPath: 'polygon(15% 0, 100% 0, 100% 100%, 15% 100%, 0 50%)',
-                    width: '160px',
-                    height: '48px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    whiteSpace: 'nowrap',
-                    overflow: 'hidden',
-                  }}
-                >
-                  FREE LAB
+              <div className="rounded-xl bg-blue-50 p-6 text-center dark:bg-blue-900/20">
+                <div className="mb-3 text-3xl font-bold text-blue-600">32h</div>
+                <div className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                  Tổng thời lượng
                 </div>
+                <div className="text-xs text-gray-500 dark:text-gray-400">8 tuần học</div>
               </div>
-            </div> */}
+              <div className="rounded-xl bg-blue-50 p-6 text-center dark:bg-blue-900/20">
+                <div className="mb-3 text-2xl font-bold text-blue-600">02 buổi/tuần</div>
+                <div className="text-sm font-medium text-gray-700 dark:text-gray-300">Lịch học</div>
+                <div className="text-xs text-gray-500 dark:text-gray-400">19:00 - 21:00</div>
+              </div>
+              <div className="rounded-xl bg-blue-50 p-6 text-center dark:bg-blue-900/20">
+                <div className="mb-3 text-2xl font-bold text-blue-600">Khai giảng hàng tháng</div>
+                <div className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                  Học Online
+                </div>
+                <div className="text-xs text-gray-500 dark:text-gray-400">Google Meet</div>
+              </div>
+            </div>
+          </div>
+        </section>
 
-            <div className="mb-16 max-w-4xl text-center">
-              <h1 className="mb-8 text-center text-[3.5rem] font-black leading-none tracking-tight text-gray-900 dark:text-gray-100 md:text-[4rem] lg:text-[5rem] xl:text-[6rem]">
-                <span className="bg-gradient-to-r from-gray-900 to-slate-700 bg-clip-text text-transparent dark:from-gray-100 dark:to-slate-300">
-                  DevOps Engineer
-                </span>
-                <br />
-                <span className="bg-gradient-to-r from-blue-600 to-blue-500 bg-clip-text text-[2.5rem] text-transparent md:text-[3rem] lg:text-[4rem] xl:text-[5rem]">
-                  Cơ Bản Tới Nâng Cao
-                </span>
-              </h1>
-              <p className="text-2xl font-bold text-gray-500">(VDE-C01)</p>
+        <AudienceFit student={audience.student} working={audience.working} />
+
+        <TestimonialGrid
+          items={pickTestimonials('devops')}
+          title="Cảm nhận về nội dung DevOps của VNTechies"
+        />
+
+        {/* Pricing Section */}
+        <section id="hoc-phi" className="bg-white py-20 dark:bg-gray-900">
+          <div className="mx-auto max-w-6xl px-4">
+            <div className="mb-16 text-center">
+              <h2 className="mb-4 text-4xl font-bold text-gray-900 dark:text-gray-100">
+                Học phí đầu tư cho tương lai
+              </h2>
+              <p className="text-xl text-gray-600 dark:text-gray-300">
+                Chỉ bằng 1-2 tháng lương Junior, nhưng giá trị mang lại suốt đời
+              </p>
+
+              <OfferBanner
+                className="mx-auto mt-8 max-w-3xl"
+                offer={octoberOffer}
+                active={offerActive}
+                daysLeft={daysLeft}
+              />
             </div>
 
-            <div className="grid items-center gap-16 lg:grid-cols-2">
-              <div className="relative w-full">
-                <div className="absolute -inset-4 rounded-3xl bg-gradient-to-r from-blue-500/20 to-slate-600/20 blur-xl"></div>
-                <Image
-                  src={info.image}
-                  alt={info.title}
-                  width={650}
-                  height={450}
-                  className="relative mx-auto rounded-3xl object-cover shadow-2xl"
-                />
-              </div>
-
-              <div className="flex flex-col space-y-8">
-                <div className="inline-flex items-center rounded-full bg-gradient-to-r from-blue-100 to-blue-50 px-6 py-3 text-blue-700 shadow-sm dark:from-blue-900/30 dark:to-blue-800/20 dark:text-blue-400">
-                  <FaRocket className="mr-3 h-5 w-5" />
-                  <span className="font-semibold">Học để làm - Không chỉ lý thuyết</span>
-                </div>
-                {/* Special Offer Highlight */}
-                <div className="rounded-2xl bg-gradient-to-r from-blue-600 to-indigo-600 p-6 text-white shadow-xl">
-                  <div className="text-center">
-                    <div className="mb-4">
-                      <h3 className="mb-2 text-lg font-bold">
-                        🎁 Khoá học độc quyền với hơn 50% THỜI LƯỢNG LAB
-                      </h3>
-                    </div>
-                    <div className="space-y-3">
-                      <div className="flex flex-col items-center justify-center gap-2 rounded-lg bg-white/10 p-3">
-                        <div className="flex items-center gap-3">
-                          <FaCertificate className="h-5 w-5 flex-shrink-0 text-yellow-300" />
-                          <span className="text-sm font-medium">
-                            Mở rộng cơ hội nghề nghiệp trong lĩnh vực DevOps
-                          </span>
-                        </div>
-                      </div>
-                      <div className="flex items-center justify-center gap-3 rounded-lg bg-white/10 p-3">
-                        <FaLaptopCode className="h-5 w-5 flex-shrink-0 text-yellow-300" />
-                        <span className="text-sm font-medium">LAB LAB LAB VÀ LAB!!!</span>
-                      </div>
-                    </div>
-                  </div>
+            <div className="grid gap-8 lg:grid-cols-3">
+              {/* Standard Plan */}
+              <div className="group relative rounded-2xl bg-white p-8 shadow-lg transition hover:shadow-2xl dark:bg-gray-800">
+                <div className="mb-8 text-center">
+                  <h3 className="mb-2 text-2xl font-bold text-gray-900 dark:text-gray-100">
+                    Standard
+                  </h3>
+                  <p className="text-gray-600 dark:text-gray-400">Học phí tiêu chuẩn</p>
                 </div>
 
-                {/* Key Features */}
-                <div className="rounded-2xl bg-gradient-to-br from-slate-900 to-slate-800 p-8 text-white shadow-xl">
-                  <div className="mb-6">
-                    <h3 className="text-md text-center font-bold text-blue-400">
-                      Xây dựng hệ thống DevOps từ cơ bản đến nâng cao
-                    </h3>
+                <div className="mb-8 space-y-4">
+                  <div className="rounded-xl bg-gray-50 p-6 text-center dark:bg-gray-700">
+                    <div className="text-sm font-medium text-gray-600 dark:text-gray-400">
+                      Người đi làm
+                    </div>
+                    <Price
+                      amount={8000000}
+                      offer={octoberOffer}
+                      active={offerActive}
+                      className="text-3xl font-bold text-gray-900 dark:text-gray-100"
+                      compareClassName="text-sm opacity-75"
+                    />
                   </div>
-                  <div className="grid gap-4 sm:grid-cols-2">
-                    <div className="flex items-start gap-3">
-                      <FaCheckCircle className="mt-1 h-5 w-5 flex-shrink-0 text-blue-500" />
-                      <span className="text-sm leading-relaxed">
-                        Hơn 50% thời lượng thực hành lab
-                      </span>
+                  <div className="rounded-xl bg-blue-50 p-4 text-center dark:bg-blue-900/30">
+                    <div className="text-sm font-medium text-blue-600 dark:text-blue-400">
+                      Sinh viên
                     </div>
-                    <div className="flex items-start gap-3">
-                      <FaCheckCircle className="mt-1 h-5 w-5 flex-shrink-0 text-blue-500" />
-                      <span className="text-sm leading-relaxed">
-                        Giảng viên đến từ các công ty đa quốc gia
-                      </span>
+                    <Price
+                      amount={7500000}
+                      offer={octoberOffer}
+                      active={offerActive}
+                      className="text-2xl font-bold text-blue-700 dark:text-blue-300"
+                      compareClassName="text-sm opacity-75"
+                    />
+                    <div className="mt-2 text-xs text-blue-600 dark:text-blue-400">
+                      Hỗ trợ học phí lên tới 500.000đ
                     </div>
-                    <div className="flex items-start gap-3">
-                      <FaCheckCircle className="mt-1 h-5 w-5 flex-shrink-0 text-blue-500" />
-                      <span className="text-sm leading-relaxed">
-                        Nội dung bài lab thực tế với các công cụ DevOps hiện đại
-                      </span>
-                    </div>
-                    <div className="flex items-start gap-3">
-                      <FaCheckCircle className="mt-1 h-5 w-5 flex-shrink-0 text-blue-500" />
-                      <span className="text-sm leading-relaxed">
-                        Hỗ trợ nghề nghiệp & CV, phỏng vấn cuối khoá học
-                      </span>
-                    </div>
-                    <div className="flex items-start gap-3">
-                      <FaCheckCircle className="mt-1 h-5 w-5 flex-shrink-0 text-blue-500" />
-                      <span className="text-sm leading-relaxed">
-                        Tham gia cộng đồng DevOps 3000+ thành viên
-                      </span>
-                    </div>
-                    <div className="flex items-start gap-3">
-                      <FaCheckCircle className="mt-1 h-5 w-5 flex-shrink-0 text-blue-500" />
-                      <span className="text-sm leading-relaxed">
-                        Giáo án và kho tài liệu độc quyền
-                      </span>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
-                  <a
-                    href="#registration-form"
-                    className="inline-flex items-center justify-center rounded-xl bg-gradient-to-r from-blue-600 to-blue-500 px-8 py-4 text-lg font-bold text-white shadow-xl transition hover:from-blue-700 hover:to-blue-600 hover:shadow-2xl"
-                  >
-                    Đăng ký ngay
-                    <FaRocket className="ml-3 h-5 w-5" />
-                  </a>
-                  <div className="text-sm text-gray-600 dark:text-gray-400">
-                    <span className="font-semibold">Tư vấn:</span>{' '}
                     <Link
-                      href="https://m.me/vntechies"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-blue-500 hover:underline"
+                      href="/pricing#financial-aid"
+                      className="text-xs font-semibold text-blue-700 hover:underline dark:text-blue-300"
                     >
-                      Messenger VNTechies
+                      Financial Aid Program
                     </Link>
                   </div>
                 </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
 
-      {/* Course Info Section */}
-      <section className="bg-white py-16 dark:bg-gray-900">
-        <div className="mx-auto max-w-6xl px-4">
-          <div className="mb-12 text-center">
-            <h2 className="mb-4 text-3xl font-bold text-gray-900 dark:text-gray-100">
-              Thông tin khoá học
-            </h2>
-          </div>
-          <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
-            <div className="rounded-xl bg-blue-50 p-6 text-center dark:bg-blue-900/20">
-              <div className="mb-3 text-3xl font-bold text-blue-600">16</div>
-              <div className="text-sm font-medium text-gray-700 dark:text-gray-300">Buổi học</div>
-              <div className="text-xs text-gray-500 dark:text-gray-400">Mỗi buổi 2 tiếng</div>
-            </div>
-            <div className="rounded-xl bg-blue-50 p-6 text-center dark:bg-blue-900/20">
-              <div className="mb-3 text-3xl font-bold text-blue-600">32h</div>
-              <div className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                Tổng thời lượng
-              </div>
-              <div className="text-xs text-gray-500 dark:text-gray-400">8 tuần học</div>
-            </div>
-            <div className="rounded-xl bg-blue-50 p-6 text-center dark:bg-blue-900/20">
-              <div className="mb-3 text-2xl font-bold text-blue-600">02 buổi/tuần</div>
-              <div className="text-sm font-medium text-gray-700 dark:text-gray-300">Lịch học</div>
-              <div className="text-xs text-gray-500 dark:text-gray-400">19:00 - 21:00</div>
-            </div>
-            <div className="rounded-xl bg-blue-50 p-6 text-center dark:bg-blue-900/20">
-              <div className="mb-3 text-2xl font-bold text-blue-600">Liên Tục Khai Giảng</div>
-              <div className="text-sm font-medium text-gray-700 dark:text-gray-300">Học Online</div>
-              <div className="text-xs text-gray-500 dark:text-gray-400">Google Meet</div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Pricing Section */}
-      <section className="bg-white py-20 dark:bg-gray-900">
-        <div className="mx-auto max-w-6xl px-4">
-          <div className="mb-16 text-center">
-            <h2 className="mb-4 text-4xl font-bold text-gray-900 dark:text-gray-100">
-              Học phí đầu tư cho tương lai
-            </h2>
-            <p className="text-xl text-gray-600 dark:text-gray-300">
-              Chỉ bằng 1-2 tháng lương Junior, nhưng giá trị mang lại suốt đời
-            </p>
-          </div>
-
-          <div className="grid gap-8 lg:grid-cols-3">
-            {/* Standard Plan */}
-            <div className="group relative rounded-2xl bg-white p-8 shadow-lg transition hover:shadow-2xl dark:bg-gray-800">
-              <div className="mb-8 text-center">
-                <h3 className="mb-2 text-2xl font-bold text-gray-900 dark:text-gray-100">
-                  Standard
-                </h3>
-                <p className="text-gray-600 dark:text-gray-400">Học phí tiêu chuẩn</p>
+                <a
+                  href="#registration-form"
+                  className="block w-full rounded-xl bg-slate-900 py-4 text-center font-semibold text-white transition hover:bg-slate-800"
+                >
+                  Đăng ký ngay
+                </a>
               </div>
 
-              <div className="mb-8 space-y-4">
-                <div className="rounded-xl bg-gray-50 p-6 text-center dark:bg-gray-700">
-                  <div className="text-sm font-medium text-gray-600 dark:text-gray-400">
-                    Người đi làm
+              {/* Early Bird Plan - Featured */}
+              <div className="group relative scale-105 rounded-2xl bg-blue-600 p-8 text-white shadow-2xl">
+                <div className="absolute -top-4 left-1/2 -translate-x-1/2 rounded-full bg-blue-400 px-4 py-2 text-sm font-bold text-white">
+                  HẤP DẪN
+                </div>
+
+                <div className="mb-8 text-center">
+                  <h3 className="mb-2 text-2xl font-bold">Early Bird</h3>
+                  <p className="opacity-90">Đăng ký sớm - Tiết kiệm 10%</p>
+                </div>
+
+                <div className="mb-8 space-y-4">
+                  <div className="rounded-xl bg-white/20 p-6 text-center backdrop-blur">
+                    <div className="text-sm font-medium opacity-90">Người đi làm</div>
+                    <Price
+                      amount={7200000}
+                      compareAt={8000000}
+                      offer={octoberOffer}
+                      active={offerActive}
+                      className="text-3xl font-bold"
+                      compareClassName="text-sm opacity-75"
+                    />
                   </div>
-                  <div className="text-3xl font-bold text-gray-900 dark:text-gray-100">
-                    8.000.000₫
+                  <div className="rounded-xl bg-white/10 p-4 text-center backdrop-blur">
+                    <div className="text-sm font-medium opacity-90">Sinh viên</div>
+                    <Price
+                      amount={6700000}
+                      compareAt={7500000}
+                      offer={octoberOffer}
+                      active={offerActive}
+                      className="text-2xl font-bold"
+                      compareClassName="text-sm opacity-75"
+                    />
+                    <div className="mt-2 text-xs opacity-90">Hỗ trợ học phí lên tới 500.000đ</div>
+                    <Link
+                      href="/pricing#financial-aid"
+                      className="text-xs font-semibold opacity-90 hover:underline"
+                    >
+                      Financial Aid Program
+                    </Link>
                   </div>
                 </div>
-                <div className="rounded-xl bg-blue-50 p-4 text-center dark:bg-blue-900/30">
-                  <div className="text-sm font-medium text-blue-600 dark:text-blue-400">
-                    Sinh viên
-                  </div>
-                  <div className="text-2xl font-bold text-blue-700 dark:text-blue-300">
-                    7.500.000₫
-                  </div>
-                  <div className="mt-2 text-xs text-blue-600 dark:text-blue-400">
-                    Hỗ trợ học phí lên tới 500.000đ
-                  </div>
-                  <Link
-                    href="/pricing#financial-aid"
-                    className="text-xs font-semibold text-blue-700 hover:underline dark:text-blue-300"
-                  >
-                    Financial Aid Program
-                  </Link>
+
+                <a
+                  href="#registration-form"
+                  className="block w-full rounded-xl bg-white py-4 text-center font-bold text-blue-600 transition hover:bg-gray-50"
+                >
+                  Đăng ký ngay
+                </a>
+              </div>
+
+              {/* Group Plan */}
+              <div className="group relative rounded-2xl bg-white p-8 shadow-lg transition hover:shadow-2xl dark:bg-gray-800">
+                <div className="absolute -top-3 right-4 rounded-full bg-blue-500 px-3 py-1 text-xs font-bold text-white">
+                  PHỔ BIẾN
                 </div>
-              </div>
 
-              <a
-                href="#registration-form"
-                className="block w-full rounded-xl bg-slate-900 py-4 text-center font-semibold text-white transition hover:bg-slate-800"
-              >
-                Đăng ký ngay
-              </a>
-            </div>
-
-            {/* Early Bird Plan - Featured */}
-            <div className="group relative scale-105 rounded-2xl bg-blue-600 p-8 text-white shadow-2xl">
-              <div className="absolute -top-4 left-1/2 -translate-x-1/2 rounded-full bg-blue-400 px-4 py-2 text-sm font-bold text-white">
-                HẤP DẪN
-              </div>
-
-              <div className="mb-8 text-center">
-                <h3 className="mb-2 text-2xl font-bold">Early Bird</h3>
-                <p className="opacity-90">Đăng ký sớm - Tiết kiệm 10%</p>
-              </div>
-
-              <div className="mb-8 space-y-4">
-                <div className="rounded-xl bg-white/20 p-6 text-center backdrop-blur">
-                  <div className="text-sm font-medium opacity-90">Người đi làm</div>
-                  <div className="text-3xl font-bold">7.200.000₫</div>
-                  <div className="text-sm line-through opacity-75">7.199.000₫</div>
-                </div>
-                <div className="rounded-xl bg-white/10 p-4 text-center backdrop-blur">
-                  <div className="text-sm font-medium opacity-90">Sinh viên</div>
-                  <div className="text-2xl font-bold">6.700.000₫</div>
-                  <div className="text-sm line-through opacity-75">7.500.000₫</div>
-                  <div className="mt-2 text-xs opacity-90">Hỗ trợ học phí lên tới 500.000đ</div>
-                  <Link
-                    href="/pricing#financial-aid"
-                    className="text-xs font-semibold opacity-90 hover:underline"
-                  >
-                    Financial Aid Program
-                  </Link>
-                </div>
-              </div>
-
-              <a
-                href="#registration-form"
-                className="block w-full rounded-xl bg-white py-4 text-center font-bold text-blue-600 transition hover:bg-gray-50"
-              >
-                Đăng ký ngay
-              </a>
-            </div>
-
-            {/* Group Plan */}
-            <div className="group relative rounded-2xl bg-white p-8 shadow-lg transition hover:shadow-2xl dark:bg-gray-800">
-              <div className="absolute -top-3 right-4 rounded-full bg-blue-500 px-3 py-1 text-xs font-bold text-white">
-                PHỔ BIẾN
-              </div>
-
-              <div className="mb-8 text-center">
-                <h3 className="mb-2 text-2xl font-bold text-gray-900 dark:text-gray-100">Group</h3>
-                <p className="text-gray-600 dark:text-gray-400">2+ người cùng đăng ký</p>
-              </div>
-
-              <div className="mb-8 space-y-4">
-                <div className="rounded-xl bg-blue-50 p-6 text-center dark:bg-blue-900/30">
-                  <div className="text-sm font-medium text-blue-600 dark:text-blue-400">
-                    Người đi làm
-                  </div>
-                  <div className="text-3xl font-bold text-blue-700 dark:text-blue-300">
-                    6.800.000₫
-                  </div>
-                  <div className="text-sm text-gray-500 line-through">8.000.000₫</div>
-                </div>
-                <div className="rounded-xl bg-blue-50 p-4 text-center dark:bg-blue-900/20">
-                  <div className="text-sm font-medium text-blue-600 dark:text-blue-400">
-                    Sinh viên
-                  </div>
-                  <div className="text-2xl font-bold text-blue-700 dark:text-blue-300">
-                    6.300.000₫
-                  </div>
-                  <div className="text-sm text-gray-500 line-through">7.500.000₫</div>
-                </div>
-              </div>
-
-              <a
-                href="#registration-form"
-                className="block w-full rounded-xl bg-blue-600 py-4 text-center font-semibold text-white transition hover:bg-blue-700"
-              >
-                Đăng ký ngay
-              </a>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Course Outline Section */}
-      <section className="bg-gradient-to-br from-slate-50 to-blue-50 py-20 dark:from-gray-900 dark:to-blue-900/20">
-        <div className="mx-auto max-w-6xl px-4">
-          <div className="mb-16 text-center">
-            <h2 className="mb-4 text-4xl font-bold text-gray-900 dark:text-gray-100">
-              Lộ trình đào tạo chi tiết
-            </h2>
-            <p className="text-xl text-gray-600 dark:text-gray-300">
-              16 buổi học với nội dung được thiết kế kỹ lưỡng, tập trung vào thực hành
-            </p>
-          </div>
-
-          <div className="space-y-12">
-            {courseInfo.modules.map((module, moduleIndex) => (
-              <div
-                key={moduleIndex}
-                className="rounded-2xl bg-white p-8 shadow-lg transition hover:shadow-xl dark:bg-gray-800"
-              >
-                <div className="mb-6">
-                  <h3 className="mb-2 text-2xl font-bold text-blue-600 dark:text-blue-400">
-                    {module.title}
+                <div className="mb-8 text-center">
+                  <h3 className="mb-2 text-2xl font-bold text-gray-900 dark:text-gray-100">
+                    Group
                   </h3>
-                  <p className="text-gray-600 dark:text-gray-400">{module.focus}</p>
+                  <p className="text-gray-600 dark:text-gray-400">2+ người cùng đăng ký</p>
                 </div>
 
-                <div className="space-y-6">
-                  {module.lessons.map((lesson, lessonIndex) => {
-                    const lessonKey = `${moduleIndex}-${lessonIndex}`
-                    const isExpanded = expandedLessons.has(lessonKey)
+                <div className="mb-8 space-y-4">
+                  <div className="rounded-xl bg-blue-50 p-6 text-center dark:bg-blue-900/30">
+                    <div className="text-sm font-medium text-blue-600 dark:text-blue-400">
+                      Người đi làm
+                    </div>
+                    <Price
+                      amount={6800000}
+                      compareAt={8000000}
+                      offer={octoberOffer}
+                      active={offerActive}
+                      className="text-3xl font-bold text-blue-700 dark:text-blue-300"
+                      compareClassName="text-sm text-gray-500"
+                    />
+                  </div>
+                  <div className="rounded-xl bg-blue-50 p-4 text-center dark:bg-blue-900/20">
+                    <div className="text-sm font-medium text-blue-600 dark:text-blue-400">
+                      Sinh viên
+                    </div>
+                    <Price
+                      amount={6300000}
+                      compareAt={7500000}
+                      offer={octoberOffer}
+                      active={offerActive}
+                      className="text-2xl font-bold text-blue-700 dark:text-blue-300"
+                      compareClassName="text-sm text-gray-500"
+                    />
+                  </div>
+                </div>
 
-                    return (
-                      <div
-                        key={lessonIndex}
-                        className="rounded-xl bg-slate-50 p-6 dark:bg-gray-700/50"
-                      >
+                <a
+                  href="#registration-form"
+                  className="block w-full rounded-xl bg-blue-600 py-4 text-center font-semibold text-white transition hover:bg-blue-700"
+                >
+                  Đăng ký ngay
+                </a>
+              </div>
+            </div>
+
+            <p className="mt-12 text-center text-sm text-gray-600 dark:text-gray-300">
+              <Link href="/pricing#tra-gop" className="font-semibold underline underline-offset-2">
+                Trả góp 2–3 đợt, cọc từ 40%
+              </Link>
+              {' · '}
+              <Link
+                href="/pricing#financial-aid"
+                className="font-semibold underline underline-offset-2"
+              >
+                Hỗ trợ học phí sinh viên tới 500.000₫
+              </Link>
+              {' · '}
+              <Link
+                href="/pricing#hoan-tien"
+                className="font-semibold underline underline-offset-2"
+              >
+                Chính sách hoàn tiền
+              </Link>
+            </p>
+
+            <SalaryEvidence
+              title="Nghề DevOps đáng giá thế nào? Số liệu thị trường Việt Nam"
+              items={salaryEvidence}
+              note="Số liệu khảo sát thị trường để tham khảo. Thu nhập thực tế phụ thuộc kinh nghiệm, vị trí và công ty; VNTechies không cam kết mức lương."
+            />
+          </div>
+        </section>
+
+        {/* Course Outline Section */}
+        <section className="bg-gradient-to-br from-slate-50 to-blue-50 py-20 dark:from-gray-900 dark:to-blue-900/20">
+          <div className="mx-auto max-w-6xl px-4">
+            <div className="mb-16 text-center">
+              <h2 className="mb-4 text-4xl font-bold text-gray-900 dark:text-gray-100">
+                Lộ trình đào tạo chi tiết
+              </h2>
+              <p className="text-xl text-gray-600 dark:text-gray-300">
+                16 buổi học với nội dung được thiết kế kỹ lưỡng, tập trung vào thực hành
+              </p>
+            </div>
+
+            <div className="space-y-12">
+              {courseInfo.modules.map((module, moduleIndex) => (
+                <div
+                  key={moduleIndex}
+                  className="rounded-2xl bg-white p-8 shadow-lg transition hover:shadow-xl dark:bg-gray-800"
+                >
+                  <div className="mb-6">
+                    <h3 className="mb-2 text-2xl font-bold text-blue-600 dark:text-blue-400">
+                      {module.title}
+                    </h3>
+                    <p className="text-gray-600 dark:text-gray-400">{module.focus}</p>
+                  </div>
+
+                  <div className="space-y-6">
+                    {module.lessons.map((lesson, lessonIndex) => {
+                      const lessonKey = `${moduleIndex}-${lessonIndex}`
+                      const isExpanded = expandedLessons.has(lessonKey)
+
+                      return (
                         <div
-                          className="flex cursor-pointer items-center justify-between"
-                          onClick={() => toggleLesson(moduleIndex, lessonIndex)}
+                          key={lessonIndex}
+                          className="rounded-xl bg-slate-50 p-6 dark:bg-gray-700/50"
                         >
-                          <h4 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
-                            {lesson.title}
-                          </h4>
-                          <div className="ml-4 flex-shrink-0">
-                            {isExpanded ? (
-                              <FaChevronUp className="h-5 w-5 text-blue-500 transition-transform" />
-                            ) : (
-                              <FaChevronDown className="h-5 w-5 text-blue-500 transition-transform" />
-                            )}
+                          <div
+                            className="flex cursor-pointer items-center justify-between"
+                            onClick={() => toggleLesson(moduleIndex, lessonIndex)}
+                          >
+                            <h4 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+                              {lesson.title}
+                            </h4>
+                            <div className="ml-4 flex-shrink-0">
+                              {isExpanded ? (
+                                <FaChevronUp className="h-5 w-5 text-blue-500 transition-transform" />
+                              ) : (
+                                <FaChevronDown className="h-5 w-5 text-blue-500 transition-transform" />
+                              )}
+                            </div>
                           </div>
-                        </div>
 
-                        {isExpanded && (
-                          <ul className="mt-4 space-y-2 transition-all duration-300 ease-in-out">
-                            {lesson.topics.map((topic, topicIndex) => (
-                              <li
-                                key={topicIndex}
-                                className="flex items-start gap-3 text-gray-600 dark:text-gray-300"
-                              >
-                                <FaCheckCircle className="mt-1 h-5 w-5 flex-shrink-0 text-blue-500" />
-                                <span>{topic}</span>
-                              </li>
+                          {isExpanded && (
+                            <ul className="mt-4 space-y-2 transition-all duration-300 ease-in-out">
+                              {lesson.topics.map((topic, topicIndex) => (
+                                <li
+                                  key={topicIndex}
+                                  className="flex items-start gap-3 text-gray-600 dark:text-gray-300"
+                                >
+                                  <FaCheckCircle className="mt-1 h-5 w-5 flex-shrink-0 text-blue-500" />
+                                  <span>{topic}</span>
+                                </li>
+                              ))}
+                            </ul>
+                          )}
+                        </div>
+                      )
+                    })}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+        {/* Mentor Section */}
+        <section className="bg-gray-100 px-4 py-16 dark:bg-gray-900">
+          <div className="mx-auto max-w-6xl">
+            <h2 className="mb-4 text-center text-3xl font-bold text-gray-900 dark:text-gray-100">
+              Đội ngũ Mentor
+            </h2>
+            <p className="mx-auto mb-12 max-w-3xl text-center text-xl text-gray-600 dark:text-gray-300">
+              100% là chuyên gia AWS tại các công ty nước ngoài (MNC), giàu kinh nghiệm dự án thực
+              tế
+            </p>
+
+            {/* Instructor Stats */}
+            <div className="mb-12 grid grid-cols-2 gap-8 md:grid-cols-4">
+              <div className="text-center">
+                <div className="mb-2 text-3xl font-bold text-blue-600 dark:text-blue-400">9+</div>
+                <div className="text-sm text-gray-600 dark:text-gray-400">
+                  Mentor tham gia giảng dạy
+                </div>
+              </div>
+              <div className="text-center">
+                <div className="mb-2 text-3xl font-bold text-green-600 dark:text-green-400">
+                  100%
+                </div>
+                <div className="text-sm text-gray-600 dark:text-gray-400">
+                  Mentor giữ vị trí Senior/Lead/Manager
+                </div>
+              </div>
+              <div className="text-center">
+                <div className="mb-2 text-3xl font-bold text-purple-600 dark:text-purple-400">
+                  9+
+                </div>
+                <div className="text-sm text-gray-600 dark:text-gray-400">Năm kinh nghiệm AWS</div>
+              </div>
+              <div className="text-center">
+                <div className="mb-2 text-3xl font-bold text-orange-600 dark:text-orange-400">
+                  100%
+                </div>
+                <div className="text-sm text-gray-600 dark:text-gray-400">
+                  Mentor có AWS Certification Professional level
+                </div>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-4">
+              {mentors.map((m, idx) => {
+                const slug = m.slug || (m.name ? m.name.toLowerCase().replace(/\s+/g, '-') : '')
+                return (
+                  <Link
+                    key={idx}
+                    href={`/authors/${slug}`}
+                    className="block"
+                    passHref
+                    legacyBehavior
+                  >
+                    <a className="flex h-full flex-col items-center justify-between rounded-xl bg-gray-50 p-6 shadow transition hover:bg-indigo-50 dark:bg-gray-800 dark:hover:bg-indigo-700">
+                      <div className="flex flex-col items-center" style={{ minHeight: 260 }}>
+                        <Image
+                          src={m.avatar || m.avatar_url || '/data/authors/default.jpg'}
+                          alt={m.name}
+                          width={240}
+                          height={240}
+                          className="mb-3 rounded-full object-cover shadow-lg"
+                        />
+                      </div>
+                      <div className="flex w-full flex-1 flex-col items-center justify-center">
+                        {m.currentPosition && (
+                          <div className="mb-1 text-center text-sm font-semibold text-indigo-700 dark:text-indigo-300">
+                            {m.currentPosition}
+                          </div>
+                        )}
+                        {m.occupation && (
+                          <div className="mb-2 text-center text-xs text-gray-500 dark:text-gray-400">
+                            {m.occupation}
+                          </div>
+                        )}
+                        <div className="text-center text-lg font-bold">{m.name}</div>
+                        <div className="text-center text-sm text-gray-600 dark:text-gray-300">
+                          {m.title}
+                        </div>
+                        {m.bio && <div className="mt-1 text-center text-sm">{m.bio}</div>}
+                        {m.socials && (
+                          <div className="mt-2 flex justify-center gap-2">
+                            {m.socials.map((s, i) => (
+                              <a key={i} href={s.url} target="_blank" rel="noopener noreferrer">
+                                <Image
+                                  src={s.icon}
+                                  alt={s.name}
+                                  width={24}
+                                  height={24}
+                                  className="inline h-6 w-6"
+                                />
+                              </a>
                             ))}
-                          </ul>
+                          </div>
                         )}
                       </div>
-                    )
-                  })}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-      {/* Mentor Section */}
-      <section className="bg-gray-100 px-4 py-16 dark:bg-gray-900">
-        <div className="mx-auto max-w-6xl">
-          <h2 className="mb-4 text-center text-3xl font-bold text-gray-900 dark:text-gray-100">
-            Đội ngũ Mentor
-          </h2>
-          <p className="mx-auto mb-12 max-w-3xl text-center text-xl text-gray-600 dark:text-gray-300">
-            100% là chuyên gia AWS tại các công ty nước ngoài (MNC), giàu kinh nghiệm dự án thực tế
-          </p>
-
-          {/* Instructor Stats */}
-          <div className="mb-12 grid grid-cols-2 gap-8 md:grid-cols-4">
-            <div className="text-center">
-              <div className="mb-2 text-3xl font-bold text-blue-600 dark:text-blue-400">9+</div>
-              <div className="text-sm text-gray-600 dark:text-gray-400">
-                Mentor tham gia giảng dạy
-              </div>
-            </div>
-            <div className="text-center">
-              <div className="mb-2 text-3xl font-bold text-green-600 dark:text-green-400">100%</div>
-              <div className="text-sm text-gray-600 dark:text-gray-400">
-                Mentor giữ vị trí Senior/Lead/Manager
-              </div>
-            </div>
-            <div className="text-center">
-              <div className="mb-2 text-3xl font-bold text-purple-600 dark:text-purple-400">9+</div>
-              <div className="text-sm text-gray-600 dark:text-gray-400">Năm kinh nghiệm AWS</div>
-            </div>
-            <div className="text-center">
-              <div className="mb-2 text-3xl font-bold text-orange-600 dark:text-orange-400">
-                100%
-              </div>
-              <div className="text-sm text-gray-600 dark:text-gray-400">
-                Mentor có AWS Certification Professional level
-              </div>
+                    </a>
+                  </Link>
+                )
+              })}
             </div>
           </div>
+        </section>
+        {/* Registration Form */}
 
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-4">
-            {mentors.map((m, idx) => {
-              const slug = m.slug || (m.name ? m.name.toLowerCase().replace(/\s+/g, '-') : '')
-              return (
-                <Link key={idx} href={`/authors/${slug}`} className="block" passHref legacyBehavior>
-                  <a className="flex h-full flex-col items-center justify-between rounded-xl bg-gray-50 p-6 shadow transition hover:bg-indigo-50 dark:bg-gray-800 dark:hover:bg-indigo-700">
-                    <div className="flex flex-col items-center" style={{ minHeight: 260 }}>
-                      <Image
-                        src={m.avatar || m.avatar_url || '/data/authors/default.jpg'}
-                        alt={m.name}
-                        width={240}
-                        height={240}
-                        className="mb-3 rounded-full object-cover shadow-lg"
-                      />
-                    </div>
-                    <div className="flex w-full flex-1 flex-col items-center justify-center">
-                      {m.currentPosition && (
-                        <div className="mb-1 text-center text-sm font-semibold text-indigo-700 dark:text-indigo-300">
-                          {m.currentPosition}
-                        </div>
-                      )}
-                      {m.occupation && (
-                        <div className="mb-2 text-center text-xs text-gray-500 dark:text-gray-400">
-                          {m.occupation}
-                        </div>
-                      )}
-                      <div className="text-center text-lg font-bold">{m.name}</div>
-                      <div className="text-center text-sm text-gray-600 dark:text-gray-300">
-                        {m.title}
-                      </div>
-                      {m.bio && <div className="mt-1 text-center text-sm">{m.bio}</div>}
-                      {m.socials && (
-                        <div className="mt-2 flex justify-center gap-2">
-                          {m.socials.map((s, i) => (
-                            <a key={i} href={s.url} target="_blank" rel="noopener noreferrer">
-                              <Image
-                                src={s.icon}
-                                alt={s.name}
-                                width={24}
-                                height={24}
-                                className="inline h-6 w-6"
-                              />
-                            </a>
-                          ))}
-                        </div>
-                      )}
-                    </div>
-                  </a>
-                </Link>
-              )
-            })}
-          </div>
-        </div>
-      </section>
-      {/* Registration Form */}
-      <CourseRegistrationForm courseTitle="VDE-C01" theme="blue" />
+        <CourseFAQ items={faq} />
 
-      {/* Other Courses Section */}
-      <OtherCoursesSection otherCourses={otherCourses} />
+        {/* Other Courses Section */}
+        <OtherCoursesSection otherCourses={otherCourses} />
+      </div>
+      <StickyEnrollBar
+        code="DevOps VDE-C01"
+        intake={MONTHLY_INTAKE}
+        fromPrice={tuition.group[1]}
+        offer={octoberOffer}
+        active={offerActive}
+      />
+      <div className="h-16" aria-hidden="true" />
     </div>
   )
 }

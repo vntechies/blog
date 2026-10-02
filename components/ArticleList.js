@@ -6,9 +6,18 @@ const ArticleList = ({ slug, title, summary, tags, image }) => {
 
   return (
     <div className="group h-full">
-      <Link href={`/blog/${slug}`} className="block h-full rounded-2xl">
+      <Link href={`/blog/${slug}`} className="block h-full">
         <article className="surface-panel surface-panel-interactive relative flex h-full flex-col overflow-hidden">
-          <div className="relative overflow-hidden border-b border-line pb-[58%]">
+          {/* Window chrome: each post is a file open in a terminal */}
+          <div className="term-titlebar" aria-hidden="true">
+            <span className="flex shrink-0 gap-1.5">
+              <span className="h-2 w-2 rounded-full bg-red-400" />
+              <span className="h-2 w-2 rounded-full bg-yellow-400" />
+              <span className="h-2 w-2 rounded-full bg-green-400" />
+            </span>
+            <span className="term-title text-[0.6875rem]">~/blog/{slug}.mdx</span>
+          </div>
+          <div className="relative overflow-hidden border-b border-line pb-[52%]">
             <ArticleThumbnail slug={slug} title={title} image={image} />
           </div>
 
@@ -23,14 +32,14 @@ const ArticleList = ({ slug, title, summary, tags, image }) => {
               </div>
             )}
 
-            <h2 className="mb-3 text-xl font-bold leading-snug text-fg transition-colors group-hover:text-brand-strong">
+            <h2 className="mb-3 text-lg font-bold leading-snug text-fg transition-colors group-hover:text-brand-strong">
               {title}
             </h2>
 
             <p className="line-clamp-3 text-sm leading-6 text-fg-muted">{summary}</p>
 
             <div className="action-link mt-auto pt-5">
-              Đọc thêm
+              <span className="text-success">$</span> Đọc thêm
               <svg
                 className="h-4 w-4 transition-transform group-hover:translate-x-1"
                 fill="none"
