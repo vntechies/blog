@@ -91,7 +91,7 @@ export default function Courses({ courses, offerActive }) {
           </p>
         </header>
 
-        <EnrollmentCampaign />
+        <EnrollmentCampaign active={offerActive} />
         <section className="surface-panel p-3 sm:p-4">
           <div className="grid grid-cols-2 gap-2">
             <button
