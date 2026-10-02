@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="740" viewBox="0 0 1200 740" role="img" aria-labelledby="title desc">
+  <title id="title">Local-first SRE agent architecture</title>
+  <desc id="desc">An NVIDIA DGX Spark runs vLLM and Nemotron 3 Super locally. An OpenShell sandbox contains the NemoClaw agent, deterministic state machine, guardrails, and append-only audit log. Deny-by-default egress allows only the ticket system, OAuth endpoint, Microsoft Entra ID, and Azure Resource Manager.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M0 0 10 5 0 10Z" fill="#94A3B8"/>
+    </marker>
+    <style>
+      text{font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;fill:#0F172A}
+      .canvas{fill:#FFFFFF;stroke:#E2E8F0;stroke-width:2}
+      .panel{fill:#FFFFFF;stroke:#E2E8F0;stroke-width:2}
+      .surface{fill:#F8FAFC;stroke:#E2E8F0;stroke-width:1.5}
+      .runtime{fill:#FFF7ED;stroke:#FDBA74;stroke-width:2}
+      .model{fill:#F7FEE7;stroke:#BEF264;stroke-width:2}
+      .azure{fill:#EFF6FF;stroke:#BFDBFE;stroke-width:1.5}
+      .title{font-size:34px;font-weight:750;letter-spacing:-.6px}
+      .subtitle{font-size:18px;fill:#64748B}
+      .eyebrow{font-size:12px;font-weight:750;letter-spacing:1.8px;fill:#EA580C}
+      .section{font-size:20px;font-weight:700}
+      .label{font-size:17px;font-weight:650}
+      .body{font-size:14px;fill:#64748B}
+      .small{font-size:12px;fill:#64748B}
+      .pill{font-size:11px;font-weight:750;letter-spacing:.8px}
+      .line{fill:none;stroke:#94A3B8;stroke-width:2;marker-end:url(#arrow)}
+      .dash{fill:none;stroke:#CBD5E1;stroke-width:1.5;stroke-dasharray:5 5}
+    </style>
+  </defs>
+
+  <rect class="canvas" x="1" y="1" width="1198" height="738" rx="22"/>
+  <rect x="40" y="34" width="36" height="4" rx="2" fill="#F97316"/>
+  <text x="88" y="42" class="eyebrow">LOCAL-FIRST OPERATIONS</text>
+  <text x="40" y="82" class="title">A local SRE agent with hard boundaries</text>
+  <text x="40" y="112" class="subtitle">Reason on the DGX Spark. Reach the outside world only through approved paths.</text>
+
+  <g aria-label="Local compute">
+    <rect class="panel" x="40" y="140" width="720" height="560" rx="18"/>
+    <circle cx="68" cy="173" r="5" fill="#76B900"/>
+    <text x="84" y="180" class="section">NVIDIA DGX Spark</text>
+    <text x="732" y="179" class="small" text-anchor="end">GB10 · 128 GB unified memory · ARM64</text>
+
+    <rect class="model" x="68" y="208" width="664" height="88" rx="12"/>
+    <rect x="88" y="226" width="94" height="22" rx="11" fill="#ECFCCB"/>
+    <text x="135" y="241" class="pill" text-anchor="middle" fill="#3F6212">LOCAL MODEL</text>
+    <text x="88" y="273" class="label">vLLM + Nemotron 3 Super 120B</text>
+    <text x="704" y="273" class="body" text-anchor="end">127.0.0.1:8000</text>
+
+    <rect class="runtime" x="68" y="322" width="664" height="350" rx="14"/>
+    <text x="92" y="356" class="section">OpenShell secure runtime</text>
+    <text x="708" y="355" class="small" text-anchor="end">kernel isolation · policy-enforced gateway</text>
+
+    <rect class="surface" x="92" y="386" width="270" height="104" rx="12"/>
+    <circle cx="116" cy="412" r="7" fill="#F97316"/>
+    <text x="134" y="418" class="label">NemoClaw agent</text>
+    <text x="116" y="448" class="body">Reasons, gathers evidence,</text>
+    <text x="116" y="469" class="body">and drafts work notes</text>
+
+    <rect class="surface" x="438" y="386" width="270" height="104" rx="12"/>
+    <circle cx="462" cy="412" r="7" fill="#64748B"/>
+    <text x="480" y="418" class="label">State machine</text>
+    <text x="462" y="448" class="body">Chooses the next valid</text>
+    <text x="462" y="469" class="body">deterministic transition</text>
+
+    <rect class="surface" x="92" y="530" width="270" height="112" rx="12"/>
+    <circle cx="116" cy="556" r="7" fill="#64748B"/>
+    <text x="134" y="562" class="label">Audit log</text>
+    <text x="116" y="592" class="body">Append-only SQLite</text>
+    <text x="116" y="613" class="body">Hashed I/O · correlation IDs</text>
+
+    <rect x="438" y="530" width="270" height="112" rx="12" fill="#FFEDD5" stroke="#FB923C" stroke-width="2"/>
+    <circle cx="462" cy="556" r="7" fill="#F97316"/>
+    <text x="480" y="562" class="label" fill="#9A3412">Guardrails</text>
+    <text x="462" y="592" class="body" fill="#9A3412">Scope · confidence · blast radius</text>
+    <text x="462" y="613" class="body" fill="#9A3412">Opt-out tag · retry cap · kill switch</text>
+
+    <path class="line" d="M227 382V301"/>
+    <text x="241" y="316" class="small">model request via gateway</text>
+    <path class="line" d="M366 438H432"/>
+    <path class="line" d="M573 494V524"/>
+    <path class="dash" d="M227 496V524M432 586H368"/>
+  </g>
+
+  <g aria-label="Approved egress">
+    <rect class="panel" x="800" y="140" width="360" height="560" rx="18"/>
+    <text x="828" y="178" class="section">Approved egress</text>
+    <rect x="1012" y="158" width="120" height="26" rx="13" fill="#FEF2F2"/>
+    <text x="1072" y="175" class="pill" text-anchor="middle" fill="#B91C1C">DENY BY DEFAULT</text>
+    <text x="828" y="205" class="body">Only these four destinations are reachable.</text>
+
+    <rect class="surface" x="828" y="232" width="304" height="64" rx="11"/>
+    <circle cx="852" cy="264" r="7" fill="#F97316"/>
+    <text x="872" y="270" class="label">Ticket system</text>
+
+    <rect class="surface" x="828" y="312" width="304" height="64" rx="11"/>
+    <circle cx="852" cy="344" r="7" fill="#94A3B8"/>
+    <text x="872" y="350" class="label">OAuth endpoint</text>
+
+    <rect class="surface" x="828" y="392" width="304" height="64" rx="11"/>
+    <circle cx="852" cy="424" r="7" fill="#2563EB"/>
+    <text x="872" y="430" class="label">Microsoft Entra ID</text>
+
+    <rect class="azure" x="828" y="472" width="304" height="112" rx="11"/>
+    <circle cx="852" cy="501" r="7" fill="#0078D4"/>
+    <text x="872" y="507" class="label">Azure Resource Manager</text>
+    <rect x="852" y="532" width="116" height="30" rx="15" fill="#DBEAFE"/>
+    <rect x="980" y="532" width="128" height="30" rx="15" fill="#DBEAFE"/>
+    <text x="910" y="552" class="small" text-anchor="middle" fill="#1D4ED8">test VM</text>
+    <text x="1044" y="552" class="small" text-anchor="middle" fill="#1D4ED8">approved RG</text>
+
+    <rect x="828" y="616" width="304" height="52" rx="10" fill="#F8FAFC"/>
+    <text x="980" y="647" class="body" text-anchor="middle">Everything else stays unreachable.</text>
+  </g>
+
+  <path class="line" d="M708 586H782V528H822"/>
+  <rect x="746" y="535" width="76" height="24" rx="12" fill="#FFFFFF" stroke="#E2E8F0"/>
+  <text x="784" y="551" class="pill" text-anchor="middle" fill="#475569">APPROVED</text>
+</svg>

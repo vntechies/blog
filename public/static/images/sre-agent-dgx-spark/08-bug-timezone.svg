@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="470" viewBox="0 0 1200 470" role="img" aria-labelledby="title desc">
+  <title id="title">Timezone bug in Windows event logs</title>
+  <desc id="desc">In reality, an ordinary error happens at 02:00 UTC and remediation follows at 03:00 UTC. A Windows VM in UTC plus 8 logs the error as 10:00 without an offset. The agent interprets it as UTC and falsely concludes that the error happened after remediation. The fix is to normalize timestamps to UTC during collection.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M0 0 10 5 0 10Z" fill="#F97316"/>
+    </marker>
+    <style>
+      text{font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;fill:#0F172A}
+      .canvas{fill:#FFFFFF;stroke:#E2E8F0;stroke-width:2}
+      .panel{fill:#F8FAFC;stroke:#E2E8F0;stroke-width:1.5}
+      .title{font-size:32px;font-weight:750;letter-spacing:-.5px}
+      .subtitle{font-size:17px;fill:#64748B}
+      .eyebrow{font-size:12px;font-weight:750;letter-spacing:1.8px;fill:#EA580C}
+      .heading{font-size:18px;font-weight:700}
+      .body{font-size:13px;fill:#64748B}
+      .time{font-size:20px;font-weight:750}
+      .small{font-size:11px;font-weight:750;letter-spacing:.8px;fill:#64748B}
+    </style>
+  </defs>
+
+  <rect class="canvas" x="1" y="1" width="1198" height="468" rx="22"/>
+  <rect x="40" y="32" width="36" height="4" rx="2" fill="#F97316"/>
+  <text x="88" y="40" class="eyebrow">REAL-HARDWARE BUG</text>
+  <text x="40" y="78" class="title">When local time masquerades as UTC</text>
+  <text x="40" y="106" class="subtitle">A missing offset moved an old error eight hours into the future.</text>
+
+  <g aria-label="Actual UTC order">
+    <rect class="panel" x="40" y="136" width="500" height="220" rx="16"/>
+    <text x="68" y="170" class="small">REALITY · NORMALIZED UTC</text>
+    <text x="68" y="200" class="heading">Error before remediation</text>
+    <line x1="92" y1="263" x2="488" y2="263" stroke="#CBD5E1" stroke-width="3" stroke-linecap="round"/>
+    <circle cx="190" cy="263" r="10" fill="#94A3B8"/>
+    <circle cx="390" cy="263" r="10" fill="#22C55E"/>
+    <text x="190" y="240" class="time" text-anchor="middle">02:00</text>
+    <text x="390" y="240" class="time" text-anchor="middle" fill="#15803D">03:00</text>
+    <text x="190" y="294" class="body" text-anchor="middle">routine error</text>
+    <text x="390" y="294" class="body" text-anchor="middle">remediation</text>
+    <rect x="150" y="316" width="280" height="26" rx="13" fill="#DCFCE7"/>
+    <text x="290" y="334" class="body" text-anchor="middle" fill="#15803D">✓ healthy after remediation</text>
+  </g>
+
+  <g aria-label="Agent misread order">
+    <rect x="660" y="136" width="500" height="220" rx="16" fill="#FEF2F2" stroke="#FECACA" stroke-width="1.5"/>
+    <text x="688" y="170" class="small" fill="#B91C1C">AGENT VIEW · OFFSET LOST</text>
+    <text x="688" y="200" class="heading">Error appears after remediation</text>
+    <line x1="712" y1="263" x2="1108" y2="263" stroke="#FECACA" stroke-width="3" stroke-linecap="round"/>
+    <circle cx="810" cy="263" r="10" fill="#22C55E"/>
+    <circle cx="1010" cy="263" r="10" fill="#EF4444"/>
+    <text x="810" y="240" class="time" text-anchor="middle" fill="#15803D">03:00</text>
+    <text x="1010" y="240" class="time" text-anchor="middle" fill="#B91C1C">10:00</text>
+    <text x="810" y="294" class="body" text-anchor="middle">remediation</text>
+    <text x="1010" y="294" class="body" text-anchor="middle">error misread as UTC</text>
+    <rect x="770" y="316" width="280" height="26" rx="13" fill="#FEE2E2"/>
+    <text x="910" y="334" class="body" text-anchor="middle" fill="#B91C1C">✕ “it failed after the fix”</text>
+  </g>
+
+  <path d="M548 246H650" stroke="#F97316" stroke-width="2" marker-end="url(#arrow)"/>
+  <rect x="554" y="214" width="92" height="26" rx="13" fill="#FFF7ED"/>
+  <text x="600" y="232" class="small" text-anchor="middle" fill="#C2410C">+8 HOURS</text>
+  <text x="600" y="282" class="body" text-anchor="middle">UTC+8 value</text>
+  <text x="600" y="300" class="body" text-anchor="middle">read as UTC</text>
+
+  <rect x="40" y="386" width="1120" height="52" rx="13" fill="#FFF7ED" stroke="#FED7AA"/>
+  <circle cx="70" cy="412" r="8" fill="#F97316"/>
+  <text x="91" y="418" class="heading" fill="#9A3412">Fix: normalize every timestamp to UTC at collection time.</text>
+</svg>

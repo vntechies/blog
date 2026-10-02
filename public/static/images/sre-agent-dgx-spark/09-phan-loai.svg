@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="540" viewBox="0 0 1200 540" role="img" aria-labelledby="title desc">
+  <title id="title">Classification results across five evaluation runs</title>
+  <desc id="desc">Five runs use the same 55-case evaluation set. Before the request gate, accuracy is 87.3, 89.1, and 90.9 percent, with one unsafe answer in each run. After the request gate, both runs reach 96.4 percent with zero unsafe answers, though they miss different cases. The vertical scale begins at 80 percent.</desc>
+  <defs>
+    <style>
+      text{font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;fill:#0F172A}
+      .canvas{fill:#FFFFFF;stroke:#E2E8F0;stroke-width:2}
+      .title{font-size:34px;font-weight:750;letter-spacing:-.6px}
+      .subtitle{font-size:18px;fill:#64748B}
+      .eyebrow{font-size:12px;font-weight:750;letter-spacing:1.8px;fill:#EA580C}
+      .axis{font-size:12px;fill:#64748B}
+      .value{font-size:16px;font-weight:750}
+      .label{font-size:13px;font-weight:650}
+      .group{font-size:13px;font-weight:700;fill:#64748B}
+      .pill{font-size:11px;font-weight:750}
+      .grid{stroke:#E2E8F0;stroke-width:1}
+    </style>
+  </defs>
+
+  <rect class="canvas" x="1" y="1" width="1198" height="538" rx="22"/>
+  <rect x="40" y="34" width="36" height="4" rx="2" fill="#F97316"/>
+  <text x="88" y="42" class="eyebrow">EVALUATION · 55 CASES</text>
+  <text x="40" y="82" class="title">Accuracy varies. Unsafe answers must not.</text>
+  <text x="40" y="112" class="subtitle">Five runs on the same test set; the scale starts at 80%.</text>
+
+  <g aria-label="Chart axes">
+    <line class="grid" x1="130" y1="154" x2="1140" y2="154"/>
+    <line class="grid" x1="130" y1="216.5" x2="1140" y2="216.5"/>
+    <line class="grid" x1="130" y1="279" x2="1140" y2="279"/>
+    <line class="grid" x1="130" y1="341.5" x2="1140" y2="341.5"/>
+    <line x1="130" y1="404" x2="1140" y2="404" stroke="#94A3B8" stroke-width="1.5"/>
+    <text x="114" y="158" class="axis" text-anchor="end">100%</text>
+    <text x="114" y="220.5" class="axis" text-anchor="end">95%</text>
+    <text x="114" y="283" class="axis" text-anchor="end">90%</text>
+    <text x="114" y="345.5" class="axis" text-anchor="end">85%</text>
+    <text x="114" y="408" class="axis" text-anchor="end">80%</text>
+    <line x1="690" y1="142" x2="690" y2="484" stroke="#CBD5E1" stroke-width="1.5" stroke-dasharray="5 5"/>
+  </g>
+
+  <g aria-label="Accuracy bars">
+    <rect x="190" y="312.75" width="104" height="91.25" rx="7" fill="#CBD5E1"/>
+    <rect x="350" y="290.25" width="104" height="113.75" rx="7" fill="#CBD5E1"/>
+    <rect x="510" y="267.75" width="104" height="136.25" rx="7" fill="#CBD5E1"/>
+    <rect x="770" y="199" width="104" height="205" rx="7" fill="#F97316"/>
+    <rect x="930" y="199" width="104" height="205" rx="7" fill="#F97316"/>
+
+    <text x="242" y="299" class="value" text-anchor="middle">87.3%</text>
+    <text x="402" y="277" class="value" text-anchor="middle">89.1%</text>
+    <text x="562" y="254" class="value" text-anchor="middle">90.9%</text>
+    <text x="822" y="186" class="value" text-anchor="middle" fill="#C2410C">96.4%</text>
+    <text x="982" y="186" class="value" text-anchor="middle" fill="#C2410C">96.4%</text>
+  </g>
+
+  <g aria-label="Ninety percent reference line">
+    <line x1="130" y1="279" x2="1140" y2="279" stroke="#F97316" stroke-width="2" stroke-dasharray="8 6"/>
+    <rect x="1048" y="260" width="92" height="24" rx="12" fill="#FFF7ED"/>
+    <text x="1094" y="276" class="pill" text-anchor="middle" fill="#C2410C">90% TARGET</text>
+  </g>
+
+  <g aria-label="Run labels and unsafe answer counts">
+    <text x="242" y="430" class="label" text-anchor="middle">Run 1</text>
+    <text x="402" y="430" class="label" text-anchor="middle">Run 2</text>
+    <text x="562" y="430" class="label" text-anchor="middle">Run 3</text>
+    <text x="822" y="430" class="label" text-anchor="middle">Run 4</text>
+    <text x="982" y="430" class="label" text-anchor="middle">Run 5</text>
+
+    <rect x="184" y="442" width="116" height="28" rx="14" fill="#FEE2E2"/>
+    <rect x="344" y="442" width="116" height="28" rx="14" fill="#FEE2E2"/>
+    <rect x="504" y="442" width="116" height="28" rx="14" fill="#FEE2E2"/>
+    <rect x="764" y="442" width="116" height="28" rx="14" fill="#DCFCE7"/>
+    <rect x="924" y="442" width="116" height="28" rx="14" fill="#DCFCE7"/>
+    <text x="242" y="461" class="pill" text-anchor="middle" fill="#B91C1C">1 UNSAFE</text>
+    <text x="402" y="461" class="pill" text-anchor="middle" fill="#B91C1C">1 UNSAFE</text>
+    <text x="562" y="461" class="pill" text-anchor="middle" fill="#B91C1C">1 UNSAFE</text>
+    <text x="822" y="461" class="pill" text-anchor="middle" fill="#15803D">0 UNSAFE</text>
+    <text x="982" y="461" class="pill" text-anchor="middle" fill="#15803D">0 UNSAFE</text>
+
+    <text x="402" y="502" class="group" text-anchor="middle">Before request gate</text>
+    <text x="902" y="502" class="group" text-anchor="middle">After request gate</text>
+    <text x="902" y="522" class="axis" text-anchor="middle">same score, different missed cases</text>
+  </g>
+</svg>

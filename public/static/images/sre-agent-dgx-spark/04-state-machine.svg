@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="480" viewBox="0 0 1200 480" role="img" aria-labelledby="title desc">
+  <title id="title">Deterministic incident state machine</title>
+  <desc id="desc">Every incident follows one valid path: received, acknowledged, evidence collected, classified, recommendation ready, note written, then closed or handed off. An idempotency key prevents duplicate actions, and every transition and tool call is written to an append-only audit log.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M0 0 10 5 0 10Z" fill="#CBD5E1"/>
+    </marker>
+    <style>
+      text{font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;fill:#0F172A}
+      .canvas{fill:#FFFFFF;stroke:#E2E8F0;stroke-width:2}
+      .node{fill:#FFFFFF;stroke:#CBD5E1;stroke-width:1.5}
+      .title{font-size:34px;font-weight:750;letter-spacing:-.6px}
+      .subtitle{font-size:18px;fill:#64748B}
+      .eyebrow{font-size:12px;font-weight:750;letter-spacing:1.8px;fill:#EA580C}
+      .number{font-size:11px;font-weight:750;fill:#94A3B8}
+      .state{font-size:15px;font-weight:650}
+      .label{font-size:14px;font-weight:700}
+      .body{font-size:13px;fill:#64748B}
+      .code{font-family:"SFMono-Regular",Consolas,monospace;font-size:13px;fill:#475569}
+      .flow{stroke:#CBD5E1;stroke-width:2;marker-end:url(#arrow)}
+    </style>
+  </defs>
+
+  <rect class="canvas" x="1" y="1" width="1198" height="478" rx="22"/>
+  <rect x="40" y="34" width="36" height="4" rx="2" fill="#F97316"/>
+  <text x="88" y="42" class="eyebrow">DETERMINISTIC CORE</text>
+  <text x="40" y="82" class="title">One incident, one valid path</text>
+  <text x="40" y="112" class="subtitle">The model can reason. The state machine controls what may happen next.</text>
+
+  <g aria-label="Incident states">
+    <rect class="node" x="40" y="154" width="140" height="112" rx="14"/>
+    <text x="58" y="180" class="number">01</text>
+    <circle cx="110" cy="207" r="8" fill="#CBD5E1"/>
+    <text x="110" y="239" class="state" text-anchor="middle">Received</text>
+
+    <rect class="node" x="195" y="154" width="140" height="112" rx="14"/>
+    <text x="213" y="180" class="number">02</text>
+    <circle cx="265" cy="207" r="8" fill="#CBD5E1"/>
+    <text x="265" y="239" class="state" text-anchor="middle">Acknowledged</text>
+
+    <rect class="node" x="350" y="154" width="140" height="112" rx="14"/>
+    <text x="368" y="180" class="number">03</text>
+    <circle cx="420" cy="202" r="8" fill="#CBD5E1"/>
+    <text x="420" y="230" class="state" text-anchor="middle">Evidence</text>
+    <text x="420" y="249" class="state" text-anchor="middle">collected</text>
+
+    <rect class="node" x="505" y="154" width="140" height="112" rx="14"/>
+    <text x="523" y="180" class="number">04</text>
+    <circle cx="575" cy="207" r="8" fill="#CBD5E1"/>
+    <text x="575" y="239" class="state" text-anchor="middle">Classified</text>
+
+    <rect class="node" x="660" y="154" width="140" height="112" rx="14"/>
+    <text x="678" y="180" class="number">05</text>
+    <circle cx="730" cy="202" r="8" fill="#FDBA74"/>
+    <text x="730" y="230" class="state" text-anchor="middle">Recommendation</text>
+    <text x="730" y="249" class="state" text-anchor="middle">ready</text>
+
+    <rect class="node" x="815" y="154" width="140" height="112" rx="14"/>
+    <text x="833" y="180" class="number">06</text>
+    <circle cx="885" cy="207" r="8" fill="#FDBA74"/>
+    <text x="885" y="239" class="state" text-anchor="middle">Note written</text>
+
+    <rect x="970" y="154" width="190" height="112" rx="14" fill="#FFF7ED" stroke="#FB923C" stroke-width="2"/>
+    <text x="988" y="180" class="number" fill="#C2410C">07</text>
+    <circle cx="1024" cy="210" r="8" fill="#22C55E"/>
+    <text x="1041" y="215" class="state">Closed</text>
+    <circle cx="1024" cy="241" r="8" fill="#F97316"/>
+    <text x="1041" y="246" class="state">Handed off</text>
+
+    <line class="flow" x1="182" y1="210" x2="189" y2="210"/>
+    <line class="flow" x1="337" y1="210" x2="344" y2="210"/>
+    <line class="flow" x1="492" y1="210" x2="499" y2="210"/>
+    <line class="flow" x1="647" y1="210" x2="654" y2="210"/>
+    <line class="flow" x1="802" y1="210" x2="809" y2="210"/>
+    <line class="flow" x1="957" y1="210" x2="964" y2="210"/>
+  </g>
+
+  <g aria-label="Reliability controls">
+    <rect x="40" y="308" width="540" height="112" rx="14" fill="#F8FAFC" stroke="#E2E8F0"/>
+    <circle cx="70" cy="341" r="8" fill="#F97316"/>
+    <text x="91" y="347" class="label">Idempotency blocks duplicate actions</text>
+    <rect x="64" y="367" width="492" height="32" rx="8" fill="#FFFFFF" stroke="#E2E8F0"/>
+    <text x="80" y="388" class="code">ticket ID + operation + evidence version</text>
+
+    <rect x="600" y="308" width="560" height="112" rx="14" fill="#F8FAFC" stroke="#E2E8F0"/>
+    <circle cx="630" cy="341" r="8" fill="#64748B"/>
+    <text x="651" y="347" class="label">Append-only audit preserves the trail</text>
+    <text x="624" y="380" class="body">Every transition + tool call · correlation ID · hashed inputs and outputs</text>
+    <path d="M624 399H1128" stroke="#CBD5E1" stroke-width="2" stroke-dasharray="3 5"/>
+  </g>
+
+  <text x="40" y="452" class="body">Replay changes no outcome and creates no second action.</text>
+</svg>

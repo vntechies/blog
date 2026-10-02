@@ -42,3 +42,6 @@ yarn-error.log*
 node_modules
 .cursor
 serverless
+# herve:gitignore
+.entire/
+# herve:gitignore:end

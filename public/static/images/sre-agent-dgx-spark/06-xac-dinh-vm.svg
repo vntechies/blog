@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="580" viewBox="0 0 1200 580" role="img" aria-labelledby="title desc">
+  <title id="title">Target identity determines agent authority</title>
+  <desc id="desc">An Azure-verified VM name or operator-defined alias is a strong identity signal and can permit diagnosis and action when all other guardrails pass. A resource tag match or LLM inference is weak and permits diagnosis only. Multiple candidates require human confirmation.</desc>
+  <defs>
+    <style>
+      text{font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;fill:#0F172A}
+      .canvas{fill:#FFFFFF;stroke:#E2E8F0;stroke-width:2}
+      .title{font-size:34px;font-weight:750;letter-spacing:-.6px}
+      .subtitle{font-size:18px;fill:#64748B}
+      .eyebrow{font-size:12px;font-weight:750;letter-spacing:1.8px;fill:#EA580C}
+      .header{font-size:11px;font-weight:750;letter-spacing:1.2px;fill:#64748B}
+      .label{font-size:17px;font-weight:650}
+      .body{font-size:14px;fill:#64748B}
+      .pill{font-size:12px;font-weight:700}
+    </style>
+  </defs>
+
+  <rect class="canvas" x="1" y="1" width="1198" height="578" rx="22"/>
+  <rect x="40" y="34" width="36" height="4" rx="2" fill="#F97316"/>
+  <text x="88" y="42" class="eyebrow">TARGET RESOLUTION</text>
+  <text x="40" y="82" class="title">Identity strength caps authority</text>
+  <text x="40" y="112" class="subtitle">The agent may infer a target—but inference never grants permission to change it.</text>
+
+  <g aria-label="Resolution authority table">
+    <rect x="40" y="146" width="1120" height="344" rx="16" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1.5"/>
+    <rect x="40" y="146" width="1120" height="52" rx="16" fill="#F8FAFC"/>
+    <path d="M40 182V490" stroke="#F8FAFC" stroke-width="1"/>
+    <text x="68" y="178" class="header">TARGET EVIDENCE</text>
+    <text x="624" y="178" class="header">SIGNAL</text>
+    <text x="844" y="178" class="header">MAXIMUM AUTHORITY</text>
+
+    <line x1="40" y1="198" x2="1160" y2="198" stroke="#E2E8F0"/>
+    <line x1="40" y1="256" x2="1160" y2="256" stroke="#E2E8F0"/>
+    <line x1="40" y1="314" x2="1160" y2="314" stroke="#E2E8F0"/>
+    <line x1="40" y1="372" x2="1160" y2="372" stroke="#E2E8F0"/>
+    <line x1="40" y1="430" x2="1160" y2="430" stroke="#E2E8F0"/>
+    <line x1="580" y1="146" x2="580" y2="490" stroke="#E2E8F0"/>
+    <line x1="800" y1="146" x2="800" y2="490" stroke="#E2E8F0"/>
+
+    <circle cx="70" cy="227" r="8" fill="#22C55E"/>
+    <text x="94" y="233" class="label">Azure-verified VM name</text>
+    <rect x="612" y="211" width="104" height="32" rx="16" fill="#DCFCE7"/>
+    <text x="664" y="232" class="pill" text-anchor="middle" fill="#15803D">Strong</text>
+    <rect x="832" y="211" width="188" height="32" rx="16" fill="#DCFCE7"/>
+    <text x="926" y="232" class="pill" text-anchor="middle" fill="#15803D">Diagnose + act</text>
+
+    <circle cx="70" cy="285" r="8" fill="#22C55E"/>
+    <text x="94" y="291" class="label">Operator-defined alias</text>
+    <rect x="612" y="269" width="104" height="32" rx="16" fill="#DCFCE7"/>
+    <text x="664" y="290" class="pill" text-anchor="middle" fill="#15803D">Strong</text>
+    <rect x="832" y="269" width="188" height="32" rx="16" fill="#DCFCE7"/>
+    <text x="926" y="290" class="pill" text-anchor="middle" fill="#15803D">Diagnose + act</text>
+
+    <circle cx="70" cy="343" r="8" fill="#60A5FA"/>
+    <text x="94" y="349" class="label">Resource tag match</text>
+    <rect x="612" y="327" width="104" height="32" rx="16" fill="#DBEAFE"/>
+    <text x="664" y="348" class="pill" text-anchor="middle" fill="#1D4ED8">Weak</text>
+    <rect x="832" y="327" width="188" height="32" rx="16" fill="#DBEAFE"/>
+    <text x="926" y="348" class="pill" text-anchor="middle" fill="#1D4ED8">Diagnose only</text>
+
+    <circle cx="70" cy="401" r="8" fill="#60A5FA"/>
+    <text x="94" y="407" class="label">LLM inference from ticket</text>
+    <rect x="612" y="385" width="104" height="32" rx="16" fill="#DBEAFE"/>
+    <text x="664" y="406" class="pill" text-anchor="middle" fill="#1D4ED8">Weak</text>
+    <rect x="832" y="385" width="188" height="32" rx="16" fill="#DBEAFE"/>
+    <text x="926" y="406" class="pill" text-anchor="middle" fill="#1D4ED8">Diagnose only</text>
+
+    <circle cx="70" cy="459" r="8" fill="#EF4444"/>
+    <text x="94" y="465" class="label">Multiple candidates</text>
+    <rect x="612" y="443" width="116" height="32" rx="16" fill="#FEE2E2"/>
+    <text x="670" y="464" class="pill" text-anchor="middle" fill="#B91C1C">Ambiguous</text>
+    <rect x="832" y="443" width="188" height="32" rx="16" fill="#FEE2E2"/>
+    <text x="926" y="464" class="pill" text-anchor="middle" fill="#B91C1C">Human review</text>
+  </g>
+
+  <rect x="40" y="516" width="1120" height="40" rx="12" fill="#FFF7ED"/>
+  <circle cx="65" cy="536" r="6" fill="#F97316"/>
+  <text x="82" y="542" class="body" fill="#9A3412">Action still requires every other guardrail to pass.</text>
+</svg>

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="500" viewBox="0 0 1200 500" role="img" aria-labelledby="title desc">
+  <title id="title">Kill switch behavior during an in-flight action</title>
+  <desc id="desc">A VM restart sent before the kill switch is enabled finishes and is verified because an Azure request cannot be recalled. The next action is denied and handed to a human. Read-only diagnosis, classification, work-note writing, and escalation continue.</desc>
+  <defs>
+    <marker id="arrow-green" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M0 0 10 5 0 10Z" fill="#22C55E"/>
+    </marker>
+    <marker id="arrow-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M0 0 10 5 0 10Z" fill="#60A5FA"/>
+    </marker>
+    <style>
+      text{font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;fill:#0F172A}
+      .canvas{fill:#FFFFFF;stroke:#E2E8F0;stroke-width:2}
+      .title{font-size:34px;font-weight:750;letter-spacing:-.6px}
+      .subtitle{font-size:18px;fill:#64748B}
+      .eyebrow{font-size:12px;font-weight:750;letter-spacing:1.8px;fill:#EA580C}
+      .lane{font-size:12px;font-weight:750;letter-spacing:1.2px;fill:#64748B}
+      .label{font-size:16px;font-weight:700}
+      .body{font-size:13px;fill:#64748B}
+      .small{font-size:12px;fill:#64748B}
+    </style>
+  </defs>
+
+  <rect class="canvas" x="1" y="1" width="1198" height="498" rx="22"/>
+  <rect x="40" y="34" width="36" height="4" rx="2" fill="#F97316"/>
+  <text x="88" y="42" class="eyebrow">INTERRUPTION SEMANTICS</text>
+  <text x="40" y="82" class="title">Stop the next action, not reality in flight</text>
+  <text x="40" y="112" class="subtitle">Already-sent work finishes safely; new mutations stop immediately.</text>
+
+  <g aria-label="Mutation timeline">
+    <text x="40" y="174" class="lane">MUTATING ACTIONS</text>
+    <line x1="180" y1="218" x2="1120" y2="218" stroke="#E2E8F0" stroke-width="4" stroke-linecap="round"/>
+
+    <circle cx="245" cy="218" r="10" fill="#22C55E"/>
+    <text x="245" y="192" class="label" text-anchor="middle">Action 1 sent</text>
+    <text x="245" y="250" class="small" text-anchor="middle">restart VM</text>
+
+    <line x1="255" y1="218" x2="730" y2="218" stroke="#22C55E" stroke-width="4" marker-end="url(#arrow-green)"/>
+    <text x="472" y="198" class="small" text-anchor="middle" fill="#15803D">request cannot be recalled</text>
+
+    <line x1="585" y1="150" x2="585" y2="294" stroke="#EF4444" stroke-width="2.5" stroke-dasharray="7 6"/>
+    <rect x="520" y="134" width="130" height="30" rx="15" fill="#FEE2E2"/>
+    <text x="585" y="154" class="lane" text-anchor="middle" fill="#B91C1C">KILL SWITCH ON</text>
+
+    <circle cx="742" cy="218" r="11" fill="#22C55E"/>
+    <path d="m736 218 4 4 8-9" fill="none" stroke="#FFFFFF" stroke-width="2"/>
+    <text x="742" y="192" class="label" text-anchor="middle">Verified</text>
+    <text x="742" y="250" class="small" text-anchor="middle">known final state</text>
+
+    <circle cx="958" cy="218" r="11" fill="#EF4444"/>
+    <path d="m952 212 12 12m0-12-12 12" stroke="#FFFFFF" stroke-width="2"/>
+    <text x="958" y="192" class="label" text-anchor="middle">Action 2 denied</text>
+    <text x="958" y="250" class="small" text-anchor="middle">handoff to human</text>
+  </g>
+
+  <g aria-label="Read-only workflow">
+    <rect x="40" y="310" width="1120" height="128" rx="16" fill="#F8FAFC" stroke="#E2E8F0"/>
+    <text x="68" y="345" class="lane">READ-ONLY WORK CONTINUES</text>
+    <line x1="210" y1="386" x2="1075" y2="386" stroke="#60A5FA" stroke-width="3" marker-end="url(#arrow-blue)"/>
+    <circle cx="270" cy="386" r="8" fill="#60A5FA"/>
+    <circle cx="500" cy="386" r="8" fill="#60A5FA"/>
+    <circle cx="730" cy="386" r="8" fill="#60A5FA"/>
+    <circle cx="960" cy="386" r="8" fill="#60A5FA"/>
+    <text x="270" y="416" class="body" text-anchor="middle">Diagnose</text>
+    <text x="500" y="416" class="body" text-anchor="middle">Classify</text>
+    <text x="730" y="416" class="body" text-anchor="middle">Write note</text>
+    <text x="960" y="416" class="body" text-anchor="middle">Escalate</text>
+  </g>
+
+  <circle cx="48" cy="466" r="5" fill="#EF4444"/>
+  <text x="64" y="472" class="body">The switch is re-read before every action; no service restart is required.</text>
+</svg>

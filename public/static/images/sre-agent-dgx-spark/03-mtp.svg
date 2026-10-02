@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="610" viewBox="0 0 1200 610" role="img" aria-labelledby="title desc">
+  <title id="title">Multi-token prediction and speculative decoding</title>
+  <desc id="desc">Without MTP, four tokens require four serial forward passes. With MTP, the built-in prediction layer drafts three tokens, the main model verifies them in one pass, accepts two, and replaces one. On DGX Spark, median time per output token falls from 65.8 to 49.1 milliseconds, about 25 percent.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M0 0 10 5 0 10Z" fill="#94A3B8"/>
+    </marker>
+    <style>
+      text{font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;fill:#0F172A}
+      .canvas{fill:#FFFFFF;stroke:#E2E8F0;stroke-width:2}
+      .panel{fill:#F8FAFC;stroke:#E2E8F0;stroke-width:1.5}
+      .title{font-size:34px;font-weight:750;letter-spacing:-.6px}
+      .subtitle{font-size:18px;fill:#64748B}
+      .eyebrow{font-size:12px;font-weight:750;letter-spacing:1.8px;fill:#EA580C}
+      .mode{font-size:20px;font-weight:700}
+      .metric{font-size:27px;font-weight:750;letter-spacing:-.4px}
+      .body{font-size:14px;fill:#64748B}
+      .small{font-size:11px;font-weight:750;letter-spacing:1px;fill:#64748B}
+      .token{font-size:17px;font-weight:700}
+      .line{stroke:#94A3B8;stroke-width:2;marker-end:url(#arrow)}
+      text[fill="#FFFFFF"]{fill:#FFFFFF}
+      text[fill="#CBD5E1"]{fill:#CBD5E1}
+    </style>
+  </defs>
+
+  <rect class="canvas" x="1" y="1" width="1198" height="608" rx="22"/>
+  <rect x="40" y="34" width="36" height="4" rx="2" fill="#F97316"/>
+  <text x="88" y="42" class="eyebrow">MODEL SERVING</text>
+  <text x="40" y="82" class="title">MTP turns one verification pass into more tokens</text>
+  <text x="40" y="112" class="subtitle">The model’s built-in draft layer removes serial work without adding a second model.</text>
+
+  <g aria-label="Baseline without MTP">
+    <rect class="panel" x="40" y="142" width="1120" height="154" rx="16"/>
+    <text x="68" y="181" class="small">WITHOUT MTP</text>
+    <text x="68" y="215" class="mode">Serial generation</text>
+    <text x="68" y="256" class="metric">65.8</text>
+    <text x="142" y="255" class="body">ms / token</text>
+    <line x1="252" y1="166" x2="252" y2="272" stroke="#E2E8F0"/>
+
+    <g text-anchor="middle">
+      <rect x="288" y="177" width="166" height="82" rx="12" fill="#FFFFFF" stroke="#E2E8F0"/>
+      <text x="371" y="203" class="small">FORWARD 1</text>
+      <circle cx="371" cy="232" r="16" fill="#E2E8F0"/>
+      <text x="371" y="238" class="token">t1</text>
+
+      <rect x="493" y="177" width="166" height="82" rx="12" fill="#FFFFFF" stroke="#E2E8F0"/>
+      <text x="576" y="203" class="small">FORWARD 2</text>
+      <circle cx="576" cy="232" r="16" fill="#E2E8F0"/>
+      <text x="576" y="238" class="token">t2</text>
+
+      <rect x="698" y="177" width="166" height="82" rx="12" fill="#FFFFFF" stroke="#E2E8F0"/>
+      <text x="781" y="203" class="small">FORWARD 3</text>
+      <circle cx="781" cy="232" r="16" fill="#E2E8F0"/>
+      <text x="781" y="238" class="token">t3</text>
+
+      <rect x="903" y="177" width="166" height="82" rx="12" fill="#FFFFFF" stroke="#E2E8F0"/>
+      <text x="986" y="203" class="small">FORWARD 4</text>
+      <circle cx="986" cy="232" r="16" fill="#E2E8F0"/>
+      <text x="986" y="238" class="token">t4</text>
+    </g>
+    <line class="line" x1="458" y1="218" x2="487" y2="218"/>
+    <line class="line" x1="663" y1="218" x2="692" y2="218"/>
+    <line class="line" x1="868" y1="218" x2="897" y2="218"/>
+  </g>
+
+  <g aria-label="MTP speculative decoding">
+    <rect x="40" y="318" width="1120" height="216" rx="16" fill="#FFF7ED" stroke="#FDBA74" stroke-width="2"/>
+    <text x="68" y="357" class="small" fill="#C2410C">WITH MTP</text>
+    <text x="68" y="391" class="mode">Draft + verify</text>
+    <text x="68" y="434" class="metric" fill="#C2410C">49.1</text>
+    <text x="142" y="433" class="body" fill="#9A3412">ms / token</text>
+    <rect x="68" y="457" width="132" height="30" rx="15" fill="#FFEDD5"/>
+    <text x="134" y="477" class="small" text-anchor="middle" fill="#C2410C">≈ 25% FASTER</text>
+    <line x1="252" y1="342" x2="252" y2="510" stroke="#FED7AA"/>
+
+    <rect x="286" y="365" width="194" height="120" rx="12" fill="#FFFFFF" stroke="#FED7AA"/>
+    <text x="383" y="392" class="small" text-anchor="middle">MTP DRAFTS</text>
+    <circle cx="337" cy="435" r="20" fill="#FFEDD5"/>
+    <circle cx="383" cy="435" r="20" fill="#FFEDD5"/>
+    <circle cx="429" cy="435" r="20" fill="#FFEDD5"/>
+    <text x="337" y="441" class="token" text-anchor="middle">t1</text>
+    <text x="383" y="441" class="token" text-anchor="middle">t2</text>
+    <text x="429" y="441" class="token" text-anchor="middle">t3</text>
+
+    <rect x="526" y="365" width="194" height="120" rx="12" fill="#FFFFFF" stroke="#FED7AA"/>
+    <text x="623" y="392" class="small" text-anchor="middle">MAIN MODEL</text>
+    <circle cx="623" cy="435" r="29" fill="#0F172A"/>
+    <text x="623" y="432" class="small" text-anchor="middle" fill="#FFFFFF">VERIFY</text>
+    <text x="623" y="448" class="small" text-anchor="middle" fill="#FFFFFF">ONCE</text>
+
+    <rect x="766" y="365" width="194" height="120" rx="12" fill="#FFFFFF" stroke="#FED7AA"/>
+    <text x="863" y="392" class="small" text-anchor="middle">RESULT</text>
+    <circle cx="817" cy="435" r="20" fill="#DCFCE7"/>
+    <circle cx="863" cy="435" r="20" fill="#DCFCE7"/>
+    <circle cx="909" cy="435" r="20" fill="#E2E8F0"/>
+    <text x="817" y="441" class="token" text-anchor="middle" fill="#15803D">t1</text>
+    <text x="863" y="441" class="token" text-anchor="middle" fill="#15803D">t2</text>
+    <text x="909" y="441" class="token" text-anchor="middle">t3′</text>
+    <text x="863" y="473" class="body" text-anchor="middle">2 accepted · 1 replaced</text>
+
+    <rect x="1004" y="365" width="128" height="120" rx="12" fill="#0F172A"/>
+    <text x="1068" y="398" class="small" text-anchor="middle" fill="#CBD5E1">ONE PASS</text>
+    <text x="1068" y="438" class="metric" text-anchor="middle" fill="#FFFFFF">3</text>
+    <text x="1068" y="463" class="body" text-anchor="middle" fill="#CBD5E1">tokens</text>
+
+    <line class="line" x1="484" y1="425" x2="520" y2="425"/>
+    <line class="line" x1="724" y1="425" x2="760" y2="425"/>
+    <line class="line" x1="964" y1="425" x2="998" y2="425"/>
+  </g>
+
+  <circle cx="48" cy="568" r="5" fill="#F97316"/>
+  <text x="64" y="574" class="body">Measured on DGX Spark at 64K context; median time per output token.</text>
+</svg>

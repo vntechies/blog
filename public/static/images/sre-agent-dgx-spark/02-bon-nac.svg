@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="540" viewBox="0 0 1200 540" role="img" aria-labelledby="title desc">
+  <title id="title">Four-stage rollout for the SRE agent</title>
+  <desc id="desc">The agent progresses through four gated stages: mock tools with production schemas, shadow mode on 30 tickets with zero state changes, simulated remediation with 27 correct fixes and 3 correct escalations, and controlled access to real VMs across 7 incidents with zero unsafe actions.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M0 0 10 5 0 10Z" fill="#CBD5E1"/>
+    </marker>
+    <style>
+      text{font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;fill:#0F172A}
+      .canvas{fill:#FFFFFF;stroke:#E2E8F0;stroke-width:2}
+      .card{fill:#FFFFFF;stroke:#E2E8F0;stroke-width:2}
+      .title{font-size:34px;font-weight:750;letter-spacing:-.6px}
+      .subtitle{font-size:18px;fill:#64748B}
+      .eyebrow{font-size:12px;font-weight:750;letter-spacing:1.8px;fill:#EA580C}
+      .step{font-size:12px;font-weight:750;letter-spacing:1.3px;fill:#64748B}
+      .heading{font-size:22px;font-weight:700}
+      .body{font-size:15px;fill:#64748B}
+      .metric{font-size:17px;font-weight:700}
+      .small{font-size:12px;fill:#64748B}
+      .gate{font-size:10px;font-weight:750;letter-spacing:1px;fill:#94A3B8}
+      .flow{stroke:#CBD5E1;stroke-width:2;marker-end:url(#arrow)}
+    </style>
+  </defs>
+
+  <rect class="canvas" x="1" y="1" width="1198" height="538" rx="22"/>
+  <rect x="40" y="34" width="36" height="4" rx="2" fill="#F97316"/>
+  <text x="88" y="42" class="eyebrow">CONTROLLED ROLLOUT</text>
+  <text x="40" y="82" class="title">Earn autonomy one gate at a time</text>
+  <text x="40" y="112" class="subtitle">Each stage must prove safety before the next capability is enabled.</text>
+
+  <g aria-label="Stage one">
+    <rect class="card" x="40" y="154" width="245" height="300" rx="16"/>
+    <rect x="40" y="154" width="245" height="5" rx="2.5" fill="#CBD5E1"/>
+    <circle cx="72" cy="194" r="18" fill="#F1F5F9"/>
+    <text x="72" y="200" class="metric" text-anchor="middle">1</text>
+    <text x="102" y="199" class="step">FOUNDATION</text>
+    <text x="64" y="247" class="heading">Mock tools</text>
+    <text x="64" y="279" class="body">Fake implementations,</text>
+    <text x="64" y="301" class="body">production-identical schemas.</text>
+    <line x1="64" y1="344" x2="261" y2="344" stroke="#E2E8F0"/>
+    <text x="64" y="380" class="small">PROOF</text>
+    <text x="64" y="411" class="metric">Safe by construction</text>
+  </g>
+
+  <g aria-label="Stage two">
+    <rect class="card" x="325" y="154" width="245" height="300" rx="16"/>
+    <rect x="325" y="154" width="245" height="5" rx="2.5" fill="#94A3B8"/>
+    <circle cx="357" cy="194" r="18" fill="#F1F5F9"/>
+    <text x="357" y="200" class="metric" text-anchor="middle">2</text>
+    <text x="387" y="199" class="step">OBSERVE</text>
+    <text x="349" y="247" class="heading">Shadow mode</text>
+    <text x="349" y="279" class="body">Read real tickets.</text>
+    <text x="349" y="301" class="body">Recommend, never mutate.</text>
+    <line x1="349" y1="344" x2="546" y2="344" stroke="#E2E8F0"/>
+    <text x="349" y="380" class="small">PROOF</text>
+    <text x="349" y="411" class="metric">30 tickets · 0 changes</text>
+  </g>
+
+  <g aria-label="Stage three">
+    <rect class="card" x="610" y="154" width="245" height="300" rx="16"/>
+    <rect x="610" y="154" width="245" height="5" rx="2.5" fill="#FB923C"/>
+    <circle cx="642" cy="194" r="18" fill="#FFF7ED"/>
+    <text x="642" y="200" class="metric" text-anchor="middle" fill="#C2410C">3</text>
+    <text x="672" y="199" class="step">SIMULATE</text>
+    <text x="634" y="247" class="heading">Test incidents</text>
+    <text x="634" y="279" class="body">Enable remediation in a</text>
+    <text x="634" y="301" class="body">controlled environment.</text>
+    <line x1="634" y1="344" x2="831" y2="344" stroke="#E2E8F0"/>
+    <text x="634" y="380" class="small">PROOF</text>
+    <text x="634" y="411" class="metric">27 fixed · 3 escalated</text>
+  </g>
+
+  <g aria-label="Stage four">
+    <rect x="895" y="154" width="265" height="300" rx="16" fill="#FFF7ED" stroke="#FDBA74" stroke-width="2"/>
+    <rect x="895" y="154" width="265" height="5" rx="2.5" fill="#F97316"/>
+    <circle cx="927" cy="194" r="18" fill="#FFEDD5"/>
+    <text x="927" y="200" class="metric" text-anchor="middle" fill="#C2410C">4</text>
+    <text x="957" y="199" class="step" fill="#C2410C">PRODUCTION</text>
+    <text x="919" y="247" class="heading">Real VMs</text>
+    <text x="919" y="279" class="body">Grant narrow, reversible</text>
+    <text x="919" y="301" class="body">permissions under guardrails.</text>
+    <line x1="919" y1="344" x2="1136" y2="344" stroke="#FED7AA"/>
+    <text x="919" y="380" class="small" fill="#9A3412">PROOF</text>
+    <text x="919" y="411" class="metric" fill="#9A3412">7 incidents · 0 unsafe</text>
+  </g>
+
+  <g aria-hidden="true">
+    <line class="flow" x1="289" y1="304" x2="319" y2="304"/>
+    <line class="flow" x1="574" y1="304" x2="604" y2="304"/>
+    <line class="flow" x1="859" y1="304" x2="889" y2="304"/>
+    <text x="304" y="288" class="gate" text-anchor="middle">GATE</text>
+    <text x="589" y="288" class="gate" text-anchor="middle">GATE</text>
+    <text x="874" y="288" class="gate" text-anchor="middle">GATE</text>
+  </g>
+
+  <rect x="40" y="483" width="1120" height="1" fill="#E2E8F0"/>
+  <circle cx="50" cy="508" r="5" fill="#22C55E"/>
+  <text x="66" y="514" class="body">No skipped stages. No safety claim without evidence.</text>
+</svg>
