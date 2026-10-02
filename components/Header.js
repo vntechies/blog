@@ -1,4 +1,3 @@
-import siteMetadata from '@/data/siteMetadata'
 import Link from './Link'
 import Image from 'next/image'
 import { headerNavLinks } from '@/data/Links'
@@ -16,7 +15,7 @@ export default function Header() {
         <Link
           alt="Trang chủ"
           href="/"
-          aria-label={siteMetadata.headerTitle}
+          aria-label="Trang chủ VNTechies"
           className="group inline-flex min-w-0 items-center gap-3"
         >
           <Image

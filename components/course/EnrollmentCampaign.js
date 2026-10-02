@@ -1,10 +1,8 @@
 import Link from '@/components/Link'
 import { octoberOffer } from '@/data/courseOffers'
-import { useOffer } from './offer'
 import { trackCourseAction } from '@/lib/course-analytics'
 
-export default function EnrollmentCampaign() {
-  const { active } = useOffer(octoberOffer)
+export default function EnrollmentCampaign({ active }) {
   if (!active) return null
 
   return (

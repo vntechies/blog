@@ -60,7 +60,7 @@ export const premiumCatalog = [
     code: 'VDT-C01',
     level: 'Bootcamp',
     duration: '8 tuần · 16 buổi',
-    fromPrice: null,
+    fromPrice: 10000000,
     fits: ['switch', 'working'],
   },
 ]

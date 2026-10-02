@@ -8,6 +8,7 @@ import FAQ from '@/components/home/FAQ'
 import FreeCourses from '@/components/home/FreeCourses'
 import HeroTerminal from '@/components/home/HeroTerminal'
 import EnrollmentCampaign from '@/components/course/EnrollmentCampaign'
+import { octoberOffer } from '@/data/courseOffers'
 
 const MAX_DISPLAY = 6
 
@@ -199,10 +200,11 @@ const structuredData = [
 
 export async function getStaticProps() {
   const posts = await getAllFilesFrontMatter('blog')
-  return { props: { posts } }
+  const offerActive = new Date() < new Date(octoberOffer.endsAt)
+  return { props: { posts, offerActive } }
 }
 
-export default function Home({ posts }) {
+export default function Home({ posts, offerActive }) {
   return (
     <>
       <PageSEO
@@ -419,7 +421,7 @@ export default function Home({ posts }) {
       </section>
 
       {/* Learning tracks */}
-      <EnrollmentCampaign />
+      <EnrollmentCampaign active={offerActive} />
       <section className="page-section">
         <div className="mb-10 flex flex-col gap-6 sm:mb-12 lg:flex-row lg:items-end lg:justify-between">
           <div>

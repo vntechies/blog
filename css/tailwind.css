@@ -439,7 +439,7 @@
   /* Course landing pages: sans body for 2,000-word sales copy, terminal mono kept for
      headings, labels, prices and code so the page still reads as the same site */
   .course-page {
-    font-family: theme('fontFamily.body');
+    font-family: theme('fontFamily.sans');
   }
 
   .premium-course {
