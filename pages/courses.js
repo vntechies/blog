@@ -98,7 +98,7 @@ export default function Courses({ courses, offerActive }) {
               onClick={() => setActiveTab('premium')}
               className={`rounded-xl px-4 py-3 text-sm font-semibold transition-colors ${
                 activeTab === 'premium'
-                  ? 'bg-orange-500 text-gray-900'
+                  ? 'bg-orange-400 text-gray-900'
                   : 'bg-slate-100 text-slate-600 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700'
               }`}
             >
