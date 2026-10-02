@@ -30,6 +30,7 @@ export default function Header() {
           <span className="hidden truncate text-xs text-fg-subtle lg:inline">
             <span className="text-success">~</span>/cloud<span className="text-fg-subtle">·</span>
             devops<span className="text-fg-subtle">·</span>data
+            <span className="text-fg-subtle">·</span>ai
             <span className="term-cursor ml-1" aria-hidden="true" />
           </span>
         </Link>

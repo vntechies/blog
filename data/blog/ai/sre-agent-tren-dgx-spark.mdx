@@ -1,5 +1,5 @@
 ---
-title: '🌙 Dựng SRE Agent trực đêm trên DGX Spark: LLM được nghĩ, không được bấm nút'
+title: 'Dựng SRE agent trực đêm trên DGX Spark'
 date: '2026-09-30'
 tags: ['ai', 'sre', 'llm', 'agent', 'nvidia', 'dgx-spark', 'azure']
 images: ['/static/images/ogps/sre-agent-dgx-spark.png']
@@ -8,19 +8,19 @@ authors: ['mau']
 summary: 'Dự án cá nhân với một stack khác hẳn công việc hằng ngày: SRE agent xử lý sự cố Azure VM, Nemotron 3 Super chạy local trên DGX Spark qua vLLM, agent nằm trong sandbox NemoClaw/OpenShell, guardrail deny-by-default, và những bug chỉ lộ ra khi chạy trên máy thật.'
 ---
 
-Chào anh em! Công việc hằng ngày của mình xoay quanh các CSP[^csp] và LLM provider, mà chủ yếu là AWS: model gọi qua API, hạ tầng thuê theo giờ, mọi thứ chạy trên cloud của người khác. Lần này mình muốn thử một stack khác hẳn: model open-weight chạy local trên phần cứng NVIDIA, agent runtime cũng của NVIDIA, đến bài toán cũng nằm bên Azure chứ không phải AWS. Tiện có chú em làm ở NVIDIA đang có một con DGX Spark[^dgx], thế là mượn luôn 😁.
+Trong công việc hằng ngày, mình chủ yếu làm với các CSP[^csp] và nhà cung cấp LLM, phần lớn là AWS. Model thường được gọi qua API, còn hạ tầng chạy trên cloud. Lần này mình muốn thử chạy model open-weight ngay trên phần cứng NVIDIA, dùng agent runtime của NVIDIA và xử lý một bài toán bên Azure. Đúng lúc có chú em làm ở NVIDIA đang có một con DGX Spark[^dgx], mình mượn về thử.
 
-Có máy rồi thì làm gì? Mình chọn một bài toán mà ai làm vận hành cũng thấm: trực đêm. 2 giờ sáng điện thoại rung, mở laptop, vào portal thì thấy con VM bị deallocate[^deallocate]. Bấm Start, chờ heartbeat, viết work note, đóng ticket. Mười phút, gần như không cần nghĩ, nhưng coi như mất ngủ cả đêm.
+Mình chọn bài toán trực đêm. Anh em làm vận hành chắc quen cảnh 2 giờ sáng điện thoại rung, mở laptop vào portal thì thấy VM bị deallocate[^deallocate]. Việc cần làm chỉ là bấm Start, chờ heartbeat, ghi work note rồi đóng ticket. Xử lý chỉ mất chừng mười phút, nhưng sau đó thường khó ngủ lại.
 
-Nghĩ lại mấy ca trực của mình thì phần lớn việc first-response ngoài giờ chẳng phải troubleshooting gì cao siêu. Chủ yếu là phân loại sự cố, check trạng thái trên Azure, restart đúng thứ cần restart, ghi chép lại, và quyết định lúc nào phải gọi người. Việc có cấu trúc, lặp đi lặp lại, có sẵn runbook, đúng loại việc có thể giao cho một agent.
+Nhìn lại các ca trực của mình, phần lớn việc phản hồi ban đầu ngoài giờ khá lặp lại: phân loại sự cố, kiểm tra trạng thái trên Azure, restart khi cần, ghi chép và quyết định lúc nào phải gọi thêm người. Nhiều bước đã có sẵn trong runbook, nên mình muốn xem agent có thể đảm nhận được phần nào.
 
-Thế là có dự án cá nhân này: một SRE agent trực đêm cho Azure VM. Không khách hàng, không deadline, chỉ để trả lời hai câu hỏi. Agent chạy hoàn toàn local thì làm được tới đâu? Và làm sao để một agent có quyền "bấm nút" trên hạ tầng mà mình vẫn ngủ ngon?
+Từ những ca trực đó, mình bắt đầu làm một SRE agent cho Azure VM. Đây là dự án cá nhân, nên mình có thể thử nghiệm để xem agent chạy local làm được tới đâu và cần giới hạn thế nào trước khi cho phép nó thao tác trên hạ tầng.
 
 ![Kiến trúc tổng quan: DGX Spark chạy vLLM và Nemotron 3 Super; sandbox OpenShell chứa agent, state machine, guardrail và audit log; egress chặn mặc định, chỉ mở tới hệ thống ticket, OAuth, Entra ID và Azure Resource Manager](/static/images/sre-agent-dgx-spark/01-kien-truc-tong-quan.svg)
 
-## 🧭 Đặt luật trước khi viết dòng code nào
+## Giới hạn phạm vi trước khi viết code
 
-Việc đầu tiên mình làm là tự trói tay con agent. Mình không muốn một agent "cái gì cũng tự làm". Thứ mình muốn là tự động hoá đáng tin: có một lớp AI để suy luận, nhưng playbook phải deterministic, guardrail phải chặt, mọi thứ phải audit được, và agent phải biết gọi người khi không chắc.
+Trước khi viết code, mình xác định rõ agent được làm gì. LLM hỗ trợ suy luận, còn playbook phải chạy theo logic cố định, có guardrail kiểm tra quyền thực hiện và có log để tra lại từng quyết định. Khi không đủ thông tin, agent phải chuyển cho người xử lý.
 
 Vì vậy agent chỉ được xử lý đúng ba loại sự cố:
 
@@ -28,21 +28,21 @@ Vì vậy agent chỉ được xử lý đúng ba loại sự cố:
 - **VM không phản hồi**: được phép restart, nhưng không được đụng tới network.
 - **Windows service bị dừng**: được phép start lại service.
 
-Ngoài ba loại đó thì chuyển người. Ngay trong ba loại đó, hễ có gì bất thường thì cũng chuyển người: start fail, VM tự tắt lại, cần sửa NSG, hay lỗi dính tới app hoặc database.
+Sự cố ngoài ba loại này sẽ được chuyển cho người xử lý. Ngay cả với ba loại đã nêu, agent cũng phải chuyển người nếu gặp điều bất thường, chẳng hạn: start fail, VM tự tắt lại, cần sửa NSG, hay lỗi dính tới app hoặc database.
 
-Danh sách **không bao giờ làm** còn dài hơn: không delete, không deallocate, không resize, không power off, không đụng network, NSG hay disk, không lặp remediation vô hạn. Quan trọng nhất, kể cả khi LLM đề xuất một hành động ngoài luật, nó cũng không có đường nào vượt qua lớp guardrail.
+Có một số thao tác agent tuyệt đối không được thực hiện: không delete, không deallocate, không resize, không power off, không đụng network, NSG hay disk, không lặp remediation vô hạn. Quan trọng nhất, kể cả khi LLM đề xuất một hành động ngoài luật, nó cũng không có đường nào vượt qua lớp guardrail.
 
-Mình chỉ đặt một chỉ tiêu không thương lượng: **số hành động nguy hiểm phải bằng 0**. Accuracy hay tỉ lệ tự xử lý đều xếp sau. Kèm theo là một luật chơi: chưa qua bài kiểm tra của nấc này thì chưa lên nấc tiếp.
+Ưu tiên của mình là **không để agent thực hiện hành động nguy hiểm**, kể cả phải chấp nhận tỉ lệ tự xử lý thấp hơn. Mỗi giai đoạn đều có bài kiểm tra riêng; qua được thì mới mở thêm quyền ở giai đoạn tiếp theo.
 
 ![Bốn nấc triển khai: mock, shadow mode, sửa trên sự cố giả lập, rồi mới tới VM thật; giữa các nấc là một gate phải qua](/static/images/sre-agent-dgx-spark/02-bon-nac.svg)
 
-## 🛠️ Hành trình dựng agent
+## Các bước triển khai
 
-### Bước 1: Dựng "bộ não" trên DGX Spark
+### Bước 1: Chạy model trên DGX Spark
 
-Con Spark có GPU GB10, **128 GB unified memory**[^unified], chạy Ubuntu 24.04 ARM64. Model mình chọn là Nemotron 3 Super 120B-A12B. Đây là model MoE[^moe], tổng cộng 120B tham số nhưng mỗi token chỉ kích hoạt khoảng 12B, và NVIDIA giới thiệu nó được tối ưu cho các workload kiểu tự động hoá IT ticket. Mình chọn bản lớn vì agent cần reasoning và gọi tool cho chuẩn. Model nhỏ chỉ nên dùng ở những chỗ đã chứng minh là đủ tốt. Bản NVFP4[^nvfp4] nặng khoảng 80 GB, nằm vừa trong máy.
+DGX Spark có GPU GB10, **128 GB unified memory**[^unified] và chạy Ubuntu 24.04 ARM64. Mình chọn Nemotron 3 Super 120B-A12B. Đây là model MoE[^moe] với 120B tham số, trong đó mỗi token kích hoạt khoảng 12B. NVIDIA giới thiệu model này cho các tác vụ như tự động hoá xử lý IT ticket. Mình chọn bản lớn vì agent cần suy luận và gọi tool chính xác. Với model nhỏ hơn, mình chỉ muốn dùng khi đã xác nhận chất lượng đáp ứng được yêu cầu. Bản NVFP4[^nvfp4] nặng khoảng 80 GB, nằm vừa trong máy.
 
-Bài học đầu tiên đến ngay từ đây. Unified memory là bộ nhớ **dùng chung** giữa CPU và GPU, mà trên máy còn chạy sẵn một service Ollama. Cho vLLM giữ memory quá tay thì agent runtime và hệ điều hành bị bóp. Mình phải chỉnh lại cấu hình memory của serving để mọi thứ cùng chạy ổn định.
+Ngay lúc chạy model, mình đã gặp vấn đề về bộ nhớ. Unified memory là bộ nhớ **dùng chung** giữa CPU và GPU, mà trên máy còn chạy sẵn một service Ollama. Nếu cấp quá nhiều bộ nhớ cho vLLM, agent runtime và hệ điều hành sẽ không còn đủ để chạy ổn định. Mình phải giới hạn bộ nhớ vLLM để model, agent runtime và hệ điều hành cùng chạy ổn định.
 
 Model được serve qua container `vllm/vllm-openai:v0.20.0`, API chuẩn OpenAI ở port 8000. Bản rút gọn trông như sau:
 
@@ -60,7 +60,7 @@ docker run --gpus all -p 127.0.0.1:8000:8000 \
     --enable-auto-tool-choice --tool-call-parser qwen3_coder
 ```
 
-Mình benchmark vài cấu hình, đo TPOT và TTFT[^tpot], và kết quả khá bất ngờ:
+Mình benchmark vài cấu hình để so sánh TPOT và TTFT[^tpot]:
 
 | Cấu hình                           | TPOT (median) | Output throughput | TTFT (median) |
 | ---------------------------------- | ------------- | ----------------- | ------------- |
@@ -70,27 +70,27 @@ Mình benchmark vài cấu hình, đo TPOT và TTFT[^tpot], và kết quả khá
 | **MTP + eager + CUTLASS, 32K**     | **48.49 ms**  | **15.98 tok/s**   | **805 ms**    |
 | **MTP + eager + CUTLASS, 64K**     | **49.13 ms**  | **15.69 tok/s**   | **815 ms**    |
 
-Nâng vLLM lên 0.24 gần như không nhanh hơn, bật CUDA Graphs[^kernel] cũng chỉ nhích nhẹ. Thứ tạo ra khác biệt là dùng đúng tính năng có sẵn của model. Nemotron 3 Super có một layer MTP (multi-token prediction) nằm sẵn trong checkpoint, đóng vai draft model cho speculative decoding[^mtp] mà không cần thêm model phụ. Bật lên là thời gian mỗi token giảm khoảng 25%.
+Nâng vLLM lên 0.24 gần như không nhanh hơn, bật CUDA Graphs[^kernel] cũng chỉ nhích nhẹ. Thứ tạo ra khác biệt là dùng đúng tính năng có sẵn của model. Nemotron 3 Super có một layer MTP (multi-token prediction) nằm sẵn trong checkpoint, đóng vai draft model cho speculative decoding[^mtp] mà không cần thêm model phụ. Khi bật MTP, thời gian sinh mỗi token giảm khoảng 25%.
 
 ![MTP và speculative decoding: không MTP cần 4 lượt forward cho 4 token; có MTP, layer MTP đoán 3 token, model chính kiểm một lượt, giữ 2 token đúng và tự sinh 1 token thay thế](/static/images/sre-agent-dgx-spark/03-mtp.svg)
 
 Đổi lại, TTFT tăng thêm khoảng 200 ms. Nhưng mỗi token lại nhanh hơn chừng 17 ms, nên output chỉ cần dài hơn khoảng một chục token là đã hoà vốn. Một lượt reasoning cộng tool call của agent dài hơn thế nhiều. Context 32K hay 64K cho kết quả gần như ngang nhau, nên mình lấy 64K. Thêm một chi tiết: benchmark dùng prompt ngẫu nhiên và ép cứng độ dài output, kiểu workload này làm giảm tỉ lệ chấp nhận token đoán. Với workload thật, MTP có khi còn lợi hơn.
 
-Phần agent runtime mình dùng **NemoClaw**, reference stack mã nguồn mở của NVIDIA để chạy agent always-on an toàn hơn. Agent nằm trong sandbox **OpenShell**[^openshell], cô lập ở mức kernel. Một policy YAML quy định nó được đọc gì trên disk và gọi được endpoint nào. Mọi lời gọi model đều đi qua OpenShell gateway, nơi áp policy và ghi audit riêng. Đây chính là phần "sandbox" của cả hệ thống. Mình chỉ coi bước này là xong khi NemoClaw nói chuyện ổn định với model qua endpoint OpenAI-compatible, kể cả sau khi restart.
+Ở phần agent runtime, mình dùng **NemoClaw**, bộ công cụ mã nguồn mở của NVIDIA để triển khai agent chạy liên tục. Agent nằm trong sandbox **OpenShell**[^openshell], cô lập ở mức kernel. Một policy YAML quy định nó được đọc gì trên disk và gọi được endpoint nào. Mọi lời gọi model đều đi qua OpenShell gateway, nơi áp policy và ghi audit riêng. OpenShell là lớp sandbox của hệ thống. Mình chỉ coi bước này là xong khi NemoClaw nói chuyện ổn định với model qua endpoint OpenAI-compatible, kể cả sau khi restart.
 
-### Bước 2: Cho agent một bộ xương
+### Bước 2: Dựng luồng xử lý incident
 
-Trước khi cho agent chạm vào thứ gì thật, mình dựng phần xương sống. Mỗi incident đi qua một state machine chỉ có đúng một đường. Mỗi thao tác được khoá idempotency[^idempotency] theo `ticket ID + operation + evidence version`, nên replay bao nhiêu lần cũng không sinh hành động trùng.
+Trước khi kết nối với hệ thống thật, mình dựng luồng xử lý incident. Mỗi incident đi qua state machine với các bước chuyển trạng thái được xác định trước. Mỗi thao tác được khoá idempotency[^idempotency] theo `ticket ID + operation + evidence version`, nên replay bao nhiêu lần cũng không sinh hành động trùng.
 
 ![State machine của một incident: received, acknowledged, evidence-collected, classified, recommendation-ready, note-written, rồi closed hoặc handed-off; kèm khoá idempotency và audit log](/static/images/sre-agent-dgx-spark/04-state-machine.svg)
 
 Mọi state transition và tool call đều thành một dòng trong audit log append-only trên SQLite, gắn correlation ID theo incident. Input và output chỉ lưu dạng hash, nên credential không bao giờ lọt vào log.
 
-Tool thì mình viết mock trước, nhưng mock có schema **y hệt** connector thật. Nhờ vậy lúc thay bằng hàng thật chỉ việc cắm vào, phía agent không phải sửa gì.
+Tool thì mình viết mock trước, nhưng mock có schema **y hệt** connector thật. Nhờ vậy, khi thay mock bằng connector thật, mình không phải sửa phía agent.
 
 ### Bước 3: Nối hệ thống thật, nhưng chỉ được nhìn
 
-Connector thật gồm hai phần. Phía hệ thống ticket có 6 typed tool: đọc ticket, liệt kê queue, ack, ghi work note, đổi trạng thái, resolve. Phía Azure là một bộ chỉ đọc: Monitor, ARM, Resource Graph, Run Command, Network Watcher, boot diagnostics, Activity Log. Connector Azure **không có** thao tác ARM phá huỷ nào. Không phải vì bị cấm, mà vì mình không viết ra.
+Connector thật gồm hai phần. Phía hệ thống ticket có 6 typed tool: đọc ticket, liệt kê queue, ack, ghi work note, đổi trạng thái, resolve. Phía Azure là một bộ chỉ đọc: Monitor, ARM, Resource Graph, Run Command, Network Watcher, boot diagnostics, Activity Log. Mình không triển khai các thao tác ARM có tính phá huỷ trong connector Azure, nên agent không có tool để gọi chúng.
 
 Guardrail engine được dựng cùng lúc với các luật sau:
 
@@ -103,23 +103,23 @@ Guardrail engine được dựng cùng lúc với các luật sau:
 
 Kill switch chặn mọi action trong chưa tới 1 giây, nhưng agent vẫn chẩn đoán và ghi note bình thường.
 
-Rồi mình cho nó chạy **shadow mode**[^shadow]: đọc ticket, ack, thu thập evidence, phân loại, và chỉ ghi **đề xuất** vào work note. Chạy 30 ticket, agent ack đủ 30 và đề xuất đúng 28. Hai ca còn lại mơ hồ nên được chuyển người. Quan trọng nhất là không có thay đổi trạng thái nào. Con số 0 đó mình kiểm bằng cách đối chiếu Azure Activity Log với lịch sử ticket, chứ không tin lời agent tự khai.
+Sau đó, mình cho agent chạy **shadow mode**[^shadow]: đọc và xác nhận ticket, thu thập evidence, phân loại sự cố, rồi chỉ ghi **đề xuất** vào work note. Trong 30 ticket, agent xác nhận đủ cả 30 và đề xuất đúng 28. Hai ca còn lại mơ hồ nên được chuyển người. Quan trọng nhất là không có thay đổi trạng thái nào. Con số 0 đó mình kiểm bằng cách đối chiếu Azure Activity Log với lịch sử ticket, chứ không tin lời agent tự khai.
 
 ### Bước 4: Cho phép sửa, nhưng trên sự cố giả lập
 
-Mỗi playbook là một vòng **chẩn đoán → sửa → kiểm chứng**, và bước kiểm chứng phải dựa trên tín hiệu khách quan:
+Mỗi playbook đi qua ba bước: **chẩn đoán → sửa → kiểm chứng**. Phần kiểm chứng dựa trên các tín hiệu cụ thể:
 
 - **VM deallocate**: poll tới khi `PowerState/running` **và** guest heartbeat `Ready`.
 - **VM không phản hồi**: chỉ restart sau approval gate. Nếu là lỗi thuần network như NSG sai thì chuyển người thay vì restart.
 - **Service bị dừng**: start xong phải chờ **120 giây** rồi kiểm tra lại xem nó có chết lại không. Nếu service đang crash-loop quá ngưỡng thì từ chối luôn.
 
-Mình viết thêm một evaluation harness để replay incident qua toàn bộ pipeline. Kèm theo là một bộ test "chơi xấu": prompt injection[^injection] trong nội dung ticket, VM giả tên, resource group ngoài scope, opt-out tag gắn vào giữa chừng. Không có hành động nguy hiểm nào lọt qua.
+Mình viết thêm một evaluation harness để replay incident qua toàn bộ pipeline. Kèm theo là các tình huống cố tình gây khó cho agent: prompt injection[^injection] trong nội dung ticket, VM giả tên, resource group ngoài scope, opt-out tag gắn vào giữa chừng. Không có hành động nguy hiểm nào lọt qua.
 
-Tool schema được siết bằng enum chặt và field evidence bắt buộc. Prompt thì yêu cầu agent phải **trích evidence trước khi đề xuất bất kỳ hành động nào**. Sau vài vòng chỉnh, tool call sai format về 0.
+Mình giới hạn tool schema bằng enum và yêu cầu trường evidence. Prompt cũng yêu cầu agent **đưa ra evidence trước khi đề xuất hành động**. Sau vài vòng chỉnh sửa, không còn tool call sai định dạng.
 
-### Bước 5: Lên VM thật, và mọi thứ bắt đầu vỡ
+### Bước 5: Thử trên VM thật
 
-Đến lúc này mọi con số đều xanh, và đó là lúc mình đưa agent lên VM Azure thật. Mình tạo 7 sự cố thật, gửi ticket như người dùng bình thường, và bật quyền sửa.
+Sau khi các bài kiểm tra đều pass, mình đưa agent lên VM Azure thật. Mình tạo 7 sự cố trên VM thật, gửi ticket theo cách người dùng vẫn làm và bật quyền sửa.
 
 Agent start lại một VM bị deallocate và xác nhận nó chạy ổn. Nó restart một VM không phản hồi, nhưng không xác nhận được là máy đã hồi phục, nên nó **dừng lại** thay vì leo thang sang hành động mạnh tay hơn. Năm ca còn lại nó từ chối, ca nào cũng có lý do rõ ràng:
 
@@ -129,15 +129,15 @@ Agent start lại một VM bị deallocate và xác nhận nó chạy ổn. Nó 
 - resource group nằm ngoài scope;
 - kill switch đang bật.
 
-Playbook service bị dừng thì chưa có bằng chứng trên máy thật. Sự cố mình tạo ra đã tự hồi phục trước khi agent kịp đọc, nên playbook này mới chỉ pass trong môi trường giả lập. Mình ghi rõ như vậy chứ không làm tròn.
+Mình chưa kiểm chứng được playbook cho Windows service trên máy thật. Sự cố thử nghiệm đã tự hồi phục trước khi agent đọc ticket, nên playbook này mới chỉ pass trong môi trường giả lập.
 
-Còn những thứ vỡ ra ở bước này, mình để dành cho phần bài học.
+Khi chạy trên máy thật, mình cũng phát hiện một số lỗi mà mock không thể hiện ra.
 
-## 🧠 Vài lựa chọn thiết kế, và vì sao
+## Một số lựa chọn thiết kế
 
-### Để "bộ não" ở nhà
+### Chạy suy luận tại chỗ
 
-Như hình kiến trúc ở đầu bài, toàn bộ vòng suy luận nằm ngay trên con Spark, nên "bộ não" của agent không phải gửi đi đâu mỗi khi có incident. Lợi ích dễ thấy nhất nằm ở network. Egress mặc định chặn hết, chỉ mở đúng 4 đích: hệ thống ticket, dịch vụ OAuth của nó, Azure Resource Manager và Entra ID. Inference nằm ngay trong sandbox nên không cần thêm dòng egress nào, và cũng không có kết nối inbound. Với một agent có quyền restart VM, bề mặt tấn công nhỏ như vậy là thứ mình muốn nhất.
+Toàn bộ phần suy luận chạy trên Spark, nên mỗi khi có incident, agent không cần gọi model API bên ngoài. Điều này giúp mình giới hạn kết nối mạng dễ hơn. Egress mặc định chặn hết, chỉ mở đúng 4 đích: hệ thống ticket, dịch vụ OAuth của nó, Azure Resource Manager và Entra ID. Inference nằm ngay trong sandbox nên không cần thêm dòng egress nào, và cũng không có kết nối inbound. Với một agent có quyền restart VM, bề mặt tấn công nhỏ như vậy là thứ mình muốn nhất.
 
 Về stack, mình cân nhắc hai hướng:
 
@@ -146,20 +146,20 @@ Về stack, mình cân nhắc hai hướng:
 
 Cuối cùng mình chọn **vLLM + NemoClaw**, để Microsoft Agent Framework làm phương án dự phòng. vLLM có API chuẩn OpenAI, nên khi cần đổi runtime thì lớp connector và tool vẫn giữ nguyên. Nói cho công bằng, mình chưa benchmark hai runtime đối đầu trực tiếp. Đây là lựa chọn dựa trên độ linh hoạt, chưa phải trên số đo.
 
-### LLM nghĩ, state machine quyết, guardrail cho phép
+### Phân chia rõ vai trò của model và guardrail
 
 Đây là nguyên tắc mình bám suốt dự án: **LLM lo suy luận và ghi chép. State machine quyết định bước hợp lệ tiếp theo. Guardrail quyết định hành động có được phép hay không.** Azure và hệ thống ticket luôn là nguồn sự thật.
 
 ![Các lớp một hành động phải vượt qua: LLM đề xuất, state machine, guardrail với 6 check, typed tool, role Azure, rồi mới tới Azure; trượt lớp nào cũng chuyển người](/static/images/sre-agent-dgx-spark/05-phong-thu-nhieu-lop.svg)
 
-Nghĩa là an toàn không trông vào chuyện prompt "ngoan". Model không bao giờ cầm credential, không có shell, chỉ được _xin_ gọi những tool đã duyệt. Một thao tác nguy hiểm phải vượt qua mấy lớp mới tới được Azure:
+Vì vậy, việc kiểm soát hành động nằm trong code và quyền truy cập, không phụ thuộc vào việc model có làm đúng prompt hay không. Model không bao giờ cầm credential, không có shell, chỉ được _xin_ gọi những tool đã duyệt. Một thao tác nguy hiểm phải vượt qua mấy lớp mới tới được Azure:
 
 - connector không có tool cho việc đó;
 - guardrail mặc định từ chối;
 - delete, deallocate, power-off, resize và đổi NSG bị chặn ngay trong code, config cũng không mở ra được;
 - role Azure của agent chỉ gồm quyền đọc cộng start, restart và Run Command.
 
-Mình còn ngồi map từng kịch bản nguy hiểm vào một control cứng. Target ngoài scope thì có scope check. Prompt injection thì chỉ được thực thi qua typed tool. Vòng lặp retry thì có retry cap và kill switch. Các kịch bản khác cũng vậy.
+Mình cũng đối chiếu từng kịch bản nguy hiểm với cơ chế kiểm soát tương ứng. Target ngoài scope thì có scope check. Prompt injection thì chỉ được thực thi qua typed tool. Vòng lặp retry thì có retry cap và kill switch. Các kịch bản khác cũng vậy.
 
 Chi tiết mình thích nhất là cách kill switch xử lý hành động **đang chạy dở**. Kill switch được đọc lại trước mỗi action, nên bật lên là có hiệu lực ngay ở action kế tiếp, không cần restart service. Còn action đã gửi đi thì vẫn được chạy xong và kiểm chứng. Lời gọi lên Azure đã gửi thì không thu hồi được. Nếu bỏ ngang giữa lúc gọi và lúc kiểm chứng thì chẳng ai biết máy đang ở trạng thái nào.
 
@@ -167,15 +167,15 @@ Chi tiết mình thích nhất là cách kill switch xử lý hành động **đ
 
 Cùng tinh thần đó, action nào đã bắt đầu mà không ghi nhận được kết quả thì agent **giữ lại** chờ người xử lý, chứ không tự làm lại. Restart lần hai một con máy mà người khác vừa tiếp quản chính là thứ cần tránh.
 
-### Cái gì làm deterministic được thì đừng hỏi LLM
+### Dùng logic cố định khi có thể
 
 Ticket thật hay _mô tả_ máy thay vì ghi tên, nên agent cần biết đang nói về con VM nào. Mình cho nó 4 cách xác định, và mỗi cách mang một "độ mạnh" quyết định agent được làm tới đâu. Tên được Azure xác nhận hoặc alias do người vận hành định nghĩa thì được hành động. Khớp tag hoặc LLM tự suy ra từ nội dung ticket thì chỉ được chẩn đoán. Có nhiều hơn một ứng viên thì chuyển người.
 
 ![Xác định VM mục tiêu: tên được Azure xác nhận hoặc alias thì được hành động; khớp tag hoặc LLM suy ra thì chỉ được chẩn đoán; nhiều ứng viên thì chuyển người](/static/images/sre-agent-dgx-spark/06-xac-dinh-vm.svg)
 
-Chính cái giới hạn đó mới là mục đích. LLM được phép đoán, nhưng đoán thì chỉ được nhìn, không được sửa.
+Nếu chỉ có suy đoán của LLM, agent có thể thu thập thêm thông tin nhưng chưa được sửa VM.
 
-Event log cũng vậy. Dán nguyên event log vào ticket thì dễ, nhưng một danh sách chưa phải là một kết luận. Mình viết một module diễn giải khoảng 800 dòng. Mỗi event ID đã biết được gắn bốn ý: nó **xác lập** được gì, nó chỉ **gợi ý** gì, nó **không nói được** gì, và bước nào trong runbook cần tới nó. Đại loại thế này, lấy ví dụ event 6008[^6008]:
+Mình cũng áp dụng cách này với event log. Đưa nguyên danh sách event vào ticket thì dễ, nhưng danh sách đó tự nó chưa giải thích được sự cố. Mình viết một module diễn giải khoảng 800 dòng. Mỗi event ID đã biết được gắn bốn ý: nó **xác lập** được gì, nó chỉ **gợi ý** gì, nó **không nói được** gì, và bước nào trong runbook cần tới nó. Đại loại thế này, lấy ví dụ event 6008[^6008]:
 
 ```yaml
 # Minh hoạ cấu trúc một entry trong bảng tra
@@ -187,85 +187,85 @@ Event log cũng vậy. Dán nguyên event log vào ticket thì dễ, nhưng mộ
   runbook_step: '<bước runbook cần dữ kiện này>'
 ```
 
-Module này **không gọi LLM**. Event ID mang nghĩa theo bảng tra, còn không có trong bảng thì lên ticket với nhãn _unrecognised_. Nhờ vậy 4 trên 9 tiêu chí escalation trong runbook được trả lời thẳng từ log của guest.
+Module này **không gọi LLM**. Với event ID có trong bảng, module dùng phần diễn giải đã định nghĩa; event chưa biết được ghi vào ticket với nhãn _unrecognised_. Nhờ vậy, log của guest trả lời trực tiếp được 4 trong 9 tiêu chí escalation của runbook.
 
-Cái giá là đôi khi một incident đã hồi phục vẫn bị chuyển người, chẳng hạn khi log cho thấy service đã chết hai lần trong một giờ. Tỉ lệ chuyển người tăng nhẹ, và đó là chủ đích.
+Đổi lại, agent đôi khi vẫn chuyển người xử lý dù incident đã tự hồi phục, chẳng hạn khi log cho thấy service dừng hai lần trong một giờ. Tỉ lệ chuyển người tăng nhẹ, nhưng trong trường hợp này mình chấp nhận điều đó.
 
 ### HA: có nên không?
 
-Chạy trên một con box đi mượn thì HA hai node là chuyện xa xỉ 😅. Nhưng kể cả có thêm máy, mình vẫn sẽ chọn single node, kèm một heartbeat monitor bắt được cả hai kiểu chết. Kiểu thứ nhất là watcher chết hẳn. Kiểu thứ hai là watcher **vẫn sống nhưng không kết nối được tới hệ thống ticket**, và đây mới là kiểu hay bị bỏ sót.
+Với một máy đi mượn, mình chưa tính tới HA hai node. Kể cả có thêm máy, ở giai đoạn này mình vẫn chọn single node, kèm heartbeat monitor theo dõi cả hai trường hợp: watcher dừng hẳn, hoặc watcher **vẫn chạy nhưng không kết nối được tới hệ thống ticket**. Trường hợp thứ hai dễ bị bỏ sót nếu chỉ kiểm tra process còn sống hay không.
 
-Lý do là agent đứng ở lớp first-response. Nó im lặng thì ticket vẫn nằm trong queue chờ người, chứ không mất đi đâu. Thứ bắt buộc phải có là _agent chết thì có người biết ngay_, chứ không phải _agent không bao giờ chết_. Thêm component nào là thêm một thứ phải vận hành và phải chứng minh nó chạy đúng.
+Lý do là agent đứng ở lớp first-response. Nó im lặng thì ticket vẫn nằm trong queue chờ người, chứ không mất đi đâu. Điều cần đảm bảo là có người được báo khi agent ngừng hoạt động. Thêm component nào là thêm một thứ phải vận hành và phải chứng minh nó chạy đúng.
 
-## 💡 Kết quả và bài học
+## Kết quả và bài học
 
-Tóm lại những con số chính:
+Kết quả sau các đợt thử nghiệm:
 
 - **Shadow mode**: agent đề xuất đúng 28/30 ticket và không thay đổi trạng thái nào.
 - **Sự cố giả lập**: 27/30 ca được sửa đúng, 3 ca còn lại được escalate đúng.
 - **VM thật**: trong 7 sự cố, agent tự sửa và xác nhận được 1 ca, 6 ca chuyển người. Ở 5 trong số 6 ca đó, agent nêu rõ check nào đã từ chối và vì sao. Mỗi incident mất từ 44 giây tới 10 phút.
 - **Test**: 1132 unit test và 29 kịch bản end-to-end với 124 assertion, tất cả đều pass.
 
-Con số mình quan tâm nhất: **0 hành động nguy hiểm**. Nhưng thứ đáng kể nhất lại không nằm trong mấy con số đó.
+Trong các đợt thử nghiệm này, agent không thực hiện hành động nguy hiểm nào. Tuy vậy, quá trình chạy thử vẫn cho thấy khá nhiều chỗ cần sửa.
 
 ### "Pass vì lý do sai"
 
-Lên máy thật, mình tìm ra 9 bug. Phần lớn có chung một đặc điểm khó chịu: check vẫn pass, chỉ là pass vì lý do sai, nên chẳng có gì trông giống lỗi cả. Ba trong số đó sẽ cho ra kết quả sai nếu đem vào dùng thật, và cả ba chỉ lộ ra khi chạy trên máy thật.
+Khi chạy trên máy thật, mình tìm ra 9 bug. Phần lớn khó nhận ra vì các check vẫn pass, nhưng kết quả đúng là do một lý do khác với dự kiến. Ba trong số đó sẽ cho ra kết quả sai nếu đem vào dùng thật, và cả ba chỉ lộ ra khi chạy trên máy thật.
 
-**Timestamp của Azure health event.** Azure đóng dấu lại thời gian của health event chừng nào tình trạng còn kéo dài. Kết quả là một VM dự phòng đang tắt trông như "liên quan" tới mọi incident trong resource group. Guardrail blast-radius thấy vậy và chặn luôn lần sửa đầu tiên trên máy thật. Cách sửa: với máy không chạy thì lấy mốc thời gian từ control plane, nơi thời điểm dừng máy không bị đổi.
+**Timestamp của Azure health event.** Azure đóng dấu lại thời gian của health event chừng nào tình trạng còn kéo dài. Kết quả là một VM dự phòng đang tắt trông như "liên quan" tới mọi incident trong resource group. Guardrail blast-radius thấy vậy và chặn luôn lần sửa đầu tiên trên máy thật. Mình sửa bằng cách lấy thời điểm từ control plane với những VM đang dừng, vì mốc thời gian ở đó không bị cập nhật lại.
 
-**Timezone.** Windows ghi thời gian event theo giờ local mà không kèm offset. Trên VM để UTC+8, lỗi bình thường trong ngày bị đẩy sang "tương lai" 8 tiếng, rơi vào sau thời điểm remediation. Thế là một lần sửa thành công bị đọc thành "sửa xong thì hỏng". Giờ mọi timestamp được đổi sang UTC ngay lúc thu thập.
+**Timezone.** Windows ghi thời gian event theo giờ local mà không kèm offset. Trên VM để UTC+8, lỗi bình thường trong ngày bị đẩy sang "tương lai" 8 tiếng, rơi vào sau thời điểm remediation. Vì vậy, agent hiểu nhầm rằng VM gặp lỗi sau khi được sửa, dù sự cố thực ra xảy ra trước đó. Giờ mọi timestamp được đổi sang UTC ngay lúc thu thập.
 
 ![Bug timezone: lỗi thường ngày lúc 02:00 UTC bị đọc thành 10:00 vì giờ local UTC+8 không kèm offset, nên rơi sau lần sửa lúc 03:00 và bị hiểu là sửa xong thì hỏng](/static/images/sre-agent-dgx-spark/08-bug-timezone.svg)
 
-**Event ID 1000.** Mình tưởng nó luôn là application crash. Hoá ra nhiều provider dùng chung ID này, có provider còn dùng nó để báo performance counter load **thành công**. Thế là máy khoẻ re bị báo crash. Bài học: event ID phải đi cùng provider mới có nghĩa.
+**Event ID 1000.** Mình tưởng nó luôn là application crash. Hoá ra nhiều provider dùng chung ID này, có provider còn dùng nó để báo performance counter load **thành công**. Vì vậy có máy đang chạy bình thường vẫn bị báo là đã crash. Bài học: event ID phải đi cùng provider mới có nghĩa.
 
-**Lỗi lúc boot.** Image Windows mình dùng log một lỗi start service ở gần như mọi lần boot. Playbook VM không phản hồi lại chính là restart, nên lỗi này luôn xuất hiện ngay sau action. Hậu quả là playbook đó **không bao giờ** kiểm chứng được là đã sửa xong. Giờ những lỗi đã lặp lại từ trước action được để riêng, kèm ghi chú trên ticket là đã để riêng những gì.
+**Lỗi lúc boot.** Image Windows mình dùng log một lỗi start service ở gần như mọi lần boot. Playbook VM không phản hồi lại chính là restart, nên lỗi này luôn xuất hiện ngay sau action. Hậu quả là playbook đó **không bao giờ** kiểm chứng được là đã sửa xong. Giờ đây, các lỗi đã xuất hiện trước khi thực hiện action được tách riêng, và ticket ghi rõ những lỗi nào đã được loại khỏi bước kiểm chứng.
 
-**Bug mình thích nhất.** Câu "The VM appears to be deallocated" cho ra một con máy tên là… `appears` 😅. Trong khi đó, field có label chứa tên máy thật lại bị bỏ qua. Giờ parser ưu tiên field có label và loại các ứng viên là từ tiếng Anh thông dụng.
+**Parser nhận nhầm tên VM.** Với câu "The VM appears to be deallocated", parser lấy luôn từ `appears` làm tên máy. Đọc lại kết quả này thì vừa buồn cười vừa thấy rõ chỗ mình đã bỏ sót. Trong khi đó, field có label chứa tên máy thật lại bị bỏ qua. Giờ parser ưu tiên field có label và loại các ứng viên là từ tiếng Anh thông dụng.
 
-Mock trả về đúng thứ mình _nghĩ_ thế giới trông như vậy, còn máy thật thì không. Vì thế bộ scenario test sau cùng assert lên **audit record** chứ không phải console output. Pass nghĩa là chứng minh được quyết định agent đã ghi lại. Teardown luôn chạy dù pass hay fail. State nào không tạo được thì báo _skipped_ chứ không lách.
+Mock chỉ tạo ra những dữ liệu mình dự liệu trước. Vì vậy, mình đã bỏ sót các trường hợp như timestamp không có timezone hoặc nhiều provider dùng chung event ID. Sau đó, mình chỉnh bộ scenario test để kiểm tra **audit record** thay vì console output: mỗi test phải xác nhận quyết định nào đã được ghi lại. Phần teardown luôn chạy dù test pass hay fail; nếu không tạo được state cần thiết, test sẽ báo _skipped_.
 
-### Test set đạt 14/14 là test set quá dễ
+### Bộ test ban đầu còn quá dễ
 
-Bộ test phân loại ban đầu có 14 case và đạt 14/14. Điểm tuyệt đối ấy chính là bằng chứng rõ nhất rằng bộ test quá dễ, chẳng đo được gì. Mình rebuild lên 55 case theo đúng kiểu incident thật, và accuracy rơi về khoảng 87 đến 91%.
+Bộ test phân loại ban đầu có 14 case và đạt 14/14. Nhìn lại, các case đều khá rõ ràng, chưa có nhiều tình huống mơ hồ như ticket thật. Mình làm lại bộ test với 55 case sát thực tế hơn, và accuracy giảm còn khoảng 87 đến 91%.
 
-Từ đó mình đổi cách nhìn. Thứ cần theo dõi trước tiên là **unsafe answer**[^unsafe]: những ca agent xếp sự cố vào một loại _được phép hành động_ trong khi lẽ ra không được. Ví dụ tiêu biểu là một request reset password có kèm dòng "authorization" được cài vào nội dung. Trước khi mình thêm request gate, mỗi lần chạy lọt đúng một ca như vậy. Sau khi thêm thì không còn ca nào, accuracy lên 96.4%. Hai ca sai còn lại đều sai theo hướng thận trọng, tức là chuyển người chứ không hành động.
+Sau đó, mình chuyển trọng tâm sang **unsafe answer**[^unsafe]: những ca agent xếp sự cố vào một loại _được phép hành động_ trong khi lẽ ra không được. Ví dụ tiêu biểu là một request reset password có kèm dòng "authorization" được cài vào nội dung. Trước khi mình thêm request gate, mỗi lần chạy lọt đúng một ca như vậy. Sau khi thêm thì không còn ca nào, accuracy lên 96.4%. Hai ca sai còn lại đều sai theo hướng thận trọng, tức là chuyển người chứ không hành động.
 
 ![Kết quả 5 lần chạy phân loại trên 55 case: trước request gate đạt 87.3, 89.1 và 90.9 phần trăm, mỗi lần 1 unsafe answer; sau request gate hai lần cùng đạt 96.4 phần trăm và 0 unsafe answer](/static/images/sre-agent-dgx-spark/09-phan-loai.svg)
 
-Nhưng accuracy của LLM là một khoảng, không phải một con số. Hai lần chạy gần nhất cùng ra 96.4% nhưng sai ở những case khác nhau. Ba lần trước đó lệch nhau 3.6 điểm dù decode deterministic. Muốn dựa vào accuracy để ra quyết định thì phải chạy nhiều lần và báo theo khoảng.
+Accuracy của LLM cũng dao động giữa các lần chạy, nên một con số đơn lẻ chưa phản ánh đầy đủ kết quả. Hai lần chạy gần nhất cùng ra 96.4% nhưng sai ở những case khác nhau. Ba lần trước đó lệch nhau 3.6 điểm dù decode deterministic. Muốn dựa vào accuracy để ra quyết định thì phải chạy nhiều lần và báo theo khoảng.
 
 ### Security control làm quá tay cũng là bug
 
-Request gate kể trên được thêm vào để nội dung ticket không thể tự "cấp quyền" cho agent. Phiên bản đầu thô quá. Gặp câu injection đòi xoá resource group là nó dừng đọc, không đọc tới subject, trong khi subject lại là một báo lỗi thật: "máy đang down". Kết quả là một incident thật bị đẩy ra ngoài scope. Nói cách khác, chính cái khoá an ninh đã bỏ rơi một sự cố thật, chỉ vì kẻ tấn công vẽ bậy lên nó.
+Request gate kể trên được thêm vào để nội dung ticket không thể tự "cấp quyền" cho agent. Phiên bản đầu thô quá. Gặp câu injection đòi xoá resource group là nó dừng đọc, không đọc tới subject, trong khi subject lại là một báo lỗi thật: "máy đang down". Kết quả là một incident thật bị đẩy ra ngoài scope. Agent chặn được câu injection, nhưng đồng thời bỏ qua cả sự cố cần xử lý trong cùng ticket.
 
-Cách sửa là coi việc gạt câu nhắm vào agent sang một bên chỉ là **bắt đầu** việc đọc, chứ không phải kết thúc. Các mệnh đề khác vẫn được tính. Câu kiểu "máy down, tắt, deallocated, không truy cập được" vẫn là báo lỗi dù nằm ở đâu. Gate được sửa lại chứ không nới ra: kiểu tấn công ban đầu vẫn bị chặn, và module đó từ 0 test lên 25 test. Bug này do chính bộ scenario test tìm ra, thêm một lý do để đầu tư vào test harness.
+Mình sửa gate để bỏ qua câu lệnh nhắm vào agent rồi tiếp tục đọc những phần mô tả sự cố còn lại. Câu kiểu "máy down, tắt, deallocated, không truy cập được" vẫn là báo lỗi dù nằm ở đâu. Gate được sửa lại chứ không nới ra: kiểu tấn công ban đầu vẫn bị chặn, và module đó từ 0 test lên 25 test. Bug này do chính bộ scenario test tìm ra, thêm một lý do để đầu tư vào test harness.
 
-### Chuyển người có lý do tốt hơn tự sửa mù quáng
+### Chuyển người kèm đủ thông tin
 
-6 trên 7 sự cố thật được chuyển người, và mình coi đó là kết quả **tốt**. Mình đặt luật là mỗi lần chuyển người phải kèm tóm tắt, evidence, các bước đã thử và đề xuất bước tiếp theo. Ở 5 ca, agent còn chỉ ra được check nào đã từ chối và vì sao. Người trực nhận ticket mà không phải điều tra lại từ đầu thì agent đã làm được nửa việc.
+Agent chuyển người xử lý 6 trong 7 sự cố thật. Tỉ lệ tự xử lý còn thấp, nhưng agent đã dừng lại khi chưa đủ căn cứ để tiếp tục. Mình đặt luật là mỗi lần chuyển người phải kèm tóm tắt, evidence, các bước đã thử và đề xuất bước tiếp theo. Ở 5 ca, agent còn chỉ ra được check nào đã từ chối và vì sao. Phần thông tin đó giúp người trực tiếp tục xử lý mà không phải thu thập lại từ đầu.
 
 ### Nói rõ cái gì đã chứng minh, cái gì chưa
 
-Cuối cùng, mình tự chia các năng lực của agent thành bốn mức: đã chứng minh trên máy thật, chạy end-to-end nhưng chỉ trong môi trường giả lập, mới có unit test, và chưa chạy bao giờ. Lý do là kết quả 29/29 nhìn sạch sẽ rất dễ khiến mình tưởng mọi thứ đã được kiểm chứng. Thực tế, lượt chạy đó chỉ đụng tới một trong năm thay đổi lớn gần nhất.
+Mình chia các năng lực của agent thành bốn mức: đã chứng minh trên máy thật, chạy end-to-end nhưng chỉ trong môi trường giả lập, mới có unit test, và chưa chạy bao giờ. Lý do là kết quả 29/29 nhìn sạch sẽ rất dễ khiến mình tưởng mọi thứ đã được kiểm chứng. Thực tế, lượt chạy đó chỉ đụng tới một trong năm thay đổi lớn gần nhất.
 
-Trên mỗi ticket cũng vậy. Phải phân biệt được phần nào là output của model, thứ có thể khác nhau giữa các lần chạy, và phần nào là deterministic. Muốn ai đó tin một agent có quyền đụng vào hạ tầng thì sự rạch ròi này là bắt buộc.
+Trong từng ticket cũng cần phân biệt nội dung nào do model tạo ra và có thể thay đổi giữa các lần chạy, nội dung nào được tạo theo logic cố định. Đây là điều cần thiết để người vận hành đánh giá một agent có quyền thao tác trên hạ tầng.
 
-## 🔚 Kết
+## Sau lần thử này
 
-Thứ mình tự hào nhất sau dự án này không phải accuracy. Đó là việc **không có hành động nguy hiểm nào được thực hiện, và cũng không có hành động nguy hiểm nào nằm trong tầm tay agent**.
+Kết quả cho thấy agent có thể đảm nhận một phần công việc trực, miễn là phạm vi đủ hẹp và từng hành động đều được kiểm tra. Kết quả chưa đủ để giao hẳn ca trực: mới có một ca được tự sửa và xác nhận thành công trên VM thật, còn playbook service vẫn cần kiểm chứng thêm.
 
-Nếu một ngày đem nó vào vận hành thật, mình sẽ đi từng nấc, và mỗi nấc chỉ là đổi config chứ không sửa code:
+Nếu một ngày đem nó vào vận hành thật, mình sẽ đi từng nấc, và mỗi nấc chỉ cần thay đổi cấu hình:
 
 1. Shadow mode trên queue thật.
 2. Bật quyền sửa riêng cho VM bị deallocate.
 3. Bật các playbook còn lại, có người ngồi quan sát.
 4. Chạy trọn một ca trực có giám sát, rồi mới quyết định có tin nó hay không.
 
-Nếu anh em cũng đang tính dựng agent cho ops, lời khuyên của mình là bắt đầu từ danh sách những gì agent **không được** làm. Sau đó mới tới shadow mode, rồi cuối cùng mới tới quyền sửa. Và hãy đưa nó lên máy thật càng sớm càng tốt, vì mock chỉ trả lời được những câu mình đã biết để hỏi.
+Nếu anh em cũng đang thử dựng agent cho ops, mình nghĩ nên dành thời gian xác định rõ những gì agent **không được** làm, rồi chạy shadow mode trước khi mở quyền sửa. Các lần thử có kiểm soát trên VM thật cũng rất cần thiết. Với dự án này, đó là lúc mình tìm ra những lỗi mà bộ mock ban đầu không có cách nào chỉ ra được.
 
-**Hẹn gặp lại anh em ở bài sau 👋**
+Hẹn gặp anh em ở bài sau.
 
 **Tài liệu tham khảo**
 

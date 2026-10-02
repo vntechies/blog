@@ -10,10 +10,11 @@ import ScrollTopAndComment from '@/components/ScrollTopAndComment'
 import Share from '@/components/Share'
 import HorizontalCard from '@/components/HorizontalCard'
 import SummaryButton from '@/components/SummaryButton'
+import TocSidebar from '@/components/TocSidebar'
 
 const postDateTemplate = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }
 
-export default function PostLayout({ frontMatter, authorDetails, next, prev, children }) {
+export default function PostLayout({ frontMatter, authorDetails, toc, next, prev, children }) {
   const { slug, date, title, tags } = frontMatter
 
   return (
@@ -43,67 +44,54 @@ export default function PostLayout({ frontMatter, authorDetails, next, prev, chi
 
         {/* Stacked below xl: sidebar and text share one centred ~72ch column */}
         <div className="mx-auto mt-10 grid max-w-3xl gap-8 xl:max-w-none xl:grid-cols-[230px,1fr]">
-          <aside className="space-y-5 xl:sticky xl:top-24 xl:self-start">
+          <aside className="space-y-5">
             <div className="surface-panel-muted p-4 sm:p-5">
               <h2 className="panel-label mb-4">Tác giả</h2>
               <ul className="space-y-4">
                 {authorDetails &&
-                  authorDetails.map((author) => (
-                    <li className="flex items-center space-x-3" key={author.name}>
-                      {author.slug ? (
-                        <Link
-                          href={`/authors/${author.slug}`}
-                          className="flex min-w-0 items-center space-x-3 rounded-lg"
-                        >
-                          {author.avatar && (
-                            <Image
-                              src={author.avatar}
-                              width={44}
-                              height={44}
-                              alt={author.name}
-                              className="h-11 w-11 rounded-full object-cover"
-                              quality={75}
-                              loading="lazy"
-                            />
-                          )}
-                          <dl className="min-w-0 text-sm font-medium">
-                            <dd className="truncate text-fg hover:text-brand-strong">
-                              {author.name}
-                            </dd>
-                          </dl>
-                        </Link>
-                      ) : (
-                        <>
-                          {author.avatar && (
-                            <Image
-                              src={author.avatar}
-                              width={44}
-                              height={44}
-                              alt={author.name}
-                              className="h-11 w-11 rounded-full object-cover"
-                              quality={75}
-                              loading="lazy"
-                            />
-                          )}
-                          <dl className="min-w-0 text-sm font-medium">
-                            <dd className="truncate text-fg">{author.name}</dd>
-                          </dl>
-                        </>
-                      )}
-                      <dl className="min-w-0 text-sm font-medium">
-                        <dd>
+                  authorDetails.map((author) => {
+                    const avatar = author.avatar && (
+                      <Image
+                        src={author.avatar}
+                        width={44}
+                        height={44}
+                        alt={author.name}
+                        className="h-11 w-11 shrink-0 rounded-full object-cover"
+                        quality={75}
+                        loading="lazy"
+                      />
+                    )
+                    // Scale the name down as it gets longer so it fits the sidebar.
+                    const len = author.name?.length || 0
+                    const nameSize = len <= 14 ? 'text-base' : len <= 22 ? 'text-sm' : 'text-xs'
+                    const nameClass = `break-words font-semibold leading-tight ${nameSize}`
+                    const name = author.slug ? (
+                      <Link
+                        href={`/authors/${author.slug}`}
+                        className={`${nameClass} text-fg hover:text-brand-strong`}
+                      >
+                        {author.name}
+                      </Link>
+                    ) : (
+                      <span className={`${nameClass} text-fg`}>{author.name}</span>
+                    )
+                    return (
+                      <li className="flex items-center space-x-3" key={author.name}>
+                        {avatar}
+                        <div className="flex min-w-0 flex-col">
+                          {name}
                           {author.facebook && (
                             <Link
                               href={author.facebook}
-                              className="text-brand-strong hover:text-brand-soft"
+                              className="truncate text-xs text-brand-strong hover:text-brand-soft"
                             >
                               {author.facebook.replace('https://fb.me/', '@')}
                             </Link>
                           )}
-                        </dd>
-                      </dl>
-                    </li>
-                  ))}
+                        </div>
+                      </li>
+                    )
+                  })}
               </ul>
             </div>
 
@@ -116,6 +104,18 @@ export default function PostLayout({ frontMatter, authorDetails, next, prev, chi
                   ))}
                 </div>
               </div>
+            )}
+
+            {frontMatter.hasInlineToc && toc && toc.length > 0 && (
+              <nav
+                aria-label="Mục lục"
+                className="surface-panel-muted hidden p-4 text-sm sm:p-5 xl:sticky xl:top-24 xl:block xl:max-h-[calc(100vh-8rem)] xl:self-start xl:overflow-y-auto"
+              >
+                <h2 className="panel-label mb-4">Mục lục</h2>
+                <div className="toc-sidebar">
+                  <TocSidebar toc={toc} />
+                </div>
+              </nav>
             )}
           </aside>
 

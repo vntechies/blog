@@ -50,7 +50,8 @@ const TOCInline = ({
   return (
     <>
       {asDisclosure ? (
-        <details open>
+        // At xl+ the sidebar shows the TOC, so hide this in-post collapsible one.
+        <details open className="xl:hidden">
           <summary className="ml-6 pt-2 pb-2 text-xl font-bold">Mục lục</summary>
           <div className="ml-6">{tocList}</div>
         </details>
