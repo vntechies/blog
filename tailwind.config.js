@@ -68,8 +68,6 @@ module.exports = {
         // One typeface, like a terminal: JetBrains Mono carries Vietnamese diacritics
         sans: ['JetBrains Mono', ...defaultTheme.fontFamily.mono],
         mono: ['JetBrains Mono', ...defaultTheme.fontFamily.mono],
-        // Long-form sales copy on course pages: a sans designed for Vietnamese
-        body: ['Be Vietnam Pro', ...defaultTheme.fontFamily.sans],
       },
       colors: {
         primary: gruvbox.orange,

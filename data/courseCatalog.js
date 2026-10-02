@@ -60,7 +60,8 @@ export const premiumCatalog = [
     code: 'VDT-C01',
     level: 'Bootcamp',
     duration: '8 tuần · 16 buổi',
-    fromPrice: null,
+    // courseCatalog.js is the canonical price source.
+    fromPrice: 10000000,
     fits: ['switch', 'working'],
   },
 ]
