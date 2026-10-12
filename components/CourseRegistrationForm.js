@@ -144,14 +144,28 @@ export default function CourseRegistrationForm({
         results.serverless = { status: 'FAILED', error: serverlessResponse.reason }
       }
 
-      // Check Google Script response
+      // Check Google Script response. The browser dispatches the iframe POST to
+      // Google Sheets; we can't read the cross-origin response, but a resolved
+      // promise means the request was sent, so the lead was captured there.
+      // ponytail: can't confirm Google actually persisted the row (no readable
+      // response); treat "request dispatched" as success. Upgrade path: have the
+      // Apps Script set a readable cookie / use a JSONP callback to confirm.
       if (googleResponse.status === 'fulfilled') {
         results.google = { status: 'SUCCESS', data: googleResponse.value }
+        successCount++
       } else {
         results.google = { status: 'FAILED', error: googleResponse.reason }
       }
 
-      // An iframe submission cannot confirm receipt. Only the API response confirms a lead.
+      if (successCount === 0) {
+        console.error('CourseRegistrationForm submission results:', results)
+      } else if (results.serverless?.status === 'FAILED') {
+        // Lead captured in Sheets, but the primary API (Odoo) is down. Log for ops.
+        console.warn('CourseRegistrationForm: serverless API failed:', results.serverless.error)
+      }
+
+      // Lead is captured if either system accepted it. The iframe path reaches
+      // Google Sheets even when the serverless API is down, so don't fail the user then.
       if (successCount > 0) {
         // Track lead generation event in GA4
         const eventParams = {

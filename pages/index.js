@@ -213,6 +213,8 @@ export default function Home({ posts, offerActive }) {
         description="VNTechies giúp bạn học để làm: mentor từ tập đoàn đa quốc gia, lab miễn phí, lộ trình Cloud/DevOps/Data thực chiến và hỗ trợ giảm giá thi chứng chỉ AWS."
       />
 
+      <EnrollmentCampaign active={offerActive} compact />
+
       {/* Hero */}
       <section className="pt-10 pb-12 sm:pt-16 sm:pb-16 lg:pt-20 lg:pb-20">
         <div className="grid items-center gap-12 lg:grid-cols-[1.1fr,1fr] lg:gap-14">
@@ -421,7 +423,6 @@ export default function Home({ posts, offerActive }) {
       </section>
 
       {/* Learning tracks */}
-      <EnrollmentCampaign active={offerActive} />
       <section className="page-section">
         <div className="mb-10 flex flex-col gap-6 sm:mb-12 lg:flex-row lg:items-end lg:justify-between">
           <div>

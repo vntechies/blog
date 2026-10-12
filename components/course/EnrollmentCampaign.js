@@ -2,11 +2,46 @@ import Link from '@/components/Link'
 import { octoberOffer } from '@/data/courseOffers'
 import { trackCourseAction } from '@/lib/course-analytics'
 
-export default function EnrollmentCampaign({ active }) {
+export default function EnrollmentCampaign({ active, compact = false }) {
   if (!active) return null
+
+  if (compact) {
+    return (
+      <section
+        className="mt-6 flex flex-col gap-4 border border-brand bg-brand/5 p-4 sm:flex-row sm:items-center sm:justify-between sm:px-5"
+        aria-label="Ưu đãi mừng giao diện mới"
+      >
+        <div className="flex min-w-0 items-start gap-3 sm:items-center">
+          <span className="shrink-0 border border-brand px-3 py-2 text-lg font-bold text-brand-strong">
+            −{octoberOffer.percent}%
+          </span>
+          <div className="min-w-0">
+            <h2 className="text-sm font-bold text-fg sm:text-base">
+              Giao diện mới, thêm ưu đãi học tập
+            </h2>
+            <p className="mt-1 text-sm text-fg-muted">
+              Giảm thêm {octoberOffer.percent}% học phí AWS SAA &amp; DevOps đến hết{' '}
+              <time dateTime={octoberOffer.endsAt} className="font-semibold text-brand-strong">
+                13/10/2026
+              </time>
+              .
+            </p>
+          </div>
+        </div>
+        <Link
+          href="/courses#uu-dai"
+          onClick={() => trackCourseAction('SAA-C03,VDE-C01', 'home_campaign')}
+          className="action-btn-primary action-btn-sm shrink-0 self-start sm:self-auto"
+        >
+          Xem ưu đãi →
+        </Link>
+      </section>
+    )
+  }
 
   return (
     <section
+      id="uu-dai"
       className="my-8 border border-brand bg-brand/5 p-5 sm:p-8"
       aria-label="Ưu đãi SAA và DevOps đến 13 tháng 10"
     >
