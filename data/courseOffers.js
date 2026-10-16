@@ -9,12 +9,3 @@ export const campaignTuition = {
   earlyBird: [7200000, 6700000],
   group: [6800000, 6300000],
 }
-
-// Extra discount on top of every published tuition tier (Standard, Early Bird, Group,
-// student and working-professional prices). Used by SAA-C03 and DevOps VDE-C01.
-export const octoberOffer = {
-  percent: 10,
-  label: '13/10',
-  // End of 13 October, Vietnam time. After this the pages fall back to normal prices.
-  endsAt: '2026-10-13T23:59:59+07:00',
-}

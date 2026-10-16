@@ -7,19 +7,21 @@ import { courseLanding } from '@/data/courseLanding'
 import { courseSocialImages } from '@/data/courseSocialImages'
 import { MONTHLY_INTAKE, campaignTuition } from '@/data/courseOffers'
 import { pickTestimonials } from '@/data/testimonials'
-import { applyOffer, formatVnd, useOffer } from './offer'
+import { formatVnd } from './offer'
 import { trackCourseAction } from '@/lib/course-analytics'
+
+// Courses that show the per-audience Early Bird pricing UI (individual tiers + selector).
+const CAMPAIGN_COURSES = new Set(['aws/saa', 'devops'])
 
 export default function PremiumCourseHero({ courseKey }) {
   const course = courseLanding[courseKey]
   const catalog = premiumCatalog.find((entry) => entry.slug === `${courseKey}/gioi-thieu`)
-  const { active } = useOffer(catalog.offer)
   const [audience, setAudience] = useState('working')
-  const campaignCourse = Boolean(catalog.offer)
+  const campaignCourse = CAMPAIGN_COURSES.has(courseKey)
   // These are the published individual Early Bird tiers, not the group minimum.
   const individual = campaignTuition.earlyBird[audience === 'student' ? 1 : 0]
   const amount = campaignCourse ? individual : catalog.fromPrice
-  const price = amount && (active ? applyOffer(amount, catalog.offer.percent) : amount)
+  const price = amount
   const quote = pickTestimonials(campaignCourse ? course.topic : 'general', 1)[0]
   const track = (action) => trackCourseAction(catalog.code, action)
 
@@ -38,24 +40,6 @@ export default function PremiumCourseHero({ courseKey }) {
           Chương trình chi tiết ↓
         </a>
       </nav>
-
-      {active && (
-        <div className="mb-7 flex flex-wrap items-center justify-between gap-3 border border-brand bg-brand/10 px-4 py-3 text-sm">
-          <p>
-            <strong className="text-brand-strong">
-              Giảm thêm {catalog.offer.percent}% học phí
-            </strong>{' '}
-            · Đến hết {catalog.offer.label}/2026
-          </p>
-          <a
-            href="#registration-form"
-            onClick={() => track('offer')}
-            className="font-bold underline underline-offset-4"
-          >
-            Nhận tư vấn ưu đãi ↗
-          </a>
-        </div>
-      )}
 
       <section
         className="grid gap-8 pb-10 lg:grid-cols-[1.2fr,1fr] lg:gap-12"
@@ -165,25 +149,18 @@ export default function PremiumCourseHero({ courseKey }) {
               <p className="text-3xl font-extrabold tracking-tight text-fg">
                 {price ? `${campaignCourse ? '' : 'Từ '}${formatVnd(price)}` : 'Nhận báo học phí'}
               </p>
-              {active && (
-                <span className="text-sm text-fg-subtle line-through">{formatVnd(amount)}</span>
-              )}
             </div>
             <p className="mt-2 text-xs leading-relaxed text-fg-muted">
               {campaignCourse
-                ? `Mức cá nhân ${audience === 'student' ? 'sinh viên' : 'người đi làm'}. ${
-                    active
-                      ? `Đã giảm thêm ${catalog.offer.percent}% đến ${catalog.offer.label}.`
-                      : 'Theo bảng Early Bird của khóa học.'
-                  }`
+                ? `Mức cá nhân ${
+                    audience === 'student' ? 'sinh viên' : 'người đi làm'
+                  }. Theo bảng Early Bird của khóa học.`
                 : 'Mức học phí phụ thuộc đối tượng và hình thức đăng ký. Xem bảng chi tiết bên dưới hoặc nhận tư vấn.'}
             </p>
             {campaignCourse && (
               <p className="mt-3 text-xs leading-relaxed text-fg-muted">
                 Nhóm 2+ người có mức riêng. Mức thấp nhất dành cho nhóm sinh viên:{' '}
-                {formatVnd(
-                  active ? applyOffer(catalog.fromPrice, catalog.offer.percent) : catalog.fromPrice
-                )}
+                {formatVnd(catalog.fromPrice)}
                 /người.
               </p>
             )}

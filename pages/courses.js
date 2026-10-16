@@ -1,13 +1,12 @@
 import { useEffect, useState } from 'react'
 import siteMetadata from '@/data/siteMetadata'
 import { coursesSocialImage } from '@/data/courseSocialImages'
-import EnrollmentCampaign from '@/components/course/EnrollmentCampaign'
 import Card from '@/components/Card'
 import { PageSEO } from '@/components/SEO'
 import { getAllFilesFrontMatter } from '@/lib/mdx'
 import { premiumCatalog, audiences } from '@/data/courseCatalog'
 import { MONTHLY_INTAKE } from '@/data/courseOffers'
-import { applyOffer, formatVnd } from '@/components/course/offer'
+import { formatVnd } from '@/components/course/offer'
 
 export async function getStaticProps() {
   const courses = await getAllFilesFrontMatter('courses')
@@ -20,13 +19,10 @@ export async function getStaticProps() {
   filteredCourse.sort((a, b) =>
     a.isFree === b.isFree ? pathOrder(a) - pathOrder(b) : a.isFree ? 1 : -1
   )
-  const offerEntry = premiumCatalog.find((c) => c.offer)
-  const offerActive = offerEntry?.offer ? new Date() < new Date(offerEntry.offer.endsAt) : false
-  return { props: { courses: filteredCourse, offerActive } }
+  return { props: { courses: filteredCourse } }
 }
 
-// NOTE: offerActive is computed at build time; rebuild after offer expiry
-export default function Courses({ courses, offerActive }) {
+export default function Courses({ courses }) {
   const [activeTab, setActiveTab] = useState('premium')
   const [audience, setAudience] = useState(null)
   const selected = audiences.find((a) => a.id === audience)
@@ -34,11 +30,7 @@ export default function Courses({ courses, offerActive }) {
   const catalogFor = (course) => premiumCatalog.find((c) => c.slug === course.slug)
   const metaFor = (entry) => {
     if (!entry) return undefined
-    const price =
-      entry.fromPrice &&
-      (entry.offer && offerActive
-        ? applyOffer(entry.fromPrice, entry.offer.percent)
-        : entry.fromPrice)
+    const price = entry.fromPrice
     return [
       { label: 'Học phí', value: price ? `Từ ${formatVnd(price)}` : 'Liên hệ tư vấn' },
       { label: 'Cấp độ', value: entry.level },
@@ -91,7 +83,6 @@ export default function Courses({ courses, offerActive }) {
           </p>
         </header>
 
-        <EnrollmentCampaign active={offerActive} />
         <section className="surface-panel p-3 sm:p-4">
           <div className="grid grid-cols-2 gap-2">
             <button
@@ -176,13 +167,6 @@ export default function Courses({ courses, offerActive }) {
                     <Card
                       isFree={course.isFree}
                       meta={metaFor(entry)}
-                      badge={
-                        entry?.offer && offerActive ? (
-                          <span className="chip border-brand text-brand-strong">
-                            −{entry.offer.percent}% đến {entry.offer.label}
-                          </span>
-                        ) : null
-                      }
                       title={course.title}
                       description={course.summary}
                       imgSrc={course.images[0]}

@@ -812,13 +812,7 @@ export default function CourseData({ frontMatter, mentorDetails, otherCourses = 
         {/* Other Courses Section */}
         <OtherCoursesSection otherCourses={otherCourses} />
       </div>
-      <StickyEnrollBar
-        code="Data VDT-C01"
-        intake={MONTHLY_INTAKE}
-        fromPrice={null}
-        offer={null}
-        active={false}
-      />
+      <StickyEnrollBar code="Data VDT-C01" intake={MONTHLY_INTAKE} fromPrice={null} />
       <div className="h-16" aria-hidden="true" />
     </div>
   )

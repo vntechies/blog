@@ -17,8 +17,8 @@ import Link from 'next/link'
 import siteMetadata from '@/data/siteMetadata'
 import CourseRegistrationForm from '../components/CourseRegistrationForm'
 import OtherCoursesSection from '@/components/OtherCoursesSection'
-import { MONTHLY_INTAKE, octoberOffer, campaignTuition } from '@/data/courseOffers'
-import { OfferBanner, Price, applyOffer, formatVnd, useOffer } from '@/components/course/offer'
+import { MONTHLY_INTAKE, campaignTuition } from '@/data/courseOffers'
+import { Price } from '@/components/course/offer'
 import {
   AudienceFit,
   Collapsible,
@@ -135,10 +135,6 @@ const faq = [
     a: 'Lớp học online qua Google Meet, 19:00–21:00, 2 buổi/tuần trong 8 tuần. Mỗi buổi đều có video record, bạn được truy cập trọn đời để xem lại.',
   },
   {
-    q: 'Ưu đãi giảm thêm 10% áp dụng thế nào?',
-    a: 'Đăng ký trước hết ngày 13/10 để được giảm thêm 10% trên mức học phí bạn đủ điều kiện: tiêu chuẩn, Early Bird hoặc nhóm, cho cả sinh viên và người đi làm.',
-  },
-  {
     q: 'Có trả góp không?',
     a: (
       <>
@@ -189,9 +185,6 @@ export default function CourseSpecial({ frontMatter, mentorDetails, otherCourses
   }
 
   const mentors = mentorDetails
-  const { active: offerActive, daysLeft } = useOffer(octoberOffer)
-  const offerPrice = (amount) =>
-    formatVnd(offerActive ? applyOffer(amount, octoberOffer.percent) : amount)
 
   return (
     <div className="course-page premium-course mx-auto w-full max-w-7xl">
@@ -1005,13 +998,6 @@ export default function CourseSpecial({ frontMatter, mentorDetails, otherCourses
                   🎁 Tài khoản AWS thực hành miễn phí toàn khoá học
                 </p>
               </div>
-
-              <OfferBanner
-                className="mx-auto mt-8 max-w-3xl"
-                offer={octoberOffer}
-                active={offerActive}
-                daysLeft={daysLeft}
-              />
             </div>
 
             <div className="grid gap-8 lg:grid-cols-3">
@@ -1031,8 +1017,6 @@ export default function CourseSpecial({ frontMatter, mentorDetails, otherCourses
                     </div>
                     <Price
                       amount={8000000}
-                      offer={octoberOffer}
-                      active={offerActive}
                       className="text-3xl font-bold text-gray-900 dark:text-gray-100"
                       compareClassName="text-sm opacity-75"
                     />
@@ -1043,8 +1027,6 @@ export default function CourseSpecial({ frontMatter, mentorDetails, otherCourses
                     </div>
                     <Price
                       amount={7500000}
-                      offer={octoberOffer}
-                      active={offerActive}
                       className="text-2xl font-bold text-orange-700 dark:text-orange-300"
                       compareClassName="text-sm opacity-75"
                     />
@@ -1085,8 +1067,6 @@ export default function CourseSpecial({ frontMatter, mentorDetails, otherCourses
                     <Price
                       amount={7200000}
                       compareAt={8000000}
-                      offer={octoberOffer}
-                      active={offerActive}
                       className="text-3xl font-bold"
                       compareClassName="text-sm opacity-75"
                     />
@@ -1096,8 +1076,6 @@ export default function CourseSpecial({ frontMatter, mentorDetails, otherCourses
                     <Price
                       amount={6700000}
                       compareAt={7500000}
-                      offer={octoberOffer}
-                      active={offerActive}
                       className="text-2xl font-bold"
                       compareClassName="text-sm opacity-75"
                     />
@@ -1140,8 +1118,6 @@ export default function CourseSpecial({ frontMatter, mentorDetails, otherCourses
                     <Price
                       amount={6800000}
                       compareAt={8000000}
-                      offer={octoberOffer}
-                      active={offerActive}
                       className="text-3xl font-bold text-orange-700 dark:text-orange-300"
                       compareClassName="text-sm text-gray-500"
                     />
@@ -1153,8 +1129,6 @@ export default function CourseSpecial({ frontMatter, mentorDetails, otherCourses
                     <Price
                       amount={6300000}
                       compareAt={7500000}
-                      offer={octoberOffer}
-                      active={offerActive}
                       className="text-2xl font-bold text-orange-700 dark:text-orange-300"
                       compareClassName="text-sm text-gray-500"
                     />
@@ -1290,9 +1264,7 @@ export default function CourseSpecial({ frontMatter, mentorDetails, otherCourses
               Sẵn sàng bắt đầu hành trình AWS?
             </h2>
             <p className="mb-8 text-xl opacity-90">
-              {offerActive
-                ? `Đăng ký trước hết ngày ${octoberOffer.label} để được giảm thêm ${octoberOffer.percent}% học phí và nhận bộ tài liệu luyện thi đầy đủ.`
-                : `${MONTHLY_INTAKE}. Đăng ký để giữ chỗ lớp gần nhất và nhận bộ tài liệu luyện thi đầy đủ.`}
+              {`${MONTHLY_INTAKE}. Đăng ký để giữ chỗ lớp gần nhất và nhận bộ tài liệu luyện thi đầy đủ.`}
             </p>
 
             <div className="mb-8 flex flex-wrap justify-center gap-4">
@@ -1346,13 +1318,7 @@ export default function CourseSpecial({ frontMatter, mentorDetails, otherCourses
         {/* Other Courses Section */}
         <OtherCoursesSection otherCourses={otherCourses} />
       </div>
-      <StickyEnrollBar
-        code="AWS SAA-C03"
-        intake={MONTHLY_INTAKE}
-        fromPrice={tuition.group[1]}
-        offer={octoberOffer}
-        active={offerActive}
-      />
+      <StickyEnrollBar code="AWS SAA-C03" intake={MONTHLY_INTAKE} fromPrice={tuition.group[1]} />
       <div className="h-16" aria-hidden="true" />
     </div>
   )

@@ -1,5 +1,3 @@
-import { octoberOffer } from './courseOffers'
-
 // Premium courses in learning-path order (Foundational → Associate → Bootcamp), with the
 // facts a buyer compares on the catalog. Prices are the lowest published tier (VND);
 // null means "ask for a quote" until the price is confirmed.
@@ -27,7 +25,6 @@ export const premiumCatalog = [
     level: 'Associate',
     duration: '8 tuần · 16 buổi',
     fromPrice: 6300000,
-    offer: octoberOffer,
     fits: ['beginner', 'switch', 'working'],
   },
   {
@@ -52,7 +49,6 @@ export const premiumCatalog = [
     level: 'Bootcamp',
     duration: '8 tuần · 16 buổi',
     fromPrice: 6300000,
-    offer: octoberOffer,
     fits: ['switch', 'working'],
   },
   {

@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react'
 import Image from 'next/image'
 import siteMetadata from '@/data/siteMetadata'
-import { applyOffer, formatVnd } from './offer'
+import { formatVnd } from './offer'
 import { trackCourseAction } from '@/lib/course-analytics'
 
 // Bottom bar that keeps the price and the CTA in reach on long course pages. Appears
 // after the hero and steps aside while the registration form is on screen.
-export function StickyEnrollBar({ code, intake, fromPrice, offer, active }) {
+export function StickyEnrollBar({ code, intake, fromPrice }) {
   const [visible, setVisible] = useState(false)
 
   useEffect(() => {
@@ -28,7 +28,7 @@ export function StickyEnrollBar({ code, intake, fromPrice, offer, active }) {
     }
   }, [])
 
-  const price = fromPrice && (active ? applyOffer(fromPrice, offer.percent) : fromPrice)
+  const price = fromPrice
 
   return (
     <div
@@ -49,12 +49,6 @@ export function StickyEnrollBar({ code, intake, fromPrice, offer, active }) {
               </>
             ) : (
               'Nhận lịch lớp & học phí qua tư vấn'
-            )}
-            {active && (
-              <span>
-                {' '}
-                · giảm thêm {offer.percent}% đến {offer.label}
-              </span>
             )}
           </p>
         </div>

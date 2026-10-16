@@ -952,13 +952,7 @@ export default function CourseDEA({ frontMatter, mentorDetails, otherCourses = [
 
         <OtherCoursesSection otherCourses={otherCourses} />
       </div>
-      <StickyEnrollBar
-        code="AWS DEA-C01"
-        intake={MONTHLY_INTAKE}
-        fromPrice={8300000}
-        offer={null}
-        active={false}
-      />
+      <StickyEnrollBar code="AWS DEA-C01" intake={MONTHLY_INTAKE} fromPrice={8300000} />
       <div className="h-16" aria-hidden="true" />
     </div>
   )

@@ -7,8 +7,6 @@ import ArticleList from '@/components/ArticleList'
 import FAQ from '@/components/home/FAQ'
 import FreeCourses from '@/components/home/FreeCourses'
 import HeroTerminal from '@/components/home/HeroTerminal'
-import EnrollmentCampaign from '@/components/course/EnrollmentCampaign'
-import { octoberOffer } from '@/data/courseOffers'
 
 const MAX_DISPLAY = 6
 
@@ -200,11 +198,10 @@ const structuredData = [
 
 export async function getStaticProps() {
   const posts = await getAllFilesFrontMatter('blog')
-  const offerActive = new Date() < new Date(octoberOffer.endsAt)
-  return { props: { posts, offerActive } }
+  return { props: { posts } }
 }
 
-export default function Home({ posts, offerActive }) {
+export default function Home({ posts }) {
   return (
     <>
       <PageSEO
@@ -212,8 +209,6 @@ export default function Home({ posts, offerActive }) {
         structuredData={structuredData}
         description="VNTechies giúp bạn học để làm: mentor từ tập đoàn đa quốc gia, lab miễn phí, lộ trình Cloud/DevOps/Data thực chiến và hỗ trợ giảm giá thi chứng chỉ AWS."
       />
-
-      <EnrollmentCampaign active={offerActive} compact />
 
       {/* Hero */}
       <section className="pt-10 pb-12 sm:pt-16 sm:pb-16 lg:pt-20 lg:pb-20">

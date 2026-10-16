@@ -767,13 +767,7 @@ export default function CourseSpecial({ frontMatter, mentorDetails, otherCourses
         {/* Other Courses Section */}
         <OtherCoursesSection otherCourses={otherCourses} />
       </div>
-      <StickyEnrollBar
-        code="AWS CLF-C02"
-        intake={MONTHLY_INTAKE}
-        fromPrice={2499000}
-        offer={null}
-        active={false}
-      />
+      <StickyEnrollBar code="AWS CLF-C02" intake={MONTHLY_INTAKE} fromPrice={2499000} />
       <div className="h-16" aria-hidden="true" />
     </div>
   )

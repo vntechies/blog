@@ -19,8 +19,8 @@ import Link from 'next/link'
 import siteMetadata from '@/data/siteMetadata'
 import CourseRegistrationForm from '../components/CourseRegistrationForm'
 import OtherCoursesSection from '@/components/OtherCoursesSection'
-import { MONTHLY_INTAKE, octoberOffer, campaignTuition } from '@/data/courseOffers'
-import { OfferBanner, Price, applyOffer, formatVnd, useOffer } from '@/components/course/offer'
+import { MONTHLY_INTAKE, campaignTuition } from '@/data/courseOffers'
+import { Price } from '@/components/course/offer'
 import {
   AudienceFit,
   CourseFAQ,
@@ -354,10 +354,6 @@ const faq = [
     a: 'Bạn tự dựng được một hệ thống DevOps end-to-end: đóng gói ứng dụng với Docker, triển khai lên Kubernetes và AWS, tự động hoá bằng Jenkins pipeline, giám sát bằng Prometheus, Grafana và Loki. Hai buổi cuối là capstone project để bạn trình bày như một dự án thật.',
   },
   {
-    q: 'Ưu đãi giảm thêm 10% áp dụng thế nào?',
-    a: 'Đăng ký trước hết ngày 13/10 để được giảm thêm 10% trên mức học phí bạn đủ điều kiện: tiêu chuẩn, Early Bird hoặc nhóm, cho cả sinh viên và người đi làm.',
-  },
-  {
     q: 'Có trả góp không?',
     a: (
       <>
@@ -407,9 +403,6 @@ export default function CourseDevOps({ frontMatter, mentorDetails, otherCourses 
   }
 
   const mentors = mentorDetails
-  const { active: offerActive, daysLeft } = useOffer(octoberOffer)
-  const offerPrice = (amount) =>
-    formatVnd(offerActive ? applyOffer(amount, octoberOffer.percent) : amount)
 
   // Function to toggle lesson expansion
   const toggleLesson = (moduleIndex, lessonIndex) => {
@@ -485,13 +478,6 @@ export default function CourseDevOps({ frontMatter, mentorDetails, otherCourses 
               <p className="text-xl text-gray-600 dark:text-gray-300">
                 Chỉ bằng 1-2 tháng lương Junior, nhưng giá trị mang lại suốt đời
               </p>
-
-              <OfferBanner
-                className="mx-auto mt-8 max-w-3xl"
-                offer={octoberOffer}
-                active={offerActive}
-                daysLeft={daysLeft}
-              />
             </div>
 
             <div className="grid gap-8 lg:grid-cols-3">
@@ -511,8 +497,6 @@ export default function CourseDevOps({ frontMatter, mentorDetails, otherCourses 
                     </div>
                     <Price
                       amount={8000000}
-                      offer={octoberOffer}
-                      active={offerActive}
                       className="text-3xl font-bold text-gray-900 dark:text-gray-100"
                       compareClassName="text-sm opacity-75"
                     />
@@ -523,8 +507,6 @@ export default function CourseDevOps({ frontMatter, mentorDetails, otherCourses 
                     </div>
                     <Price
                       amount={7500000}
-                      offer={octoberOffer}
-                      active={offerActive}
                       className="text-2xl font-bold text-blue-700 dark:text-blue-300"
                       compareClassName="text-sm opacity-75"
                     />
@@ -565,8 +547,6 @@ export default function CourseDevOps({ frontMatter, mentorDetails, otherCourses 
                     <Price
                       amount={7200000}
                       compareAt={8000000}
-                      offer={octoberOffer}
-                      active={offerActive}
                       className="text-3xl font-bold"
                       compareClassName="text-sm opacity-75"
                     />
@@ -576,8 +556,6 @@ export default function CourseDevOps({ frontMatter, mentorDetails, otherCourses 
                     <Price
                       amount={6700000}
                       compareAt={7500000}
-                      offer={octoberOffer}
-                      active={offerActive}
                       className="text-2xl font-bold"
                       compareClassName="text-sm opacity-75"
                     />
@@ -620,8 +598,6 @@ export default function CourseDevOps({ frontMatter, mentorDetails, otherCourses 
                     <Price
                       amount={6800000}
                       compareAt={8000000}
-                      offer={octoberOffer}
-                      active={offerActive}
                       className="text-3xl font-bold text-blue-700 dark:text-blue-300"
                       compareClassName="text-sm text-gray-500"
                     />
@@ -633,8 +609,6 @@ export default function CourseDevOps({ frontMatter, mentorDetails, otherCourses 
                     <Price
                       amount={6300000}
                       compareAt={7500000}
-                      offer={octoberOffer}
-                      active={offerActive}
                       className="text-2xl font-bold text-blue-700 dark:text-blue-300"
                       compareClassName="text-sm text-gray-500"
                     />
@@ -861,13 +835,7 @@ export default function CourseDevOps({ frontMatter, mentorDetails, otherCourses 
         {/* Other Courses Section */}
         <OtherCoursesSection otherCourses={otherCourses} />
       </div>
-      <StickyEnrollBar
-        code="DevOps VDE-C01"
-        intake={MONTHLY_INTAKE}
-        fromPrice={tuition.group[1]}
-        offer={octoberOffer}
-        active={offerActive}
-      />
+      <StickyEnrollBar code="DevOps VDE-C01" intake={MONTHLY_INTAKE} fromPrice={tuition.group[1]} />
       <div className="h-16" aria-hidden="true" />
     </div>
   )
