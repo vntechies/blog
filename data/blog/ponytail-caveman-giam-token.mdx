@@ -22,7 +22,7 @@ Bài này dùng kết quả của hai phép thử A/B thực tế để xem hai 
 
 Trong phép thử này, ponytail là kỷ luật lazy-senior-dev: tìm cách đáp ứng yêu cầu bằng giải pháp nhỏ, tránh dựng thêm cấu trúc khi chưa cần. Chữ “lười” ở đây rất đời thường: không muốn tuần sau phải bảo trì một bộ khung chỉ để phục vụ bài toán hôm nay.
 
-Có thể áp dụng tinh thần đó khi giao việc cho agent: đọc code đang có, tái sử dụng phần phù hợp, giải quyết đúng phạm vi, rồi chạy test. Khi một hàm đủ rõ, chưa cần biến nó thành một hệ thống plugin. Đây là cách thực hành đề xuất, không phải bản chép nguyên văn prompt của thí nghiệm.
+Có thể áp dụng tinh thần đó khi giao việc cho agent: đọc code đang có, tái sử dụng phần phù hợp, giải quyết đúng phạm vi, rồi chạy test. Khi một hàm đủ rõ, chưa cần biến nó thành một hệ thống plugin. Đây là gợi ý thực hành, không phải prompt gốc hay hướng dẫn tái lập hai phép thử trong bài.
 
 Kỷ luật này không đồng nghĩa với bỏ validation, bỏ xử lý lỗi hay giảm yêu cầu để diff đẹp hơn. Điểm kiểm soát là **cùng bộ test, cùng điều kiện đạt**. Giảm code chỉ có ý nghĩa khi kết quả vẫn đáp ứng điều kiện đó.
 
@@ -36,14 +36,14 @@ Hai cách làm tác động vào hai chỗ khác nhau: ponytail hạn chế lư�
 
 ## Thiết kế A/B: mỗi dự án một lần đối đầu
 
-Đây là **single head-to-head per project**: mỗi dự án có một cặp A/B, không phải benchmark chạy lặp nhiều lần để lấy phân phối kết quả.
+Đây là **single head-to-head per project**: mỗi dự án có đúng một lần so sánh A/B có kiểm soát thực tế. Cùng một đặc tả được triển khai hai lần, dùng cùng harness trong từng vòng, và cả hai nhánh đều vượt qua cùng bộ test. Các con số là kết quả của lần đối đầu đó, cho tín hiệu định hướng chứ chưa phải benchmark chạy lặp nhiều lần để lấy phân phối kết quả.
 
 - **Vòng 1 — API rút gọn URL:** A dùng ponytail, B làm theo cách thông thường (_plain_). Hai nhánh dùng cùng model và đều vượt qua cùng bộ test. Harness — môi trường chạy agent và công cụ — chưa nối caveman, nên vòng này không đo được caveman.
 - **Vòng 2 — CLI tổng hợp báo cáo bán hàng:** đầu vào là bảng đồng nhất gồm 300 bản ghi, khoảng 59 KB. A dùng ponytail + caveman, B là plain. Caveman đã gọi được từ harness. Cả hai nhánh vượt qua cùng bộ test, 21/21 test đạt.
 
 Bộ số liệu dưới đây đã được đối chiếu với git và đầu ra công cụ. Bài viết dùng lại các số đã xác minh, không chạy lại thí nghiệm. LOC là số dòng code được báo cáo; riêng vòng 2 là Python LOC. Số dòng _insertions_ của git được ghi riêng vì đó là chỉ số khác LOC.
 
-Cách so sánh này có thể tái lập về thiết kế: giữ nguyên đề bài, dữ liệu, model, quyền dùng công cụ và bộ test trong từng cặp, chỉ đổi điều kiện cần khảo sát. Tuy nhiên, bài này chưa kèm prompt đầy đủ, phiên bản model, mã harness và artifact của hai lần chạy; người đọc chưa thể tái tạo nguyên xi chỉ từ nội dung bài. Không nên tự điền những chi tiết còn thiếu đó.
+Bài này không khẳng định người đọc có thể tái lập độc lập các lần chạy: prompt đầy đủ, phiên bản model, mã harness và artifact của từng nhánh không được cung cấp kèm bài. Các số đã xác minh mô tả hai cặp đối đầu thực tế ấy; chúng là bằng chứng định hướng, không phải một benchmark có thể chạy lại chỉ bằng hướng dẫn trong bài.
 
 ## Kết quả: cùng qua test, khác lượng code để lại
 
@@ -320,6 +320,6 @@ Với dev dùng agent, tôi sẽ bắt đầu từ cách giao việc và cách �
 3. **Đưa đúng dữ liệu vào context.** Bảng đồng nhất, nhiều dòng là nơi thử caveman/TOON. Với văn xuôi hoặc dữ liệu không phù hợp, giữ đầu vào thay vì ép nén.
 4. **Kiểm tra công cụ có gọi được thật.** Vòng 1 nhắc khá rõ: có tên công cụ trong kế hoạch chưa đồng nghĩa harness đã nối công cụ. Ghi lại lời gọi và đầu ra trước khi nhận công trạng tiết kiệm cho nó.
 5. **Tách từng loại chi phí.** Ghi LOC, số file, output tokens, input tokens và tổng token nếu harness có cung cấp. Với nén, ghi byte trước/sau, phạm vi mẫu hay toàn payload và trạng thái đo trực tiếp hay suy ra. Không có số thì ghi thiếu số.
-6. **Lặp lại trước khi lập ngân sách.** Khi tự thử trên repo của mình, lưu prompt, model/version, cấu hình tool, dataset, commit và kết quả test để người khác tái lập và kiểm tra được. Đây là đề xuất cho lần đo tiếp theo, không phải kết quả đã có của hai vòng trên.
+6. **Lặp lại trước khi lập ngân sách.** Khi tự thử trên repo của mình, lưu prompt, model/version, cấu hình tool, dataset, commit và kết quả test để có cơ sở kiểm tra và so sánh các lần đo. Hai vòng trong bài chỉ có một cặp A/B cho mỗi dự án; kết quả đã đo cho tín hiệu định hướng, không đi kèm cam kết rằng người đọc có thể tái lập độc lập.
 
 Tôi thích phần “lười” ở đây vì nó đặt đúng câu hỏi lúc review: để giải quyết yêu cầu này, mình thực sự cần để lại bao nhiêu code? Hai lần đối đầu cho thấy có thể để lại ít hơn đáng kể mà vẫn qua cùng test. Caveman bổ sung một câu hỏi ở đầu vào: có cần lặp lại cách diễn đạt của cả bảng dữ liệu không? Câu trả lời có ích nhất vẫn đi kèm đơn vị đo và giới hạn của nó — kể cả khi số tổng token đi ngược điều mình mong đợi.
