@@ -1,0 +1,325 @@
+---
+title: 'Ponytail và caveman: bớt code, gọn context, chất lượng có giữ được?'
+date: '2026-10-22'
+tags: ['ai', 'productivity', 'llm']
+draft: false
+authors: ['mau']
+images: ['/static/images/default-ogp.png']
+summary: 'Hai phép thử A/B cho thấy ponytail giảm code và output, caveman nén dữ liệu bảng; kèm biểu đồ và giới hạn của từng phép đo.'
+---
+
+<TOCInline toc={props.toc} asDisclosure />
+
+## Agent viết nhanh, nhưng mình vẫn phải đọc diff
+
+Nhờ AI viết một CLI nhỏ, quay lại đã thấy cả bộ khung nhiều module. Test xanh, nhưng review thì không nhanh như lúc gõ prompt. Mỗi lớp trừu tượng mới là thêm một chỗ mình phải hiểu, sửa và giữ cho chạy đúng sau này.
+
+Đó là hai khoản phải trả khi dùng coding agent: token trong phiên làm việc và lượng code để lại trong repo. Chúng liên quan, nhưng không phải cùng một thứ. Ít dòng code chưa chắc ít tổng token; context ngắn hơn cũng chưa đủ để kết luận hóa đơn giảm bao nhiêu.
+
+Bài này dùng kết quả của hai phép thử A/B thực tế để xem hai cách làm có ích đến đâu: **ponytail** giữ agent làm việc như một senior “lười” có kỷ luật; **caveman** đổi cách biểu diễn dữ liệu trước khi đưa vào context. Kết quả đáng chú ý: code ít hơn, output vòng đầu ít hơn, dữ liệu bảng gọn hơn, trong khi cả hai nhánh vẫn vượt qua cùng bộ test. Nhưng có một chi tiết ngược trực giác: tổng token của nhánh ponytail ở vòng đầu lại cao hơn.
+
+## Ponytail: cái “lười” của người phải bảo trì code
+
+Trong phép thử này, ponytail là kỷ luật lazy-senior-dev: tìm cách đáp ứng yêu cầu bằng giải pháp nhỏ, tránh dựng thêm cấu trúc khi chưa cần. Chữ “lười” ở đây rất đời thường: không muốn tuần sau phải bảo trì một bộ khung chỉ để phục vụ bài toán hôm nay.
+
+Có thể áp dụng tinh thần đó khi giao việc cho agent: đọc code đang có, tái sử dụng phần phù hợp, giải quyết đúng phạm vi, rồi chạy test. Khi một hàm đủ rõ, chưa cần biến nó thành một hệ thống plugin. Đây là cách thực hành đề xuất, không phải bản chép nguyên văn prompt của thí nghiệm.
+
+Kỷ luật này không đồng nghĩa với bỏ validation, bỏ xử lý lỗi hay giảm yêu cầu để diff đẹp hơn. Điểm kiểm soát là **cùng bộ test, cùng điều kiện đạt**. Giảm code chỉ có ý nghĩa khi kết quả vẫn đáp ứng điều kiện đó.
+
+## Caveman: nén cách trình bày dữ liệu trong context
+
+Caveman giải quyết phần đầu vào. Với một bảng có nhiều bản ghi cùng các cột, JSON lặp lại tên trường ở từng bản ghi. Biểu diễn TOON có thể đưa tên cột lên phần đầu rồi trình bày các hàng theo cấu trúc chung, giảm phần lặp mà model phải nhận.
+
+Đây là nén biểu diễn, không phải nhờ agent đọc một bản tóm tắt đã bỏ bớt bản ghi. Tuy nhiên, nó có vùng hiệu quả cụ thể: **payload lớn, đồng nhất, dạng bảng**. Với văn xuôi hoặc dữ liệu quá đặc, caveman không giúp trong phạm vi được báo cáo ở đây; cơ chế _fails closed_ giữ nguyên đầu vào khi không phù hợp, thay vì cố nén bằng mọi giá.
+
+Hai cách làm tác động vào hai chỗ khác nhau: ponytail hạn chế lượng code và output được tạo; caveman giảm độ dài biểu diễn của dữ liệu đi vào context. Muốn biết tổng chi phí, vẫn phải đo cả phiên.
+
+## Thiết kế A/B: mỗi dự án một lần đối đầu
+
+Đây là **single head-to-head per project**: mỗi dự án có một cặp A/B, không phải benchmark chạy lặp nhiều lần để lấy phân phối kết quả.
+
+- **Vòng 1 — API rút gọn URL:** A dùng ponytail, B làm theo cách thông thường (_plain_). Hai nhánh dùng cùng model và đều vượt qua cùng bộ test. Harness — môi trường chạy agent và công cụ — chưa nối caveman, nên vòng này không đo được caveman.
+- **Vòng 2 — CLI tổng hợp báo cáo bán hàng:** đầu vào là bảng đồng nhất gồm 300 bản ghi, khoảng 59 KB. A dùng ponytail + caveman, B là plain. Caveman đã gọi được từ harness. Cả hai nhánh vượt qua cùng bộ test, 21/21 test đạt.
+
+Bộ số liệu dưới đây đã được đối chiếu với git và đầu ra công cụ. Bài viết dùng lại các số đã xác minh, không chạy lại thí nghiệm. LOC là số dòng code được báo cáo; riêng vòng 2 là Python LOC. Số dòng _insertions_ của git được ghi riêng vì đó là chỉ số khác LOC.
+
+Cách so sánh này có thể tái lập về thiết kế: giữ nguyên đề bài, dữ liệu, model, quyền dùng công cụ và bộ test trong từng cặp, chỉ đổi điều kiện cần khảo sát. Tuy nhiên, bài này chưa kèm prompt đầy đủ, phiên bản model, mã harness và artifact của hai lần chạy; người đọc chưa thể tái tạo nguyên xi chỉ từ nội dung bài. Không nên tự điền những chi tiết còn thiếu đó.
+
+## Kết quả: cùng qua test, khác lượng code để lại
+
+| Chỉ số                             | Vòng 1: A — ponytail            | Vòng 1: B — plain   | Vòng 2: A — ponytail + caveman        | Vòng 2: B — plain           |
+| ---------------------------------- | ------------------------------- | ------------------- | ------------------------------------- | --------------------------- |
+| Code                               | 195 LOC                         | 444 LOC             | 187 Python LOC                        | 625 Python LOC              |
+| Số file                            | 3                               | 7                   | 3                                     | 10                          |
+| Git insertions                     | Không báo cáo                   | Không báo cáo       | 184                                   | 716                         |
+| Output tokens                      | 13,468                          | 16,346              | Không được harness cung cấp           | Không được harness cung cấp |
+| Test                               | Cùng bộ test, đạt               | Cùng bộ test, đạt   | 21/21 đạt                             | 21/21 đạt                   |
+| Tổng token chính xác cho mỗi build | Không được cung cấp             | Không được cung cấp | Không được cung cấp                   | Không được cung cấp         |
+| Caveman                            | Chưa nối công cụ, không đo được | Không áp dụng       | Có phép đo encode riêng, xem bên dưới | Không áp dụng               |
+
+### Lượng code giảm ở cả hai dự án
+
+<figure className="not-prose my-8 overflow-x-auto">
+  <svg
+    viewBox="0 0 720 350"
+    role="img"
+    aria-labelledby="loc-title loc-desc"
+    className="w-full min-w-[540px] text-gray-800 dark:text-gray-100"
+  >
+    <title id="loc-title">{'Số dòng code của hai nhánh trong từng vòng'}</title>
+    <desc id="loc-desc">
+      {
+        'Vòng 1: A 195, B 444 LOC. Vòng 2: A 187, B 625 Python LOC. Các thanh dùng chung trục bắt đầu từ 0.'
+      }
+    </desc>
+    <g fill="currentColor" fontSize="16">
+      <text x="200" y="24">
+        {'Số dòng code (LOC) — thấp hơn là ít code hơn'}
+      </text>
+      <text x="16" y="82">
+        {'Vòng 1 · A'}
+      </text>
+      <text x="16" y="132">
+        {'Vòng 1 · B'}
+      </text>
+      <text x="16" y="202">
+        {'Vòng 2 · A'}
+      </text>
+      <text x="16" y="252">
+        {'Vòng 2 · B'}
+      </text>
+      <text x="333" y="82">
+        {'195'}
+      </text>
+      <text x="492" y="132">
+        {'444'}
+      </text>
+      <text x="328" y="202">
+        {'187'}
+      </text>
+      <text x="608" y="252">
+        {'625'}
+      </text>
+      <text x="196" y="300">
+        {'0'}
+      </text>
+      <text x="348" y="300">
+        {'250'}
+      </text>
+      <text x="508" y="300">
+        {'500'}
+      </text>
+      <text x="636" y="300">
+        {'700 LOC'}
+      </text>
+      <text x="200" y="334">
+        {'A: thanh liền · B: thanh viền'}
+      </text>
+    </g>
+    <path d="M200 45V278H648 M360 278v6 M520 278v6 M648 278v6" fill="none" stroke="currentColor" />
+    <g fill="currentColor">
+      <rect x="200" y="60" width="125" height="30" rx="3" />
+      <rect x="200" y="180" width="120" height="30" rx="3" />
+    </g>
+    <g fill="none" stroke="currentColor" strokeWidth="2">
+      <rect x="200" y="110" width="284" height="30" rx="3" />
+      <rect x="200" y="230" width="400" height="30" rx="3" />
+    </g>
+  </svg>
+  <figcaption className="mt-2 text-sm">
+    So sánh A/B trong từng vòng; hai vòng là hai bài toán khác nhau, không phải tiến trình cải thiện
+    trên cùng dự án.
+  </figcaption>
+</figure>
+
+Lấy B làm mốc, các tỷ lệ **suy ra từ LOC** là:
+
+- Vòng 1: `(444 − 195) / 444 × 100 ≈ 56%` ít code hơn; 3 file so với 7.
+- Vòng 2: `(625 − 187) / 625 × 100 ≈ 70%` ít code hơn; 3 file so với 10.
+
+Ở vòng 2, A có 184 insertions, B có 716 insertions. Không thay hai số này vào công thức LOC: số dòng thêm trong diff và số dòng Python được đếm không cùng định nghĩa.
+
+Vòng 2 thay đổi cả ponytail lẫn khả năng dùng caveman ở nhánh A. Vì thế, kết quả phù hợp với mục tiêu của ponytail là giảm code, nhưng thiết kế này chưa tách riêng được đóng góp nhân quả của từng công cụ.
+
+### Output vòng 1 giảm, tổng token lại tăng
+
+<figure className="not-prose my-8 overflow-x-auto">
+  <svg
+    viewBox="0 0 720 235"
+    role="img"
+    aria-labelledby="output-title output-desc"
+    className="w-full min-w-[540px] text-gray-800 dark:text-gray-100"
+  >
+    <title id="output-title">{'Output tokens ở vòng 1'}</title>
+    <desc id="output-desc">
+      {'A dùng ponytail: 13,468 output tokens. B plain: 16,346. Đây không phải tổng token.'}
+    </desc>
+    <g fill="currentColor" fontSize="16">
+      <text x="180" y="25">
+        {'Vòng 1 — chỉ output tokens'}
+      </text>
+      <text x="16" y="78">
+        {'A · ponytail'}
+      </text>
+      <text x="16" y="138">
+        {'B · plain'}
+      </text>
+      <text x="511" y="78">
+        {'13,468'}
+      </text>
+      <text x="580" y="138">
+        {'16,346'}
+      </text>
+      <text x="176" y="195">
+        {'0'}
+      </text>
+      <text x="395" y="195">
+        {'10,000'}
+      </text>
+      <text x="590" y="195">
+        {'20,000'}
+      </text>
+      <text x="180" y="226">
+        {'Trục ngang: số output tokens'}
+      </text>
+    </g>
+    <path d="M180 44V170H660 M420 170v6 M660 170v6" fill="none" stroke="currentColor" />
+    <rect x="180" y="56" width="323" height="30" rx="3" fill="currentColor" />
+    <rect
+      x="180"
+      y="116"
+      width="392"
+      height="30"
+      rx="3"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+    />
+  </svg>
+  <figcaption className="mt-2 text-sm">
+    13,468 so với 16,346 output tokens. Không dùng biểu đồ này để kết luận về tổng token hoặc số
+    tiền.
+  </figcaption>
+</figure>
+
+Phần giảm output **suy ra** là `(16,346 − 13,468) / 16,346 × 100 ≈ 18%`.
+
+Nhưng **tổng token của A ở vòng 1 cao hơn B, do phần input**. Ponytail đã đổi thêm đầu vào/ngữ cảnh suy luận lấy ít output và ít code hơn trong lần chạy đó. Thông tin về chiều tăng này đã được xác minh; con số tổng chính xác theo từng build thì harness không cung cấp (_not exposed_). Không có cơ sở ghi thêm một phần trăm tiết kiệm tổng token.
+
+Vòng 2 cũng không cung cấp bộ đếm input/output/tổng token theo từng build. Ô trống về phép đo này phải giữ là “không được cung cấp”, không lấy LOC hoặc byte để nội suy thành tổng token.
+
+## Caveman: lần này có lời gọi thật, nhưng đo ở phạm vi nào?
+
+Vòng 1 không có caveman tools trong harness. Vì vậy, “không đo được” là một phát hiện về khả năng quan sát của thí nghiệm, không phải kết quả caveman tiết kiệm bằng không hay một thành công ngầm.
+
+Sang vòng 2, lời gọi TOON-encode thực tế trả về **705 → 354 bytes trên mẫu**, giảm **49.8%**. Với toàn bộ dataset, phép chiếu khi bảng đi vào context bằng TOON thay vì compact JSON là **53,393 → 20,779 bytes**, giảm **61.1%**. Số toàn bộ dataset là phép chiếu về biểu diễn payload; nó không chứng minh toàn bộ phiên agent đã tiết kiệm tương ứng.
+
+<figure className="not-prose my-8 overflow-x-auto">
+  <svg
+    viewBox="0 0 720 425"
+    role="img"
+    aria-labelledby="compression-title compression-desc"
+    className="w-full min-w-[540px] text-gray-800 dark:text-gray-100"
+  >
+    <title id="compression-title">{'Kích thước biểu diễn trước và sau TOON'}</title>
+    <desc id="compression-desc">
+      {
+        'Mẫu đo bằng lời gọi encode: 705 xuống 354 bytes. Phép chiếu toàn dataset: compact JSON 53,393 xuống TOON 20,779 bytes. Hai phần dùng trục byte riêng, đều bắt đầu từ 0.'
+      }
+    </desc>
+    <g fill="currentColor" fontSize="16">
+      <text x="180" y="24">
+        {'Mẫu — lời gọi thật · giảm 49.8%'}
+      </text>
+      <text x="16" y="73">
+        {'Trước encode'}
+      </text>
+      <text x="16" y="123">
+        {'TOON'}
+      </text>
+      <text x="612" y="73">
+        {'705'}
+      </text>
+      <text x="402" y="123">
+        {'354'}
+      </text>
+      <text x="176" y="169">
+        {'0'}
+      </text>
+      <text x="388" y="169">
+        {'400'}
+      </text>
+      <text x="600" y="169">
+        {'800 bytes'}
+      </text>
+      <text x="180" y="224">
+        {'Toàn dataset — phép chiếu · giảm 61.1%'}
+      </text>
+      <text x="16" y="273">
+        {'Compact JSON'}
+      </text>
+      <text x="16" y="323">
+        {'TOON'}
+      </text>
+      <text x="614" y="273">
+        {'53,393'}
+      </text>
+      <text x="349" y="323">
+        {'20,779'}
+      </text>
+      <text x="176" y="369">
+        {'0'}
+      </text>
+      <text x="365" y="369">
+        {'30,000'}
+      </text>
+      <text x="580" y="369">
+        {'60,000 bytes'}
+      </text>
+      <text x="180" y="408">
+        {'Hai trục độc lập · đơn vị: bytes, không phải tokens'}
+      </text>
+    </g>
+    <g fill="none" stroke="currentColor">
+      <path d="M180 40V145H660 M420 145v6 M660 145v6 M180 240V345H660 M420 345v6 M660 345v6" />
+      <rect x="180" y="51" width="423" height="30" rx="3" strokeWidth="2" />
+      <rect x="180" y="251" width="427" height="30" rx="3" strokeWidth="2" />
+    </g>
+    <g fill="currentColor">
+      <rect x="180" y="101" width="212" height="30" rx="3" />
+      <rect x="180" y="301" width="166" height="30" rx="3" />
+    </g>
+  </svg>
+  <figcaption className="mt-2 text-sm">
+    Thanh viền: trước nén; thanh liền: TOON. Mẫu và toàn dataset có thang đo riêng để không che mất
+    mẫu nhỏ.
+  </figcaption>
+</figure>
+
+Hai phần trăm trên được **suy ra từ bytes**, làm tròn một chữ số thập phân:
+
+- Mẫu: `(705 − 354) / 705 × 100 ≈ 49.8%`.
+- Phép chiếu toàn dataset: `(53,393 − 20,779) / 53,393 × 100 ≈ 61.1%`.
+
+Thống kê phiên còn ghi **629 → 208 tokens**, được đánh dấu **inferred** (suy ra), với tỷ lệ giảm `0.669`, theo `(629 − 208) / 629 ≈ 0.669`. Đây là thống kê nén được suy ra, không phải bộ đếm billing hay tổng input/output của một build. Cũng không được lấy tỷ lệ giảm byte làm tỷ lệ giảm token: hai đơn vị khác nhau.
+
+## “Chất lượng ngang nhau” cần đọc đến đâu?
+
+Trong bài này, chất lượng được giữ bằng một tiêu chí cụ thể: **hai nhánh vượt qua cùng bộ test**. Vòng 2 ghi nhận 21/21 test đạt ở cả hai. Các kỷ luật đã đạt cùng đích kiểm thử với ít code hơn và biểu diễn dữ liệu gọn hơn, không hạ chuẩn test để đổi lấy con số đẹp.
+
+Điều đó chưa chứng minh hai implementation ngang nhau về mọi mặt: bảo mật, độ dễ bảo trì, hiệu năng production hay lỗi nằm ngoài bộ test đều chưa được đo. Ít code hơn là giảm lượng code phải đọc; bài này chưa đo thời gian review hoặc công sức bảo trì.
+
+Hai cặp đối đầu cho tín hiệu định hướng rõ, nhưng chưa đủ kết luận “luôn giảm đúng 56%/70% code” hay “luôn tiết kiệm 61.1% token”. Chưa có nhiều lần lặp để biết độ dao động. Cũng chưa có số tiền, độ trễ hay tổng token chính xác để tính ROI.
+
+## Mang về áp dụng thế nào cho công việc hằng ngày?
+
+Với dev dùng agent, tôi sẽ bắt đầu từ cách giao việc và cách đo, trước khi tìm một prompt thần kỳ.
+
+1. **Chốt điều kiện đúng trước.** Cùng đề bài, cùng dữ liệu, cùng test cho cả hai nhánh. Đừng vô tình cho nhánh ít code một bài dễ hơn.
+2. **Yêu cầu giải pháp vừa đủ.** Cho agent đọc repo, tái sử dụng phần có sẵn và giải thích vì sao cần thêm abstraction. Đừng thưởng cho nó bằng số file tạo ra.
+3. **Đưa đúng dữ liệu vào context.** Bảng đồng nhất, nhiều dòng là nơi thử caveman/TOON. Với văn xuôi hoặc dữ liệu không phù hợp, giữ đầu vào thay vì ép nén.
+4. **Kiểm tra công cụ có gọi được thật.** Vòng 1 nhắc khá rõ: có tên công cụ trong kế hoạch chưa đồng nghĩa harness đã nối công cụ. Ghi lại lời gọi và đầu ra trước khi nhận công trạng tiết kiệm cho nó.
+5. **Tách từng loại chi phí.** Ghi LOC, số file, output tokens, input tokens và tổng token nếu harness có cung cấp. Với nén, ghi byte trước/sau, phạm vi mẫu hay toàn payload và trạng thái đo trực tiếp hay suy ra. Không có số thì ghi thiếu số.
+6. **Lặp lại trước khi lập ngân sách.** Khi tự thử trên repo của mình, lưu prompt, model/version, cấu hình tool, dataset, commit và kết quả test để người khác tái lập và kiểm tra được. Đây là đề xuất cho lần đo tiếp theo, không phải kết quả đã có của hai vòng trên.
+
+Tôi thích phần “lười” ở đây vì nó đặt đúng câu hỏi lúc review: để giải quyết yêu cầu này, mình thực sự cần để lại bao nhiêu code? Hai lần đối đầu cho thấy có thể để lại ít hơn đáng kể mà vẫn qua cùng test. Caveman bổ sung một câu hỏi ở đầu vào: có cần lặp lại cách diễn đạt của cả bảng dữ liệu không? Câu trả lời có ích nhất vẫn đi kèm đơn vị đo và giới hạn của nó — kể cả khi số tổng token đi ngược điều mình mong đợi.
