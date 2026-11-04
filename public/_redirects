@@ -3,3 +3,6 @@
 
 # Duplicate pricing page -> canonical /pricing (see plan.md 1.9)
 /docs/pricing /pricing 301
+
+# Blog page 1 -> canonical /blog
+/blog/page/1 /blog 301

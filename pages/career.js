@@ -12,6 +12,10 @@ export default function Career() {
     seconds: 0,
   })
   const launchDate = new Date('2026-10-15T00:00:00+07:00').getTime()
+  // Countdown hidden once launch date has passed. Reverse this (with the
+  // sitemap exclusion in scripts/generate-sitemap.js and the noindex below)
+  // when the Career Center launches.
+  const launched = new Date().getTime() >= launchDate
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -36,8 +40,9 @@ export default function Career() {
   return (
     <>
       <PageSEO
-        title={`Career Center - ${siteMetadata.title}`}
+        title={`Career Center - ${siteMetadata.siteName}`}
         description="VNTechies Career Center đang được phát triển - Coming Soon"
+        noindex
       />
 
       <div className="mx-auto max-w-5xl px-4 py-12 sm:py-16">
@@ -52,46 +57,50 @@ export default function Career() {
             </p>
           </div>
 
-          <div className="surface-panel p-6 sm:p-8">
-            <div className="mb-6 flex items-center justify-center gap-2">
-              <FaClock className="h-5 w-5 text-orange-500" />
-              <h2 className="text-xl font-bold text-slate-900 dark:text-slate-100">Ra mắt trong</h2>
+          {!launched && (
+            <div className="surface-panel p-6 sm:p-8">
+              <div className="mb-6 flex items-center justify-center gap-2">
+                <FaClock className="h-5 w-5 text-orange-500" />
+                <h2 className="text-xl font-bold text-slate-900 dark:text-slate-100">
+                  Ra mắt trong
+                </h2>
+              </div>
+              <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 sm:gap-4">
+                <div className="surface-panel-muted p-4 text-center">
+                  <div className="text-3xl font-black text-orange-600 dark:text-orange-300">
+                    {timeLeft.days}
+                  </div>
+                  <div className="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">
+                    Ngày
+                  </div>
+                </div>
+                <div className="surface-panel-muted p-4 text-center">
+                  <div className="text-3xl font-black text-orange-600 dark:text-orange-300">
+                    {timeLeft.hours}
+                  </div>
+                  <div className="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">
+                    Giờ
+                  </div>
+                </div>
+                <div className="surface-panel-muted p-4 text-center">
+                  <div className="text-3xl font-black text-orange-600 dark:text-orange-300">
+                    {timeLeft.minutes}
+                  </div>
+                  <div className="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">
+                    Phút
+                  </div>
+                </div>
+                <div className="surface-panel-muted p-4 text-center">
+                  <div className="text-3xl font-black text-orange-600 dark:text-orange-300">
+                    {timeLeft.seconds}
+                  </div>
+                  <div className="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">
+                    Giây
+                  </div>
+                </div>
+              </div>
             </div>
-            <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 sm:gap-4">
-              <div className="surface-panel-muted p-4 text-center">
-                <div className="text-3xl font-black text-orange-600 dark:text-orange-300">
-                  {timeLeft.days}
-                </div>
-                <div className="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">
-                  Ngày
-                </div>
-              </div>
-              <div className="surface-panel-muted p-4 text-center">
-                <div className="text-3xl font-black text-orange-600 dark:text-orange-300">
-                  {timeLeft.hours}
-                </div>
-                <div className="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">
-                  Giờ
-                </div>
-              </div>
-              <div className="surface-panel-muted p-4 text-center">
-                <div className="text-3xl font-black text-orange-600 dark:text-orange-300">
-                  {timeLeft.minutes}
-                </div>
-                <div className="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">
-                  Phút
-                </div>
-              </div>
-              <div className="surface-panel-muted p-4 text-center">
-                <div className="text-3xl font-black text-orange-600 dark:text-orange-300">
-                  {timeLeft.seconds}
-                </div>
-                <div className="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">
-                  Giây
-                </div>
-              </div>
-            </div>
-          </div>
+          )}
 
           <div className="surface-panel p-6 sm:p-8">
             <h3 className="mb-6 text-2xl font-bold text-slate-900 dark:text-slate-100">
