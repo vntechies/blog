@@ -111,14 +111,14 @@ const certificationPaths = {
     borderColor: 'border-blue-200 dark:border-blue-800',
     certs: [
       {
-        name: 'AWS Certified Machine Learning Engineer',
-        code: 'MLE-A01',
+        name: 'AWS Certified Machine Learning Engineer - Associate',
+        code: 'MLA-C02',
         logo: '/courses/aws/logos/mle.png',
-        description: 'Machine Learning Engineering trên AWS',
-        duration: '130 phút',
-        questions: '65 câu hỏi',
-        passingScore: '720/1000',
-        cost: '$150',
+        description: 'Machine Learning Engineering trên AWS (hiện đang beta)',
+        duration: '170 phút',
+        questions: '85 câu hỏi',
+        passingScore: '—',
+        cost: '$75 (beta)',
         prerequisites: 'Associate level cert (khuyến nghị)',
         audience: 'ML Engineers, Data Scientists',
         href: '/blog/aws-certs/kinh-nghiem-thi-chung-chi-aws-certified-machine-learning-engineer-associate',
@@ -138,7 +138,7 @@ const certificationPaths = {
         courseHref: '/courses/aws/saa/gioi-thieu',
       },
       {
-        name: 'AWS Certified CloudOps Administrator',
+        name: 'AWS Certified CloudOps Engineer - Associate',
         code: 'SOA-C03',
         logo: '/courses/aws/logos/soa.png',
         description: 'Vận hành hệ thống trên AWS',
@@ -194,7 +194,7 @@ const certificationPaths = {
         questions: '75 câu hỏi',
         passingScore: '750/1000',
         cost: '$300',
-        prerequisites: 'Developer Associate hoặc SysOps Associate',
+        prerequisites: 'Developer Associate hoặc CloudOps Engineer Associate',
         audience: 'DevOps Engineers, System Administrators',
       },
       {
@@ -210,6 +210,17 @@ const certificationPaths = {
         audience: 'Senior Solutions Architects',
         href: '/blog/aws-certs/kinh-nghiem-thi-chung-chi-aws-certified-solutions-architect-professional-sap-c01',
       },
+      {
+        name: 'AWS Certified Generative AI Developer - Professional',
+        code: 'AIP-C01',
+        description: 'Xây dựng và triển khai giải pháp Generative AI trên AWS',
+        duration: '180 phút',
+        questions: '75 câu hỏi',
+        passingScore: '—',
+        cost: '$300',
+        prerequisites: 'Associate level cert (khuyến nghị)',
+        audience: 'AI/ML Developers, Software Engineers',
+      },
     ],
   },
 
@@ -220,22 +231,10 @@ const certificationPaths = {
     borderColor: 'border-orange-200 dark:border-orange-800',
     certs: [
       {
-        name: 'AWS Certified Machine Learning',
-        code: 'MLS-C01',
-        logo: '/courses/aws/logos/mls.png',
-        description: 'Machine Learning trên AWS',
-        duration: '180 phút',
-        questions: '65 câu hỏi',
-        passingScore: '750/1000',
-        cost: '$300',
-        prerequisites: 'Associate level cert (khuyến nghị)',
-        audience: 'ML Engineers, Data Scientists',
-      },
-      {
         name: 'AWS Certified Advanced Networking',
         code: 'ANS-C01',
         logo: '/courses/aws/logos/ans.png',
-        description: 'Mạng nâng cao trên AWS',
+        description: 'Mạng nâng cao trên AWS (nghỉ hưu 31/12/2026)',
         duration: '170 phút',
         questions: '65 câu hỏi',
         passingScore: '750/1000',
@@ -245,7 +244,7 @@ const certificationPaths = {
       },
       {
         name: 'AWS Certified Security',
-        code: 'SCS-C02',
+        code: 'SCS-C03',
         logo: '/courses/aws/logos/scs.png',
         description: 'Bảo mật trên AWS',
         duration: '170 phút',
@@ -279,7 +278,7 @@ const rolePaths = [
       },
       { name: 'Solutions Architect', code: 'SAA-C03', level: 'associate' },
       { name: 'Solutions Architect', code: 'SAP-C02', level: 'professional' },
-      { name: 'Security', code: 'SCS-C02', level: 'specialty', note: 'Chuyên sâu' },
+      { name: 'Security', code: 'SCS-C03', level: 'specialty', note: 'Chuyên sâu' },
     ],
   },
   {
@@ -317,8 +316,13 @@ const rolePaths = [
         note: 'Tùy chọn cho chuyên gia IT/cloud',
       },
       { name: 'AI Practitioner', code: 'AIF-C01', level: 'foundational' },
-      { name: 'ML Engineer', code: 'MLE-A01', level: 'associate' },
-      { name: 'Machine Learning', code: 'MLS-C01', level: 'specialty', note: 'Chuyên sâu' },
+      { name: 'ML Engineer', code: 'MLA-C02', level: 'associate' },
+      {
+        name: 'Generative AI Developer',
+        code: 'AIP-C01',
+        level: 'professional',
+        note: 'Chuyên sâu',
+      },
     ],
   },
 ]
@@ -482,8 +486,8 @@ export default function AWSCertificationPaths() {
   return (
     <>
       <PageSEO
-        title="AWS Certification Paths - Lộ trình chứng chỉ AWS 2025"
-        description="Hướng dẫn chi tiết các lộ trình chứng chỉ AWS từ Foundational đến Professional và Specialty. Cập nhật mới nhất 2025."
+        title="Lộ trình chứng chỉ AWS 2026 | VNTechies"
+        description="Khám phá lộ trình chứng chỉ AWS 2026 từ Foundational đến Professional và Specialty, kèm thông tin mới nhất về các kỳ thi đang thay đổi."
         image="/static/images/aws.png"
       />
 
@@ -494,7 +498,7 @@ export default function AWSCertificationPaths() {
             <div>
               <div className="mb-4 inline-flex items-center rounded-full bg-orange-100 px-4 py-2 text-sm font-semibold text-orange-800 dark:bg-orange-900/30 dark:text-orange-300">
                 <FaCertificate className="mr-2 h-4 w-4" />
-                Cập nhật 2025
+                Cập nhật 2026
               </div>
               <h1 className="text-4xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-5xl lg:text-6xl">
                 AWS{' '}
@@ -670,12 +674,12 @@ export default function AWSCertificationPaths() {
                     <div>
                       <Image
                         src="/courses/aws/logos/mle.png"
-                        alt="MLE-A01"
+                        alt="MLA-C02"
                         width={120}
                         height={120}
                         className="mx-auto mb-3 h-24 w-24 sm:mb-4 sm:h-32 sm:w-32 lg:h-36 lg:w-36"
                       />
-                      <div className="text-sm font-semibold sm:text-base">MLE-A01</div>
+                      <div className="text-sm font-semibold sm:text-base">MLA-C02</div>
                     </div>
                     <div>
                       <Image
@@ -761,16 +765,6 @@ export default function AWSCertificationPaths() {
                   <div className="flex flex-col gap-6 sm:gap-8">
                     <div>
                       <Image
-                        src="/courses/aws/logos/mls.png"
-                        alt="MLS-C01"
-                        width={120}
-                        height={120}
-                        className="mx-auto mb-3 h-24 w-24 sm:mb-4 sm:h-32 sm:w-32 lg:h-36 lg:w-36"
-                      />
-                      <div className="text-sm font-semibold sm:text-base">MLS-C01</div>
-                    </div>
-                    <div>
-                      <Image
                         src="/courses/aws/logos/ans.png"
                         alt="ANS-C01"
                         width={120}
@@ -782,12 +776,12 @@ export default function AWSCertificationPaths() {
                     <div>
                       <Image
                         src="/courses/aws/logos/scs.png"
-                        alt="SCS-C02"
+                        alt="SCS-C03"
                         width={120}
                         height={120}
                         className="mx-auto mb-3 h-24 w-24 sm:mb-4 sm:h-32 sm:w-32 lg:h-36 lg:w-36"
                       />
-                      <div className="text-sm font-semibold sm:text-base">SCS-C02</div>
+                      <div className="text-sm font-semibold sm:text-base">SCS-C03</div>
                     </div>
                   </div>
                 </div>
