@@ -11,7 +11,7 @@ export default function Pagination({ totalPages, currentPage }) {
       <nav className="surface-panel-muted flex items-center justify-between gap-3 px-3 py-2 sm:px-4">
         {prevPage ? (
           <Link
-            href={currentPage - 1 === 1 ? '/blog/' : `/blog/page/${currentPage - 1}`}
+            href={currentPage - 1 === 1 ? '/blog' : `/blog/page/${currentPage - 1}`}
             className="nav-link"
           >
             ← Trang {currentPage - 1}

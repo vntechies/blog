@@ -73,6 +73,11 @@ const siteMetadata = require('../data/siteMetadata')
                 if (page.search('pages/404.') > -1 || page.search(`pages/blog/[...slug].`) > -1) {
                   return
                 }
+                // Exclude the pre-launch career page; reverse this when the
+                // Career Center launches (see pages/career.js).
+                if (page.search('pages/career.') > -1) {
+                  return
+                }
                 return `
                         <url>
                             <loc>${siteMetadata.siteUrl}${route}</loc>
