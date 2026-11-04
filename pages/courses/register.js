@@ -194,7 +194,7 @@ export default function Register({ paidCourses = [], freeCourses = [] }) {
   return (
     <>
       <PageSEO
-        title={`Đăng ký khóa học - ${siteMetadata.title}`}
+        title={`Đăng ký khóa học - ${siteMetadata.siteName}`}
         image={coursesSocialImage}
         description="Đăng ký tham gia các khóa học AWS, DevOps và Data Engineering tại VNTechies. Nhận tư vấn lộ trình phù hợp và ưu đãi dành cho học viên."
         url={`${siteMetadata.siteUrl}/courses/register`}

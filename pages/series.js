@@ -13,7 +13,7 @@ export default function Series({ series }) {
     <>
       <PageSEO
         title={`Series - ${siteMetadata.headerTitle}`}
-        description={`Series - ${siteMetadata.description}`}
+        description={siteMetadata.descriptions.series}
       />
       <div className="space-y-10">
         <header>

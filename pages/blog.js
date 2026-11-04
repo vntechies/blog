@@ -20,14 +20,14 @@ export default function Blog({ posts, initialDisplayPosts, pagination }) {
   return (
     <>
       <PageSEO
-        title={`Blog - ${siteMetadata.headerTitle}`}
+        title={`Blog Cloud, DevOps, AWS tiếng Việt | ${siteMetadata.siteName}`}
         description={siteMetadata.descriptions.blog}
       />
       <ListLayout
         posts={posts}
         initialDisplayPosts={initialDisplayPosts}
         pagination={pagination}
-        title="🗄️ Tất cả bài viết"
+        title="Blog Cloud, DevOps, AWS tiếng Việt"
       />
     </>
   )

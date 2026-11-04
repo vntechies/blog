@@ -13,7 +13,7 @@ const packages = [
   },
   {
     icon: '⚡',
-    title: 'AWS Solution Architect',
+    title: 'AWS Solutions Architect',
     description: 'AWS Cloud Practitioner + AWS Solutions Architect Associate',
     originalPrice: '13,000,000₫',
     price: '10,400,000₫',
@@ -44,7 +44,7 @@ export default function Pricing() {
     <>
       <PageSEO
         title={`Chính sách giá - ${siteMetadata.siteName}`}
-        description="Chính sách giá và ưu đãi khóa học tại VNTechies"
+        description="Chính sách giá, combo, trả góp và ưu đãi cho các khóa học AWS, DevOps và Data Engineering tại VNTechies."
       />
 
       <div className="mx-auto max-w-5xl px-6 py-12">

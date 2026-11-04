@@ -50,12 +50,16 @@ export default function Courses({ courses }) {
     if (window.location.hash === '#mien-phi') setActiveTab('free')
   }, [])
 
+  const paidPrices = premiumCatalog.map((entry) => entry.fromPrice).filter((price) => price != null)
+  const courseCount = paidPrices.length
+  const lowestPrice = Math.min(...paidPrices)
+
   const courseListSchema = {
     '@context': 'https://schema.org',
     '@type': 'ItemList',
     name: 'Khoá học tại VNTechies',
     url: `${siteMetadata.siteUrl}/courses`,
-    itemListElement: paidCourses.map((c, i) => ({
+    itemListElement: courses.map((c, i) => ({
       '@type': 'ListItem',
       position: i + 1,
       url: `${siteMetadata.siteUrl}/courses/${c.slug}`,
@@ -67,7 +71,9 @@ export default function Courses({ courses }) {
     <>
       <PageSEO
         title={`Khóa học AWS, DevOps, Data Engineer | ${siteMetadata.siteName}`}
-        description="Học lộ trình Cloud, DevOps và Data Engineering cùng mentor thực chiến. Khai giảng hàng tháng, 7 khoá từ 2.499.000₫."
+        description={`Học lộ trình Cloud, DevOps và Data Engineering cùng mentor thực chiến. Khai giảng hàng tháng, ${courseCount} khoá từ ${formatVnd(
+          lowestPrice
+        )}.`}
         structuredData={courseListSchema}
         image={coursesSocialImage}
       />
@@ -79,7 +85,7 @@ export default function Courses({ courses }) {
           </h1>
           <p className="page-lead">
             Chọn lộ trình phù hợp với mục tiêu của bạn. Các khoá premium chuyên sâu và các khóa miễn
-            để bắt đầu nhanh.
+            phí để bắt đầu nhanh.
           </p>
         </header>
 

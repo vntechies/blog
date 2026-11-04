@@ -6,11 +6,11 @@ const siteMetadata = {
   description:
     'VNTechies Dev Blog - Kho tài nguyên dành cho người Việt yêu công nghệ. Tài liệu, hướng dẫn DevOps, Cloud computing, Infrastructure Automation, CI/CD',
   descriptions: {
-    blog: 'Các bài viết kỹ thuật tập trung vào các 🚀 giải pháp công nghệ ☁️ Cloud computing, DevOps, phát triển 🌐 web & 📱 mobile apps, CI/CD',
+    blog: 'Bài viết kỹ thuật tiếng Việt về Cloud computing, AWS, DevOps, phát triển web và mobile, CI/CD cho người Việt yêu công nghệ.',
     series:
-      '📦 Tổng hợp các bài viết theo chủ đề hướng dẫn thi chứng chỉ AWS, Azure, Kubernetes, DevOps, phát triển 🌐 web & 📱 mobile apps, CI/CD',
+      'Tổng hợp các bài viết theo chủ đề: hướng dẫn thi chứng chỉ AWS, Azure, Kubernetes, DevOps, phát triển web và mobile, CI/CD.',
     courses:
-      '📝 Tài liệu, khoá học, hướng dẫn tự học các cộng nghệ liên quan tới ☁️ cloud computing, DevOps, AWS, Azure, Docker, Kubernetes, CDK, CI/CD ',
+      'Tài liệu, khoá học và hướng dẫn tự học các công nghệ liên quan tới cloud computing, DevOps, AWS, Azure, Docker, Kubernetes, CDK, CI/CD.',
   },
   language: 'vi-VN',
   theme: 'dark', // system, dark or light — gruvbox-dark-hard is the primary theme
