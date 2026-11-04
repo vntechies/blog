@@ -1,0 +1,375 @@
+---
+title: 'Ponytail, caveman và một phép thử Cloud SA: đo được gì, không đo được gì?'
+date: '2026-10-23'
+tags: ['ai', 'productivity', 'llm', 'cloud']
+draft: false
+authors: ['mau']
+images: ['/static/images/ogps/ponytail-caveman.png']
+summary: 'Một cặp Kiro trên bài rightsizing Cloud SA: cùng đạt 20/20 ở fixture, nhưng treatment dùng nhiều credits và thời gian hơn; token nhà cung cấp không được cung cấp.'
+---
+
+<TOCInline toc={props.toc} asDisclosure />
+
+## Một câu hỏi tưởng đơn giản về chi phí agent
+
+Khi dùng coding agent, mình hay nghe hai lời khuyên: bắt agent làm việc như một senior “lười” để đừng để lại quá nhiều thứ phải bảo trì; và nén dữ liệu lặp lại trước khi đưa vào context. Ponytail là cách gọi cho kỷ luật thứ nhất. Caveman là công cụ cho ý thứ hai.
+
+Cả hai ý đều hợp lý như một giả thuyết. Nhưng “hợp lý” không phải là số đo. Nếu không tách **credits phiên**, **thời gian**, **token do nhà cung cấp tính**, **kích thước văn bản**, và **chất lượng đầu ra**, rất dễ lấy một con số đẹp ở một cột rồi gọi nó là tiết kiệm chi phí.
+
+Bài này ghi lại một phép thử nhỏ trên một workload Cloud Solutions Architect giả lập. Kết quả không xác nhận câu chuyện tiết kiệm thường được kể: nhánh dùng ponytail + caveman tốn nhiều credits và thời gian hơn trong phiên đo này. Cả hai nhánh vẫn đạt cùng điểm rubric của fixture. Đó là kết quả đáng giữ nguyên, thay vì uốn nó thành một headline thuận tai.
+
+## Ponytail và caveman đang cố giải quyết gì?
+
+**Ponytail** là kỷ luật lazy-senior-dev: trước khi thêm code, đọc yêu cầu và code sẵn có, ưu tiên thứ đã tồn tại, thư viện chuẩn hoặc tính năng nền tảng; chỉ thêm lượng thay đổi tối thiểu còn thiếu. “Lười” ở đây là lười phải review và bảo trì abstraction không cần thiết, không phải lười kiểm tra lỗi, security hay validation.
+
+**Caveman** nén một payload lặp trước khi model dùng nó làm context. Nó phù hợp nhất với bảng hoặc JSON có nhiều record cùng schema. Nén không tự nhiên biến thành “ít token bị tính tiền”: phải biết payload có thực sự chưa đi vào context hay chưa, phép nén có mất thông tin không, có cần truy xuất lại không, và nhà cung cấp có công bố token hay không.
+
+Trong treatment của bài thử này, hai can thiệp đi cùng nhau. Vì vậy bài viết **không** tách được tác động nhân quả độc lập của ponytail hoặc caveman.
+
+## Thiết kế phép thử: một fixture Cloud SA, hai phiên Kiro
+
+Workload là bài rightsizing giả lập với 24 instance production. Mỗi service có hai replica, một ở `zone-a`, một ở `zone-b`; database managed phải giữ private. Agent phải chọn class rẻ nhất thỏa ngưỡng CPU/memory, tính chi phí giả định, và nộp `answer.json` cùng `answer.md` có rollout, rollback, security và cách kiểm tra RTO/RPO.
+
+Hai phiên dùng cùng model **`gpt-5.6-terra`**, effort **medium**, và chỉ tính đúng một task turn đã đo:
+
+| Nhánh     | Cách làm                                           | Session                                     |
+| --------- | -------------------------------------------------- | ------------------------------------------- |
+| Plain     | Prompt yêu cầu không áp dụng ponytail hoặc caveman | `sess_e939ae27-6aa7-4b41-a178-dbf983eda1ff` |
+| Treatment | Ponytail + caveman                                 | `sess_aa0d0dc4-2721-45d0-bd52-bf4f13c89df8` |
+
+Đây là một **single paired run** trên workload cố định, không phải benchmark nhiều lần chạy. Có thêm một giới hạn quan trọng: global ponytail steering vẫn xuất hiện trong Kiro V3 dù đã thử tắt inheritance và mở conversation mới. Prompt plain có ghi đè việc áp dụng nó, nhưng đây vẫn là so sánh được prompt, có khả năng nhiễm steering — không phải control đã được chứng minh là steering-free.
+
+## Chất lượng trên fixture: cùng 20/20, safety gate đều qua
+
+Mình chấm độc lập hai output đã đóng băng bằng rubric 10 tiêu chí, tối đa 20 điểm. Rubric kiểm tra 24 ID, công thức CPU/memory, class rẻ nhất hợp lệ, cost arithmetic, HA theo hai zone, private database, rollout/rollback và cách xác minh RTO/RPO.
+
+| Kiểm tra                 |                            Plain |                        Treatment |
+| ------------------------ | -------------------------------: | -------------------------------: |
+| Điểm rubric              |                            20/20 |                            20/20 |
+| Safety gate              |                              Qua |                              Qua |
+| Allocation               |    24 ID duy nhất; 8 S, 8 M, 8 L |    24 ID duy nhất; 8 S, 8 M, 8 L |
+| Tổng chi phí của fixture | \$3,480 → \$2,280/tháng giả định | \$3,480 → \$2,280/tháng giả định |
+
+<figure className="not-prose my-8 overflow-x-auto">
+  <svg
+    viewBox="0 0 720 240"
+    role="img"
+    aria-labelledby="quality-title quality-desc"
+    className="w-full min-w-[540px] text-gray-800 dark:text-gray-100"
+  >
+    <title id="quality-title">Điểm rubric của hai nhánh</title>
+    <desc id="quality-desc">
+      Plain và treatment đều đạt 20 trên 20 điểm của rubric fixture Cloud SA, và đều qua safety
+      gate. Đây là điểm trên fixture, không phải bằng chứng hai cách làm có chất lượng tương đương
+      trong mọi tình huống.
+    </desc>
+    <g fill="currentColor" fontSize="16">
+      <text x="180" y="26">
+        {'Điểm rubric fixture Cloud SA — tối đa 20'}
+      </text>
+      <text x="20" y="86">
+        {'Plain'}
+      </text>
+      <text x="20" y="146">
+        {'Treatment'}
+      </text>
+      <text x="650" y="86">
+        {'20/20'}
+      </text>
+      <text x="650" y="146">
+        {'20/20'}
+      </text>
+      <text x="177" y="202">
+        {'0'}
+      </text>
+      <text x="402" y="202">
+        {'10'}
+      </text>
+      <text x="628" y="202">
+        {'20'}
+      </text>
+      <text x="180" y="230">
+        {'Cả hai qua safety gate của fixture'}
+      </text>
+    </g>
+    <path d="M180 46V176H640 M410 176v6 M640 176v6" fill="none" stroke="currentColor" />
+    <rect x="180" y="64" width="460" height="30" rx="3" fill="currentColor" />
+    <rect
+      x="180"
+      y="124"
+      width="460"
+      height="30"
+      rx="3"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+    />
+  </svg>
+  <figcaption className="mt-2 text-sm">
+    Thanh liền: plain. Thanh viền: treatment. Điểm giữ cùng trong fixture này, không suy rộng thành
+    chất lượng production hay một kết luận nhân quả.
+  </figcaption>
+</figure>
+
+Điểm bằng nhau ở đây có nghĩa hẹp: hai deliverable thỏa cùng rubric của dataset giả lập. Nó không đo security production, maintainability lâu dài, độ tin cậy giữa nhiều lần chạy, hay mọi failure mode ngoài fixture.
+
+## Số đo phiên: treatment cao hơn ở hai đại lượng được Kiro công bố
+
+Kiro export công bố usage dưới đơn vị **credits** và `elapsedTime`. Đây là hai đại lượng đo trực tiếp, không đổi tên thành token hay chi phí billing.
+
+| Đại lượng đo trực tiếp                             |                    Plain | Treatment (ponytail + caveman) |
+| -------------------------------------------------- | -----------------------: | -----------------------------: |
+| Kiro usage                                         | 1.76416004238806 credits |      4.148471159701493 credits |
+| Kiro elapsed time                                  |                36,179 ms |                      82,879 ms |
+| Provider input/output/cache/reasoning/total tokens |      Không được cung cấp |            Không được cung cấp |
+
+<figure className="not-prose my-8 overflow-x-auto">
+  <svg
+    viewBox="0 0 720 410"
+    role="img"
+    aria-labelledby="usage-title usage-desc"
+    className="w-full min-w-[540px] text-gray-800 dark:text-gray-100"
+  >
+    <title id="usage-title">Credits và thời gian đo trực tiếp theo nhánh</title>
+    <desc id="usage-desc">
+      Plain dùng 1.76416004238806 credits và 36.179 giây. Treatment dùng 4.148471159701493 credits
+      và 82.879 giây. Hai nhóm có trục riêng; đây là credits và thời gian do Kiro export, không phải
+      provider tokens hoặc chi phí billing.
+    </desc>
+    <g fill="currentColor" fontSize="16">
+      <text x="180" y="26">
+        {'Kiro usage — credits đo trực tiếp'}
+      </text>
+      <text x="20" y="80">
+        {'Plain'}
+      </text>
+      <text x="20" y="130">
+        {'Treatment'}
+      </text>
+      <text x="430" y="80">
+        {'1.76416004238806'}
+      </text>
+      <text x="670" y="106" textAnchor="end">
+        {'4.148471159701493'}
+      </text>
+      <text x="176" y="174">
+        {'0'}
+      </text>
+      <text x="398" y="174">
+        {'2'}
+      </text>
+      <text x="620" y="174">
+        {'4 credits'}
+      </text>
+      <text x="180" y="230">
+        {'Kiro elapsed time — giây đo trực tiếp'}
+      </text>
+      <text x="20" y="284">
+        {'Plain'}
+      </text>
+      <text x="20" y="334">
+        {'Treatment'}
+      </text>
+      <text x="404" y="284">
+        {'36.179 s'}
+      </text>
+      <text x="626" y="310">
+        {'82.879 s'}
+      </text>
+      <text x="176" y="378">
+        {'0'}
+      </text>
+      <text x="398" y="378">
+        {'40'}
+      </text>
+      <text x="620" y="378">
+        {'80 s'}
+      </text>
+      <text x="20" y="406">
+        {'Mỗi nhóm có trục riêng; không phải token hoặc billing cost'}
+      </text>
+    </g>
+    <g fill="none" stroke="currentColor">
+      <path d="M180 44V150H650 M415 150v6 M650 150v6 M180 248V354H650 M415 354v6 M650 354v6" />
+    </g>
+    <g fill="currentColor">
+      <rect x="180" y="62" width="207.3" height="30" rx="3" />
+      <rect x="180" y="266" width="212.6" height="30" rx="3" />
+    </g>
+    <g fill="none" stroke="currentColor" strokeWidth="2">
+      <rect x="180" y="112" width="487.4" height="30" rx="3" />
+      <rect x="180" y="316" width="486.9" height="30" rx="3" />
+    </g>
+  </svg>
+  <figcaption className="mt-2 text-sm">
+    Thanh liền: plain. Thanh viền: treatment. Hai kết quả đo được đều cao hơn ở treatment trong lần
+    chạy này.
+  </figcaption>
+</figure>
+
+Nói ngắn gọn: trong phép thử này, treatment không chứng minh tiết kiệm credits hoặc rút ngắn thời gian. Không có provider input/output/total-token counter trong session export, nên không có số tổng token chính xác và cũng không có phần trăm tiết kiệm billing để báo.
+
+## Kích thước output: có estimate lexical, không có output token của phiên
+
+Có một phép đếm tái lập được cho **văn bản literal** của hai file deliverable, dùng `tiktoken 0.14.0` với encoding `o200k_base`. Phép đếm chỉ nhìn UTF-8 của file: không chứa chat messages, hidden reasoning, tool schema hay cache. Vì vậy nó là **lexical estimate**, không phải output token Kiro hay token bị provider tính.
+
+| File deliverable      |              Plain |          Treatment |
+| --------------------- | -----------------: | -----------------: |
+| `answer.json`         | 881 lexical tokens | 881 lexical tokens |
+| `answer.md`           | 587 lexical tokens | 618 lexical tokens |
+| Tổng hai file, suy ra |              1,468 |              1,499 |
+
+<figure className="not-prose my-8 overflow-x-auto">
+  <svg
+    viewBox="0 0 720 250"
+    role="img"
+    aria-labelledby="lexical-title lexical-desc"
+    className="w-full min-w-[540px] text-gray-800 dark:text-gray-100"
+  >
+    <title id="lexical-title">Ước lượng lexical cho hai deliverable</title>
+    <desc id="lexical-desc">
+      Theo tiktoken 0.14.0 o200k_base, tổng văn bản literal của plain là 1,468 token và treatment là
+      1,499 token. Đây không phải output token của phiên hoặc provider billing.
+    </desc>
+    <g fill="currentColor" fontSize="16">
+      <text x="180" y="26">
+        {'Tổng lexical estimate của hai file deliverable'}
+      </text>
+      <text x="20" y="86">
+        {'Plain'}
+      </text>
+      <text x="20" y="146">
+        {'Treatment'}
+      </text>
+      <text x="620" y="86">
+        {'1,468'}
+      </text>
+      <text x="630" y="146">
+        {'1,499'}
+      </text>
+      <text x="176" y="202">
+        {'0'}
+      </text>
+      <text x="410" y="202">
+        {'800'}
+      </text>
+      <text x="620" y="202">
+        {'1,600'}
+      </text>
+      <text x="20" y="232">
+        {'tiktoken 0.14.0 / o200k_base · estimate, không phải billing'}
+      </text>
+    </g>
+    <path d="M180 46V176H650 M415 176v6 M650 176v6" fill="none" stroke="currentColor" />
+    <rect x="180" y="64" width="431.2" height="30" rx="3" fill="currentColor" />
+    <rect
+      x="180"
+      y="124"
+      width="440.3"
+      height="30"
+      rx="3"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+    />
+  </svg>
+  <figcaption className="mt-2 text-sm">
+    Treatment dài hơn 31 lexical tokens theo phép đếm này. Chênh lệch nhỏ đó không cho biết output
+    token, reasoning hay hóa đơn của phiên.
+  </figcaption>
+</figure>
+
+## Caveman có nén payload, nhưng không tránh input ban đầu
+
+Raw transcript của treatment có một lời gọi `caveman::caveman_compress` trên inventory JSON 24 record. Tool trả về `tokens_before: 2042`, `tokens_after: 657`, `ratio: 0.678256611165524`, và đánh dấu cơ sở là `inferred`.
+
+<figure className="not-prose my-8 overflow-x-auto">
+  <svg
+    viewBox="0 0 720 250"
+    role="img"
+    aria-labelledby="compression-title compression-desc"
+    className="w-full min-w-[540px] text-gray-800 dark:text-gray-100"
+  >
+    <title id="compression-title">Caveman inferred compression của inventory</title>
+    <desc id="compression-desc">
+      Lời gọi caveman compress báo 2,042 inferred tokens trước nén và 657 sau nén, với ratio
+      0.678256611165524. Immediate view là lossy và cần retrieval; đây không phải token do provider
+      tính hoặc input-token saving của phiên.
+    </desc>
+    <g fill="currentColor" fontSize="16">
+      <text x="180" y="26">
+        {'Caveman compress trên inventory — inferred tokens'}
+      </text>
+      <text x="20" y="86">
+        {'Trước nén'}
+      </text>
+      <text x="20" y="146">
+        {'Immediate view'}
+      </text>
+      <text x="648" y="86">
+        {'2,042'}
+      </text>
+      <text x="372" y="146">
+        {'657'}
+      </text>
+      <text x="176" y="202">
+        {'0'}
+      </text>
+      <text x="405" y="202">
+        {'1,000'}
+      </text>
+      <text x="620" y="202">
+        {'2,100'}
+      </text>
+      <text x="20" y="232">
+        {'ratio tool: 0.678256611165524 · inferred, không phải provider token'}
+      </text>
+    </g>
+    <path d="M180 46V176H650 M403.8 176v6 M650 176v6" fill="none" stroke="currentColor" />
+    <rect
+      x="180"
+      y="64"
+      width="457.0"
+      height="30"
+      rx="3"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+    />
+    <rect x="180" y="124" width="147.0" height="30" rx="3" fill="currentColor" />
+  </svg>
+  <figcaption className="mt-2 text-sm">
+    Thanh viền: trước nén. Thanh liền: immediate compressed view. Đây là số tool suy ra, không phải
+    usage hoặc billing token của provider.
+  </figcaption>
+</figure>
+
+Điểm quan trọng hơn con số: treatment đã đọc JSON gốc **trước** khi nén. Vì thế, lời gọi này không hề tránh input context ban đầu và không thể được dùng để nhận công “tiết kiệm input token” cho phiên. Immediate view cũng là lossy (`lossless_to_model: false`); agent phải gọi retrieval khi cần full record. Caveman có thao tác nén được quan sát, nhưng lợi ích thực tế sẽ phụ thuộc đường đưa dữ liệu vào context và nhu cầu truy xuất lại.
+
+## Điều có thể kết luận, và điều chưa thể
+
+Có thể kết luận trong phạm vi hẹp:
+
+- hai output đều đáp ứng rubric 20/20 và safety gate của fixture Cloud SA;
+- treatment dùng nhiều Kiro credits và nhiều elapsed time hơn trong một paired run này;
+- caveman đã trả về một immediate view ngắn hơn theo inferred count, nhưng không giảm input đã đọc trong phiên;
+- lexical estimate của deliverable treatment không nhỏ hơn plain.
+
+Không thể kết luận:
+
+- ponytail hoặc caveman luôn tiết kiệm token, credit, tiền hay thời gian;
+- hai kỹ thuật có đóng góp nhân quả riêng biệt;
+- hai nhánh có chất lượng tương đương trên production hoặc ngoài rubric;
+- provider input, output, cache, reasoning hay total tokens là bao nhiêu.
+
+## Cách mình sẽ áp dụng vào công việc Cloud SA
+
+Điều hữu ích nhất của phép thử không phải là một prompt thần kỳ. Đó là cách đặt instrument trước khi tối ưu.
+
+1. **Chốt workload và gate chất lượng trước.** Với Cloud SA, HA hai zone, private database, rollback và recovery drill phải là điều kiện pass, không phải phần văn vẻ cuối bài.
+2. **Ghi đúng đơn vị.** Credit, elapsed time, token billed, lexical count và byte size là các đại lượng khác nhau. Đừng đổi tên đại lượng để kết quả nhìn có lợi hơn.
+3. **Kiểm tra đường context.** Một tool nén chỉ có ích cho input-cost nếu dữ liệu đi qua nó trước khi model đọc bản gốc; payload lossy còn cần tính cả retrieval.
+4. **So sánh nhiều lần trước khi mua câu chuyện ROI.** Một paired run tốt để phát hiện hướng đi, không đủ để đặt ngân sách hay tuyên bố causal impact.
+5. **Giữ tinh thần ponytail, nhưng đo outcome.** Ưu tiên giải pháp nhỏ và đúng vẫn là cách review tốt. Còn việc nó có giảm chi phí agent ở workload nào phải để số đo trả lời.
+
+Với lần thử này, số đo trả lời khá thẳng: treatment vẫn làm đúng fixture, nhưng chưa rẻ hơn hay nhanh hơn. Đó là một kết quả có ích — vì nó cho mình biết cần sửa thiết kế phép đo và đường context ở đâu trước khi kỳ vọng tiết kiệm thực sự.
