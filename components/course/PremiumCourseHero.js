@@ -83,7 +83,7 @@ export default function PremiumCourseHero({ courseKey }) {
             Trao đổi mục tiêu, lịch học và học phí trước khi quyết định đăng ký.
           </p>
 
-          <dl className="mt-8 grid grid-cols-2 gap-4 border-t border-line pt-5">
+          <dl className="mt-8 grid grid-cols-2 gap-4 border-t border-line pt-5 sm:grid-cols-3">
             <div>
               <dt className="text-xs text-fg-subtle">Thời lượng</dt>
               <dd className="mt-1 font-bold">{catalog.duration}</dd>
@@ -91,6 +91,10 @@ export default function PremiumCourseHero({ courseKey }) {
             <div>
               <dt className="text-xs text-fg-subtle">Lịch khai giảng</dt>
               <dd className="mt-1 font-bold">{MONTHLY_INTAKE}</dd>
+            </div>
+            <div>
+              <dt className="text-xs text-fg-subtle">Học viên VNTechies</dt>
+              <dd className="mt-1 font-bold">200+</dd>
             </div>
           </dl>
         </div>
