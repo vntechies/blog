@@ -18,6 +18,8 @@ export default function CourseSimple({
 }) {
   const router = useRouter()
   const { title, slug, summary, date, readingTime, images, fileName } = frontMatter
+  const courseIntro = posts.find((p) => p.index === 0)
+  const courseSlug = slug.split('/').slice(0, -1).join('/')
   const disabledNav =
     'inline-flex min-h-[2.5rem] items-center justify-center rounded-xl border border-line px-3.5 text-sm font-semibold text-fg-subtle'
 
@@ -54,6 +56,36 @@ export default function CourseSimple({
       <ScrollTopAndComment />
       {/* overflow-x-clip (not hidden) so the lesson sidebar can stick */}
       <article className="surface-panel overflow-x-clip px-3 py-6 sm:px-6 lg:px-8">
+        <nav aria-label="Breadcrumb" className="mx-auto mb-2 max-w-3xl">
+          <ol className="flex flex-wrap items-center gap-2 text-sm text-fg-muted">
+            <li>
+              <Link href="/" className="hover:text-brand-strong">
+                Trang chủ
+              </Link>
+            </li>
+            <li aria-hidden="true">/</li>
+            <li>
+              <Link href="/courses" className="hover:text-brand-strong">
+                Khóa học
+              </Link>
+            </li>
+            {courseIntro && (
+              <>
+                <li aria-hidden="true">/</li>
+                <li>
+                  <Link href={`/courses/${courseSlug}`} className="hover:text-brand-strong">
+                    {courseIntro.title}
+                  </Link>
+                </li>
+              </>
+            )}
+            <li aria-hidden="true">/</li>
+            <li aria-current="page" className="truncate text-fg">
+              {title}
+            </li>
+          </ol>
+        </nav>
+
         <header className="pb-4 text-center">
           <span className="page-eyebrow mx-auto">Bài học</span>
           <h1 className="page-heading">{title}</h1>
@@ -67,7 +99,7 @@ export default function CourseSimple({
         {/* Sidebar from lg; tablets keep a full-width reading column */}
         <div className="lg:hidden">
           <div className="surface-panel-muted mb-6 p-4">
-            <h3 className="panel-label">Nội dung khóa học</h3>
+            <h2 className="panel-label">Nội dung khóa học</h2>
             {renderCourseLinks()}
           </div>
         </div>
@@ -76,13 +108,13 @@ export default function CourseSimple({
           <aside className="hidden lg:block">
             <div className="sticky top-24 space-y-6">
               <div className="surface-panel-muted max-h-[calc(100vh-8rem)] overflow-y-auto p-4">
-                <h3 className="panel-label">Nội dung khóa học</h3>
+                <h2 className="panel-label">Nội dung khóa học</h2>
                 {renderCourseLinks()}
               </div>
 
               {otherCourses.length > 0 && (
                 <div className="surface-panel-muted p-4">
-                  <h3 className="panel-label">Khóa học khác</h3>
+                  <h2 className="panel-label">Khóa học khác</h2>
                   <div className="mt-3 flex flex-col gap-3">
                     {otherCourses.map((course) => (
                       <HorizontalCard
@@ -108,7 +140,7 @@ export default function CourseSimple({
                   width={1200}
                   height={760}
                   quality={75}
-                  loading="lazy"
+                  priority
                 />
               </div>
             )}

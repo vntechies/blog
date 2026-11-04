@@ -15,7 +15,7 @@ import TocSidebar from '@/components/TocSidebar'
 const postDateTemplate = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }
 
 export default function PostLayout({ frontMatter, authorDetails, toc, next, prev, children }) {
-  const { slug, date, title, tags } = frontMatter
+  const { slug, date, title, tags, summary, lastmod } = frontMatter
 
   return (
     <SectionContainer>
@@ -33,6 +33,26 @@ export default function PostLayout({ frontMatter, authorDetails, toc, next, prev
 
       {/* overflow-x-clip (not hidden) so the sidebar can stick */}
       <article className="surface-panel overflow-x-clip px-4 py-8 sm:px-8 lg:px-10">
+        <nav aria-label="Breadcrumb" className="mx-auto mb-4 max-w-3xl">
+          <ol className="flex flex-wrap items-center gap-2 text-sm text-fg-muted">
+            <li>
+              <Link href="/" className="hover:text-brand-strong">
+                Trang chủ
+              </Link>
+            </li>
+            <li aria-hidden="true">/</li>
+            <li>
+              <Link href="/blog" className="hover:text-brand-strong">
+                Blog
+              </Link>
+            </li>
+            <li aria-hidden="true">/</li>
+            <li aria-current="page" className="truncate text-fg">
+              {title}
+            </li>
+          </ol>
+        </nav>
+
         <header className="mx-auto max-w-3xl text-center">
           <span className="page-eyebrow mx-auto">
             <time dateTime={date}>
@@ -40,7 +60,42 @@ export default function PostLayout({ frontMatter, authorDetails, toc, next, prev
             </time>
           </span>
           <PageTitle>{title}</PageTitle>
+          <div className="mt-3 text-sm text-fg-muted">
+            {authorDetails &&
+              authorDetails.map((author, i) => (
+                <span key={author.name}>
+                  {i > 0 && <span className="mx-1">·</span>}
+                  {!author.slug || author.slug === 'default' ? (
+                    <Link
+                      href="/about"
+                      rel="author"
+                      className="font-semibold text-fg hover:text-brand-strong"
+                    >
+                      VNTechies
+                    </Link>
+                  ) : (
+                    <Link
+                      href={`/authors/${author.slug}`}
+                      rel="author"
+                      className="font-semibold text-fg hover:text-brand-strong"
+                    >
+                      {author.name}
+                    </Link>
+                  )}
+                </span>
+              ))}
+          </div>
+          {lastmod && (
+            <div className="mt-2 text-sm text-fg-muted">
+              Cập nhật:{' '}
+              <time dateTime={lastmod}>
+                {new Date(lastmod).toLocaleDateString(siteMetadata.locale, postDateTemplate)}
+              </time>
+            </div>
+          )}
         </header>
+
+        {summary && <p className="page-lead mx-auto mt-4 max-w-3xl text-center">{summary}</p>}
 
         {/* Stacked below xl: sidebar and text share one centred ~72ch column */}
         <div className="mx-auto mt-10 grid max-w-3xl gap-8 xl:max-w-none xl:grid-cols-[230px,1fr]">
@@ -65,16 +120,26 @@ export default function PostLayout({ frontMatter, authorDetails, toc, next, prev
                     const len = author.name?.length || 0
                     const nameSize = len <= 14 ? 'text-base' : len <= 22 ? 'text-sm' : 'text-xs'
                     const nameClass = `break-words font-semibold leading-tight ${nameSize}`
-                    const name = author.slug ? (
-                      <Link
-                        href={`/authors/${author.slug}`}
-                        className={`${nameClass} text-fg hover:text-brand-strong`}
-                      >
-                        {author.name}
-                      </Link>
-                    ) : (
-                      <span className={`${nameClass} text-fg`}>{author.name}</span>
-                    )
+                    const name =
+                      !author.slug || author.slug === 'default' ? (
+                        <Link
+                          href="/about"
+                          rel="author"
+                          className={`${nameClass} text-fg hover:text-brand-strong`}
+                        >
+                          VNTechies
+                        </Link>
+                      ) : author.slug ? (
+                        <Link
+                          href={`/authors/${author.slug}`}
+                          rel="author"
+                          className={`${nameClass} text-fg hover:text-brand-strong`}
+                        >
+                          {author.name}
+                        </Link>
+                      ) : (
+                        <span className={`${nameClass} text-fg`}>{author.name}</span>
+                      )
                     return (
                       <li className="flex items-center space-x-3" key={author.name}>
                         {avatar}
