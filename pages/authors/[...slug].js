@@ -38,14 +38,34 @@ export async function getStaticProps({ params }) {
 
 export default function AuthorPage({ authorDetails, authorPosts, totalPostsCount, slug }) {
   const { mdxSource, frontMatter } = authorDetails
-  const { name, occupation, company, bio } = frontMatter
+  const { name, occupation, company, bio, avatar, facebook, linkedin, github, website, url } =
+    frontMatter
+
+  const authorUrl = `${siteMetadata.siteUrl}/authors/${slug}`
+  const sameAs = [facebook, linkedin, github, website, url].filter(Boolean)
+
+  const profileData = {
+    '@context': 'https://schema.org',
+    '@type': 'ProfilePage',
+    name,
+    ...(occupation ? { jobTitle: occupation } : {}),
+    ...(avatar
+      ? { image: avatar.startsWith('http') ? avatar : `${siteMetadata.siteUrl}${avatar}` }
+      : {}),
+    url: authorUrl,
+    ...(sameAs.length ? { sameAs } : {}),
+  }
 
   return (
     <>
       <PageSEO
-        title={`${name} - ${occupation} | ${siteMetadata.title}`}
-        description={bio || `Learn more about ${name}, ${occupation} at ${company}`}
-        url={`${siteMetadata.siteUrl}/authors/${slug}`}
+        title={`${name} - ${occupation} | ${siteMetadata.siteName}`}
+        description={
+          bio ||
+          `Tìm hiểu về ${name}, ${occupation}${company ? ` tại ${company}` : ''} trên VNTechies`
+        }
+        structuredData={profileData}
+        noindex={slug === 'default'}
       />
       <MDXLayoutRenderer
         layout={frontMatter.layout || DEFAULT_LAYOUT}

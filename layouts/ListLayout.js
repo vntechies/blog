@@ -2,7 +2,13 @@ import { useState } from 'react'
 import Pagination from '@/components/Pagination'
 import ArticleList from '@/components/ArticleList'
 
-export default function ListLayout({ posts, title, initialDisplayPosts = [], pagination }) {
+export default function ListLayout({
+  posts,
+  title,
+  description = 'Tìm kiếm bài viết theo tiêu đề, tóm tắt hoặc chủ đề.',
+  initialDisplayPosts = [],
+  pagination,
+}) {
   const [searchValue, setSearchValue] = useState('')
   const filteredBlogPosts = posts.filter((frontMatter) => {
     const tags = frontMatter.tags || []
@@ -20,7 +26,7 @@ export default function ListLayout({ posts, title, initialDisplayPosts = [], pag
         <div className="mb-8">
           <span className="page-eyebrow">Kho tri thức</span>
           <h1 className="page-heading">{title}</h1>
-          <p className="page-lead">Tìm kiếm bài viết theo tiêu đề, tóm tắt hoặc chủ đề.</p>
+          <p className="page-lead">{description}</p>
         </div>
         <label className="relative flex max-w-2xl items-center border border-line-control bg-surface focus-within:border-brand-strong">
           <span className="pointer-events-none select-none whitespace-nowrap pl-4 text-sm text-success">

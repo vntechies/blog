@@ -5,6 +5,7 @@ import generateRss from '@/lib/generate-rss'
 import { getAllFilesFrontMatter, getFileBySlug } from '@/lib/mdx'
 import { getAllSeries } from '@/lib/series'
 import kebabCase from '@/lib/utils/kebabCase'
+import { breadcrumbList } from '@/lib/schema'
 import fs from 'fs'
 import path from 'path'
 import { MDXLayoutRenderer } from '@/components/MDXComponents'
@@ -51,14 +52,49 @@ export async function getStaticProps({ params }) {
 export default function Series({ posts, series }) {
   // Capitalize first letter and convert space to dash
   const { title, images, summary } = series
+  const seriesUrl = `${siteMetadata.siteUrl}/series/${kebabCase(title)}`
+
+  const structuredData = [
+    {
+      '@context': 'https://schema.org',
+      '@type': 'CollectionPage',
+      name: title,
+      description: summary,
+      url: seriesUrl,
+      inLanguage: siteMetadata.language,
+      about: posts.map((post) => ({
+        '@type': 'Article',
+        name: post.title,
+        url: `${siteMetadata.siteUrl}/blog/${post.slug}`,
+      })),
+      breadcrumb: breadcrumbList([
+        { name: 'Trang chủ', item: `${siteMetadata.siteUrl}/` },
+        { name: 'Blog', item: `${siteMetadata.siteUrl}/blog` },
+        { name: title },
+      ]),
+    },
+    {
+      '@context': 'https://schema.org',
+      '@type': 'ItemList',
+      name: title,
+      itemListElement: posts.map((post, i) => ({
+        '@type': 'ListItem',
+        position: i + 1,
+        name: post.title,
+        url: `${siteMetadata.siteUrl}/blog/${post.slug}`,
+      })),
+    },
+  ]
+
   return (
     <>
       <TagSEO
         title={`${title} - ${siteMetadata.headerTitle}`}
         description={summary}
         images={images}
+        structuredData={structuredData}
       />
-      <ListLayout posts={posts} title={title} />
+      <ListLayout posts={posts} title={title} description={summary} />
     </>
   )
 }
