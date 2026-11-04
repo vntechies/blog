@@ -2,7 +2,7 @@
 export const courseLanding = {
   'aws/saa': {
     title: 'AWS Solutions Architect',
-    headline: 'Thiết kế AWS. Chuẩn bị SAA-C03.',
+    headline: 'Khoá học AWS Solutions Architect (SAA-C03): thiết kế kiến trúc và luyện thi',
     summary: 'Đi từ dịch vụ cốt lõi đến lựa chọn kiến trúc, thực hành và luyện đề cùng mentor.',
     fit: 'Dành cho developer, kỹ sư IT và người muốn chuyển hướng sang Cloud.',
     outcomes: [
@@ -15,7 +15,7 @@ export const courseLanding = {
   },
   devops: {
     title: 'DevOps Engineer Bootcamp',
-    headline: 'Từ viết code đến triển khai một hệ thống.',
+    headline: 'Khoá học DevOps Engineer Bootcamp (VDE-C01): từ code đến vận hành hệ thống',
     summary:
       'Xây nền tảng Linux, container và CI/CD; thực hành tự động hóa hạ tầng và vận hành ứng dụng.',
     fit: 'Dành cho developer, IT engineer và người muốn xây nền tảng để chuyển sang DevOps.',
@@ -43,7 +43,7 @@ export const courseLanding = {
   },
   'aws/aif': {
     title: 'AWS AI Practitioner',
-    headline: 'Hiểu AI để chọn đúng cách ứng dụng.',
+    headline: 'Khoá học AWS AI Practitioner (AIF-C01): nền tảng AI và generative AI trên AWS',
     summary:
       'Xây nền tảng AI, machine learning và generative AI trên AWS, kết hợp lộ trình chuẩn bị AIF-C01.',
     fit: 'Dành cho người muốn hiểu AI trên AWS từ nền tảng đến tình huống ứng dụng.',
@@ -57,7 +57,7 @@ export const courseLanding = {
   },
   'aws/dva': {
     title: 'AWS Developer Associate',
-    headline: 'Đưa kỹ năng phát triển ứng dụng lên AWS.',
+    headline: 'Khoá học AWS Developer Associate (DVA-C02): xây dựng và triển khai ứng dụng',
     summary:
       'Học cách xây dựng, triển khai và xử lý sự cố ứng dụng Cloud, đồng thời chuẩn bị cho DVA-C02.',
     fit: 'Dành cho developer có nền tảng lập trình muốn phát triển ứng dụng trên AWS.',
@@ -71,7 +71,7 @@ export const courseLanding = {
   },
   'aws/dea': {
     title: 'AWS Data Engineer Associate',
-    headline: 'Xây data pipeline trên AWS, từ nguồn đến phân tích.',
+    headline: 'Khoá học AWS Data Engineer Associate (DEA-C01): xây data pipeline trên AWS',
     summary:
       'Lộ trình 12 module với data lake, Glue, Athena, EMR, Redshift và xử lý luồng dữ liệu, hướng tới DEA-C01.',
     fit: 'Dành cho engineer và analyst có nền tảng SQL hoặc Cloud muốn đi sâu vào data engineering.',

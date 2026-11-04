@@ -58,6 +58,42 @@ const faqs = [
       </>
     ),
   },
+  {
+    question: 'Mình nên bắt đầu với khoá học nào?',
+    answer: (
+      <>
+        Nếu bạn mới bắt đầu, hãy chọn <strong>CLF-C02</strong> hoặc <strong>AIF-C01</strong> rồi lên{' '}
+        <strong>SAA-C03</strong>. Nếu muốn đổi ngành, một bootcamp (DevOps hoặc Data) hoặc{' '}
+        <strong>SAA-C03</strong> là lựa chọn phù hợp để có lộ trình trọn gói.
+      </>
+    ),
+  },
+  {
+    question: 'VNTechies có khoá học miễn phí không?',
+    answer: (
+      <>
+        Có. VNTechies cung cấp các khoá học miễn phí để bạn tự học theo lộ trình, xem danh sách tại{' '}
+        <Link href="/courses#mien-phi" className={answerLink}>
+          Khoá học miễn phí
+        </Link>
+        .
+      </>
+    ),
+  },
+  {
+    question: 'Lớp học diễn ra như thế nào?',
+    answer: (
+      <>
+        Lớp học online vào buổi tối, 2 buổi/tuần, khai giảng hàng tháng. Nhiều khoá có video record
+        để bạn xem lại; lịch học và chi tiết cụ thể được ghi rõ trên trang từng khoá. Chi tiết về
+        học phí và các chính sách xem tại trang{' '}
+        <Link href="/pricing" className={answerLink}>
+          Chính sách giá
+        </Link>
+        .
+      </>
+    ),
+  },
 ]
 
 const FAQ = () => {

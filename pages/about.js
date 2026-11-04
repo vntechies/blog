@@ -170,7 +170,7 @@ export default function About({ mentors, contributors, stats }) {
   return (
     <>
       <PageSEO
-        title={`Giới thiệu đội ngũ - ${siteMetadata.title}`}
+        title={`Giới thiệu đội ngũ - ${siteMetadata.siteName}`}
         description="Danh sách đầy đủ mentor và tác giả tại VNTechies. Kết nối cùng đội ngũ giàu kinh nghiệm Cloud, DevOps và Data."
       />
 
@@ -185,6 +185,19 @@ export default function About({ mentors, contributors, stats }) {
               Kết nối với đội ngũ chuyên gia Cloud, DevOps, Data, AI đang trực tiếp triển khai dự án
               chia sẻ kiến thức thực chiến cho cộng đồng.
             </p>
+          </div>
+
+          <div className="mx-auto mt-10 max-w-3xl">
+            <div className="surface-panel-muted p-6 text-left sm:p-8">
+              <h2 className="text-xl font-black text-slate-900 dark:text-slate-100">
+                VNTechies là gì?
+              </h2>
+              <p className="mt-3 text-sm leading-6 text-slate-600 dark:text-slate-300">
+                VNTechies là cộng đồng chia sẻ kiến thức công nghệ cho người Việt, tập trung vào
+                Cloud, DevOps, Data và AI. Chúng tôi xuất bản bài viết kỹ thuật và tổ chức các khoá
+                học do đội ngũ mentor giàu kinh nghiệm thực chiến trực tiếp đồng hành.
+              </p>
+            </div>
           </div>
 
           <div className="mx-auto mt-8 grid max-w-5xl gap-3 sm:grid-cols-3">
