@@ -745,8 +745,8 @@ export default function CourseSpecial({ frontMatter, mentorDetails, otherCourses
               🚀 Đừng Bỏ Lỡ Cơ Hội Thay Đổi Sự Nghiệp!
             </h2>
             <p className="mb-8 text-xl text-blue-100">
-              Chỉ còn 20 suất với giá ưu đãi 50%. Đăng ký ngay để bắt đầu hành trình lên mây của
-              bạn!
+              Khai giảng hàng tháng với học phí ưu đãi 2.499.000₫ (giá gốc 5.000.000₫). Đăng ký để
+              giữ chỗ ở lớp gần nhất.
             </p>
             <div className="flex flex-col justify-center gap-4 sm:flex-row">
               <a

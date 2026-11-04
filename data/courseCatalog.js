@@ -55,8 +55,8 @@ export const premiumCatalog = [
     slug: 'data-engineer-bootcamp/gioi-thieu',
     code: 'VDT-C01',
     level: 'Bootcamp',
-    duration: '8 tuần · 16 buổi',
-    fromPrice: 10000000,
+    duration: '9 tuần · 18 buổi',
+    fromPrice: 8300000,
     fits: ['switch', 'working'],
   },
 ]
