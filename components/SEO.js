@@ -1,6 +1,7 @@
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import siteMetadata from '@/data/siteMetadata'
+import { ORG_ID, breadcrumbList } from '@/lib/schema'
 
 const CommonSEO = ({
   title,
@@ -25,6 +26,7 @@ const CommonSEO = ({
       <meta name="description" content={description} />
       <meta property="og:url" content={pageUrl} />
       <meta property="og:type" content={ogType} />
+      <meta property="og:locale" content="vi_VN" />
       <meta property="og:site_name" content={siteMetadata.siteName} />
       <meta property="og:description" content={description} />
       <meta property="og:title" content={title} />
@@ -85,7 +87,7 @@ export const PageSEO = ({
   )
 }
 
-export const TagSEO = ({ title, description, images = [], noindex = false }) => {
+export const TagSEO = ({ title, description, images = [], noindex = false, structuredData }) => {
   const router = useRouter()
   const cleanPath = router.asPath.split(/[?#]/)[0]
   let imagesArr =
@@ -123,6 +125,17 @@ export const TagSEO = ({ title, description, images = [], noindex = false }) => 
           href={`${siteMetadata.siteUrl}${cleanPath}/feed.xml`}
         />
       </Head>
+      {structuredData && (
+        <Head>
+          {(Array.isArray(structuredData) ? structuredData : [structuredData]).map((data, i) => (
+            <script
+              key={i}
+              type="application/ld+json"
+              dangerouslySetInnerHTML={{ __html: JSON.stringify(data) }}
+            />
+          ))}
+        </Head>
+      )}
     </>
   )
 }
@@ -137,6 +150,7 @@ export const BlogSEO = ({
   url,
   images = [],
   canonicalUrl,
+  breadcrumbs,
 }) => {
   const publishedAt = new Date(date).toISOString()
   const modifiedAt = new Date(lastmod || date).toISOString()
@@ -156,6 +170,7 @@ export const BlogSEO = ({
 
   const organization = {
     '@type': 'Organization',
+    '@id': ORG_ID,
     name: siteMetadata.siteName,
     url: siteMetadata.siteUrl,
   }
@@ -167,6 +182,8 @@ export const BlogSEO = ({
           '@type': 'Person',
           name: a.name,
           url: `${siteMetadata.siteUrl}/authors/${a.slug}`,
+          ...(a.occupation ? { jobTitle: a.occupation } : {}),
+          ...(a.facebook ? { facebook: a.facebook } : {}),
           sameAs: [a.linkedin, a.github, a.twitter, a.website].filter(Boolean),
         }
   )
@@ -185,6 +202,7 @@ export const BlogSEO = ({
     author: authorList.length ? authorList : organization,
     publisher: {
       '@type': 'Organization',
+      '@id': ORG_ID,
       name: siteMetadata.siteName,
       url: siteMetadata.siteUrl,
       logo: {
@@ -192,10 +210,17 @@ export const BlogSEO = ({
         url: `${siteMetadata.siteUrl}${siteMetadata.siteLogo}`,
       },
     },
+    inLanguage: siteMetadata.language,
     description: summary,
   }
 
   const twImageUrl = featuredImages[0].url
+
+  const breadcrumb = breadcrumbs || [
+    { name: 'Trang chủ', item: `${siteMetadata.siteUrl}/` },
+    { name: 'Blog', item: `${siteMetadata.siteUrl}/blog` },
+    { name: title },
+  ]
 
   return (
     <>
@@ -216,6 +241,12 @@ export const BlogSEO = ({
             __html: JSON.stringify(structuredData, null, 2),
           }}
         />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(breadcrumbList(breadcrumb), null, 2),
+          }}
+        />
       </Head>
     </>
   )
@@ -231,7 +262,12 @@ export const CourseSEO = ({
   showCanonical,
   isFree,
   price,
-  startDate,
+  courseCode,
+  educationalLevel,
+  fromPrice,
+  instructors = [],
+  breadcrumbs,
+  noOffers = false,
 }) => {
   const imagesArr = typeof images === 'string' ? [images] : images
   const featuredImages = (imagesArr.length ? imagesArr : [siteMetadata.socialBanner]).map((img) =>
@@ -239,36 +275,52 @@ export const CourseSEO = ({
   )
   const priceNumber = Number(String(price || '').replace(/[^0-9]/g, '')) // "8.000.000 VNĐ" -> 8000000
 
+  const offer =
+    !isFree && !noOffers && fromPrice && priceNumber > 0
+      ? {
+          offers: {
+            '@type': 'AggregateOffer',
+            lowPrice: fromPrice,
+            highPrice: priceNumber,
+            priceCurrency: 'VND',
+            url,
+          },
+        }
+      : {}
+
   const structuredData = {
     '@context': 'https://schema.org',
     '@type': 'Course',
     name,
     description: summary,
     url,
-    inLanguage: 'vi',
+    inLanguage: siteMetadata.language,
     image: featuredImages[0],
     provider: {
       '@type': 'Organization',
+      '@id': ORG_ID,
       name: siteMetadata.siteName,
       url: siteMetadata.siteUrl,
       logo: `${siteMetadata.siteUrl}${siteMetadata.siteLogo}`,
     },
-    ...(isFree
-      ? { isAccessibleForFree: true }
-      : priceNumber > 0 && {
-          offers: {
-            '@type': 'Offer',
-            price: priceNumber,
-            priceCurrency: 'VND',
-            category: 'Paid',
-            url,
-            availability: 'https://schema.org/InStock',
-          },
-        }),
-    ...(startDate && {
-      hasCourseInstance: { '@type': 'CourseInstance', courseMode: 'Online', startDate },
+    ...(isFree ? { isAccessibleForFree: true } : { isAccessibleForFree: false }),
+    ...offer,
+    ...(courseCode ? { courseCode } : {}),
+    ...(educationalLevel ? { educationalLevel } : {}),
+    ...(instructors.length > 0 && {
+      hasCourseInstance: {
+        '@type': 'CourseInstance',
+        courseMode: 'online',
+        instructor: instructors,
+      },
     }),
   }
+
+  const breadcrumb = breadcrumbs || [
+    { name: 'Trang chủ', item: `${siteMetadata.siteUrl}/` },
+    { name: 'Khoá học', item: `${siteMetadata.siteUrl}/courses` },
+    { name },
+  ]
 
   return (
     <>
@@ -286,6 +338,12 @@ export const CourseSEO = ({
           type="application/ld+json"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify(structuredData, null, 2),
+          }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(breadcrumbList(breadcrumb), null, 2),
           }}
         />
       </Head>

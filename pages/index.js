@@ -2,6 +2,7 @@ import Image from 'next/image'
 import Link from '@/components/Link'
 import { PageSEO } from '@/components/SEO'
 import siteMetadata from '@/data/siteMetadata'
+import { ORG_ID, WEBSITE_ID } from '@/lib/schema'
 import { getAllFilesFrontMatter } from '@/lib/mdx'
 import ArticleList from '@/components/ArticleList'
 import FAQ from '@/components/home/FAQ'
@@ -22,7 +23,7 @@ const heroStats = [
 const heroCourseLinks = [
   {
     label: 'AWS SAA-C03',
-    title: 'Khoá học AWS Solution Architect',
+    title: 'Khoá học AWS Solutions Architect',
     subtitle: 'Luyện thi & thực chiến AWS cùng chuyên gia',
     href: '/courses/aws/saa/gioi-thieu',
     icon: '/static/images/icons/aws-icon.svg',
@@ -106,7 +107,7 @@ const programOutcomes = [
 
 const learningTracks = [
   {
-    title: 'AWS Solution Architect',
+    title: 'AWS Solutions Architect',
     summary: 'Luyện thi & thực chiến AWS cùng chuyên gia.',
     audience:
       'Phù hợp cho người muốn học AWS theo hướng vừa thi chứng chỉ vừa ứng dụng vào dự án thực tế.',
@@ -176,29 +177,39 @@ const testimonials = [
 ]
 
 const s = siteMetadata
+const homeDescription =
+  'VNTechies giúp bạn học để làm: mentor từ tập đoàn đa quốc gia, lab miễn phí, lộ trình Cloud/DevOps/Data thực chiến và hỗ trợ giảm giá thi chứng chỉ AWS.'
 const structuredData = [
   {
     '@context': 'https://schema.org',
     '@type': 'EducationalOrganization',
+    '@id': ORG_ID,
     name: s.siteName,
+    description: homeDescription,
     url: s.siteUrl,
     logo: `${s.siteUrl}${s.siteLogo}`,
     email: s.email,
     telephone: s.telephone,
     sameAs: [s.facebook, s.youtube, s.tiktok, s.linkedin, s.github, s.twitter, s.instagram],
+    knowsAbout: ['Cloud computing', 'DevOps', 'AWS', 'Data Engineering'],
   },
   {
     '@context': 'https://schema.org',
     '@type': 'WebSite',
+    '@id': WEBSITE_ID,
     name: s.siteName,
     alternateName: s.headerTitle,
     url: `${s.siteUrl}/`,
+    inLanguage: s.language,
+    publisher: {
+      '@id': ORG_ID,
+    },
   },
 ]
 
 export async function getStaticProps() {
   const posts = await getAllFilesFrontMatter('blog')
-  return { props: { posts } }
+  return { props: { posts: posts.slice(0, MAX_DISPLAY + 1) } }
 }
 
 export default function Home({ posts }) {
@@ -207,7 +218,7 @@ export default function Home({ posts }) {
       <PageSEO
         title={`Khóa học AWS, DevOps, Data Engineer thực chiến | ${siteMetadata.siteName}`}
         structuredData={structuredData}
-        description="VNTechies giúp bạn học để làm: mentor từ tập đoàn đa quốc gia, lab miễn phí, lộ trình Cloud/DevOps/Data thực chiến và hỗ trợ giảm giá thi chứng chỉ AWS."
+        description={homeDescription}
       />
 
       {/* Hero */}
@@ -217,7 +228,7 @@ export default function Home({ posts }) {
             <span className="page-eyebrow">Lộ trình học thực chiến cùng mentor chuyên gia</span>
 
             <h1 className="page-display">
-              <span className="block">Từ Zero đến Hero với</span>
+              <span className="block">Từ Zero đến Hero với</span>{' '}
               <span className="page-highlight mt-1 block">
                 Cloud, DevOps &amp; Data
                 <span className="term-cursor ml-2 align-baseline" aria-hidden="true" />

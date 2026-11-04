@@ -5,9 +5,13 @@ import { formatSlug, getAllFilesFrontMatter, getFileBySlug, getFiles } from '@/l
 import { BlogSEO, CourseSEO } from '@/components/SEO'
 import siteMetadata from '@/data/siteMetadata'
 import { courseSocialImages, coursesSocialImage } from '@/data/courseSocialImages'
+import { premiumCatalog } from '@/data/courseCatalog'
 import path from 'path'
 
 const DEFAULT_LAYOUT = 'CourseSimple'
+
+// Courses whose price is not yet confirmed; they emit no offers in markup.
+const PRICE_UNCONFIRMED = new Set(['data-engineer-bootcamp'])
 
 // A course is its folder: 'aws/saa/gioi-thieu' -> 'aws/saa'
 const courseOf = (slug) => slug.split('/').slice(0, -1).join('/')
@@ -50,7 +54,7 @@ export async function getStaticProps({ params }) {
   if (post.frontMatter.mentors && Array.isArray(post.frontMatter.mentors)) {
     const mentorPromise = post.frontMatter.mentors.map(async (mentor) => {
       const mentorResult = await getFileBySlug('authors', [mentor])
-      return mentorResult.frontMatter
+      return { ...mentorResult.frontMatter, slug: mentor }
     })
     mentorDetails = await Promise.all(mentorPromise)
   }
@@ -65,6 +69,10 @@ export async function getStaticProps({ params }) {
       return a.isFree ? 1 : -1
     })
     .slice(0, 6) // Limit to 6 courses
+
+  // Premium catalog entry for the course's `gioi-thieu` page (if any)
+  const catalogSlug = `${course}/gioi-thieu`
+  const catalogEntry = premiumCatalog.find((c) => c.slug === catalogSlug) || null
 
   // rss
   const feedPosts = [...sameCoursePosts].sort((a, b) => new Date(b.date) - new Date(a.date))
@@ -84,6 +92,7 @@ export async function getStaticProps({ params }) {
       otherCourses: otherCourses,
       prev: prev,
       next: next,
+      catalogEntry,
     },
   }
 }
@@ -96,10 +105,12 @@ export default function Course({
   otherCourses,
   prev,
   next,
+  catalogEntry,
 }) {
   const { mdxSource, toc, frontMatter } = post
-  const { title, summary, date, lastmod, images, slug, index, price, startDate, isFree } =
-    frontMatter
+  const { title, summary, date, lastmod, images, slug, index, price, isFree } = frontMatter
+
+  const course = courseOf(slug)
 
   const courseUrl = `${siteMetadata.siteUrl}/courses/${slug}`
   const socialImage = courseSocialImages[courseOf(slug)]
@@ -116,6 +127,25 @@ export default function Course({
   const courseTitle =
     day && series ? `${day[2].trim()} – ${series} (ngày ${day[1]})` : `${title} | VNTechies`
 
+  const instructors = mentorDetails.map((m) => ({
+    '@type': 'Person',
+    name: m.name,
+    ...(m.occupation ? { jobTitle: m.occupation } : {}),
+    ...(m.url ? { url: m.url } : {}),
+  }))
+
+  const fromPrice = catalogEntry ? catalogEntry.fromPrice : null
+  const code = catalogEntry ? catalogEntry.code : undefined
+  const level = catalogEntry ? catalogEntry.level : undefined
+  const noOffers = PRICE_UNCONFIRMED.has(courseOf(slug)) || fromPrice == null
+
+  const lessonBreadcrumbs = [
+    { name: 'Trang chủ', item: `${siteMetadata.siteUrl}/` },
+    { name: 'Khoá học', item: `${siteMetadata.siteUrl}/courses` },
+    { name: course, item: `${siteMetadata.siteUrl}/courses/${course}/gioi-thieu` },
+    { name: title },
+  ]
+
   return (
     <>
       {index === 0 ? (
@@ -128,7 +158,11 @@ export default function Course({
           canonicalUrl={courseUrl}
           isFree={isFree}
           price={price}
-          startDate={startDate}
+          courseCode={code}
+          educationalLevel={level}
+          fromPrice={fromPrice}
+          instructors={instructors}
+          noOffers={noOffers}
         />
       ) : (
         <BlogSEO
@@ -140,6 +174,7 @@ export default function Course({
           images={courseImages}
           canonicalUrl={courseUrl}
           authorDetails={authorDetails}
+          breadcrumbs={lessonBreadcrumbs}
         />
       )}
       <MDXLayoutRenderer
