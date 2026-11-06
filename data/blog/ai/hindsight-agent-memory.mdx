@@ -1,0 +1,124 @@
+---
+title: 'Hindsight: Cho AI agent một trí nhớ dài hạn'
+date: '2026-11-06'
+tags: ['ai', 'agent', 'memory', 'llm']
+draft: false
+authors: ['mau']
+images: ['/static/images/ogps/genai.png']
+summary: 'Tìm hiểu Hindsight lưu, truy xuất và sử dụng trí nhớ dài hạn như thế nào, cùng những cách tích hợp vào ứng dụng và coding agent.'
+---
+
+<TOCInline toc={props.toc} asDisclosure />
+
+## TL,DR
+
+Hindsight là một hệ thống memory mã nguồn mở của Vectorize, giúp agent lưu thông tin qua nhiều phiên và tìm lại khi cần. Ba thao tác chính là `retain` để ghi, `recall` để tìm và `reflect` để tổng hợp câu trả lời dựa trên memory. Bạn có thể tích hợp qua wrapper cho LLM, plugin coding agent hoặc gọi SDK/API trực tiếp. Đổi lại, bạn phải vận hành thêm một hệ thống và quản lý dữ liệu mà agent ghi nhớ.
+
+## Agent có thật sự nhớ không?
+
+Trong lúc làm thử các local agent harness, mình tò mò một câu hỏi khá đơn giản: Kiro Crew lưu knowledge base như thế nào? Lần theo phần lưu trữ trên máy, mình thấy knowledge base dùng một database SQLite, bên trong có bảng cho nội dung, tìm kiếm toàn văn và các thực thể. Một lựa chọn khá gọn cho ứng dụng chạy local. Mình bắt đầu nghĩ xa hơn: nếu muốn agent nhớ qua nhiều phiên, tự tổng hợp thông tin và tìm lại theo nhiều cách thì các hệ thống chuyên về memory làm thế nào? Đúng lúc đó, một em đồng nghiệp giới thiệu Hindsight, thế là mình tìm hiểu thử.
+
+### Knowledge base, memory và chỉ mục tìm kiếm
+
+Trước khi đi tiếp, mình phải phân biệt vài cái tên dễ bị dùng lẫn. **Knowledge base** của Kiro Crew là thư viện tài liệu tham khảo: bạn chọn đưa file, folder hoặc URL vào, rồi hệ thống chia nội dung thành các đoạn nhỏ để tìm khi cần. **Memory** là những gì agent tích lũy từ quá trình làm việc, như sở thích, bối cảnh dự án và bài học từ các lần được sửa. Một cái giúp agent đọc tài liệu bạn cung cấp; cái kia giúp nó mang kinh nghiệm sang phiên sau. [Bài giới thiệu Kiro Crew](https://kiro.dev/blog/introducing-kiro-crew/) cũng mô tả memory, lessons và skills được duy trì qua các phiên.
+
+Trong memory, **semantic memory** là những fact tương đối ổn định, chẳng hạn “dự án dùng PostgreSQL” hoặc “mình thích câu trả lời ngắn”. **Episodic memory** lưu những trải nghiệm cụ thể hơn, chẳng hạn một lần migration thất bại và cách team xử lý. Semantic ở đây nói về loại thông tin được nhớ; **semantic search** lại là cách tìm theo ý nghĩa, kể cả khi câu hỏi dùng từ khác với nội dung đã lưu. Tên giống nhau nhưng hai khái niệm không hoàn toàn giống nhau. [Tài liệu kiến trúc Kiro Crew](https://github.com/kirodotdev/KiroCrew/blob/main/docs/architecture/overview.md) mô tả các lớp memory và cách chúng tham gia retrieval.
+
+Còn **Full-Text Search (FTS) index** là chỉ mục giúp tìm nhanh theo từ trong văn bản, thay vì đọc lần lượt mọi đoạn mỗi khi có câu hỏi. Ví dụ, tìm `migration` có thể tìm đúng đoạn chứa từ đó, nhưng một câu diễn đạt khác như “chuyển đổi schema” có thể cần semantic search để bắt được ý. Kiro Crew dùng FTS5 cho tìm kiếm theo từ và còn kết hợp embeddings với quan hệ trong knowledge graph; khi embedding chưa sẵn sàng, tìm kiếm theo từ vẫn có thể hoạt động. [Tài liệu Knowledge Library](https://github.com/kirodotdev/KiroCrew/blob/main/src/kiro_crew/docs/knowledge-library-how-it-works.md) giải thích các đường tìm kiếm này. SQLite là nơi lưu và lập chỉ mục; việc chia đoạn, tạo embedding hay quyết định kết quả nào hữu ích là phần việc của ứng dụng phía trên.
+
+Bạn có để ý không, một agent có thể giúp bạn debug rất tốt hôm nay, nhưng ngày mai lại hỏi từ đầu repo dùng framework gì? Trong cùng phiên, nó nhìn thấy các tin nhắn trước đó trong context window. Khi phiên kết thúc, hoặc lịch sử quá dài và bị cắt bớt, những gì không được lưu ở nơi khác có thể biến mất.
+
+Context window giống bàn làm việc: có chỗ cho những thứ đang dùng, nhưng diện tích có hạn. Memory dài hạn giống một nơi lưu hồ sơ riêng, cho phép chọn thông tin đáng giữ và tìm lại sau này. Lưu toàn bộ lịch sử rồi nhét lại vào prompt cũng là một cách, nhưng càng lâu càng tốn token và thông tin quan trọng càng dễ chìm trong nhiễu.
+
+Ví dụ, một support agent có thể cần nhớ khách hàng đang dùng region nào, từng gặp lỗi gì và đã thử cách nào. Nó không nhất thiết cần đọc lại từng câu chào hỏi trong mọi cuộc hội thoại. Vấn đề thú vị nằm ở chỗ: lưu cái gì, và làm sao tìm đúng cái cần vào đúng lúc?
+
+## Vậy chính xác Hindsight là gì?
+
+Hindsight đặt một lớp memory có thể tìm kiếm bên ngoài prompt. Ứng dụng gửi thông tin vào memory bank, rồi hỏi lại bank ở các phiên sau. Kiến trúc này phân biệt thông tin về thế giới, kinh nghiệm của agent và các thông tin được tổng hợp từ chúng.
+
+Có ba thao tác bạn sẽ gặp thường xuyên:
+
+- **`retain`**: đưa nội dung vào để hệ thống trích xuất và lưu thông tin có ích.
+- **`recall`**: tìm các memory liên quan đến một câu hỏi, trả về dữ liệu để ứng dụng sử dụng.
+- **`reflect`**: tìm memory rồi suy luận trên bằng chứng đó để tạo câu trả lời tổng hợp.
+
+Chẳng hạn, sau một ca xử lý, agent retain việc khách hàng dùng PostgreSQL và lỗi xuất hiện sau một lần nâng cấp. Lần sau, recall có thể tìm lại các sự kiện liên quan. Reflect có thể tổng hợp chúng để trả lời: “Những thay đổi nào nên kiểm tra trước?” Câu trả lời vẫn cần được kiểm chứng; memory giúp cung cấp ngữ cảnh và nguồn gốc, không biến suy luận của model thành sự thật tuyệt đối.
+
+## Bên trong memory có gì?
+
+Thay vì chỉ xem lịch sử chat như một chuỗi văn bản để tìm kiếm, Hindsight trích xuất các fact có cấu trúc. **World fact** mô tả điều xảy ra trong thế giới; **experience fact** mô tả trải nghiệm hoặc hành động của agent. Từ các fact, hệ thống còn tạo **observation** tổng hợp, có thể thay đổi khi có bằng chứng mới. **Mental model** và **knowledge page** là những dạng tổng hợp có thể được duy trì để trả lời những câu hỏi hoặc chủ đề cụ thể.<sup>[2](#tham-khao-2)</sup>
+
+Ví dụ: “Dịch vụ chuyển sang PostgreSQL vào tháng Ba” là một fact; “các thay đổi database gần đây thường cần kiểm tra migration” có thể là một nhận định tổng hợp từ nhiều fact. Background worker xử lý việc hợp nhất và cập nhật observation khi thông tin mới xuất hiện. Đây là một điểm đáng chú ý: fact và nhận định không nên được đối xử như nhau, vì nhận định có thể cần sửa lại.
+
+Cũng đừng hiểu việc trích xuất fact là hệ thống không giữ nội dung gốc. Hindsight có khái niệm document để lưu nội dung được đưa vào và liên kết với các memory trích xuất. Nếu bạn gửi transcript, hãy thiết kế quyền truy cập, thời gian lưu và cách xóa dữ liệu với giả định transcript có thể được lưu lại.
+
+## Tìm đúng memory bằng cách nào?
+
+Một câu hỏi có thể cần nhiều kiểu tìm kiếm. “Khách hàng từng gặp lỗi gì sau lần nâng cấp mùa xuân?” chứa cả ý nghĩa, từ khóa, thực thể và thời gian. Chỉ tìm vector gần nhất chưa chắc bắt được hết.
+
+Hindsight chạy nhiều hướng truy xuất song song: semantic search bằng vector, keyword search kiểu BM25, graph search theo liên kết giữa thực thể, và temporal search theo thời gian. Kết quả được kết hợp bằng reciprocal rank fusion, sau đó cross-encoder rerank giúp xếp lại theo mức liên quan. Kết quả trả về được giới hạn theo token budget, thay vì bắt ứng dụng luôn nhận một số lượng fact cố định.<sup>[3](#tham-khao-3)</sup>
+
+Điều này hữu ích khi một fact ngắn chỉ mất vài token, còn một fact khác cần nhiều ngữ cảnh hơn. Nhưng retrieval tốt vẫn phụ thuộc dữ liệu đầu vào: nếu sự kiện chưa được ghi nhận, hoặc được trích xuất sai, agent có thể thiếu bằng chứng hay đi sai hướng. Nên kiểm tra cả những gì được retain lẫn những gì được recall khi đánh giá hệ thống.
+
+## Bank: chia memory cho ai?
+
+Memory bank là ranh giới tổ chức và cách ly dữ liệu của Hindsight. Bạn có thể dùng một bank cho mỗi khách hàng, hoặc một bank cho mỗi repo của team. Chọn bank sai cũng giống hỏi nhầm hồ sơ: kết quả có thể rất liên quan về mặt ngữ nghĩa nhưng hoàn toàn sai người.
+
+Bank còn có cấu hình như mission, directives và disposition để định hướng cách `reflect` làm việc. Ví dụ, mission của support agent có thể tập trung vào lịch sử xử lý sự cố; directives có thể yêu cầu nêu rõ bằng chứng. Những cấu hình này giúp định hướng hành vi, còn ứng dụng vẫn phải xác thực người dùng và quyết định họ được truy cập bank nào. Đừng dùng tên bank do client tự gửi làm cơ chế phân quyền duy nhất.
+
+## Bắt đầu dùng thế nào?
+
+Tùy bạn đang thêm memory vào ứng dụng mới hay vào công cụ sẵn có, có ba đường đi khá thực tế.
+
+### 1. Thêm wrapper vào ứng dụng LLM
+
+Nếu ứng dụng đã dùng LiteLLM hoặc OpenAI SDK, hãy thử package `hindsight-litellm`. Wrapper tự tìm memory liên quan trước khi gọi model và gửi hội thoại đi lưu sau đó, mặc định xử lý bất đồng bộ. Với OpenAI client đã tạo sẵn, phần bọc có thể gọn như sau:
+
+```python
+from hindsight_litellm import wrap_openai
+client = wrap_openai(client, bank_id="support", hindsight_api_url="http://localhost:8888")
+```
+
+Bạn vẫn cần cài package, tạo client gốc, chạy Hindsight và cấu hình provider. Khi có nhiều người dùng, hãy chọn bank theo danh tính đã xác thực thay vì dùng chung `support` như ví dụ. Tài liệu cũng có lựa chọn recall hoặc reflect và chế độ debug để xem nội dung được đưa vào prompt.<sup>[4](#tham-khao-4)</sup>
+
+### 2. Gắn vào coding agent
+
+Nếu thứ bạn muốn agent nhớ là quyết định kiến trúc, convention và lịch sử làm việc của một repo, package coding agents có thể là điểm bắt đầu. Ví dụ, với Claude Code:
+
+```bash
+npx @vectorize-io/hindsight-coding-agents install claude-code
+```
+
+Tích hợp tạo bank theo repo, đọc lịch sử git và các phiên có thể truy cập, rồi tiếp tục ingest thông tin trong quá trình làm việc. Các agent hỗ trợ trong cùng repo có thể dùng chung bank. Khi cài đặt, bạn chọn nơi chạy memory: cloud, server tự quản lý hoặc local daemon. Hãy xem kỹ dữ liệu repo và session nào sẽ được gửi đi trước khi bật cho dự án công ty.<sup>[5](#tham-khao-5)</sup>
+
+### 3. Gọi SDK hoặc API trực tiếp
+
+Muốn kiểm soát khi nào ghi, hỏi gì và đưa kết quả nào vào prompt? Dùng SDK hoặc API trực tiếp. Chẳng hạn, sau khi ticket được đóng, ứng dụng có thể retain bản tóm tắt đã được kiểm duyệt; trước khi xử lý ticket mới, gọi recall theo khách hàng và triệu chứng. Chỉ gọi reflect khi cần một câu trả lời tổng hợp.
+
+Cách này cần nhiều code hơn nhưng dễ đặt ranh giới hơn: bạn chủ động loại dữ liệu nhạy cảm, chọn bank, gắn metadata và quyết định có dùng memory trong bước tiếp theo hay không. Hãy bắt đầu với một tập tình huống thực tế rồi đo chất lượng câu trả lời, latency và chi phí trước khi mở rộng.
+
+## Triển khai có phức tạp không?
+
+Mặc định, Hindsight dùng PostgreSQL với pgvector. Graph ở đây được biểu diễn bằng dữ liệu và quan hệ trong PostgreSQL, truy vấn bằng recursive CTE; bạn không cần dựng thêm Neo4j. Trang storage cũng liệt kê Oracle AI Database như một lựa chọn cho môi trường enterprise. Đây là tin vui cho team đã quen vận hành database, dù vẫn cần tính đến backup, monitoring, model và chi phí xử lý.<sup>[6](#tham-khao-6)</sup>
+
+So với SQLite trong knowledge base của Kiro Crew thì sao? Hai thứ này nằm ở hai tầng khác nhau: SQLite là database nhúng, còn Hindsight là hệ thống memory với các bước trích xuất, truy xuất và suy luận, mặc định dùng PostgreSQL phía dưới. SQLite không cần server riêng và phù hợp với nhiều ứng dụng local; theo [tài liệu SQLite](https://sqlite.org/whentouse.html), mỗi database file chỉ có một writer tại một thời điểm, còn database client/server thường phù hợp hơn khi cần nhiều lượt ghi đồng thời. Hindsight đổi lấy thêm khả năng memory bằng một stack cần vận hành và gọi model. Mình chưa thấy benchmark chính thức so trực tiếp Kiro Crew với Hindsight trên cùng workload, nên không thể kết luận bên nào truy xuất chính xác hay nhanh hơn chỉ từ lựa chọn database.
+
+Bạn có thể chạy bằng Docker, Kubernetes/Helm, cài qua pip hoặc dùng chế độ embedded tùy nhu cầu. Nếu không muốn tự vận hành, có Hindsight Cloud. Chạy local để thử là một chuyện; đưa vào production thì cần kiểm tra chính sách lưu dữ liệu, credential, backup và quyền truy cập theo tenant.
+
+## Có nên dùng không?
+
+Mình thấy Hindsight đáng thử khi agent làm việc lặp lại qua nhiều phiên, cần nhớ quyết định và kinh nghiệm, hoặc cần giải thích dựa trên lịch sử thay vì chỉ dựa vào prompt hiện tại. Một coding agent cho repo lớn hay support agent theo khách hàng là hai ví dụ dễ hình dung.
+
+Ngược lại, một flow n8n đơn giản nhận webhook, biến đổi dữ liệu rồi gọi API có thể chẳng cần thêm memory. Nếu vài trường trong database đã giải quyết được yêu cầu, cứ bắt đầu từ đó. Memory là thêm một thành phần cần vận hành và đánh giá; giá trị của nó xuất hiện khi thông tin cần nhớ đủ phong phú để việc truy xuất và tổng hợp thực sự giúp công việc tốt hơn.
+
+## Tham khảo
+
+<span id="tham-khao-2">2.</span> [Hindsight documentation](https://hindsight.vectorize.io/)
+
+<span id="tham-khao-3">3.</span> [Recall: How Hindsight Retrieves Memories](https://hindsight.vectorize.io/developer/retrieval)
+
+<span id="tham-khao-4">4.</span> [LiteLLM integration](https://hindsight.vectorize.io/sdks/integrations/litellm)
+
+<span id="tham-khao-5">5.</span> [Coding agents integration](https://hindsight.vectorize.io/sdks/integrations/coding-agents)
+
+<span id="tham-khao-6">6.</span> [Storage](https://hindsight.vectorize.io/developer/storage)
