@@ -16,6 +16,8 @@ Hindsight là một hệ thống memory mã nguồn mở của Vectorize, giúp 
 
 ## Agent có thật sự nhớ không?
 
+Mình bắt đầu tìm hiểu chủ đề này từ một câu hỏi khá đơn giản: Kiro Crew lưu knowledge base như thế nào? Lần theo phần lưu trữ trên máy, mình thấy knowledge base dùng một database SQLite, bên trong có bảng cho nội dung, tìm kiếm toàn văn và các thực thể. Một lựa chọn khá gọn cho ứng dụng chạy local. Từ đó mình tò mò: nếu muốn agent nhớ qua nhiều phiên, tự tổng hợp thông tin và tìm lại theo nhiều cách thì các hệ thống chuyên về memory làm thế nào? Và mình tìm đến Hindsight.
+
 Bạn có để ý không, một agent có thể giúp bạn debug rất tốt hôm nay, nhưng ngày mai lại hỏi từ đầu repo dùng framework gì? Trong cùng phiên, nó nhìn thấy các tin nhắn trước đó trong context window. Khi phiên kết thúc, hoặc lịch sử quá dài và bị cắt bớt, những gì không được lưu ở nơi khác có thể biến mất.
 
 Context window giống bàn làm việc: có chỗ cho những thứ đang dùng, nhưng diện tích có hạn. Memory dài hạn giống một nơi lưu hồ sơ riêng, cho phép chọn thông tin đáng giữ và tìm lại sau này. Lưu toàn bộ lịch sử rồi nhét lại vào prompt cũng là một cách, nhưng càng lâu càng tốn token và thông tin quan trọng càng dễ chìm trong nhiễu.
@@ -90,6 +92,8 @@ Cách này cần nhiều code hơn nhưng dễ đặt ranh giới hơn: bạn ch
 ## Triển khai có phức tạp không?
 
 Mặc định, Hindsight dùng PostgreSQL với pgvector. Graph ở đây được biểu diễn bằng dữ liệu và quan hệ trong PostgreSQL, truy vấn bằng recursive CTE; bạn không cần dựng thêm Neo4j. Trang storage cũng liệt kê Oracle AI Database như một lựa chọn cho môi trường enterprise. Đây là tin vui cho team đã quen vận hành database, dù vẫn cần tính đến backup, monitoring, model và chi phí xử lý.<sup>[6](#tham-khao-6)</sup>
+
+So với SQLite trong knowledge base của Kiro Crew thì sao? Hai thứ này nằm ở hai tầng khác nhau: SQLite là database nhúng, còn Hindsight là hệ thống memory với các bước trích xuất, truy xuất và suy luận, mặc định dùng PostgreSQL phía dưới. SQLite không cần server riêng và phù hợp với nhiều ứng dụng local; theo [tài liệu SQLite](https://sqlite.org/whentouse.html), mỗi database file chỉ có một writer tại một thời điểm, còn database client/server thường phù hợp hơn khi cần nhiều lượt ghi đồng thời. Hindsight đổi lấy thêm khả năng memory bằng một stack cần vận hành và gọi model. Mình chưa thấy benchmark chính thức so trực tiếp Kiro Crew với Hindsight trên cùng workload, nên không thể kết luận bên nào truy xuất chính xác hay nhanh hơn chỉ từ lựa chọn database.
 
 Bạn có thể chạy bằng Docker, Kubernetes/Helm, cài qua pip hoặc dùng chế độ embedded tùy nhu cầu. Nếu không muốn tự vận hành, có Hindsight Cloud. Chạy local để thử là một chuyện; đưa vào production thì cần kiểm tra chính sách lưu dữ liệu, credential, backup và quyền truy cập theo tenant.
 
