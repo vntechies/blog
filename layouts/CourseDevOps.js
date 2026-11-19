@@ -469,7 +469,7 @@ export default function CourseDevOps({ frontMatter, mentorDetails, otherCourses 
         />
 
         {/* Pricing Section */}
-        <section id="hoc-phi" className="premium-course-pricing bg-white py-20 dark:bg-gray-900">
+        <section id="hoc-phi" className="bg-white py-20 dark:bg-gray-900">
           <div className="mx-auto max-w-6xl px-4">
             <div className="mb-16 text-center">
               <h2 className="mb-4 text-4xl font-bold text-gray-900 dark:text-gray-100">
@@ -522,7 +522,10 @@ export default function CourseDevOps({ frontMatter, mentorDetails, otherCourses 
                   </div>
                 </div>
 
-                <a href="#registration-form" className="course-cta">
+                <a
+                  href="#registration-form"
+                  className="block w-full rounded-xl bg-slate-900 py-4 text-center font-semibold text-white transition hover:bg-slate-800"
+                >
                   Đăng ký ngay
                 </a>
               </div>
@@ -609,7 +612,10 @@ export default function CourseDevOps({ frontMatter, mentorDetails, otherCourses 
                   </div>
                 </div>
 
-                <a href="#registration-form" className="course-cta">
+                <a
+                  href="#registration-form"
+                  className="block w-full rounded-xl bg-blue-600 py-4 text-center font-semibold text-white transition hover:bg-blue-700"
+                >
                   Đăng ký ngay
                 </a>
               </div>
