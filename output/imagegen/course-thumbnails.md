@@ -21,5 +21,6 @@ The generated thumbnails also represent courses on the website: course catalog c
 | AWS Solutions Architect Associate | [Preview](../../public/static/images/ogps/courses/aws-saa-ogp.png)                |
 | Data Engineer Bootcamp            | [Preview](../../public/static/images/ogps/courses/data-engineer-bootcamp-ogp.png) |
 | DevOps Engineer Bootcamp          | [Preview](../../public/static/images/ogps/courses/devops-ogp.png)                 |
+| GenAI Engineer Bootcamp           | [Preview](../../public/static/images/ogps/courses/genai-engineer-bootcamp-ogp.png) |
 | Kubernetes & Spring Boot          | [Preview](../../public/static/images/ogps/courses/k8s-spring-boot-ogp.png)        |
 | Python Programming                | [Preview](../../public/static/images/ogps/courses/python-ogp.png)                 |

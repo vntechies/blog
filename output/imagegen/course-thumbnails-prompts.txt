@@ -95,6 +95,16 @@ Under it, smaller orange or cream subtitle: VDT-C01
 Footer: vntechies.dev
 Replace the right-hand technical illustration with stacked data lake, database and analytics layers connected with orange pipeline paths. Flat precise geometric linework with subtle isometric depth, balanced and polished. Use the RIGHT 35 percent, avoiding text overlap. Keep generous 55px safe margins, legible thumbnail-sized text and a tiny Gruvbox swatch detail. Only text allowed: VNTechies, the specified title, subtitle, vntechies.dev. Remove all old title text and /courses footer from reference. Accurate spelling and Vietnamese diacritics. No extra words, no badges implying certification or AWS endorsement, no photography, no people, no mockup.
 
+genai-engineer-bootcamp (genai-engineer-bootcamp-ogp.png)
+Use case: ads-marketing / compositing.
+Create one course-specific variation of image 1, a finished VNTechies social thumbnail. Image 1 is the layout/style reference; image 2 is the authentic VNTechies logo to preserve exactly. Landscape aspect 1200:630. Keep Gruvbox dark #1d2021 dotted background, warm cream #ebdbb2 bold text, orange #fe8019 with muted teal and yellow. Keep the top-left original orange VNTechies geometric logo and VNTechies wordmark lockup. Logo geometry, orange gradient, proportions, orientation and negative spaces must exactly match image 2. Never substitute a terminal symbol or redesign logo.
+Replace the main text with the following course title on these lines, comfortably fitting within the LEFT 60 percent with generous space from illustration:
+GenAI Engineer
+Bootcamp
+Under it, smaller orange or cream subtitle: VGE-C01
+Footer: vntechies.dev
+Replace the right-hand technical illustration with a stack of documents flowing into a retrieval index and an AI assistant chat panel, with a small shield and a cost gauge; restrained geometric AI illustration. Flat precise geometric linework with subtle isometric depth, balanced and polished. Use the RIGHT 35 percent, avoiding text overlap. Keep generous 55px safe margins, legible thumbnail-sized text and a tiny Gruvbox swatch detail. Only text allowed: VNTechies, the specified title, subtitle, vntechies.dev. Remove all old title text and /courses footer from reference. Accurate spelling and Vietnamese diacritics. No extra words, no badges implying certification or AWS endorsement, no photography, no people, no mockup.
+
 devops (devops-ogp.png)
 Use case: ads-marketing / compositing.
 Create one course-specific variation of image 1, a finished VNTechies social thumbnail. Image 1 is the layout/style reference; image 2 is the authentic VNTechies logo to preserve exactly. Landscape aspect 1200:630. Keep Gruvbox dark #1d2021 dotted background, warm cream #ebdbb2 bold text, orange #fe8019 with muted teal and yellow. Keep the top-left original orange VNTechies geometric logo and VNTechies wordmark lockup. Logo geometry, orange gradient, proportions, orientation and negative spaces must exactly match image 2. Never substitute a terminal symbol or redesign logo.
