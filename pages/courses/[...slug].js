@@ -13,6 +13,9 @@ const DEFAULT_LAYOUT = 'CourseSimple'
 // Courses whose price is not yet confirmed; they emit no offers in markup.
 const PRICE_UNCONFIRMED = new Set(['data-engineer-bootcamp'])
 
+// Schedule line used by course pages that do not override `intake` in their copy.
+const COURSE_INTAKE = 'Khai giảng hàng tháng'
+
 // A course is its folder: 'aws/saa/gioi-thieu' -> 'aws/saa'
 const courseOf = (slug) => slug.split('/').slice(0, -1).join('/')
 

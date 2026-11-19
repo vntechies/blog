@@ -59,6 +59,18 @@ export const premiumCatalog = [
     fromPrice: 10000000,
     fits: ['switch', 'working'],
   },
+  {
+    slug: 'genai-engineer-bootcamp/gioi-thieu',
+    code: 'VGE-C01',
+    level: 'Bootcamp',
+    duration: '6 tuần · 12 buổi',
+    // Published "Học phí tham khảo" on the landing page: the Group tier.
+    fromPrice: 7650000,
+    // Picker fit and the sticky bar use the lowest group price (student).
+    lowestPrice: 7150000,
+    intake: 'Theo đợt',
+    fits: ['working', 'switch'],
+  },
 ]
 
 export const audiences = [

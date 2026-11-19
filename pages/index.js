@@ -12,7 +12,13 @@ import HeroTerminal from '@/components/home/HeroTerminal'
 const MAX_DISPLAY = 6
 
 // Gruvbox hues for course slugs, one per card
-const courseHues = ['text-orange-400', 'text-cyan-400', 'text-purple-400', 'text-blue-400']
+const courseHues = [
+  'text-orange-400',
+  'text-cyan-400',
+  'text-purple-400',
+  'text-blue-400',
+  'text-pink-400',
+]
 
 const heroStats = [
   { label: 'Học viên đã tham gia', value: '200+', icon: '/static/images/icons/users-icon.svg' },
@@ -47,6 +53,13 @@ const heroCourseLinks = [
     title: 'AWS Certified Data Engineer – Associate',
     subtitle: '12 module, lab thực hành & luyện thi DEA-C01',
     href: '/courses/aws/dea/gioi-thieu',
+    icon: '/static/images/icons/aws-icon.svg',
+  },
+  {
+    label: 'GenAI VGE-C01',
+    title: 'GenAI Engineer Bootcamp',
+    subtitle: 'Xây ứng dụng RAG trên Amazon Bedrock',
+    href: '/courses/genai-engineer-bootcamp/gioi-thieu',
     icon: '/static/images/icons/aws-icon.svg',
   },
 ]
@@ -147,6 +160,17 @@ const learningTracks = [
     cta: 'Xem khóa DEA-C01',
     image: '/static/images/ogps/courses/aws-dea-ogp.png',
   },
+  {
+    title: 'GenAI Engineer Bootcamp',
+    summary:
+      'Xây ứng dụng RAG trên Amazon Bedrock, đo chất lượng câu trả lời, kiểm soát dữ liệu nhạy cảm và chi phí vận hành.',
+    audience:
+      'Phù hợp cho developer, data engineer và cloud engineer đã biết Python, muốn đưa GenAI từ demo vào sử dụng thật.',
+    badge: 'VGE-C01',
+    href: '/courses/genai-engineer-bootcamp/gioi-thieu',
+    cta: 'Xem khóa GenAI Engineer',
+    image: '/static/images/ogps/courses/genai-engineer-bootcamp-ogp.png',
+  },
 ]
 
 const testimonials = [
@@ -178,7 +202,7 @@ const testimonials = [
 
 const s = siteMetadata
 const homeDescription =
-  'VNTechies giúp bạn học để làm: mentor từ tập đoàn đa quốc gia, lab miễn phí, lộ trình Cloud/DevOps/Data thực chiến và hỗ trợ giảm giá thi chứng chỉ AWS.'
+  'VNTechies giúp bạn học để làm: mentor từ tập đoàn đa quốc gia, lab miễn phí, lộ trình Cloud/DevOps/Data/GenAI thực chiến và hỗ trợ giảm giá thi chứng chỉ AWS.'
 const structuredData = [
   {
     '@context': 'https://schema.org',
@@ -191,7 +215,7 @@ const structuredData = [
     email: s.email,
     telephone: s.telephone,
     sameAs: [s.facebook, s.youtube, s.tiktok, s.linkedin, s.github, s.twitter, s.instagram],
-    knowsAbout: ['Cloud computing', 'DevOps', 'AWS', 'Data Engineering'],
+    knowsAbout: ['Cloud computing', 'DevOps', 'AWS', 'Data Engineering', 'Generative AI'],
   },
   {
     '@context': 'https://schema.org',
@@ -216,7 +240,7 @@ export default function Home({ posts }) {
   return (
     <>
       <PageSEO
-        title={`Khóa học AWS, DevOps, Data Engineer thực chiến | ${siteMetadata.siteName}`}
+        title={`Khóa học AWS, DevOps, Data Engineer, GenAI thực chiến | ${siteMetadata.siteName}`}
         structuredData={structuredData}
         description={homeDescription}
       />

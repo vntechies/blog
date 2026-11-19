@@ -96,4 +96,20 @@ export const courseLanding = {
     path: ['Engineering foundations', 'Lưu trữ & xử lý', 'Data pipeline', 'Thực hành dự án'],
     topic: 'data',
   },
+  'genai-engineer-bootcamp': {
+    title: 'GenAI Engineer Bootcamp',
+    headline:
+      'Khoá học GenAI Engineer Bootcamp (VGE-C01): từ prompt đến ứng dụng AI chạy được trong doanh nghiệp.',
+    summary:
+      'Xây ứng dụng RAG trên Amazon Bedrock, đo chất lượng câu trả lời, kiểm soát dữ liệu nhạy cảm và chi phí vận hành.',
+    fit: 'Dành cho developer, data engineer và cloud engineer đã biết Python, muốn đưa GenAI từ demo vào sử dụng thật.',
+    outcomes: [
+      'Xây ứng dụng RAG trên Amazon Bedrock, trả lời có trích dẫn nguồn.',
+      'Đo chất lượng câu trả lời bằng bộ câu hỏi kiểm thử.',
+      'Kiểm soát dữ liệu nhạy cảm, quyền truy cập và chi phí khi vận hành.',
+    ],
+    path: ['Use case & Bedrock', 'Dữ liệu & RAG', 'Đánh giá & an toàn', 'Vận hành & demo'],
+    format: 'BOOTCAMP · ONLINE',
+    topic: 'general',
+  },
 }

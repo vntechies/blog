@@ -58,6 +58,13 @@ const COURSE_META = {
     theme: 'purple',
     order: 7,
   },
+  'genai-engineer-bootcamp': {
+    name: 'GenAI Engineer Bootcamp',
+    code: 'VGE-C01',
+    badge: 'GenAI Bootcamp',
+    theme: 'purple',
+    order: 8,
+  },
 }
 
 const THEME_STYLES = {
@@ -92,6 +99,7 @@ const normalizeCourseName = (title = '') =>
 
 const getThemeBySlug = (slug = '') => {
   if (slug.startsWith('aws/')) return 'orange'
+  if (slug.includes('genai')) return 'purple'
   if (slug.includes('data')) return 'purple'
   if (slug.includes('devops')) return 'blue'
   return 'orange'
@@ -196,7 +204,7 @@ export default function Register({ paidCourses = [], freeCourses = [] }) {
       <PageSEO
         title={`Đăng ký khóa học - ${siteMetadata.siteName}`}
         image={coursesSocialImage}
-        description="Đăng ký tham gia các khóa học AWS, DevOps và Data Engineering tại VNTechies. Nhận tư vấn lộ trình phù hợp và ưu đãi dành cho học viên."
+        description="Đăng ký tham gia các khóa học AWS, DevOps, Data Engineering và GenAI tại VNTechies. Nhận tư vấn lộ trình phù hợp và ưu đãi dành cho học viên."
         url={`${siteMetadata.siteUrl}/courses/register`}
       />
 

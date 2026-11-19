@@ -192,6 +192,14 @@ const Hero = () => {
               image: '/static/images/courses/vdt.png',
               featured: true,
             },
+            {
+              title: 'GenAI Engineer Bootcamp',
+              code: 'VGE-C01',
+              level: '6 tuần (12 buổi)',
+              color: 'from-pink-500 to-pink-600',
+              link: '/courses/genai-engineer-bootcamp/gioi-thieu',
+              image: '/static/images/ogps/courses/genai-engineer-bootcamp-ogp.png',
+            },
           ].map((course, index) => (
             <Link key={index} href={course.link} className="group h-full">
               <div
@@ -212,6 +220,8 @@ const Hero = () => {
                           ? 'DevOps Engineer'
                           : course.code === 'VDT-C01'
                           ? 'Data Engineer Bootcamp'
+                          : course.code === 'VGE-C01'
+                          ? 'GenAI Engineer Bootcamp'
                           : course.code === 'DEA-C01'
                           ? 'AWS Certified Data Engineer Associate DEA-C01'
                           : `AWS ${course.title} certification`
@@ -237,6 +247,8 @@ const Hero = () => {
                         ? 'Course DevOps Engineer VDE-C01'
                         : course.code === 'VDT-C01'
                         ? 'Data Engineer Bootcamp VDT-C01'
+                        : course.code === 'VGE-C01'
+                        ? 'GenAI Engineer Bootcamp VGE-C01'
                         : course.code === 'DEA-C01'
                         ? 'AWS Certified Data Engineer – Associate (DEA-C01)'
                         : `AWS ${course.title} certification`}
