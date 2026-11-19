@@ -6,7 +6,6 @@ import { premiumCatalog } from '@/data/courseCatalog'
 import { courseLanding } from '@/data/courseLanding'
 import { courseSocialImages } from '@/data/courseSocialImages'
 import { MONTHLY_INTAKE, campaignTuition } from '@/data/courseOffers'
-import { genaiIntake, genaiKey } from '@/data/genaiBootcamp'
 import { pickTestimonials } from '@/data/testimonials'
 import { formatVnd } from './offer'
 import { trackCourseAction } from '@/lib/course-analytics'
@@ -24,8 +23,8 @@ export default function PremiumCourseHero({ courseKey }) {
   const amount = campaignCourse ? individual : catalog.fromPrice
   const price = amount
   const quote = pickTestimonials(campaignCourse ? course.topic : 'general', 1)[0]
-  // VGE-C01 opens on new intakes rather than a monthly schedule.
-  const intake = courseKey === genaiKey ? genaiIntake : MONTHLY_INTAKE
+  // Courses open on a published schedule unless their catalog entry sets one.
+  const intake = catalog.intake || MONTHLY_INTAKE
   const track = (action) => trackCourseAction(catalog.code, action)
 
   return (
@@ -50,7 +49,7 @@ export default function PremiumCourseHero({ courseKey }) {
       >
         <div className="min-w-0 py-2">
           <p className="page-eyebrow">
-            {`${catalog.code} · ${catalog.level} · ${course.format || 'Online'}`}
+            {catalog.code} · {catalog.level} · Online
           </p>
           <p className="mt-5 text-sm font-semibold text-brand-strong">{course.title}</p>
           <h1

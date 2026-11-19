@@ -12,7 +12,6 @@ import {
   FaDollarSign,
 } from 'react-icons/fa'
 import PremiumCourseHero from '@/components/course/PremiumCourseHero'
-import { premiumCatalog } from '@/data/courseCatalog'
 import CourseRegistrationForm from '@/components/CourseRegistrationForm'
 import OtherCoursesSection from '@/components/OtherCoursesSection'
 import { Price } from '@/components/course/offer'
@@ -34,8 +33,6 @@ export default function CourseGenAI({ frontMatter, mentorDetails, otherCourses =
   const [working, student] = genaiTuition.standard
   const [earlyWorking, earlyStudent] = genaiTuition.earlyBird
   const [groupWorking, groupStudent] = genaiTuition.group
-  const catalog = premiumCatalog.find((entry) => entry.slug === `${genaiKey}/gioi-thieu`)
-  const stickyPrice = catalog.lowestPrice ?? groupStudent
 
   const toggleLesson = (moduleIndex, lessonIndex) => {
     const lessonKey = `${moduleIndex}-${lessonIndex}`
@@ -600,7 +597,7 @@ export default function CourseGenAI({ frontMatter, mentorDetails, otherCourses =
 
         <OtherCoursesSection otherCourses={otherCourses} />
       </div>
-      <StickyEnrollBar code={`GenAI ${info.code}`} intake={genaiIntake} fromPrice={stickyPrice} />
+      <StickyEnrollBar code={`GenAI ${info.code}`} intake={genaiIntake} fromPrice={groupStudent} />
       <div className="h-16" aria-hidden="true" />
     </div>
   )

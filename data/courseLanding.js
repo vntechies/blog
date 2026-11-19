@@ -109,7 +109,6 @@ export const courseLanding = {
       'Kiểm soát dữ liệu nhạy cảm, quyền truy cập và chi phí khi vận hành.',
     ],
     path: ['Use case & Bedrock', 'Dữ liệu & RAG', 'Đánh giá & an toàn', 'Vận hành & demo'],
-    format: 'BOOTCAMP · ONLINE',
     topic: 'general',
   },
 }

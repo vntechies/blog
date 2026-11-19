@@ -27,7 +27,7 @@ export const genaiBootcamp = {
     { value: '12', label: 'Buổi học', note: 'Mỗi buổi 2,5 tiếng' },
     { value: '30h', label: 'Tổng thời lượng', note: '6 tuần học' },
     { value: '02 buổi/tuần', label: 'Lịch học', note: '19:00 - 21:30' },
-    { value: genaiIntake, label: 'Lớp mới', note: 'Online Google Meet' },
+    { value: 'Khai giảng theo đợt', label: 'Lớp mới', note: 'Online Google Meet' },
   ],
   requirements: [
     'Viết được Python cơ bản: hàm, thư viện, đọc và ghi JSON, gọi HTTP API.',

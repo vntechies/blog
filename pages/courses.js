@@ -7,9 +7,6 @@ import { getAllFilesFrontMatter } from '@/lib/mdx'
 import { premiumCatalog, audiences } from '@/data/courseCatalog'
 import { formatVnd } from '@/components/course/offer'
 
-// Schedule line used by courses that do not set their own `intake` in the catalog.
-const COURSE_INTAKE = 'Khai giảng hàng tháng'
-
 export async function getStaticProps() {
   const courses = await getAllFilesFrontMatter('courses')
   let filteredCourse = courses.filter((course) => course.index === 0)
@@ -33,19 +30,11 @@ export default function Courses({ courses }) {
   const metaFor = (entry) => {
     if (!entry) return undefined
     const price = entry.fromPrice
-    const lowest = entry.lowestPrice ?? price
     return [
-      {
-        label: 'Học phí',
-        value: price
-          ? lowest && lowest !== price
-            ? `Từ ${formatVnd(lowest)} – ${formatVnd(price)}`
-            : `Từ ${formatVnd(price)}`
-          : 'Liên hệ tư vấn',
-      },
+      { label: 'Học phí', value: price ? `Từ ${formatVnd(price)}` : 'Liên hệ tư vấn' },
       { label: 'Cấp độ', value: entry.level },
       { label: 'Thời lượng', value: entry.duration },
-      { label: 'Khai giảng', value: entry.intake || COURSE_INTAKE },
+      { label: 'Khai giảng', value: entry.intake || 'Hàng tháng' },
     ]
   }
 
@@ -81,7 +70,7 @@ export default function Courses({ courses }) {
     <>
       <PageSEO
         title={`Khóa học AWS, DevOps, Data Engineer, GenAI | ${siteMetadata.siteName}`}
-        description={`Học lộ trình Cloud, DevOps, Data và AI cùng mentor thực chiến. Khai giảng theo đợt, ${courseCount} khoá từ ${formatVnd(
+        description={`Học lộ trình Cloud, DevOps, Data và AI cùng mentor thực chiến. ${courseCount} khoá từ ${formatVnd(
           lowestPrice
         )}.`}
         structuredData={courseListSchema}
