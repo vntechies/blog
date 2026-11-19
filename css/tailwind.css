@@ -529,7 +529,7 @@
     display: none;
   }
 
-  .premium-course-details a[href='#registration-form']:not(.course-cta-inverse) {
+  #course-details.premium-course-details a[href='#registration-form']:not(.course-cta-inverse) {
     background: rgb(var(--app-accent));
     color: rgb(var(--app-on-accent));
     border-radius: 0;
