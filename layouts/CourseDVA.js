@@ -772,7 +772,7 @@ export default function CourseSpecial({ frontMatter, mentorDetails, otherCourses
         <AudienceFit student={audience.student} working={audience.working} />
 
         {/* Pricing Section */}
-        <section className="bg-white py-20 dark:bg-gray-900">
+        <section className="premium-course-pricing bg-white py-20 dark:bg-gray-900">
           <div className="mx-auto max-w-6xl px-4">
             <div className="mb-16 text-center">
               <h2 className="mb-4 text-4xl font-bold text-gray-900 dark:text-gray-100">
@@ -820,10 +820,7 @@ export default function CourseSpecial({ frontMatter, mentorDetails, otherCourses
                   </div>
                 </div>
 
-                <a
-                  href="#registration-form"
-                  className="block w-full rounded-xl bg-slate-900 py-4 text-center font-semibold text-white transition hover:bg-slate-800"
-                >
+                <a href="#registration-form" className="course-cta">
                   Đăng ký ngay
                 </a>
               </div>
@@ -852,10 +849,7 @@ export default function CourseSpecial({ frontMatter, mentorDetails, otherCourses
                   </div>
                 </div>
 
-                <a
-                  href="#registration-form"
-                  className="block w-full rounded-xl bg-white py-4 text-center font-bold text-orange-600 transition hover:bg-gray-50"
-                >
+                <a href="#registration-form" className="course-cta-inverse">
                   Đăng ký ngay
                 </a>
               </div>
@@ -894,10 +888,7 @@ export default function CourseSpecial({ frontMatter, mentorDetails, otherCourses
                   </div>
                 </div>
 
-                <a
-                  href="#registration-form"
-                  className="block w-full rounded-xl bg-orange-600 py-4 text-center font-semibold text-white transition hover:bg-orange-700"
-                >
+                <a href="#registration-form" className="course-cta">
                   Đăng ký ngay
                 </a>
               </div>

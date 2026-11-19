@@ -329,6 +329,32 @@
     @apply bg-brand-on/10;
   }
 
+  /* Enrolment CTAs inside course pricing cards. The theme reset squashes the
+     Tailwind fills (bg-slate-900, bg-purple-600, bg-white) to the surface colour,
+     which left dark-on-dark labels, so these set the colours explicitly. */
+  .course-cta {
+    @apply block w-full py-4 text-center font-semibold text-brand-on transition;
+    background-color: rgb(var(--app-accent));
+    border-radius: 0;
+  }
+
+  .course-cta:hover {
+    background-color: rgb(var(--app-accent-hover));
+  }
+
+  /* Early Bird panel: the pale button on the highlighted card. The base accent
+     blends into that card, so this one pairs ink/bg instead. */
+  .course-cta-inverse {
+    @apply block w-full py-4 text-center font-bold transition;
+    background-color: rgb(var(--app-text) / 0.92);
+    color: rgb(var(--app-bg));
+    border-radius: 0;
+  }
+
+  .course-cta-inverse:hover {
+    background-color: rgb(var(--app-text));
+  }
+
   /* Size modifiers: keep after every variant so they win the cascade */
   .action-btn-lg {
     @apply min-h-[3.25rem] px-7 text-sm sm:text-base;
@@ -527,13 +553,6 @@
 
   .premium-course-details :is(.blur-xl, .blur-3xl) {
     display: none;
-  }
-
-  .premium-course-details a[href='#registration-form'] {
-    background: rgb(var(--app-accent));
-    color: rgb(var(--app-on-accent));
-    border-radius: 0;
-    box-shadow: none;
   }
 
   .course-page :is(h1, h2, h3, h4, dt, code, pre, .page-eyebrow, .panel-label, .chip, .font-mono) {

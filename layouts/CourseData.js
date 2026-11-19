@@ -457,7 +457,7 @@ export default function CourseData({ frontMatter, mentorDetails, otherCourses = 
         </section>
 
         {/* Pricing Section */}
-        <section className="bg-white py-20 dark:bg-gray-900">
+        <section className="premium-course-pricing bg-white py-20 dark:bg-gray-900">
           <div className="mx-auto max-w-6xl px-4">
             <div className="mb-16 text-center">
               <h2 className="mb-4 text-4xl font-bold text-gray-900 dark:text-gray-100">
@@ -509,7 +509,7 @@ export default function CourseData({ frontMatter, mentorDetails, otherCourses = 
                 <a
                   href="#registration-form"
                   onClick={(e) => smoothScrollTo(e, '#registration-form')}
-                  className="block w-full rounded-xl bg-slate-900 py-4 text-center font-semibold text-white transition hover:scale-105 hover:bg-slate-800"
+                  className="course-cta"
                 >
                   Đăng ký ngay
                 </a>
@@ -549,7 +549,7 @@ export default function CourseData({ frontMatter, mentorDetails, otherCourses = 
                 <a
                   href="#registration-form"
                   onClick={(e) => smoothScrollTo(e, '#registration-form')}
-                  className="block w-full rounded-xl bg-white py-4 text-center font-bold text-purple-600 transition hover:scale-105 hover:bg-gray-50"
+                  className="course-cta-inverse"
                 >
                   Đăng ký ngay
                 </a>
@@ -592,7 +592,7 @@ export default function CourseData({ frontMatter, mentorDetails, otherCourses = 
                 <a
                   href="#registration-form"
                   onClick={(e) => smoothScrollTo(e, '#registration-form')}
-                  className="block w-full rounded-xl bg-purple-600 py-4 text-center font-semibold text-white transition hover:scale-105 hover:bg-purple-700"
+                  className="course-cta"
                 >
                   Đăng ký ngay
                 </a>
