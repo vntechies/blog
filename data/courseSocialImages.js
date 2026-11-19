@@ -10,6 +10,7 @@ export const courseSocialImages = {
   'aws/saa': '/static/images/ogps/courses/aws-saa-ogp.png',
   'data-engineer-bootcamp': '/static/images/ogps/courses/data-engineer-bootcamp-ogp.png',
   devops: '/static/images/ogps/courses/devops-ogp.png',
+  'genai-engineer-bootcamp': '/static/images/ogps/courses/genai-engineer-bootcamp-ogp.png',
   'k8s-spring-boot': '/static/images/ogps/courses/k8s-spring-boot-ogp.png',
   python: '/static/images/ogps/courses/python-ogp.png',
 }

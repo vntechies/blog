@@ -59,6 +59,15 @@ export const premiumCatalog = [
     fromPrice: 10000000,
     fits: ['switch', 'working'],
   },
+  {
+    slug: 'genai-engineer-bootcamp/gioi-thieu',
+    code: 'VGE-C01',
+    level: 'Bootcamp',
+    duration: '6 tuần · 12 buổi',
+    fromPrice: 7150000,
+    intake: 'Khai giảng theo đợt',
+    fits: ['working', 'switch'],
+  },
 ]
 
 export const audiences = [

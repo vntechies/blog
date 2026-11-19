@@ -1089,10 +1089,7 @@ export default function CourseSpecial({ frontMatter, mentorDetails, otherCourses
                   </div>
                 </div>
 
-                <a
-                  href="#registration-form"
-                  className="block w-full rounded-xl bg-white py-4 text-center font-bold text-orange-600 transition hover:bg-gray-50"
-                >
+                <a href="#registration-form" className="course-cta-inverse">
                   Đăng ký ngay
                 </a>
               </div>

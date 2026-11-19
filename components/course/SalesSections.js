@@ -96,8 +96,24 @@ const Check = () => (
   </span>
 )
 
-// "Is this for me?" answered separately for students and working professionals
-export function AudienceFit({ student, working }) {
+const renderAudienceColumn = ({ title, subtitle, items }) => (
+  <div key={title} className="surface-panel p-6 sm:p-8">
+    <h3 className="text-xl font-extrabold">{title}</h3>
+    <p className="mt-1 text-sm text-fg-subtle">{subtitle}</p>
+    <ul className="mt-6 space-y-3">
+      {items.map((item, i) => (
+        <li key={i} className="flex gap-3 text-sm text-fg-prose sm:text-base">
+          <Check />
+          <span>{item}</span>
+        </li>
+      ))}
+    </ul>
+  </div>
+)
+
+// "Is this for me?" answered separately for students and working professionals.
+// `extra` adds further audience columns (e.g. companies) below the first two.
+export function AudienceFit({ student, working, extra = [] }) {
   const columns = [
     {
       title: 'Bạn là sinh viên',
@@ -116,22 +132,10 @@ export function AudienceFit({ student, working }) {
       <div className="mx-auto max-w-6xl px-4">
         <span className="page-eyebrow">Khoá học có phù hợp với bạn?</span>
         <h2 className="page-heading">Học được, theo được, trả được</h2>
-        <div className="mt-10 grid gap-6 md:grid-cols-2">
-          {columns.map(({ title, subtitle, items }) => (
-            <div key={title} className="surface-panel p-6 sm:p-8">
-              <h3 className="text-xl font-extrabold">{title}</h3>
-              <p className="mt-1 text-sm text-fg-subtle">{subtitle}</p>
-              <ul className="mt-6 space-y-3">
-                {items.map((item, i) => (
-                  <li key={i} className="flex gap-3 text-sm text-fg-prose sm:text-base">
-                    <Check />
-                    <span>{item}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
-        </div>
+        <div className="mt-10 grid gap-6 md:grid-cols-2">{columns.map(renderAudienceColumn)}</div>
+        {extra.length > 0 && (
+          <div className="mt-6 grid gap-6 md:grid-cols-2">{extra.map(renderAudienceColumn)}</div>
+        )}
       </div>
     </section>
   )

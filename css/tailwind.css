@@ -529,11 +529,31 @@
     display: none;
   }
 
-  .premium-course-details a[href='#registration-form'] {
+  #course-details.premium-course-details a[href='#registration-form']:not(.course-cta-inverse) {
     background: rgb(var(--app-accent));
     color: rgb(var(--app-on-accent));
     border-radius: 0;
     box-shadow: none;
+  }
+
+  /* Early Bird button only. The rule above points every enrolment CTA at the
+     accent fill, which sits on the highlighted card in the same colour and hides
+     the label, so this one pairs the ink/bg tokens instead. */
+  .premium-course-details a.course-cta-inverse {
+    display: block;
+    width: 100%;
+    padding-block: 1rem;
+    text-align: center;
+    font-weight: 700;
+    background: rgb(var(--app-text) / 0.92);
+    color: rgb(var(--app-bg));
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  .premium-course-details a.course-cta-inverse:hover {
+    background: rgb(var(--app-text));
+    color: rgb(var(--app-bg));
   }
 
   .course-page :is(h1, h2, h3, h4, dt, code, pre, .page-eyebrow, .panel-label, .chip, .font-mono) {

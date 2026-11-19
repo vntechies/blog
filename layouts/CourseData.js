@@ -549,7 +549,7 @@ export default function CourseData({ frontMatter, mentorDetails, otherCourses = 
                 <a
                   href="#registration-form"
                   onClick={(e) => smoothScrollTo(e, '#registration-form')}
-                  className="block w-full rounded-xl bg-white py-4 text-center font-bold text-purple-600 transition hover:scale-105 hover:bg-gray-50"
+                  className="course-cta-inverse"
                 >
                   Đăng ký ngay
                 </a>
