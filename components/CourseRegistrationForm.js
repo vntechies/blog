@@ -545,12 +545,12 @@ export default function CourseRegistrationForm({
           </div>
 
           <div className="mt-3 text-center text-sm text-gray-600 dark:text-gray-400">
-            Đăng ký cho đội ngũ hoặc doanh nghiệp?{' '}
+            Khách hàng doanh nghiệp?{' '}
             <Link
               href="/enterprises#tai-ho-so"
               className={`${currentTheme.link} font-semibold hover:underline`}
             >
-              Tải hồ sơ đào tạo →
+              Tải hồ sơ đào tạo cho đội ngũ →
             </Link>
           </div>
         </div>

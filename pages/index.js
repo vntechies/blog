@@ -563,7 +563,7 @@ export default function Home({ posts }) {
       <section className="page-section">
         <div className="surface-panel surface-panel-lg flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
           <div>
-            <span className="page-eyebrow">Doanh nghiệp</span>
+            <span className="page-eyebrow">Khách hàng doanh nghiệp</span>
             <h2 className="page-heading">Đào tạo cho đội ngũ?</h2>
             <p className="page-lead max-w-2xl">
               Lộ trình Cloud, DevOps, Data &amp; AI riêng cho công ty: lớp riêng từ 5 học viên, báo

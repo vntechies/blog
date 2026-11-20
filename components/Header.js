@@ -34,7 +34,7 @@ export default function Header() {
           </span>
         </Link>
         <div className="flex items-center gap-2 sm:gap-3">
-          <nav className="[&_a]:!whitespace-nowrap hidden items-center gap-0.5 whitespace-nowrap md:flex">
+          <nav className="hidden items-center gap-0.5 md:flex">
             {headerNavLinks.map(({ title, href }) => (
               <Link
                 alt={title}

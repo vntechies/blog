@@ -78,7 +78,7 @@ export default function Enterprises() {
 
       {/* Hero */}
       <section className="page-section">
-        <span className="page-eyebrow">Đào tạo doanh nghiệp</span>
+        <span className="page-eyebrow">Khách hàng doanh nghiệp</span>
         <h1 className="page-heading">Nâng cấp đội ngũ Cloud, DevOps, Data &amp; AI</h1>
         <p className="page-lead">
           Lộ trình thực chiến, lab thật, mentor từ các công ty đa quốc gia.

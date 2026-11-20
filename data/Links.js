@@ -2,7 +2,6 @@ import siteMetadata from './siteMetadata'
 
 export const headerNavLinks = [
   { href: '/courses', title: 'Khoá học' },
-  { href: '/enterprises', title: 'Doanh nghiệp' },
   { href: '/aws-certification-paths', title: 'AWS Paths' },
   { href: '/blog', title: 'Blog' },
   { href: '/series', title: 'Series' },
@@ -11,7 +10,7 @@ export const headerNavLinks = [
 
 export const footerNavLinks = [
   { href: '/pricing', title: 'Chính sách giá' },
-  { href: '/enterprises', title: 'Doanh nghiệp' },
+  { href: '/enterprises', title: 'Khách hàng doanh nghiệp' },
   { href: '/docs/privacy', title: 'Chính sách bảo mật' },
   { href: '/docs/tos', title: 'Điều khoản sử dụng' },
   { href: siteMetadata.zalo, title: 'Zalo tư vấn' },

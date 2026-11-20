@@ -786,7 +786,7 @@ export default function Pricing() {
                 href="/enterprises"
                 className="rounded-lg bg-orange-600 px-5 py-2.5 font-medium text-white transition-colors hover:bg-orange-700"
               >
-                Doanh nghiệp
+                Khách hàng doanh nghiệp
               </Link>
               <Link
                 href="mailto:info@vntechies.dev"
