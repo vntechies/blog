@@ -14,8 +14,7 @@ function loadScript() {
   return context
 }
 
-const PDF_URL =
-  'https://vntechies.dev/static/docs/vntechies-ho-so-dao-tao-doanh-nghiep.pdf'
+const PDF_URL = 'https://vntechies.dev/static/docs/vntechies-ho-so-dao-tao-doanh-nghiep.pdf'
 const ZALO_URL = 'https://zalo.me/0905068885'
 
 function validLead(overrides = {}) {
@@ -78,9 +77,7 @@ test('validateLead_ rejects consent=false', () => {
 })
 
 test('validateLead_ filters interests to the known list', () => {
-  const result = loadScript().validateLead_(
-    validLead({ interests: ['AI', 'Hack'] })
-  )
+  const result = loadScript().validateLead_(validLead({ interests: ['AI', 'Hack'] }))
   assert.equal(result.ok, true)
   assert.deepEqual([...result.lead.interests], ['AI'])
 })
@@ -194,16 +191,9 @@ test('handleLead_ refuses once the daily cap is reached', () => {
 test('buildRow_ follows HEADERS and prefixes every cell through toCell_', () => {
   const ctx = loadScript()
   const lead = ctx.validateLead_(validLead({ company: '=ACME' })).lead
-  const row = ctx.buildRow_(
-    lead,
-    new Date('2026-11-20T03:04:05Z'),
-    () => '2026-11-20 10:04'
-  )
+  const row = ctx.buildRow_(lead, new Date('2026-11-20T03:04:05Z'), () => '2026-11-20 10:04')
   assert.equal(row.length, ctx.HEADERS.length)
   assert.equal(row[0], '2026-11-20 10:04')
   assert.equal(row[2], "'=ACME")
-  assert.deepEqual(
-    [...ctx.HEADERS].slice(0, 4),
-    ['Thời gian', 'Họ tên', 'Công ty', 'Email']
-  )
+  assert.deepEqual([...ctx.HEADERS].slice(0, 4), ['Thời gian', 'Họ tên', 'Công ty', 'Email'])
 })
