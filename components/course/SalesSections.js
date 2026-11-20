@@ -263,7 +263,9 @@ export function CourseFactsStrip({ facts }) {
   )
 }
 
-// Learner quotes with optional proof: before → after role, certification badge
+// Learner quotes with optional proof: before → after role, certification badge.
+// `kind: 'outcome'` items render as an outcome card (proof image, credited to its source),
+// never as a quote.
 export function TestimonialGrid({ items, title = 'Học viên nói gì?', subtitle }) {
   return (
     <section className="py-16 sm:py-20">
@@ -272,39 +274,71 @@ export function TestimonialGrid({ items, title = 'Học viên nói gì?', subtit
         <h2 className="page-heading">{title}</h2>
         {subtitle && <p className="page-lead">{subtitle}</p>}
         <div className="mt-10 grid gap-6 md:grid-cols-2">
-          {items.map((t) => (
-            <figure key={t.name + t.quote} className="surface-panel flex flex-col p-6">
-              <blockquote className="flex-1 text-base text-fg-prose">“{t.quote}”</blockquote>
-              <figcaption className="mt-6 flex items-center gap-3">
+          {items.map((t) =>
+            t.kind === 'outcome' ? (
+              <figure key={`outcome:${t.href}`} className="surface-panel flex flex-col p-6">
                 <Image
                   src={t.image}
-                  alt={t.name}
-                  width={44}
-                  height={44}
-                  className="h-11 w-11 rounded-full object-cover"
+                  alt={t.imageAlt}
+                  width={1200}
+                  height={364}
+                  className="h-auto w-full border-2 border-line"
                 />
-                <div className="min-w-0">
-                  <p className="font-bold text-fg">{t.name}</p>
-                  <p className="text-sm text-fg-muted">
-                    {t.before && t.after ? `${t.before} → ${t.after}` : t.role}
-                  </p>
-                </div>
-                <div className="ml-auto flex shrink-0 flex-col items-end gap-1">
-                  {t.audience === 'student' && <span className="chip">Sinh viên</span>}
-                  {t.credly && (
+                <figcaption className="flex flex-1 flex-col">
+                  <p className="mt-5 font-bold text-fg">{t.title}</p>
+                  <p className="mt-2 flex-1 text-base text-fg-prose">{t.summary}</p>
+                  <div className="mt-6 flex flex-wrap items-center gap-3">
+                    <p className="text-sm text-fg-muted">
+                      Theo {t.source} · {t.date}
+                    </p>
                     <a
-                      href={t.credly}
+                      href={t.href}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="chip tone-info"
+                      className="chip tone-info ml-auto"
                     >
-                      Xem chứng chỉ ↗
+                      Xem bài đăng ↗
                     </a>
-                  )}
-                </div>
-              </figcaption>
-            </figure>
-          ))}
+                  </div>
+                </figcaption>
+              </figure>
+            ) : (
+              <figure
+                key={`quote:${t.name}:${t.quote}`}
+                className="surface-panel flex flex-col p-6"
+              >
+                <blockquote className="flex-1 text-base text-fg-prose">“{t.quote}”</blockquote>
+                <figcaption className="mt-6 flex items-center gap-3">
+                  <Image
+                    src={t.image}
+                    alt={t.name}
+                    width={44}
+                    height={44}
+                    className="h-11 w-11 rounded-full object-cover"
+                  />
+                  <div className="min-w-0">
+                    <p className="font-bold text-fg">{t.name}</p>
+                    <p className="text-sm text-fg-muted">
+                      {t.before && t.after ? `${t.before} → ${t.after}` : t.role}
+                    </p>
+                  </div>
+                  <div className="ml-auto flex shrink-0 flex-col items-end gap-1">
+                    {t.audience === 'student' && <span className="chip">Sinh viên</span>}
+                    {t.credly && (
+                      <a
+                        href={t.credly}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="chip tone-info"
+                      >
+                        Xem chứng chỉ ↗
+                      </a>
+                    )}
+                  </div>
+                </figcaption>
+              </figure>
+            )
+          )}
         </div>
       </div>
     </section>
