@@ -60,6 +60,7 @@ export default function CourseGenAI({ frontMatter, mentorDetails, otherCourses =
     title: 'Bạn là doanh nghiệp',
     subtitle: 'Cần chuẩn hoá kỹ năng GenAI cho team',
     items: info.audience.company,
+    cta: { href: '/enterprises#tai-ho-so', label: 'Tải hồ sơ đào tạo doanh nghiệp →' },
   }
 
   return (

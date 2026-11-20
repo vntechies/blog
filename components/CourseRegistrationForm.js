@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import Link from '@/components/Link'
 import siteMetadata from '@/data/siteMetadata'
 import { trackCourseEvent } from '@/lib/course-analytics'
 import { FaUser, FaEnvelope, FaPhone, FaGraduationCap, FaSpinner, FaTag } from 'react-icons/fa'
@@ -541,6 +542,16 @@ export default function CourseRegistrationForm({
             >
               Messenger VNTechies
             </a>
+          </div>
+
+          <div className="mt-3 text-center text-sm text-gray-600 dark:text-gray-400">
+            Đăng ký cho đội ngũ hoặc doanh nghiệp?{' '}
+            <Link
+              href="/enterprises#tai-ho-so"
+              className={`${currentTheme.link} font-semibold hover:underline`}
+            >
+              Tải hồ sơ đào tạo →
+            </Link>
           </div>
         </div>
       </div>
