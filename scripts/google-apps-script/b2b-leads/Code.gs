@@ -6,7 +6,7 @@
  *   fetch(LEAD_ENDPOINT, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(lead) })
  *
  * The pure functions below take no Google service, so they run under `node --test`
- * (see Code.test.mjs). Only doGet_ / doPost_ touch SpreadsheetApp, MailApp, etc.
+ * (see Code.test.mjs). Only doPost / doGet touch SpreadsheetApp, MailApp, etc.
  */
 
 var PDF_URL =
