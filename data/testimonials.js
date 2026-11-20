@@ -1,4 +1,4 @@
-// Verified learner quotes, one source for every course page.
+// Verified learner quotes and outcomes, one source for every course page.
 //
 // topics: which pages a quote fits ('aws', 'devops', 'data', 'general'). Pages pick by
 // topic and show each person once.
@@ -6,8 +6,30 @@
 //   before / after: job title before and after the course, e.g. 'Sinh viên năm 4' → 'Cloud Engineer'
 //   credly: public link to the certification badge
 //   audience: 'student' | 'working', shown as a label so readers find people like them
+//
+// Entries are quotes by default. An entry with `kind: 'outcome'` is not a quote: it is a
+// result VNTechies reported, so it carries the fields below instead of name/quote/role.
+// Outcome fields:
+//   title / summary: what happened, in VNTechies' own words (summary is not a quote)
+//   source / date: who reported it and when, rendered as "Theo {source} · {date}"
+//   image / imageAlt: the proof, e.g. a redacted document
+//   href: the public post the result comes from
+//   topics: same as quotes
+// Outcomes only reach pages that ask for them with pickTestimonials(..., { includeOutcomes: true }).
 
 const testimonials = [
+  {
+    kind: 'outcome',
+    title: 'Học viên khoá DevOps nhận offer DevSecOps',
+    summary: 'Từ nền tảng DevOps vững chắc, học viên đã tự tin bước sang lĩnh vực DevSecOps.',
+    source: 'VNTechies',
+    date: '09/2026',
+    image: '/static/images/outcomes/devsecops-offer-2026-09.jpg',
+    imageAlt:
+      'Thư mời nhận việc vị trí DevSecOps của học viên khoá DevOps (đã ẩn tên học viên và công ty)',
+    href: 'https://www.facebook.com/share/p/1GCtjy6E3p/',
+    topics: ['devops'],
+  },
   {
     name: 'Võ Phi Hùng',
     role: 'Division Manager',
@@ -79,14 +101,23 @@ const testimonials = [
   },
 ]
 
-// Topic-specific quotes first, then general ones; each person at most once
-export function pickTestimonials(topic, limit = 4) {
+// Topic-specific quotes first, then general ones; each person at most once.
+// Outcomes for the topic come first, in data order (deduped by href), only when asked.
+export function pickTestimonials(topic, limit = 4, { includeOutcomes = false } = {}) {
+  const outcomes = includeOutcomes
+    ? testimonials.filter((t) => t.kind === 'outcome' && t.topics.includes(topic))
+    : []
   const ranked = [
-    ...testimonials.filter((t) => t.topics.includes(topic)),
-    ...testimonials.filter((t) => t.topics.includes('general')),
+    ...testimonials.filter((t) => t.kind !== 'outcome' && t.topics.includes(topic)),
+    ...testimonials.filter((t) => t.kind !== 'outcome' && t.topics.includes('general')),
   ]
   const seen = new Set()
-  return ranked.filter((t) => (seen.has(t.name) ? false : seen.add(t.name))).slice(0, limit)
+  const quotes = ranked.filter((t) => (seen.has(t.name) ? false : seen.add(t.name)))
+  const seenHrefs = new Set()
+  const pickedOutcomes = outcomes.filter((t) =>
+    seenHrefs.has(t.href) ? false : seenHrefs.add(t.href)
+  )
+  return [...pickedOutcomes, ...quotes].slice(0, limit)
 }
 
 export default testimonials

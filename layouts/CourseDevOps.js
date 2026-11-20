@@ -464,7 +464,7 @@ export default function CourseDevOps({ frontMatter, mentorDetails, otherCourses 
         <AudienceFit student={audience.student} working={audience.working} />
 
         <TestimonialGrid
-          items={pickTestimonials('devops')}
+          items={pickTestimonials('devops', 4, { includeOutcomes: true })}
           title="Cảm nhận về nội dung DevOps của VNTechies"
         />
 
