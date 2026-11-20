@@ -238,6 +238,9 @@ function handleLead_(data, deps) {
   if (deps.isDuplicate(lead.email)) return { ok: true, duplicate: true }
 
   deps.appendRow(buildRow_(lead, deps.now(), deps.formatTime))
+  // Count only leads that were actually saved: spam and duplicates must not
+  // eat into the daily cap and lock out real leads.
+  deps.recordSaved()
 
   var alert = buildAlertEmail_(lead, deps.sheetUrl)
   deps.sendMail({
@@ -340,6 +343,7 @@ function doPost(e) {
         },
         isDuplicate: isDuplicate_,
         markSeen: markSeen_,
+        recordSaved: bumpDailyCount_,
         dailyCountExceeded: dailyCountExceeded_,
         notifyTo: getConfig_('NOTIFY_TO', REPLY_TO),
         sheetUrl: spreadsheet.getUrl(),
@@ -348,7 +352,6 @@ function doPost(e) {
         },
         formatTime: formatTime_,
       })
-      if (result.ok) bumpDailyCount_()
       return json_(result)
     } finally {
       lock.releaseLock()

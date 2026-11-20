@@ -46,7 +46,8 @@ Files:
 ## Limits to know
 
 - Emails are sent **from the Google account that deployed** the web app, and count against that account's `MailApp` daily quota
-  (consumer Gmail ≈ 100 recipients/day, Workspace ≈ 1,500). The script also caps itself at 200 submissions/day (`rate_limited`).
+  (consumer Gmail ≈ 100 recipients/day, Workspace ≈ 1,500). The script also caps itself at 200 saved leads/day (`rate_limited`);
+  honeypot hits, duplicates and validation errors are not counted, so they cannot use up the cap.
 - Duplicates are detected with `CacheService` (10 minutes), so a second identical email inside that window is dropped.
 - The sheet's first sheet is named `Leads` and gets the header row automatically when empty.
 

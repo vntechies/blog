@@ -125,9 +125,10 @@ test('buildRequesterEmail_ carries the fixed PDF link and no lead text', () => {
 })
 
 function fakeDeps(overrides = {}) {
-  const calls = { appendRow: [], sendMail: [], markSeen: [], isDuplicate: [] }
+  const calls = { appendRow: [], sendMail: [], markSeen: [], isDuplicate: [], recordSaved: [] }
   const deps = {
     appendRow: (row) => calls.appendRow.push(row),
+    recordSaved: () => calls.recordSaved.push(true),
     sendMail: (mail) => calls.sendMail.push(mail),
     isDuplicate: (email) => {
       calls.isDuplicate.push(email)
@@ -196,4 +197,40 @@ test('buildRow_ follows HEADERS and prefixes every cell through toCell_', () => 
   assert.equal(row[0], '2026-11-20 10:04')
   assert.equal(row[2], "'=ACME")
   assert.deepEqual([...ctx.HEADERS].slice(0, 4), ['Thời gian', 'Họ tên', 'Công ty', 'Email'])
+})
+
+test('handleLead_ records the daily count once for a saved lead', () => {
+  const ctx = loadScript()
+  const { calls, deps } = fakeDeps()
+  ctx.handleLead_(validLead(), deps)
+  assert.equal(calls.recordSaved.length, 1)
+})
+
+test('handleLead_ does not record the daily count for honeypot spam', () => {
+  const ctx = loadScript()
+  const { calls, deps } = fakeDeps()
+  ctx.handleLead_(validLead({ website: 'http://bot' }), deps)
+  assert.equal(calls.recordSaved.length, 0)
+})
+
+test('handleLead_ does not record the daily count for a duplicate', () => {
+  const ctx = loadScript()
+  const { calls, deps } = fakeDeps({ isDuplicate: () => true })
+  ctx.handleLead_(validLead(), deps)
+  assert.equal(calls.recordSaved.length, 0)
+})
+
+test('handleLead_ does not record the daily count for a validation error', () => {
+  const ctx = loadScript()
+  const { calls, deps } = fakeDeps()
+  const result = ctx.handleLead_(validLead({ company: '' }), deps)
+  assert.equal(result.ok, false)
+  assert.equal(calls.recordSaved.length, 0)
+})
+
+test('handleLead_ does not record the daily count when rate limited', () => {
+  const ctx = loadScript()
+  const { calls, deps } = fakeDeps({ dailyCountExceeded: () => true })
+  ctx.handleLead_(validLead(), deps)
+  assert.equal(calls.recordSaved.length, 0)
 })
