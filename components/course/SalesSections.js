@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import Image from 'next/image'
+import Link from '@/components/Link'
 import siteMetadata from '@/data/siteMetadata'
 import { formatVnd } from './offer'
 import { trackCourseAction } from '@/lib/course-analytics'
@@ -96,7 +97,7 @@ const Check = () => (
   </span>
 )
 
-const renderAudienceColumn = ({ title, subtitle, items }) => (
+const renderAudienceColumn = ({ title, subtitle, items, cta }) => (
   <div key={title} className="surface-panel p-6 sm:p-8">
     <h3 className="text-xl font-extrabold">{title}</h3>
     <p className="mt-1 text-sm text-fg-subtle">{subtitle}</p>
@@ -108,6 +109,11 @@ const renderAudienceColumn = ({ title, subtitle, items }) => (
         </li>
       ))}
     </ul>
+    {cta && (
+      <Link href={cta.href} className="action-link mt-6">
+        {cta.label}
+      </Link>
+    )}
   </div>
 )
 

@@ -559,6 +559,28 @@ export default function Home({ posts }) {
         </div>
       </section>
 
+      {/* For companies */}
+      <section className="page-section">
+        <div className="surface-panel surface-panel-lg flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
+          <div>
+            <span className="page-eyebrow">Khách hàng doanh nghiệp</span>
+            <h2 className="page-heading">Đào tạo cho đội ngũ?</h2>
+            <p className="page-lead max-w-2xl">
+              Lộ trình Cloud, DevOps, Data &amp; AI riêng cho công ty: lớp riêng từ 5 học viên, báo
+              cáo tiến độ từng người, lab thật và mentor từ các công ty đa quốc gia.
+            </p>
+          </div>
+          <div className="flex shrink-0 flex-col gap-3 sm:flex-row lg:flex-col">
+            <Link href="/enterprises#tai-ho-so" className="action-btn-primary action-btn-lg">
+              Tải hồ sơ doanh nghiệp (PDF)
+            </Link>
+            <Link href={siteMetadata.zalo} className="action-btn-secondary action-btn-lg">
+              Tư vấn qua Zalo
+            </Link>
+          </div>
+        </div>
+      </section>
+
       {/* Testimonials */}
       <section className="page-section">
         <div className="surface-panel surface-panel-lg">

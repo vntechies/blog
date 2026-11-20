@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
+import Link from '@/components/Link'
 import siteMetadata from '@/data/siteMetadata'
-import { trackCourseEvent } from '@/lib/course-analytics'
+import { trackCourseEvent, trackCourseAction } from '@/lib/course-analytics'
 import { FaUser, FaEnvelope, FaPhone, FaGraduationCap, FaSpinner, FaTag } from 'react-icons/fa'
 
 export default function CourseRegistrationForm({
@@ -414,6 +415,22 @@ export default function CourseRegistrationForm({
                   Đăng ký theo nhóm (2+ người)
                 </label>
 
+                {formData.groupRegistration && (
+                  <div className="rounded-lg border border-gray-200 bg-gray-50 p-4 text-sm text-gray-700 dark:border-gray-600 dark:bg-gray-800/50 dark:text-gray-300">
+                    <p>
+                      <strong>Đăng ký cho đội từ 5 người?</strong> Khách hàng doanh nghiệp có thể mở
+                      lớp riêng theo lịch của team, kèm báo cáo tiến độ từng học viên.
+                    </p>
+                    <Link
+                      href="/enterprises#tai-ho-so"
+                      onClick={() => trackCourseAction(courseTitle, 'enterprise_link_group_note')}
+                      className={`${currentTheme.link} mt-2 inline-block font-semibold hover:underline`}
+                    >
+                      Nhận hồ sơ đào tạo doanh nghiệp →
+                    </Link>
+                  </div>
+                )}
+
                 <label
                   htmlFor="isAlumni"
                   className="flex cursor-pointer items-center text-sm font-medium text-gray-700 dark:text-gray-300"
@@ -541,6 +558,17 @@ export default function CourseRegistrationForm({
             >
               Messenger VNTechies
             </a>
+          </div>
+
+          <div className="mt-3 text-center text-sm text-gray-600 dark:text-gray-400">
+            Khách hàng doanh nghiệp?{' '}
+            <Link
+              href="/enterprises#tai-ho-so"
+              onClick={() => trackCourseAction(courseTitle, 'enterprise_link_form_footer')}
+              className={`${currentTheme.link} font-semibold hover:underline`}
+            >
+              Tải hồ sơ đào tạo cho đội ngũ →
+            </Link>
           </div>
         </div>
       </div>

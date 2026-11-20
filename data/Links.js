@@ -10,6 +10,7 @@ export const headerNavLinks = [
 
 export const footerNavLinks = [
   { href: '/pricing', title: 'Chính sách giá' },
+  { href: '/enterprises', title: 'Khách hàng doanh nghiệp' },
   { href: '/docs/privacy', title: 'Chính sách bảo mật' },
   { href: '/docs/tos', title: 'Điều khoản sử dụng' },
   { href: siteMetadata.zalo, title: 'Zalo tư vấn' },
