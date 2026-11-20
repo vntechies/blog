@@ -31,11 +31,14 @@ Files:
    # → {"ok":true,"service":"b2b-leads"}
 
    # one real submission
-   curl -sL -X POST "<EXEC_URL>" \
-     -H 'Content-Type: text/plain;charset=utf-8' \
+   curl -sL "<EXEC_URL>" \
+     -H "Content-Type: text/plain;charset=utf-8" \
      --data '{"name":"Lan","company":"Acme","email":"lan@acme.vn","phone":"0905068885","teamSize":"11–30","interests":["AI"],"message":"","consent":true,"website":"","page":"/enterprises","utm_source":"test","utm_medium":"","utm_campaign":"","deckVersion":"11/2026"}'
    # → {"ok":true}
    ```
+
+   Do not add `-X POST`: `--data` already sends a POST, and with `-X POST` curl re-POSTs to Google's
+   redirect target, so you get an HTML error page instead of `{"ok":true}`.
 
    Then check: one new sheet row, one alert to `NOTIFY_TO`, one email to `lan@acme.vn` with the PDF link.
    Re-sending the same email within 10 minutes returns `{"ok":true,"duplicate":true}` and writes nothing.

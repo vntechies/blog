@@ -8,10 +8,10 @@ const b2bPortfolio = {
   coverImage: '/static/images/enterprises/ho-so-dao-tao-cover.png',
   pages: 32,
   sizeLabel: '3,3 MB',
-  // Empty means the form runs in fallback mode: it shows the download and the Zalo link.
-  // Set this to the deployed Apps Script `/exec` URL after deploy
-  // (see scripts/google-apps-script/b2b-leads/README.md).
-  leadScriptUrl: '',
+  // Deployed Apps Script web app (see scripts/google-apps-script/b2b-leads/README.md).
+  // Set to empty to force fallback mode.
+  leadScriptUrl:
+    'https://script.google.com/macros/s/AKfycbz9_dLOAwMC3JAFVSYaTWFb2iN-LHe1ANE1LUJ55kd21DyquLTaMODLXZjc4X0Q_TklQA/exec',
 }
 
 export const pdfHref = `${b2bPortfolio.pdfPath}?v=${b2bPortfolio.cacheKey}`
