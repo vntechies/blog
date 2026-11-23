@@ -1,0 +1,58 @@
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  width="1100"
+  height="820"
+  viewBox="0 0 1100 820"
+  role="img"
+  aria-labelledby="title desc"
+>
+  <title id="title">Mindmap tổng hợp ôn CCAO-F</title>
+  <desc id="desc">
+    Bảy nhánh kiến thức tổng hợp từ kế hoạch ôn tập. Bản vẽ lại cho bài viết, không phải mindmap gốc
+    hay blueprint chính thức.
+  </desc>
+  <rect width="1100" height="820" rx="20" fill="#fbf1c7" />
+  <g font-family="Arial, sans-serif" fill="#282828">
+    <text x="40" y="55" font-size="28" font-weight="700">CCAO-F · Bản đồ ôn tập</text>
+    <text x="40" y="86" font-size="17">
+      Tổng hợp từ kế hoạch chuẩn bị tháng 11/2026 · kiểm tra guide theo ngày thi
+    </text>
+    <path d="M285 420 H365 M365 165 V705" fill="none" stroke="#a89984" stroke-width="4" />
+    <rect x="40" y="366" width="245" height="108" rx="16" fill="#af3a03" />
+    <text x="162" y="409" text-anchor="middle" fill="#fbf1c7" font-size="23" font-weight="700">
+      Dùng Claude
+    </text>
+    <text x="162" y="443" text-anchor="middle" fill="#fbf1c7" font-size="21">có kiểm chứng</text>
+    <path d="M365 165 H410" stroke="#a89984" stroke-width="3" />
+    <rect x="410" y="122" width="645" height="76" rx="12" fill="#ebdbb2" />
+    <text x="435" y="151" font-size="22" font-weight="700">Prompting</text>
+    <text x="435" y="178" font-size="19">Mục tiêu · ngữ cảnh · đầu ra</text>
+    <path d="M365 255 H410" stroke="#a89984" stroke-width="3" />
+    <rect x="410" y="212" width="645" height="76" rx="12" fill="#ebdbb2" />
+    <text x="435" y="241" font-size="22" font-weight="700">Kiểm chứng đầu ra</text>
+    <text x="435" y="268" font-size="19">Nguồn · bằng chứng · người duyệt</text>
+    <path d="M365 345 H410" stroke="#a89984" stroke-width="3" />
+    <rect x="410" y="302" width="645" height="76" rx="12" fill="#ebdbb2" />
+    <text x="435" y="331" font-size="22" font-weight="700">Sản phẩm và model</text>
+    <text x="435" y="358" font-size="19">Chất lượng · tốc độ · chi phí</text>
+    <path d="M365 435 H410" stroke="#a89984" stroke-width="3" />
+    <rect x="410" y="392" width="645" height="76" rx="12" fill="#ebdbb2" />
+    <text x="435" y="421" font-size="22" font-weight="700">Workflow</text>
+    <text x="435" y="448" font-size="19">Phân việc · checkpoint · trách nhiệm</text>
+    <path d="M365 525 H410" stroke="#a89984" stroke-width="3" />
+    <rect x="410" y="482" width="645" height="76" rx="12" fill="#ebdbb2" />
+    <text x="435" y="511" font-size="22" font-weight="700">Cấu hình và tri thức</text>
+    <text x="435" y="538" font-size="19">Hướng dẫn · nguồn · cập nhật</text>
+    <path d="M365 615 H410" stroke="#a89984" stroke-width="3" />
+    <rect x="410" y="572" width="645" height="76" rx="12" fill="#ebdbb2" />
+    <text x="435" y="601" font-size="22" font-weight="700">Governance</text>
+    <text x="435" y="628" font-size="19">Phân loại dữ liệu · chính sách</text>
+    <path d="M365 705 H410" stroke="#a89984" stroke-width="3" />
+    <rect x="410" y="662" width="645" height="76" rx="12" fill="#ebdbb2" />
+    <text x="435" y="691" font-size="22" font-weight="700">Troubleshooting</text>
+    <text x="435" y="718" font-size="19">Yêu cầu · ngữ cảnh · quyền</text>
+    <text x="40" y="790" font-size="16">
+      VNTechies · Sơ đồ tổng hợp cho bài viết, không phải blueprint chính thức
+    </text>
+  </g>
+</svg>
