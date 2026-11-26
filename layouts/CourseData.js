@@ -33,11 +33,11 @@ import {
 } from '@/components/course/SalesSections'
 
 const courseInfo = {
-  title: 'Data Engineer Bootcamp (VDT-C01) – 8 Tuần (16 Buổi)',
+  title: 'Data Engineer Bootcamp (VDT-C01) – 9 Tuần (18 Buổi)',
   subtitle: 'Từ Zero đến Hero với Data Engineering - Lộ trình đào tạo toàn diện',
   image: '/static/images/ogps/courses/data-engineer-bootcamp-ogp.png',
   startDate: 'Khai giảng hàng tháng',
-  duration: '8 tuần (16 buổi)',
+  duration: '9 tuần (18 buổi)',
   schedule: '19:00 - 21:30 - UTC+7',
   location: 'Online qua Google Meet',
   price: '10.000.000 VNĐ',
@@ -219,7 +219,7 @@ const courseInfo = {
 }
 
 const stats = [
-  { number: '16', label: 'Buổi học' },
+  { number: '18', label: 'Buổi học' },
   { number: '3', label: 'Phase đào tạo' },
   { number: '20+', label: 'Công nghệ thực tế' },
   { number: '7+', label: 'Mentor kinh nghiệm' },
@@ -229,7 +229,7 @@ const stats = [
 const courseFacts = [
   { label: 'Lớp mới', value: MONTHLY_INTAKE },
   { label: 'Lịch học', value: '19:00–21:30 · 2 buổi/tuần' },
-  { label: 'Thời lượng', value: '8 tuần · 16 buổi · 40h' },
+  { label: 'Thời lượng', value: '9 tuần · 18 buổi · 45h' },
   { label: 'Hình thức', value: 'Online · Google Meet' },
 ]
 
@@ -303,7 +303,7 @@ const faq = [
   },
   {
     q: 'Lịch học thế nào?',
-    a: 'Lớp học online qua Google Meet, 19:00–21:30 (giờ Việt Nam), 2 buổi/tuần trong 8 tuần, tổng 16 buổi.',
+    a: 'Lớp học online qua Google Meet, 19:00–21:30 (giờ Việt Nam), 2 buổi/tuần trong 9 tuần, tổng 18 buổi.',
   },
   {
     q: 'Có trả góp không?',
@@ -415,16 +415,16 @@ export default function CourseData({ frontMatter, mentorDetails, otherCourses = 
             </div>
             <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
               <div className="rounded-xl bg-purple-50 p-6 text-center dark:bg-purple-900/20">
-                <div className="mb-3 text-3xl font-bold text-purple-600">16</div>
+                <div className="mb-3 text-3xl font-bold text-purple-600">18</div>
                 <div className="text-sm font-medium text-gray-700 dark:text-gray-300">Buổi học</div>
                 <div className="text-xs text-gray-500 dark:text-gray-400">Mỗi buổi 2.5 tiếng</div>
               </div>
               <div className="rounded-xl bg-purple-50 p-6 text-center dark:bg-purple-900/20">
-                <div className="mb-3 text-3xl font-bold text-purple-600">40h</div>
+                <div className="mb-3 text-3xl font-bold text-purple-600">45h</div>
                 <div className="text-sm font-medium text-gray-700 dark:text-gray-300">
                   Tổng thời lượng
                 </div>
-                <div className="text-xs text-gray-500 dark:text-gray-400">8 tuần học</div>
+                <div className="text-xs text-gray-500 dark:text-gray-400">9 tuần học</div>
               </div>
               <div className="rounded-xl bg-purple-50 p-6 text-center dark:bg-purple-900/20">
                 <div className="mb-3 text-2xl font-bold text-purple-600">02 buổi/tuần</div>
@@ -484,7 +484,7 @@ export default function CourseData({ frontMatter, mentorDetails, otherCourses = 
                       Người đi làm
                     </div>
                     <div className="text-3xl font-bold text-gray-900 dark:text-gray-100">
-                      8.000.000₫
+                      10.000.000₫
                     </div>
                   </div>
                   <div className="rounded-xl bg-purple-50 p-4 text-center dark:bg-purple-900/30">
@@ -492,7 +492,7 @@ export default function CourseData({ frontMatter, mentorDetails, otherCourses = 
                       Sinh viên
                     </div>
                     <div className="text-2xl font-bold text-purple-700 dark:text-purple-300">
-                      7.500.000₫
+                      9.500.000₫
                     </div>
                     <div className="mt-2 text-xs text-purple-600 dark:text-purple-400">
                       Hỗ trợ học phí lên tới 500.000đ
@@ -529,13 +529,13 @@ export default function CourseData({ frontMatter, mentorDetails, otherCourses = 
                 <div className="mb-8 space-y-4">
                   <div className="rounded-xl bg-white/20 p-6 text-center backdrop-blur">
                     <div className="text-sm font-medium opacity-90">Người đi làm</div>
-                    <div className="text-3xl font-bold">7.200.000₫</div>
-                    <div className="text-sm line-through opacity-75">8.000.000₫</div>
+                    <div className="text-3xl font-bold">9.000.000₫</div>
+                    <div className="text-sm line-through opacity-75">10.000.000₫</div>
                   </div>
                   <div className="rounded-xl bg-white/10 p-4 text-center backdrop-blur">
                     <div className="text-sm font-medium opacity-90">Sinh viên</div>
-                    <div className="text-2xl font-bold">6.700.000₫</div>
-                    <div className="text-sm line-through opacity-75">7.500.000₫</div>
+                    <div className="text-2xl font-bold">8.500.000₫</div>
+                    <div className="text-sm line-through opacity-75">9.500.000₫</div>
                     <div className="mt-2 text-xs opacity-90">Hỗ trợ học phí lên tới 500.000đ</div>
                     <Link
                       href="/pricing#financial-aid"
@@ -574,18 +574,18 @@ export default function CourseData({ frontMatter, mentorDetails, otherCourses = 
                       Người đi làm
                     </div>
                     <div className="text-3xl font-bold text-purple-700 dark:text-purple-300">
-                      6.800.000₫
+                      8.800.000₫
                     </div>
-                    <div className="text-sm text-gray-500 line-through">8.000.000₫</div>
+                    <div className="text-sm text-gray-500 line-through">10.000.000₫</div>
                   </div>
                   <div className="rounded-xl bg-purple-50 p-4 text-center dark:bg-purple-900/20">
                     <div className="text-sm font-medium text-purple-600 dark:text-purple-400">
                       Sinh viên
                     </div>
                     <div className="text-2xl font-bold text-purple-700 dark:text-purple-300">
-                      6.300.000₫
+                      8.300.000₫
                     </div>
-                    <div className="text-sm text-gray-500 line-through">7.500.000₫</div>
+                    <div className="text-sm text-gray-500 line-through">9.500.000₫</div>
                   </div>
                 </div>
 
@@ -609,7 +609,7 @@ export default function CourseData({ frontMatter, mentorDetails, otherCourses = 
                 Lộ trình đào tạo chi tiết
               </h2>
               <p className="text-xl text-gray-600 dark:text-gray-300">
-                16 buổi học với nội dung được thiết kế kỹ lưỡng, tập trung vào thực hành
+                Lộ trình 18 buổi trong 9 tuần. Dưới đây là 16 chủ đề chính, tập trung vào thực hành
               </p>
               {expandedLessons.size > 0 && (
                 <p className="mt-4 text-sm text-purple-600 dark:text-purple-400">
@@ -812,7 +812,7 @@ export default function CourseData({ frontMatter, mentorDetails, otherCourses = 
         {/* Other Courses Section */}
         <OtherCoursesSection otherCourses={otherCourses} />
       </div>
-      <StickyEnrollBar code="Data VDT-C01" intake={MONTHLY_INTAKE} fromPrice={null} />
+      <StickyEnrollBar code="Data VDT-C01" intake={MONTHLY_INTAKE} fromPrice={8300000} />
       <div className="h-16" aria-hidden="true" />
     </div>
   )
